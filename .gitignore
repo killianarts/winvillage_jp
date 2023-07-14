@@ -1,0 +1,15 @@
+node_modules
+.cache
+.vscode
+.DS_Store
+.parcel-cache
+.parcel-cache-backup
+*.log
+__pycache__
+.idea
+staticfiles/*
+/copy
+*.env
+.envs/*
+db.sqlite3
+poetry-convert.py
