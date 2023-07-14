@@ -184,7 +184,7 @@ WSGI_APPLICATION = 'winvillage.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db(default="postgres://winvillage_admin:thisisaveryinsecurepassword@localhost:5432/winvillage_dev"),
+    'default': env.db(),
     'extra': env.db_url(
         'SQLITE_URL',
         default='sqlite:////tmp/my-tmp-sqlite.db'
