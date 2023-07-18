@@ -22,7 +22,8 @@
                     </a>
                 </div>
                 <div class="flex lg:hidden">
-                    <button type="button" _="on click toggle .opacity-0 on #mobile-menu"
+                    <button type="button"
+                            _="on click toggle .hidden .animation-slide-left on #mobile-menu"
                             class="-m-2.5 inline-flex items-center justify-center p-2.5 text-gray-400">
                         <span class="sr-only">Open main menu</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -53,7 +54,10 @@
                 </div>
             </nav>
             <!-- Mobile menu, show/hide based on menu open state. -->
-            <div id="mobile-menu" class="hidden opacity-0 transition-all duration-250" role="dialog" aria-modal="true">
+            <div id="mobile-menu"
+                 class="hidden animation-slide-left transition-all duration-250"
+                 role="dialog"
+                 aria-modal="true">
                 <!-- Background backdrop, show/hide based on slide-over state. -->
                 <div class="fixed inset-0 z-50"></div>
                 <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-stone-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-green-50/10">
@@ -63,7 +67,8 @@
                             <img src="{% static 'core/img/logo.svg' %}" class="max-w-[50px]"
                                  alt={% trans 'Win Village Logo' %}>
                         </a>
-                        <button type="button" _="on click toggle .opacity-0 on #mobile-menu"
+                        <button type="button"
+                                _="on click toggle .hidden .animation-slide-right on #mobile-menu"
                                 class="-m-2.5 p-2.5 text-gray-400">
                             <span class="sr-only">Close menu</span>
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -209,5 +214,31 @@
                 <img src="{% static 'core/img/computer.svg' %}" alt="Computer icon"></button>
         </a>
     </section>
-
+    <footer class="bg-green-800">
+        <nav class="text-green-50 grid justify-center sm:flex sm:flex-wrap sm:items-center sm:justify-between gap-10 container max-w-5xl mx-auto py-20 px-6">
+            <img class="sm:hidden flex-1 max-w-xs mx-auto" src="{% static 'core/img/logo.svg' %}" alt="">
+            <ul class="text-center sm:text-left space-y-2">
+                <li>About Win Village</li>
+                <li>Rooms</li>
+                <li>Gourmet</li>
+                <li>Grills</li>
+                <li>Corporate Information</li>
+            </ul>
+            <img class="hidden sm:flex sm:flex-1 max-w-xs mx-auto" src="{% static 'core/img/logo.svg' %}" alt="">
+            <div class="flex justify-end gap-2">
+                <div class="grid gap-2">
+                    <div class="flex gap-2 justify-end text-green-50 text-xl">
+                        <img src="{% static 'core/img/phone.svg' %}" alt="">
+                        090-0000-0000
+                    </div>
+                    <a href="#"
+                       class="bg-green-50 px-3.5 py-2.5 text-sm text-center font-semibold text-green-950 shadow-sm
+                           transition-all duration-250 hover:bg-green-200 focus-visible:outline focus-visible:outline-2
+                           focus-visible:outline-offset-2 focus-visible:outline-green-200">
+                        Make a Reservation
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </footer>
 {% endblock %}

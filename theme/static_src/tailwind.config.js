@@ -48,17 +48,26 @@ module.exports = {
                 sans: ['Noto Sans JP', ...defaultTheme.fontFamily.sans],
                 display: ['EB Garamond', ...defaultTheme.fontFamily.serif],
             },
+            keyframes: {
+                slideLeft: {
+                    '0%, 100%': {right: '0'},
+                },
+                slideRight: {
+                    '0%, 100%': {right: '-100%'},
+                },
+            },
+            animation: {
+                slideLeft: 'slideLeft 250ms ease-in-out',
+                slideRight: 'slideRight 250ms ease-in-out',
+            },
         },
     },
+
     plugins: [
-        /**
-         * '@tailwindcss/forms' is the forms plugin that provides a minimal styling
-         * for forms. If you don't like it or have own styling for forms,
-         * comment the line below to disable '@tailwindcss/forms'.
-         */
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
         require('@tailwindcss/line-clamp'),
         require('@tailwindcss/aspect-ratio'),
     ],
 }
+
