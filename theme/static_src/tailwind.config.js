@@ -4,7 +4,7 @@
  * If you need the full config, get it from here:
  * https://unpkg.com/browse/tailwindcss@latest/stubs/defaultConfig.stub.js
  */
-
+const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
     content: [
         /**
@@ -42,7 +42,13 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                serif: ['Noto Serif JP', ...defaultTheme.fontFamily.serif],
+                sans: ['Noto Sans JP', ...defaultTheme.fontFamily.sans],
+                display: ['EB Garamond', ...defaultTheme.fontFamily.serif],
+            },
+        },
     },
     plugins: [
         /**

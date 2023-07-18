@@ -67,6 +67,7 @@ THIRD_PARTY_APPS = [
     'parler',
     'whitenoise',
     'rosetta',
+    'responsive_images'
 ]
 
 if DEBUG:
@@ -292,7 +293,7 @@ EMAIL_TIMEOUT = 5
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = "admin/"
+ADMIN_URL = env('DJANGO_ADMIN_URL', default='admin/')
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [("Micah Jonah Killian", "micah@killianarts.online")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
