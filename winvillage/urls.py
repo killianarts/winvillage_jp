@@ -19,12 +19,15 @@ from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.views.static import serve
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
-    path("__reload__/", include("django_browser_reload.urls")),
-    path(settings.ADMIN_URL, admin.site.urls),
-    path('', include('core.urls')),
-]
+urlpatterns = i18n_patterns(path("__reload__/", include("django_browser_reload.urls")),
+                            path(settings.ADMIN_URL, admin.site.urls),
+                            path('', include('core.urls')),
+                            path('reservations/', include('reservations.urls')),
+                            path('schedule/', include('schedule.urls')),
+                            prefix_default_language=False
+                            )
 
 if settings.DEBUG:
     # This will only work in development

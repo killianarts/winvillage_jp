@@ -13,32 +13,38 @@ import os
 from datetime import datetime
 from pathlib import Path
 import environ
+
 # For translation
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
-# environ.Env.read_env(BASE_DIR / '.env')
-
-
+DJANGO_ENVIRONMENT = env("DJANGO_ENVIRONMENT", default="dev")
+if DJANGO_ENVIRONMENT == "dev":
+    env.read_env(BASE_DIR / ".env")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-DEBUG = env.bool('DJANGO_DEBUG', default = True)
+DEBUG = env.bool("DJANGO_DEBUG", default=True)
 
 if DEBUG:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default = ['winvillage.jp'])
+    ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["winvillage.jp"])
 
-CSRF_TRUSTED_ORIGINS = ['https://*.winvillage.jp', 'https://winvillage.jp']
-CSRF_COOKIE_DOMAIN = '.winvillage.jp'
-CSRF_COOKIE_SECURE = True
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ["https://*.winvillage.jp", "https://winvillage.jp"]
+    CSRF_COOKIE_DOMAIN = ".winvillage.jp"
+    CSRF_COOKIE_SECURE = True
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = env('SECRET_KEY')
-SECRET_KEY = env('DJANGO_SECRET_KEY', default = "django-insecure-weadmo#f0(uj@@sd=+#1=q^iqcoenqpc7zqy8nlf5gas&um_pa")
+SECRET_KEY = env(
+    "DJANGO_SECRET_KEY",
+    default="django-insecure-weadmo#f0(uj@@sd=+#1=q^iqcoenqpc7zqy8nlf5gas&um_pa",
+)
 
 # Application definition
 
@@ -58,28 +64,32 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    'django_htmx',
-    'tailwind',
-    'widget_tweaks',
-    'render_block',
-    'theme',
-    'django_extensions',
-    'parler',
-    'whitenoise',
-    'rosetta',
-    'responsive_images'
+    "django_htmx",
+    "tailwind",
+    "widget_tweaks",
+    "render_block",
+    "theme",
+    "django_extensions",
+    "parler",
+    "whitenoise",
+    "rosetta",
+    "responsive_images",
+    "slippers",
 ]
 
 if DEBUG:
-    THIRD_PARTY_APPS += ['django_browser_reload']
+    THIRD_PARTY_APPS += ["django_browser_reload"]
 
-TAILWIND_APP_NAME = 'theme'
+TAILWIND_APP_NAME = "theme"
 
-INTERNAL_IPS = [
-    '127.0.0.1'
+INTERNAL_IPS = ["127.0.0.1"]
+
+LOCAL_APPS = [
+    "users",
+    "core",
+    "reservations",
+    "schedule",
 ]
-
-LOCAL_APPS = ["users", "core"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -114,7 +124,9 @@ PASSWORD_HASHERS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -133,21 +145,23 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'django_htmx.middleware.HtmxMiddleware',
-    'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    "django_htmx.middleware.HtmxMiddleware",
+    "django.contrib.sites.middleware.CurrentSiteMiddleware",
 ]
 
 if DEBUG:
-    MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware',]
+    MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
+    ]
 
-ROOT_URLCONF = 'winvillage.urls'
+ROOT_URLCONF = "winvillage.urls"
 
-# Django 4.1 caches templates when DEBUG is true.
+# Django 4.1 and above caches templates when DEBUG is true.
 # See: https://nickjanetakis.com/blog/django-4-1-html-templates-are-cached-by-default-with-debug-true
 
 default_loaders = [
     "django.template.loaders.filesystem.Loader",
-    "django.template.loaders.app_directories.Loader"
+    "django.template.loaders.app_directories.Loader",
 ]
 
 cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
@@ -155,10 +169,10 @@ cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
 # APP_DIRS unnecessary if django.template.loaders.app_directories.Loader is set.
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates/'],
-        'OPTIONS': {
-            'context_processors': [
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates/"],
+        "OPTIONS": {
+            "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -167,9 +181,8 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-
             ],
-            "loaders": default_loaders if DEBUG else cached_loaders
+            "loaders": default_loaders if DEBUG else cached_loaders,
         },
     },
 ]
@@ -179,17 +192,14 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#fixture-dirs
 FIXTURE_DIRS = (str(BASE_DIR / "fixtures"),)
 
-WSGI_APPLICATION = 'winvillage.wsgi.application'
+WSGI_APPLICATION = "winvillage.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db(),
-    'extra': env.db_url(
-        'SQLITE_URL',
-        default='sqlite:////tmp/my-tmp-sqlite.db'
-    )
+    "default": env.db(),
+    "extra": env.db_url("SQLITE_URL", default="sqlite:////tmp/my-tmp-sqlite.db"),
 }
 
 # Password validation
@@ -197,46 +207,50 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-# LANGUAGE_CODE = 'ja-JP'
+LANGUAGE_CODE = "en"
+# LANGUAGE_CODE = 'ja'
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#languages
 # from django.utils.translation import gettext_lazy as _
 LANGUAGES = (
-    ('en', _('English')),
-    ('ja', _('Japanese')),
+    ("en", _("English")),
+    ("ja", _("Japanese")),
 )
 # Command for making Japanese messages:
 # django-admin makemessages -l ja
 LOCALE_PATHS = [
-    BASE_DIR / 'locale',
+    BASE_DIR / "locale",
 ]
 
 PARLER_LANGUAGES = {
     1: (
-        {'code': 'en-us', },  # English
-        {'code': 'ja', },  # Japanese
+        {
+            "code": "en-us",
+        },  # English
+        {
+            "code": "ja",
+        },  # Japanese
     ),
-    'default': {
-        'fallbacks': ['ja'],
-        'hide_untranslated': False,
-    }
+    "default": {
+        "fallbacks": ["ja"],
+        "hide_untranslated": False,
+    },
 }
 
 # Local time zone. Choices are
@@ -264,7 +278,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 if DEBUG:
     STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
@@ -278,7 +292,7 @@ MEDIA_URL = "/media/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -293,14 +307,14 @@ EMAIL_TIMEOUT = 5
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = env('DJANGO_ADMIN_URL', default='admin/')
+ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [("Micah Jonah Killian", "micah@killianarts.online")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 # https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings
 # Force the `admin` sign in process to go through the `django-allauth` workflow
-DJANGO_ADMIN_FORCE_ALLAUTH = env.bool('DJANGO_ADMIN_FORCE_ALLAUTH', default=False)
+DJANGO_ADMIN_FORCE_ALLAUTH = env.bool("DJANGO_ADMIN_FORCE_ALLAUTH", default=False)
 
 # LOGGING
 # ------------------------------------------------------------------------------
@@ -325,7 +339,6 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
-
 # django-allauth
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
@@ -343,5 +356,3 @@ ACCOUNT_FORMS = {"signup": "winvillage.users.forms.UserSignupForm"}
 SOCIALACCOUNT_ADAPTER = "winvillage.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
 SOCIALACCOUNT_FORMS = {"signup": "winvillage.users.forms.UserSocialSignupForm"}
-
-
