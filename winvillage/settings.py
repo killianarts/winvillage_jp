@@ -88,7 +88,6 @@ LOCAL_APPS = [
     "users",
     "core",
     "reservations",
-    "schedule",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -170,7 +169,7 @@ cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates/"],
+        "DIRS": [BASE_DIR / "core/../templates/"],
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -297,13 +296,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
-
+DEFAULT_FROM_EMAIL = "admin@winvillage.jp"
+EMAIL_HOST = "localhost"
+EMAIL_PORT = "1025"
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.

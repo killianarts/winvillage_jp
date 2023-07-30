@@ -1,0 +1,37 @@
+{% load widget_tweaks %}
+
+<div class="mx-auto max-w-5xl">
+    <h2 class="text-center text-3xl text-green-950">Choose Length of Stay</h2>
+    <form class="grid justify-center gap-2">
+        <div id="calendar-month" class="max-w-sm grid grid-cols-7">
+            <h2 class="text-center text-2xl font-bold col-span-7">{{ the_date|date:"F" }}</h2>
+            <div id="day-names" class="grid grid-cols-7 col-span-7">
+                {% for weekday in weekdays %}
+                    <p class="p-2">{{ weekday|date:"w" }}</p>
+                {% endfor %}
+            </div>
+            <div id="weeks" class="grid grid-cols-7 col-span-7">
+            {% for date in calendar. %}
+{#                <div class="grid grid-cols-7 place-items-center">#}
+{#                    {% for day in date %}#}
+                        {% if date|date:"w" in calendar.MONDAY %}
+                            <a class="p-2 text-red-500">{{ day|date:"j" }}</a>
+                        {% else %}
+                            <a class="p-2">{{ date|date:"j" }}</a>
+                        {% endif %}
+{#                    {% endfor %}#}
+{#                </div>#}
+            {% endfor %}
+            </div>
+        </div>
+
+        {#        {% for field in form %}#}
+        {#        	{% render_field field class="text-2xl" %}#}
+        {#        {% endfor %}#}
+        {#        <button type="submit"#}
+        {#                class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500#}
+        {#                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">#}
+        {#            Submit#}
+        {#        </button>#}
+    </form>
+</div>

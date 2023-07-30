@@ -25,7 +25,6 @@ urlpatterns = i18n_patterns(path("__reload__/", include("django_browser_reload.u
                             path(settings.ADMIN_URL, admin.site.urls),
                             path('', include('core.urls')),
                             path('reservations/', include('reservations.urls')),
-                            path('schedule/', include('schedule.urls')),
                             prefix_default_language=False
                             )
 

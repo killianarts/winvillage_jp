@@ -23,7 +23,7 @@ from schedule.views import (
     test_view,
 )
 
-# app_name = "schedule"
+app_name = "schedule"
 
 urlpatterns = [
     path("test/", test_view, name="test_view"),

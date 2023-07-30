@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+{% load l10n %}
+
+{% block title %}
+    Make a Reservation
+{% endblock %}
+
+{% block content %}
+<div hx-get="{% url 'reservations:step-1' %}" hx-target="this" hx-swap="outerHTML" hx-trigger="load">
+    Get the first step of the reservation process form
+</div>
+{% endblock %}
