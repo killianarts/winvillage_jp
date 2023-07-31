@@ -1350,6 +1350,10 @@ select {
   font-family: Noto Serif JP, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;

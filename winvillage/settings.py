@@ -186,6 +186,19 @@ TEMPLATES = [
     },
 ]
 
+# FORMS
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/4.2/ref/forms/renderers/#built-in-template-form-renderers
+# FORM_RENDERER = 'django.forms.renderers.DjangoTemplates' (default)
+# This renderer uses a standalone DjangoTemplates engine (unconnected to what you might have configured in the
+# TEMPLATES setting). It loads templates first from the built-in form templates directory in django/forms/templates
+# and then from the installed apps’ templates directories using the app_directories loader.
+
+# If you want to render templates with customizations from your TEMPLATES setting, such as context processors for
+# example, use the TemplatesSetting renderer.
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
 # FIXTURES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#fixture-dirs

@@ -71,7 +71,7 @@
                             <time datetime="{{ date }}">{{ date.day }}</time>
                         </button>
                     </div>
-                {% elif date.day == "Monday" %}
+                {% elif date.weekday == calendar.firstweekday %}
                     <div class="py-2">
                         <button type="button"
                                 class="mx-auto flex h-8 w-8 items-center justify-center rounded-full text-red-400 hover:bg-red-200">
