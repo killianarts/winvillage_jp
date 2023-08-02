@@ -1,31 +1,38 @@
+{% load i18n %}
 {% load widget_tweaks %}
 
-<div id="reservation-form-wrapper" class="mx-auto max-w-5xl">
-    <h2 class="text-center text-3xl text-green-950">Choose your reservation type:</h2>
-    <form hx-post="{% url 'reservations:step-2' %}" hx-target="#reservation-form-wrapper"
-          class="grid justify-center gap-2">
-        {#        <label for="hourly" class="flex flex-wrap w-1/2 items-center gap-5 text-3xl text-green-950 cursor-pointer">#}
-        {#            Hourly#}
-        {#            <input type="radio" id="hourly" name="roomtype" value="hourly" class="text-green-900 focus:ring-green-900">#}
-        {#        </label>#}
-        {#        <label for="multi" class="flex flex-wrap w-1/2 items-center gap-5 text-3xl text-green-950 cursor-pointer">#}
-        {#            Multi-day#}
-        {#            <input type="radio" id="multi" name="roomtype" value="multi" class="text-green-900 focus:ring-green-900">#}
-        {#        </label>#}
-
+<div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
+  <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">{% translate 'Choose your reservation type' %}</h2>
+  <form action="{% url 'reservations:step-2' %}" method="post"
+        hx-post="{% url 'reservations:step-2' %}"
+        hx-target="#reservation-form-wrapper"
+        hx-swap="outerHTML"
+        class="space-y-2">
+    {#        <label for="hourly" class="flex flex-wrap w-1/2 items-center gap-5 text-3xl text-green-950 cursor-pointer">#}
+    {#            Hourly#}
+    {#            <input type="radio" id="hourly" name="roomtype" value="hourly" class="text-green-900 focus:ring-green-900">#}
+    {#        </label>#}
+    {#        <label for="multi" class="flex flex-wrap w-1/2 items-center gap-5 text-3xl text-green-950 cursor-pointer">#}
+    {#            Multi-day#}
+    {#            <input type="radio" id="multi" name="roomtype" value="multi" class="text-green-900 focus:ring-green-900">#}
+    {#        </label>#}
+    <fieldset>
+      <legend class="sr-only">{% translate 'Reservation Types' %}</legend>
+      <div>
         {% for field in form %}
-            {% if messages %}
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            {% endif %}
-            {% render_field field class="text-2xl" %}
+          {% if messages %}
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          {% endif %}
+          {% render_field field class="text-2xl accent-red-500 space-y-2" %}
         {% endfor %}
-
-        <button type="submit"
-                class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
-                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
-            Next
-        </button>
-    </form>
+      </div>
+    </fieldset>
+    <button type="submit"
+            class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
+                   focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+      {% translate 'Next' %}
+    </button>
+  </form>
 </div>

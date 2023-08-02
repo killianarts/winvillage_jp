@@ -16,7 +16,7 @@
             <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div class="flex lg:flex-1">
                     <a href="#" class="-m-1.5 p-1.5">
-                        <span class="sr-only">Win Village</span>
+                        <span class="sr-only">{% translate 'Win Village' %}</span>
                         <img src="{% static 'core/img/logo.svg' %}" class="max-w-[50px]"
                              alt={% trans 'Win Village Logo' %}>
                     </a>
@@ -35,15 +35,14 @@
                 </div>
                 <div class="hidden lg:flex">
                     <a href="#"
-                       class="block px-6 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">About
-                                                                                                                                                                  Win
-                                                                                                                                                                  Village</a>
+                       class="block px-6 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">
+                        {% translate 'About Win Village' %}</a>
                     <a href="#"
-                       class="block px-6 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">Rooms</a>
+                       class="block px-6 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">{% translate 'Rooms' %}</a>
                     <a href="#"
-                       class="block px-6 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">Gourmet</a>
+                       class="block px-6 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">{% translate 'Gourmet' %}</a>
                     <a href="#"
-                       class="block px-6 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">Grills</a>
+                       class="block px-6 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">{% translate 'Grills' %}</a>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-2">
                     <div class="grid gap-2">
@@ -54,7 +53,7 @@
                            class="bg-green-600 px-3.5 py-2.5 text-sm text-center font-semibold text-green-50 shadow-sm
                            transition-all duration-250 hover:bg-green-700 focus-visible:outline focus-visible:outline-2
                            focus-visible:outline-offset-2 focus-visible:outline-green-700">
-                            Make a Reservation
+                            {% translate 'Make a Reservation' %}
                         </a>
                     </div>
                 </div>
@@ -69,14 +68,14 @@
                 <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-stone-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-green-50/10">
                     <div class="flex items-center justify-between">
                         <a href="#" class="-m-1.5 p-1.5">
-                            <span class="sr-only">Win Village</span>
+                            <span class="sr-only">{% translate 'Win Village' %}</span>
                             <img src="{% static 'core/img/logo.svg' %}" class="max-w-[50px]"
                                  alt={% trans 'Win Village Logo' %}>
                         </a>
                         <button type="button"
                                 _="on click toggle .hidden .animation-slide-right on #mobile-menu"
                                 class="-m-2.5 p-2.5 text-gray-400">
-                            <span class="sr-only">Close menu</span>
+                            <span class="sr-only">{% translate 'Close menu' %}</span>
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -87,21 +86,23 @@
                         <div class="-my-6 divide-y divide-gray-500/25">
                             <div class="space-y-2 py-6">
                                 <a href="#"
-                                   class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-950">About
-                                                                                                                                                                Win
-                                                                                                                                                                Village</a>
+                                   class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-950">
+                                    {% translate 'About Win Village' %}
+                                </a>
                                 <a href="#"
-                                   class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-950">Rooms</a>
+                                   class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-950">{% translate 'Rooms' %}</a>
                                 <a href="#"
-                                   class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-950">Gourmet</a>
+                                   class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-950">{% translate 'Gourmet' %}</a>
                                 <a href="#"
-                                   class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-950">Grills</a>
+                                   class="-mx-3 block px-3 py-2 text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-950">{% translate 'Grills' %}</a>
                             </div>
                             <div class="py-6">
                                 <a href="#"
-                                   class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-green-50 shadow-sm transition-all duration-250 hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700">Make
-                                                                                                                                                                                                                                                                                a
-                                                                                                                                                                                                                                                                                Reservation</a>
+                                   class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-green-50 shadow-sm 
+                                   transition-all duration-250 hover:bg-green-700 focus-visible:outline 
+                                   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700">
+                                    {% translate 'Make a Reservation' %}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -130,8 +131,10 @@
                     <p class="mt-6 text-lg leading-8 text-gray-300">{% trans 'Fresh air, delicious food, comfortable beds' %}</p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
                         <a href="#"
-                           class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-green-50 shadow-sm transition-all duration-250 hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-700">
-                            Make a Reservation</a>
+                           class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-green-50 shadow-sm 
+                           transition-all duration-250 hover:bg-green-700 focus-visible:outline focus-visible:outline-2 
+                           focus-visible:outline-offset-2 focus-visible:outline-green-700">
+                            {% translate 'Make a Reservation' %}</a>
                         <a href="#"
                            class="text-sm font-semibold leading-6 text-green-50 transition-all duration-250 group hover:text-green-200">
                             Learn more
@@ -176,7 +179,7 @@
                      style="background-image:url({% static 'core/img/glamping_room_outside.jpg' %})">
                 </div>
                 <div class="px-6 pb-2 pt-6">
-                    <h3 class="text-4xl font-display">Rooms</h3>
+                    <h3 class="text-4xl font-display">{% translate 'Rooms' %}</h3>
                 </div>
                 <div class="px-6 pb-6">
                     <p>Our rooms are very nice.</p>
@@ -214,9 +217,10 @@
                 </div>
             </div>
         </div>
-        <a href="#">
-            <button class="mx-auto flex px-6 py-2 text-green-50 font-black gap-2 bg-green-900 cursor-pointer transition-all duration-250 hover:bg-green-950">
-                Make a Reservation
+        <a href="{% url 'reservations:index' %}">
+            <button class="mx-auto flex items-center px-6 py-2 text-green-50 font-black gap-2 bg-green-900 cursor-pointer
+                           transition-all duration-250 hover:bg-green-950">
+                {% translate 'Make a Reservation' %}
                 <img src="{% static 'core/img/computer.svg' %}" alt="Computer icon"></button>
         </a>
     </section>
@@ -225,17 +229,17 @@
             <img class="sm:hidden flex-1 max-w-xs mx-auto" src="{% static 'core/img/logo.svg' %}" alt="">
             <ul class="text-center sm:text-left">
                 <li class="block px-7 py-2 w-fit text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">
-                    <a href="#">About Win Village</a></li>
+                    <a href="#">{% translate 'About Win Village' %}</a></li>
                 <li class="block px-7 py-2 w-fit text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">
-                    <a href="#">Rooms</a></li>
+                    <a href="#">{% translate 'Rooms' %}</a></li>
                 <li class="block px-7 py-2 w-fit text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">
-                    <a href="#">Gourmet</a>
+                    <a href="#">{% translate 'Gourmet' %}</a>
                 </li>
                 <li class="block px-7 py-2 w-fit text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">
-                    <a href="#">Grills</a>
+                    <a href="#">{% translate 'Grills' %}</a>
                 </li>
                 <li class="block px-7 py-2 w-fit text-base font-semibold leading-7 text-green-50 transition-all duration-250 hover:bg-stone-50 hover:text-green-950">
-                    <a href="#">Corporate Information</a>
+                    <a href="#">{% translate 'Corporate Information' %}</a>
                 </li>
             </ul>
             <img class="hidden sm:flex sm:flex-1 max-w-xs mx-auto" src="{% static 'core/img/logo.svg' %}" alt="">
@@ -249,7 +253,7 @@
                        class="bg-green-50 px-3.5 py-2.5 text-sm text-center font-semibold text-green-950 shadow-sm
                            transition-all duration-250 hover:bg-green-200 focus-visible:outline focus-visible:outline-2
                            focus-visible:outline-offset-2 focus-visible:outline-green-200">
-                        Make a Reservation
+                        {% translate 'Make a Reservation' %}
                     </a>
                 </div>
             </div>

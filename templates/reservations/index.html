@@ -1,14 +1,38 @@
 {% extends 'core/base.html' %}
-{% load l10n %}
+{% load i18n %}
+{% load l10n widget_tweaks static %}
+{% block extra_scripts %}
+
+{% endblock %}
 
 {% block title %}
-    Make a Reservation
+  {% translate 'Make a Reservation' %}
 {% endblock %}
 
 {% block content %}
-    <div hx-get="{% url 'reservations:step-1' %}" hx-target="this" hx-swap="outerHTML" hx-trigger="load"
-         hx-indicator="#loading-indicator">
+  <div class="md:grid md:grid-cols-3 min-h-screen w-full relative">
+    <nav class="bg-green-800 md:grid place-items-center w-screen md:w-full">
+      <div class="p-5 md:px-0 flex items-center md:block">
+        <div class="flex flex-1">
+          <a href="{% url 'core:index' %}" class="md:mx-auto">
+            <img src="{% static 'core/img/logo.svg' %}" class="max-h-16 md:max-h-52" alt=""></a>
+        </div>
+        <a href="{% url 'core:index' %}">
+          <button type="submit"
+                  class="mx-auto flex items-center px-6 py-2 text-green-50 font-black gap-2 bg-green-900
+                                   cursor-pointer
+                           transition-all duration-250 hover:bg-green-950">
+            {% translate 'Go Back Home' %}
+          </button>
+        </a>
+      </div>
+    </nav>
+    <div class="col-span-2 flex items-center justify-center absolute md:relative inset-0">
+      <div hx-get="{% url 'reservations:step-1' %}" hx-target="this" hx-swap="outerHTML" hx-trigger="load"
+           hx-indicator="#loading-indicator">
         Get the first step of the reservation process form
+      </div>
+      <div id="loading-indicator"></div>
     </div>
-    <div id="loading-indicator"></div>
+  </div>
 {% endblock %}

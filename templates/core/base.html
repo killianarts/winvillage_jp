@@ -5,18 +5,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{#    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VY8KJ3S1CP"></script>#}
-{#    <script>#}
-{#        window.dataLayer = window.dataLayer || [];#}
-{##}
-{#        function gtag() {#}
-{#            dataLayer.push(arguments);#}
-{#        }#}
-{##}
-{#        gtag('js', new Date());#}
-{##}
-{#        gtag('config', 'G-VY8KJ3S1CP');#}
-{#    </script>#}
+    <meta charset="UTF-8">
+
+    {#    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VY8KJ3S1CP"></script>#}
+    {#    <script>#}
+    {#        window.dataLayer = window.dataLayer || [];#}
+    {##}
+    {#        function gtag() {#}
+    {#            dataLayer.push(arguments);#}
+    {#        }#}
+    {##}
+    {#        gtag('js', new Date());#}
+    {##}
+    {#        gtag('config', 'G-VY8KJ3S1CP');#}
+    {#    </script>#}
     <!-- This meta tag sets the description of the webpage. The "name" attribute is set to "description" to indicate
     that the content provides a brief description of the webpage. The "content" attribute contains the actual
     description text. This description is typically used by search engines to provide a summary of the webpage's content
@@ -95,7 +97,6 @@
     item. -->
     <meta itemprop="image" content="{% static 'core/img/desktop_hero.jpg' %}">
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
-    <meta charset="UTF-8">
     <title>
         {% block title %}Title{% endblock %}
         {% block title_divider %} - {% endblock %}
