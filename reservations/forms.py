@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 class Step1Form(forms.Form):
     CHOICES = (
         ("hourly", _("Hourly")),
-        ("multi", _("Multi")),
+        ("overnight", _("Overnight")),
     )
     stay_type = forms.ChoiceField(
         widget=forms.RadioSelect(),

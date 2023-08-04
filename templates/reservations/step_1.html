@@ -6,7 +6,7 @@
   <form hx-post="{% url 'reservations:step-1' %}"
         hx-target="#reservation-form-wrapper"
         hx-swap="outerHTML"
-        class="space-y-2">
+        class="space-y-5">
     {#        <label for="hourly" class="flex flex-wrap w-1/2 items-center gap-5 text-3xl text-green-950 cursor-pointer">#}
     {#            Hourly#}
     {#            <input type="radio" id="hourly" name="roomtype" value="hourly" class="text-green-900 focus:ring-green-900">#}
@@ -28,11 +28,6 @@
         {% endfor %}
       </div>
     </fieldset>
-    <button name="submit"
-            type="submit"
-            class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
-                   focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
-      {% translate 'Next' %}
-    </button>
+    {% include 'reservations/_buttons.html' with submit_button_text='Next' %}
   </form>
 </div>

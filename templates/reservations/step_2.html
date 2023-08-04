@@ -1,11 +1,11 @@
-{% load widget_tweaks i18n %}
+{% load widget_tweaks i18n slippers %}
 
 <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
   <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">{% translate 'Choose Date of Stay' %}</h2>
   <form hx-post="{% url 'reservations:step-2' %}"
         hx-target="#reservation-form-wrapper"
         hx-swap="outerHTML"
-        class="space-y-2">
+        class="space-y-5">
     <fieldset>
       <legend class="sr-only">{% translate 'Reservation Types' %}</legend>
       <div class="space-y-2 grid grid-cols-1">
@@ -23,21 +23,31 @@
         {% endfor %}
       </div>
     </fieldset>
-    <button name="back"
-            type="submit"
-            hx-get="{% url 'reservations:step-1' %}"
-            hx-target="#reservation-form-wrapper"
-            hx-swap="outerHTML"
-            class="col-span-2 bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
-                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
-      {% translate 'Back' %}
-    </button>
-    <button name="submit"
-            type="submit"
-            class="col-span-2 bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
-                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
-      {% translate 'Next' %}
-    </button>
+    {% url 'reservations:step-1' as url %}
+    {% include 'reservations/_buttons.html' with submit_button_text='Next' back_url=url %}
+    {#    <div class="grid gap-2">#}
+    {#      <button name="submit"#}
+    {#              type="submit"#}
+    {#              class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500#}
+    {#                            focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">#}
+    {#        {% translate 'Next' %}#}
+    {#      </button>#}
+    {##}
+    {#      <button name="back"#}
+    {# If there are two buttons of type="submit" in a form, the first one to appear will have priority when a user #}
+    {# presses the enter key to "submit" it. Making the back button of type="button" will prevent it from taking #}
+    {# priority over the next button on enter key press. #}
+    {#              type="button"#}
+    {#              hx-get="{% url 'reservations:step-1' %}"#}
+    {#              hx-target="#reservation-form-wrapper"#}
+    {#              hx-swap="outerHTML"#}
+    {#              class="bg-green-50 px-3.5 py-2.5 text-sm font-semibold text-green-950 shadow-sm#}
+    {#                     hover:bg-green-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2#}
+    {#                     focus-visible:outline-green-600">#}
+    {#        {% translate 'Back' %}#}
+    {#      </button>#}
+    {#    </div>#}
+
 
     {#        <div class="mx-auto">#}
     {#            <div class="flex items-center">#}

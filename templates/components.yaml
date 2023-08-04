@@ -1,0 +1,3 @@
+components:
+  primary-button: "reservations/components/primary_button.html"
+  secondary-button: "reservations/components/secondary_button.html"

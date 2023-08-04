@@ -1,0 +1,11 @@
+{% load slippers i18n %}
+
+<button name="{{ name }}" type="{{ type }}"
+        hx-get="{{ get }}" hx-post="{{ post }}" hx-trigger="{{ trigger }}" hx-swap="{{ swap }}"
+        class="col-span-2 bg-green-50 px-3.5 py-2.5 text-sm font-semibold text-green-950 shadow-sm
+               hover:bg-green-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+               focus-visible:outline-green-600">
+  {% blocktranslate %}
+    {{ text }}
+  {% endblocktranslate %}
+</button>

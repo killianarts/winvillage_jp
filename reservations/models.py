@@ -94,7 +94,9 @@ class Stay(models.Model):
         ("checked_out", _("Checked Out")),
         ("cancelled", _("Cancelled")),
     )
-    TYPE_OF_STAY_CHOICES = Choices(("hourly", _("Hourly")), ("multi", _("Multi")))
+    TYPE_OF_STAY_CHOICES = Choices(
+        ("hourly", _("Hourly")), ("overnight", _("Overnight"))
+    )
     status = StatusField()
     type = models.CharField(max_length=255, choices=TYPE_OF_STAY_CHOICES)
     start_datetime = models.DateTimeField()
