@@ -19,10 +19,35 @@ class DateInput(forms.DateInput):
 
 
 class Step2Form(forms.Form):
-    stay_date_start = forms.DateField(widget=DateInput, label=_("From:"))
-    stay_date_end = forms.DateField(widget=DateInput, label=_("Until:"))
+    stay_date_start = forms.DateField(widget=DateInput, label=_("From"))
+    stay_date_end = forms.DateField(widget=DateInput, label=_("Until"))
 
 
 class Step3Form(forms.Form):
     purchase_grill = forms.BooleanField(label=_("Grill"), required=False)
     purchase_food = forms.BooleanField(label=_("Food"), required=False)
+
+
+class Step4Form(forms.Form):
+    first_name = forms.CharField(max_length=255, label=_("First Name"))
+    last_name = forms.CharField(max_length=255, label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))
+
+
+class ConfirmationForm(forms.Form):
+    CHOICES = (
+        ("hourly", _("Hourly")),
+        ("multi", _("Multi")),
+    )
+    stay_type = forms.ChoiceField(
+        widget=forms.RadioSelect(),
+        choices=CHOICES,
+        initial="hourly",
+    )
+    stay_date_start = forms.DateField(widget=DateInput, label=_("From"))
+    stay_date_end = forms.DateField(widget=DateInput, label=_("Until"))
+    purchase_grill = forms.BooleanField(label=_("Grill"), required=False)
+    purchase_food = forms.BooleanField(label=_("Food"), required=False)
+    first_name = forms.CharField(max_length=255, label=_("First Name"))
+    last_name = forms.CharField(max_length=255, label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))

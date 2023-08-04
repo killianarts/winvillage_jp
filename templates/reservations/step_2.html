@@ -2,16 +2,15 @@
 
 <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
   <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">{% translate 'Choose Date of Stay' %}</h2>
-  <form hx-post="{% url 'reservations:step-3' %}"
+  <form hx-post="{% url 'reservations:step-2' %}"
         hx-target="#reservation-form-wrapper"
         hx-swap="outerHTML"
         class="space-y-2">
-    {#        <h2 class="text-xl text-center">Tailwind Calendar Component</h2>#}
     <fieldset>
       <legend class="sr-only">{% translate 'Reservation Types' %}</legend>
       <div class="space-y-2 grid grid-cols-1">
         {% for field in form %}
-          <label class="text-xl" for="{{ field.name }}">
+          <label class="text-xl" for="{{ field.id_for_label }}">
             {% if field.name == "stay_date_start" %}
               From:
               {% render_field field class="w-full mb-2" min=current_date %}
@@ -24,15 +23,17 @@
         {% endfor %}
       </div>
     </fieldset>
-    <button type="submit"
-            hx-post="{% url 'reservations:step-1' %}"
+    <button name="back"
+            type="submit"
+            hx-get="{% url 'reservations:step-1' %}"
             hx-target="#reservation-form-wrapper"
             hx-swap="outerHTML"
             class="col-span-2 bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
       {% translate 'Back' %}
     </button>
-    <button type="submit"
+    <button name="submit"
+            type="submit"
             class="col-span-2 bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
       {% translate 'Next' %}
