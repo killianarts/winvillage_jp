@@ -19,9 +19,9 @@ class DateInput(forms.DateInput):
     input_type = "date"
 
 
-class Step2Form(forms.Form):
-    stay_date_start = forms.DateField(widget=DateInput, label=_("From"))
-    stay_date_end = forms.DateField(widget=DateInput, label=_("Until"))
+# class Step2Form(forms.Form):
+#     stay_date_start = forms.DateField(widget=DateInput, label=_("From"))
+#     stay_date_end = forms.DateField(widget=DateInput, label=_("Until"))
 
 
 class Step2Form(forms.ModelForm):
@@ -35,8 +35,8 @@ class Step2Form(forms.ModelForm):
 
 
 class Step3Form(forms.Form):
-    purchase_grill = forms.BooleanField(label=_("Grill"), required=False)
-    purchase_food = forms.BooleanField(label=_("Food"), required=False)
+    grill = forms.BooleanField(label=_("Grill"), required=False)
+    food = forms.BooleanField(label=_("Food"), required=False)
 
 
 class Step4Form(forms.Form):

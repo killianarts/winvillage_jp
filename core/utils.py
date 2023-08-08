@@ -6,41 +6,41 @@ from django.utils.functional import wraps
 from render_block import render_block_to_string
 from django.core.exceptions import ObjectDoesNotExist
 
-from reservations.models import Stay, Reservation
+from reservations.models import Stay, Reservation, Order
 
 
 # Taken from JustDjango's ecommerce project
 # https://github.com/justdjango/django-simple-ecommerce/blob/22-fixes/cart/utils.py
-# def make_new_order(request):
-#     order = Order()
-#     order.save()
-#     request.session["order_id"] = order.id
-#     return order
+def make_new_order(request):
+    order = Order()
+    order.save()
+    request.session["order_id"] = order.id
+    return order
 
 
-# def get_user_order(request):
-#     try:
-#         order = Order.objects.get(account=request.user, ordered=False)
-#     except Order.DoesNotExist:
-#         order = Order(account=request.user, ordered=False)
-#         order.save()
-#         request.session["order_id"] = order.id
-#     return order
-#
-#
-# def get_or_set_order_session(request):
-#     order_id = request.session.get("order_id", None)
-#
-#     if not request.user.is_authenticated and order_id is None:
-#         order = make_new_order(request)
-#         return order
-#     elif not request.user.is_authenticated and order_id:
-#         order = Order.objects.get(id=order_id)
-#         return order
-#
-#     if request.user.is_authenticated:
-#         order = get_user_order(request)
-#         return order
+def get_user_order(request):
+    try:
+        order = Order.objects.get(account=request.user, ordered=False)
+    except Order.DoesNotExist:
+        order = Order(account=request.user, ordered=False)
+        order.save()
+        request.session["order_id"] = order.id
+    return order
+
+
+def get_or_set_order_session(request):
+    order_id = request.session.get("order_id", None)
+
+    if not request.user.is_authenticated and order_id is None:
+        order = make_new_order(request)
+        return order
+    elif not request.user.is_authenticated and order_id:
+        order = Order.objects.get(id=order_id)
+        return order
+
+    if request.user.is_authenticated:
+        order = get_user_order(request)
+        return order
 
 
 # def make_new_stay(request):

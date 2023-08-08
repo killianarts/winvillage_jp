@@ -2,18 +2,24 @@ import calendar as stdlib_calendar
 import locale
 from datetime import datetime
 
+from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
+from django_htmx.http import trigger_client_event
+from render_block import render_block_to_string
+from django.db.models import QuerySet
 
 import reservations.forms as forms
 from reservations.models import (
-    Grill,
-    Food,
     Stay,
     Reservation,
-    ReservationOption,
     ContactInfo,
+    Item,
+    OrderItem,
+    Category,
+    Order,
 )
 from core.utils import HtmxHttpRequest, make_get_request, get_or_set_reservation_session
 
@@ -99,8 +105,8 @@ def _step_2(request: HtmxHttpRequest) -> HttpResponse:
         if "submit" in request.POST:
             form = forms.Step2Form(request.POST)
             if form.is_valid():
-                reservation.stay.start_datetime = form.cleaned_data["stay_date_start"]
-                reservation.stay.end_datetime = form.cleaned_data["stay_date_end"]
+                reservation.stay.start_datetime = form.cleaned_data["start_datetime"]
+                reservation.stay.end_datetime = form.cleaned_data["end_datetime"]
                 reservation.stay.save()
                 return step_3(make_get_request(request))
     current_date = datetime.now()
@@ -163,24 +169,86 @@ def step_3(request: HtmxHttpRequest) -> HttpResponse:
     return _step_3(request)
 
 
-def _step_3(request: HtmxHttpRequest) -> HttpResponse:
-    initial = {
-        "purchase_grill": request.session.get("purchase_grill", None),
-        "purchase_food": request.session.get("purchase_food", None),
-    }
-    form = forms.Step3Form(initial=initial)
-    if request.method == "POST":
-        if "submit" in request.POST:
-            form = forms.Step3Form(request.POST)
-            if form.is_valid():
-                request.session["purchase_grill"] = form.cleaned_data["purchase_grill"]
-                request.session["purchase_food"] = form.cleaned_data["purchase_food"]
-                return step_4(make_get_request(request))
-            return step_3(request)
+# def _step_3(request: HtmxHttpRequest) -> HttpResponse:
+#     reservation = get_or_set_reservation_session(request)
+#     initial = {
+#         "purchase_grill": request.session.get("purchase_grill", None),
+#         "purchase_food": request.session.get("purchase_food", None),
+#     }
+#     form = forms.Step3Form(initial=initial)
+#     if request.method == "POST":
+#         if "submit" in request.POST:
+#             form = forms.Step3Form(request.POST)
+#             if form.is_valid():
+#                 request.session["purchase_grill"] = form.cleaned_data["purchase_grill"]
+#                 request.session["purchase_food"] = form.cleaned_data["purchase_food"]
+#                 return step_4(make_get_request(request))
+#             return step_3(request)
+#
+#     context = {
+#         "form": form,
+#     }
+#     return TemplateResponse(request, "reservations/step_3.html", context)
 
-    context = {
-        "form": form,
-    }
+
+def get_combined_grill_models(request) -> QuerySet:
+    reservation = get_or_set_reservation_session(request)
+
+    grill_content_type = ContentType.objects.get(model="grill")
+    reserved_grills = ReservationOption.objects.filter(
+        content_type=grill_content_type, object_id=reservation.id
+    )
+    featured_grills = Grill.featured_grills.all()
+    reserved_grill_ids = reserved_grills.values_list("id", flat=True)
+    featured_reserved_grills = featured_grills.filter(id__in=reserved_grill_ids)
+
+    from django.db.models import Case, When, BooleanField
+
+    combined_grills = (
+        Grill.objects.filter(id__in=featured_grills.values_list("id", flat=True))
+        .annotate(
+            reserved=Case(
+                When(id__in=featured_reserved_grills.values("id"), then=True),
+                default=False,
+                output_field=BooleanField(),
+            )
+        )
+        .order_by("pk")
+    )
+
+    return combined_grills
+
+
+@require_POST
+def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    item = get_object_or_404(Item, pk=pk)
+    if reservation:
+        order_item, created = OrderItem.objects.get_or_create(item_id=item.id)
+        order_item.save()
+        reservation.order_items.add(order_item)
+        reservation.save()
+        return step_3(request)
+    # grills = Item.objects.filter(category__title="grill", active=True)
+    # context = {"grills": grills}
+    # html = render_block_to_string(
+    #     "reservations/reservation_form.html", "step_3_form", context
+    # )
+    # return HttpResponse(html)
+
+
+def remove_grill_reservation_option(request: HtmxHttpRequest, pk):
+    context = {}
+    html = render_block_to_string(
+        "reservations/reservation_form.html", "step_3_form", context
+    )
+    return HttpResponse(html)
+
+
+def _step_3(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    grills = Item.objects.filter(category__title="grill", active=True)
+    context = {"grills": grills}
     return TemplateResponse(request, "reservations/step_3.html", context)
 
 

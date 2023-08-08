@@ -12,129 +12,6 @@ from model_utils.fields import StatusField, MonitorField
 auth_user = get_user_model()
 
 
-class Room(models.Model):
-    class Meta:
-        verbose_name = _("Room")
-        verbose_name_plural = _("Rooms")
-
-    name = models.CharField(max_length=20)
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Grill(models.Model):
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    name = models.CharField(max_length=50)
-    model_number = models.CharField(max_length=50, default="MKJ12345")
-    maker = models.CharField(max_length=50, default=_("Default Maker"))
-
-    def __str__(self):
-        return self.name
-
-
-class Food(models.Model):
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-
-
-class ReservationOption(models.Model):
-    class Meta:
-        verbose_name = _("Reservation Option")
-        verbose_name_plural = _("Reservation Options")
-
-    quantity = models.IntegerField()
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-
-    def __str__(self):
-        return self.content_object.name
-
-
-class ContactInfo(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
-
-    def __str__(self):
-        return self.first_name, self.last_name, self.email
-
-
-class Customer(models.Model):
-    class Meta:
-        verbose_name = _("Customer")
-        verbose_name_plural = _("Customers")
-
-    contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE, null=True)
-    user = models.OneToOneField(auth_user, on_delete=models.CASCADE, null=True)
-    # square_customer_id = models.CharField(max_length=100, null=True, blank=True)
-    # first_name = models.CharField(max_length=100, null=True)
-    # last_name = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return f"{self.contact_info.first_name} {self.contact_info.last_name}"
-
-    #
-    # def get_primary_address(self):
-    #     return self.user.address_set.get(is_primary=True)
-
-    @property
-    def full_name(self):
-        return f"{self.first_name} {self.last_name}"
-
-
-class Stay(models.Model):
-    STATUS = Choices(
-        ("not_reserved", _("Not Reserved")),
-        ("reserved", _("Reserved")),
-        ("checked_in", _("Checked In")),
-        ("checked_out", _("Checked Out")),
-        ("cancelled", _("Cancelled")),
-    )
-    TYPE_OF_STAY_CHOICES = Choices(
-        ("hourly", _("Hourly")), ("overnight", _("Overnight"))
-    )
-    status = StatusField()
-    type = models.CharField(
-        max_length=255,
-        choices=TYPE_OF_STAY_CHOICES,
-        default=TYPE_OF_STAY_CHOICES.hourly,
-    )
-    start_datetime = models.DateTimeField(default=timezone.now)
-    end_datetime = models.DateTimeField(default=timezone.now)
-    status_changed = MonitorField(monitor="status")
-    type_changed = MonitorField(monitor="type")
-    updated_datetime = models.DateTimeField(auto_now=True)
-
-    def get_stay_range(self):
-        return (
-            self.start_datetime.strftime("%Y-%m-%d %H:%S"),
-            self.end_datetime.strftime("%Y-%m-%d %H:%S"),
-        )
-
-    def __str__(self):
-        start, end = self.get_stay_range()
-        return f"ID: {self.id}, {_('From')}: {start} {_('To')}: {end}"
-
-
-class Reservation(models.Model):
-    user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
-    stay = models.ForeignKey(Stay, on_delete=models.CASCADE, null=True, blank=True)
-    contact_info = models.ForeignKey(
-        ContactInfo, on_delete=models.CASCADE, null=True, blank=True
-    )
-    reservation_options = models.ManyToManyField(ReservationOption)
-    updated_datetime = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"Reservation id: {self.id}, Stay id: {self.stay.id}, User: {self.user}"
-
-
 class Category(models.Model):
     class Meta:
         verbose_name = _("Category")
@@ -152,7 +29,7 @@ class Item(models.Model):
         verbose_name_plural = _("Items")
 
     name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2)
     category = models.ForeignKey(
         Category, null=True, blank=True, on_delete=models.SET_NULL
     )
@@ -279,6 +156,143 @@ class Address(models.Model):
 #
 #     def __str__(self):
 #         return "%.2f ) %s" % (self.amount, self.content_object)
+
+
+class Room(models.Model):
+    class Meta:
+        verbose_name = _("Room")
+        verbose_name_plural = _("Rooms")
+
+    name = models.CharField(max_length=20)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+# class Grill(models.Model):
+#     class GrillManager(models.Manager):
+#         def get_queryset(self):
+#             return super().get_queryset().filter(featured=True)
+#
+#     objects = models.Manager()
+#     featured_grills = GrillManager()
+#     price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+#     name = models.CharField(max_length=50)
+#     description = models.TextField()
+#     featured = models.BooleanField(
+#         default=False,
+#         verbose_name=_("Featured"),
+#         help_text=_(
+#             "Featured grills are presented as reservation options during the reservation creation process."
+#         ),
+#     )
+#     model_number = models.CharField(max_length=50, default="MKJ12345")
+#     maker = models.CharField(max_length=50, default=_("Default Maker"))
+#
+#     def __str__(self):
+#         return self.name
+#
+#
+# class Food(models.Model):
+#     class FoodManager(models.Manager):
+#         def get_queryset(self):
+#             return super().get_queryset().filter(featured=True)
+#
+#     objects = models.Manager()
+#     featured_foods = FoodManager()
+#     price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+#     name = models.CharField(max_length=50)
+#     description = models.TextField()
+#     featured = models.BooleanField(
+#         default=False,
+#         verbose_name=_("Featured"),
+#         help_text=_(
+#             "Featured foods are presented as reservation options during the reservation creation process."
+#         ),
+#     )
+#
+#     def __str__(self):
+#         return self.name
+
+
+class ContactInfo(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=254)
+
+    def __str__(self):
+        return self.first_name, self.last_name, self.email
+
+
+class Customer(models.Model):
+    class Meta:
+        verbose_name = _("Customer")
+        verbose_name_plural = _("Customers")
+
+    contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(auth_user, on_delete=models.CASCADE, null=True)
+    # square_customer_id = models.CharField(max_length=100, null=True, blank=True)
+    # first_name = models.CharField(max_length=100, null=True)
+    # last_name = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return f"{self.contact_info.first_name} {self.contact_info.last_name}"
+
+    #
+    # def get_primary_address(self):
+    #     return self.user.address_set.get(is_primary=True)
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+class Stay(models.Model):
+    STATUS = Choices(
+        ("not_reserved", _("Not Reserved")),
+        ("reserved", _("Reserved")),
+        ("checked_in", _("Checked In")),
+        ("checked_out", _("Checked Out")),
+        ("cancelled", _("Cancelled")),
+    )
+    TYPE_OF_STAY_CHOICES = Choices(
+        ("hourly", _("Hourly")), ("overnight", _("Overnight"))
+    )
+    status = StatusField()
+    type = models.CharField(
+        max_length=255,
+        choices=TYPE_OF_STAY_CHOICES,
+        default=TYPE_OF_STAY_CHOICES.hourly,
+    )
+    start_datetime = models.DateTimeField(default=timezone.now)
+    end_datetime = models.DateTimeField(default=timezone.now)
+    status_changed = MonitorField(monitor="status")
+    type_changed = MonitorField(monitor="type")
+    updated_datetime = models.DateTimeField(auto_now=True)
+
+    def get_stay_range(self):
+        return (
+            self.start_datetime.strftime("%Y-%m-%d %H:%S"),
+            self.end_datetime.strftime("%Y-%m-%d %H:%S"),
+        )
+
+    def __str__(self):
+        start, end = self.get_stay_range()
+        return f"ID: {self.id}, {_('From')}: {start} {_('To')}: {end}"
+
+
+class Reservation(models.Model):
+    user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
+    stay = models.ForeignKey(Stay, on_delete=models.CASCADE, null=True, blank=True)
+    contact_info = models.ForeignKey(
+        ContactInfo, on_delete=models.CASCADE, null=True, blank=True
+    )
+    order_items = models.ManyToManyField(OrderItem)
+    updated_datetime = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Reservation id: {self.id}, Stay id: {self.stay.id}, User: {self.user}"
 
 
 class ReservationToken(models.Model):

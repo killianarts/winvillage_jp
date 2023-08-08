@@ -1,18 +1,20 @@
 from django.contrib import admin
 from reservations.models import (
     Reservation,
-    ReservationOption,
     Room,
     Stay,
-    Grill,
-    Food,
     ContactInfo,
+    Item,
+    OrderItem,
+    Category,
+    Order,
 )
 
 admin.site.register(Reservation)
-admin.site.register(ReservationOption)
 admin.site.register(Room)
 admin.site.register(Stay)
-admin.site.register(Grill)
-admin.site.register(Food)
 admin.site.register(ContactInfo)
+admin.site.register(Item)
+admin.site.register(Order)
+admin.site.register(OrderItem)
+admin.site.register(Category)

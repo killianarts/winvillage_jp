@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load widget_tweaks %}
+
+<div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
+  <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
+    {% translate 'Choose Options' %}</h2>
+  <form hx-post="{% url 'reservations:step-3' %}"
+        hx-target="#reservation-form-wrapper"
+        hx-swap="outerHTML"
+        class="space-y-5">
+    <fieldset>
+      <legend class="sr-only">{% translate 'Option Types' %}</legend>
+      <div class="space-y-2 grid grid-cols-1">
+        {% for field in form %}
+          <label class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2" for="{{ field.id_for_label }}">
+            {% if field.label == "Grill" %}
+              {{ field.label }} {% translate '($50)' %}
+            {% endif %}
+            {% if field.label == "Food" %}
+              {{ field.label }} {% translate '($100)' %}
+            {% endif %}
+            {% render_field field class="justify-self-end text-green-800 focus:ring-green-800" %}
+          </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+    {% url 'reservations:step-2' as url %}
+    {% include 'reservations/_buttons.html' with submit_button_text="Next" back_url=url %}
+  </form>
+</div>
