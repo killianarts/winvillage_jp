@@ -3,7 +3,6 @@ from reservations.models import (
     Reservation,
     ReservationOption,
     Room,
-    ReservedRoom,
     Stay,
     Grill,
     Food,
@@ -13,7 +12,6 @@ from reservations.models import (
 admin.site.register(Reservation)
 admin.site.register(ReservationOption)
 admin.site.register(Room)
-admin.site.register(ReservedRoom)
 admin.site.register(Stay)
 admin.site.register(Grill)
 admin.site.register(Food)

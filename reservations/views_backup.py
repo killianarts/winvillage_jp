@@ -61,29 +61,14 @@ def index(request):
     return TemplateResponse(request, "reservations/index.html")
 
 
-# def step_1(request: HtmxHttpRequest) -> HttpResponse:
-#     initial = {"stay_type": request.session.get("stay_type", None)}
-#     form = forms.Step1Form(initial=initial)
-#     if request.method == "POST":
-#         if "submit" in request.POST:
-#             form = forms.Step1Form(request.POST)
-#             if form.is_valid():
-#                 request.session["stay_type"] = form.cleaned_data["stay_type"]
-#                 return step_2(make_get_request(request))
-#     return TemplateResponse(request, "reservations/step_1.html", {"form": form})
-
-
 def step_1(request: HtmxHttpRequest) -> HttpResponse:
-    reservation = get_or_set_reservation_session(request)
-    initial = {"stay_type": reservation.stay.type}
+    initial = {"stay_type": request.session.get("stay_type", None)}
     form = forms.Step1Form(initial=initial)
     if request.method == "POST":
         if "submit" in request.POST:
             form = forms.Step1Form(request.POST)
             if form.is_valid():
-                reservation.stay.type = form.cleaned_data["stay_type"]
-                reservation.stay.save()
-                # reservation.save()
+                request.session["stay_type"] = form.cleaned_data["stay_type"]
                 return step_2(make_get_request(request))
     return TemplateResponse(request, "reservations/step_1.html", {"form": form})
 
@@ -93,15 +78,21 @@ def step_2(request: HtmxHttpRequest) -> HttpResponse:
 
 
 def _step_2(request: HtmxHttpRequest) -> HttpResponse:
-    reservation = get_or_set_reservation_session(request)
-    form = forms.Step2Form(instance=reservation.stay)
+    initial = {
+        "stay_date_start": request.session.get("stay_date_start", None),
+        "stay_date_end": request.session.get("stay_date_end", None),
+    }
+    form = forms.Step2Form(initial=initial)
     if request.method == "POST":
         if "submit" in request.POST:
             form = forms.Step2Form(request.POST)
             if form.is_valid():
-                reservation.stay.start_datetime = form.cleaned_data["stay_date_start"]
-                reservation.stay.end_datetime = form.cleaned_data["stay_date_end"]
-                reservation.stay.save()
+                request.session["stay_date_start"] = form.cleaned_data[
+                    "stay_date_start"
+                ].strftime("%Y-%m-%d")
+                request.session["stay_date_end"] = form.cleaned_data[
+                    "stay_date_end"
+                ].strftime("%Y-%m-%d")
                 return step_3(make_get_request(request))
     current_date = datetime.now()
     calendar_obj = stdlib_calendar.Calendar()
@@ -125,38 +116,6 @@ def _step_2(request: HtmxHttpRequest) -> HttpResponse:
         "month_name": month_name,
     }
     return TemplateResponse(request, "reservations/step_2.html", context)
-
-
-# @require_POST
-# def step_2(request):
-#     step_1_form = forms.Step1Form(request.POST)
-#     if step_1_form.is_valid():
-#         request.session["stay_type"] = step_1_form.cleaned_data["stay_type"]
-#     initial = {"stay_length": request.session.get("stay_length", None)}
-#     form = forms.Step2Form()
-#
-#     current_date = datetime.now()
-#     calendar_obj = stdlib_calendar.Calendar()
-#     calendar_obj.setfirstweekday(stdlib_calendar.MONDAY)
-#     dates_iter = calendar_obj.itermonthdates(current_date.year, current_date.month)
-#     weekdays_iter = calendar_obj.iterweekdays()
-#     day_names = []
-#     for day in weekdays_iter:
-#         day_name = stdlib_calendar.day_abbr[day]
-#         day_names.append(day_name)
-#
-#     month_name = stdlib_calendar.month_name[current_date.month]
-#
-#     context = {
-#         "form": form,
-#         "current_date": current_date,
-#         "calendar": calendar_obj,
-#         "dates_iter": dates_iter,
-#         "day_names": day_names,
-#         "weekdays": weekdays_iter,
-#         "month_name": month_name,
-#     }
-#     return TemplateResponse(request, "reservations/step_2.html", context)
 
 
 def step_3(request: HtmxHttpRequest) -> HttpResponse:

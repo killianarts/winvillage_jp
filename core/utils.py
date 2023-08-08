@@ -4,8 +4,9 @@ from django.http.response import HttpResponse
 from django_htmx.middleware import HtmxDetails
 from django.utils.functional import wraps
 from render_block import render_block_to_string
+from django.core.exceptions import ObjectDoesNotExist
 
-# from .models import Order
+from reservations.models import Stay, Reservation
 
 
 # Taken from JustDjango's ecommerce project
@@ -40,6 +41,99 @@ from render_block import render_block_to_string
 #     if request.user.is_authenticated:
 #         order = get_user_order(request)
 #         return order
+
+
+# def make_new_stay(request):
+#     stay = Stay.objects.create()
+#     request.session["stay_id"] = stay.id
+#     return stay
+#
+#
+# def get_user_stay(request):
+#     try:
+#         stay = Stay.objects.get(user=request.user, status="not_reserved")
+#     except Stay.DoesNotExist:
+#         stay = Stay(user=request.user, status="not_reserved")
+#         stay.save()
+#         request.session["stay_id"] = stay.id
+#     return stay
+#
+#
+# def get_or_set_stay_session(request):
+#     stay_id = request.session.get("stay_id", None)
+#
+#     if not request.user.is_authenticated and stay_id is None:
+#         stay = make_new_stay(request)
+#         return stay
+#     elif not request.user.is_authenticated and stay_id:
+#         stay = Stay.objects.get(id=stay_id)
+#         return stay
+#
+#     if request.user.is_authenticated:
+#         stay = get_user_stay(request)
+#         return stay
+
+
+def make_new_reservation(request):
+    stay = Stay.objects.create()
+    reservation = Reservation.objects.create(stay=stay)
+    request.session["reservation_id"] = reservation.id
+    return reservation
+
+
+# def get_user_reservation(request):
+#     try:
+#         reservation = Reservation.objects.get(
+#             user=request.user, stay__status="not_reserved"
+#         )
+#     except Reservation.DoesNotExist:
+#         reservation = Reservation(user=request.user)
+#         reservation.save()
+#         request.session["reservation_id"] = reservation.id
+#     return reservation
+
+
+def get_user_reservation(request):
+    try:
+        reservation = Reservation.objects.get(
+            user=request.user, stay__status="not_reserved"
+        )
+    except Reservation.DoesNotExist:
+        stay = Stay.objects.create(status="not_reserved")
+        reservation = Reservation.objects.create(user=request.user, stay=stay)
+        request.session["reservation_id"] = reservation.id
+    return reservation
+
+
+def get_or_set_reservation_session(request):
+    reservation_id = request.session.get("reservation_id", None)
+
+    if not request.user.is_authenticated and reservation_id is None:
+        reservation = make_new_reservation(request)
+        return reservation
+    elif not request.user.is_authenticated and reservation_id:
+        reservation = Reservation.objects.get(id=reservation_id)
+        return reservation
+
+    if request.user.is_authenticated:
+        reservation = get_user_reservation(request)
+        return reservation
+
+
+# def get_or_set_reservation_session(request):
+#     reservation_id = request.session.get("reservation_id", None)
+#     reservation = None
+#
+#     if reservation_id:
+#         try:
+#             reservation = Reservation.objects.get(id=reservation_id)
+#         except ObjectDoesNotExist:
+#             reservation = None
+#
+#     if reservation is None:
+#         reservation = Reservation.objects.create()
+#         request.session["reservation_id"] = reservation.id
+#     return reservation
 
 
 ## Taken from Luke Plant's HTMX Patterns page: https://github.com/spookylukey/django-htmx-patterns/blob/master/code/htmx_patterns/utils.py

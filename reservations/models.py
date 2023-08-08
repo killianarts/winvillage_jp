@@ -5,6 +5,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
 
@@ -89,6 +90,7 @@ class Customer(models.Model):
 
 class Stay(models.Model):
     STATUS = Choices(
+        ("not_reserved", _("Not Reserved")),
         ("reserved", _("Reserved")),
         ("checked_in", _("Checked In")),
         ("checked_out", _("Checked Out")),
@@ -98,9 +100,13 @@ class Stay(models.Model):
         ("hourly", _("Hourly")), ("overnight", _("Overnight"))
     )
     status = StatusField()
-    type = models.CharField(max_length=255, choices=TYPE_OF_STAY_CHOICES)
-    start_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField()
+    type = models.CharField(
+        max_length=255,
+        choices=TYPE_OF_STAY_CHOICES,
+        default=TYPE_OF_STAY_CHOICES.hourly,
+    )
+    start_datetime = models.DateTimeField(default=timezone.now)
+    end_datetime = models.DateTimeField(default=timezone.now)
     status_changed = MonitorField(monitor="status")
     type_changed = MonitorField(monitor="type")
     updated_datetime = models.DateTimeField(auto_now=True)
@@ -113,7 +119,7 @@ class Stay(models.Model):
 
     def __str__(self):
         start, end = self.get_stay_range()
-        return f"{_('From')}: {start} {_('To')}: {end}"
+        return f"ID: {self.id}, {_('From')}: {start} {_('To')}: {end}"
 
 
 class Reservation(models.Model):
@@ -126,16 +132,7 @@ class Reservation(models.Model):
     updated_datetime = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.stay}, {self.user}"
-
-
-class ReservedRoom(models.Model):
-    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-
-
-class PurchasedReservationOptions(models.Model):
-    pass
+        return f"Reservation id: {self.id}, Stay id: {self.stay.id}, User: {self.user}"
 
 
 class Category(models.Model):

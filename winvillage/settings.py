@@ -197,7 +197,7 @@ TEMPLATES = [
 # If you want to render templates with customizations from your TEMPLATES setting, such as context processors for
 # example, use the TemplatesSetting renderer.
 
-FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # FIXTURES
 # ------------------------------------------------------------------------------

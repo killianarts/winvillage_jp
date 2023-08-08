@@ -1,5 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from reservations.models import Stay
 
 
 class Step1Form(forms.Form):
@@ -23,6 +24,16 @@ class Step2Form(forms.Form):
     stay_date_end = forms.DateField(widget=DateInput, label=_("Until"))
 
 
+class Step2Form(forms.ModelForm):
+    class Meta:
+        model = Stay
+        fields = ["start_datetime", "end_datetime"]
+        widgets = {
+            "start_datetime": DateInput(),
+            "end_datetime": DateInput(),
+        }
+
+
 class Step3Form(forms.Form):
     purchase_grill = forms.BooleanField(label=_("Grill"), required=False)
     purchase_food = forms.BooleanField(label=_("Food"), required=False)
@@ -35,15 +46,6 @@ class Step4Form(forms.Form):
 
 
 class ConfirmationForm(forms.Form):
-    CHOICES = (
-        ("hourly", _("Hourly")),
-        ("multi", _("Multi")),
-    )
-    stay_type = forms.ChoiceField(
-        widget=forms.RadioSelect(),
-        choices=CHOICES,
-        initial="hourly",
-    )
     stay_date_start = forms.DateField(widget=DateInput, label=_("From"))
     stay_date_end = forms.DateField(widget=DateInput, label=_("Until"))
     purchase_grill = forms.BooleanField(label=_("Grill"), required=False)

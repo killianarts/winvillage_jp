@@ -1,0 +1,28 @@
+{% load i18n widget_tweaks %}
+
+
+{% block step_1 %}
+  <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
+    <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">{% translate 'Choose your reservation type' %}</h2>
+    <form hx-post="{% url 'reservations:step-1' %}"
+          hx-target="#reservation-form-wrapper"
+          hx-swap="outerHTML"
+          class="space-y-5">
+      <fieldset>
+        <legend class="sr-only">{% translate 'Reservation Types' %}</legend>
+        <div>
+          {% for field in form %}
+            {% if messages %}
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            {% endif %}
+            {% render_field field class="text-2xl accent-red-500 space-y-2" %}
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% include 'reservations/_buttons.html' with submit_button_text='Next' %}
+    </form>
+  </div>
+{% endblock %}
+
