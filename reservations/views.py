@@ -133,38 +133,6 @@ def _step_2(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, "reservations/step_2.html", context)
 
 
-# @require_POST
-# def step_2(request):
-#     step_1_form = forms.Step1Form(request.POST)
-#     if step_1_form.is_valid():
-#         request.session["stay_type"] = step_1_form.cleaned_data["stay_type"]
-#     initial = {"stay_length": request.session.get("stay_length", None)}
-#     form = forms.Step2Form()
-#
-#     current_date = datetime.now()
-#     calendar_obj = stdlib_calendar.Calendar()
-#     calendar_obj.setfirstweekday(stdlib_calendar.MONDAY)
-#     dates_iter = calendar_obj.itermonthdates(current_date.year, current_date.month)
-#     weekdays_iter = calendar_obj.iterweekdays()
-#     day_names = []
-#     for day in weekdays_iter:
-#         day_name = stdlib_calendar.day_abbr[day]
-#         day_names.append(day_name)
-#
-#     month_name = stdlib_calendar.month_name[current_date.month]
-#
-#     context = {
-#         "form": form,
-#         "current_date": current_date,
-#         "calendar": calendar_obj,
-#         "dates_iter": dates_iter,
-#         "day_names": day_names,
-#         "weekdays": weekdays_iter,
-#         "month_name": month_name,
-#     }
-#     return TemplateResponse(request, "reservations/step_2.html", context)
-
-
 def step_3(request: HtmxHttpRequest) -> HttpResponse:
     return _step_3(request)
 
@@ -194,13 +162,12 @@ def step_3(request: HtmxHttpRequest) -> HttpResponse:
 def get_combined_grill_models(request) -> QuerySet:
     reservation = get_or_set_reservation_session(request)
 
-    grill_content_type = ContentType.objects.get(model="grill")
-    reserved_grills = ReservationOption.objects.filter(
-        content_type=grill_content_type, object_id=reservation.id
-    )
-    featured_grills = Grill.featured_grills.all()
-    reserved_grill_ids = reserved_grills.values_list("id", flat=True)
-    featured_reserved_grills = featured_grills.filter(id__in=reserved_grill_ids)
+    all_grills = Item.objects.filter(category__title="grill")
+    reserved_grills = reservation.order_items.filter(item__category__title="grill")
+    reserved_grills_ids = reservation.order_items.filter(
+        item__category__title="grill"
+    ).values_list("id", flat=True)
+    featured_reserved_grills = all_grills.filter(id__in=reserved_grills_ids)
 
     from django.db.models import Case, When, BooleanField
 
@@ -224,11 +191,14 @@ def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     item = get_object_or_404(Item, pk=pk)
     if reservation:
-        order_item, created = OrderItem.objects.get_or_create(item_id=item.id)
+        order_item, created = OrderItem.objects.get_or_create(
+            user=request.user, item_id=item.id
+        )
         order_item.save()
         reservation.order_items.add(order_item)
         reservation.save()
         return step_3(request)
+
     # grills = Item.objects.filter(category__title="grill", active=True)
     # context = {"grills": grills}
     # html = render_block_to_string(
@@ -247,8 +217,17 @@ def remove_grill_reservation_option(request: HtmxHttpRequest, pk):
 
 def _step_3(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    grills = Item.objects.filter(category__title="grill", active=True)
-    context = {"grills": grills}
+    reserved_grills_ids = reservation.order_items.filter(
+        item__category__title="grill", item__active=True
+    ).values_list("item_id", flat=True)
+    unreserved_grills_ids = (
+        Item.objects.filter(category__title="grill", active=True)
+        .exclude(id__in=reserved_grills_ids)
+        .values_list("id", flat=True)
+    )
+    all_grills_ids = list(reserved_grills_ids) + list(unreserved_grills_ids)
+    all_grills = Item.objects.filter(id__in=all_grills_ids).order_by("pk")
+    context = {"grills": all_grills}
     return TemplateResponse(request, "reservations/step_3.html", context)
 
 

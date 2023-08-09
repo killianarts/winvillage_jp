@@ -48,16 +48,25 @@
                   <p>{{ grill.description }}</p>
                 </div>
                 <div class="mt-5">
-                  <button hx-post="{% url 'reservations:toggle_grill' grill.pk %}"
-                          name="{% if grill.reserved %}remove{% else %}add{% endif %}"
-                          type="button"
-                          class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-                    {% if grill.reserved %}
+                  {% if grill.reserved %}
+                    <button hx-post="{% url 'reservations:remove_grill' grill.pk %}"
+                            hx-target="#reservation-form-wrapper"
+                            hx-swap="outerHTML"
+                            name="remove"
+                            type="submit"
+                            class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                       Remove
-                    {% else %}
+                    </button>
+                  {% else %}
+                    <button hx-post="{% url 'reservations:add_grill' grill.pk %}"
+                            hx-target="#reservation-form-wrapper"
+                            hx-swap="outerHTML"
+                            name="remove"
+                            type="submit"
+                            class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                       Add
-                    {% endif %}
-                  </button>
+                    </button>
+                  {% endif %}
                 </div>
               </div>
             </div>
