@@ -14,6 +14,11 @@ urlpatterns = [
         views.add_grill_reservation_option,
         name="add_grill",
     ),
+    path(
+        "remove-grill/<int:pk>",
+        views.remove_grill_reservation_option,
+        name="remove_grill",
+    ),
     path("step-4/", views.step_4, name="step-4"),
     path("confirm-reservation/", views.confirm_reservation, name="confirm_reservation"),
 ]

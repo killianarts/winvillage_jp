@@ -189,15 +189,14 @@ def get_combined_grill_models(request) -> QuerySet:
 @require_POST
 def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    item = get_object_or_404(Item, pk=pk)
     if reservation:
         order_item, created = OrderItem.objects.get_or_create(
-            user=request.user, item_id=item.id
+            user=request.user, item_id=pk
         )
         order_item.save()
         reservation.order_items.add(order_item)
         reservation.save()
-        return step_3(request)
+        return step_3(make_get_request(request))
 
     # grills = Item.objects.filter(category__title="grill", active=True)
     # context = {"grills": grills}
@@ -207,16 +206,17 @@ def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
     # return HttpResponse(html)
 
 
+@require_POST
 def remove_grill_reservation_option(request: HtmxHttpRequest, pk):
-    context = {}
-    html = render_block_to_string(
-        "reservations/reservation_form.html", "step_3_form", context
-    )
-    return HttpResponse(html)
+    get_or_set_reservation_session(request)
+    OrderItem.objects.filter(user=request.user, item_id=pk).first().delete()
+    return step_3(make_get_request(request))
 
 
 def _step_3(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
+    if request.method == "POST":
+        return step_4(make_get_request(request))
     reserved_grills_ids = reservation.order_items.filter(
         item__category__title="grill", item__active=True
     ).values_list("item_id", flat=True)
@@ -227,8 +227,11 @@ def _step_3(request: HtmxHttpRequest) -> HttpResponse:
     )
     all_grills_ids = list(reserved_grills_ids) + list(unreserved_grills_ids)
     all_grills = Item.objects.filter(id__in=all_grills_ids).order_by("pk")
-    context = {"grills": all_grills}
-    return TemplateResponse(request, "reservations/step_3.html", context)
+    context = {"grills": all_grills, "reserved_grill_ids": reserved_grills_ids}
+    html = render_block_to_string(
+        "reservations/reservation_form.html", "step_3_form", context
+    )
+    return HttpResponse(html)
 
 
 def step_4(request: HtmxHttpRequest) -> HttpResponse:
