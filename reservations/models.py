@@ -29,7 +29,7 @@ class Item(models.Model):
         verbose_name_plural = _("Items")
 
     name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=20, decimal_places=2)
+    price = models.DecimalField(max_digits=19, decimal_places=4)
     category = models.ForeignKey(
         Category, null=True, blank=True, on_delete=models.SET_NULL
     )
@@ -41,6 +41,10 @@ class Item(models.Model):
     short_description = models.CharField(
         max_length=280, default=_("Short description"), null=True
     )
+
+    @property
+    def price_rounded(self):
+        return round(self.price, 2)
 
     def __str__(self):
         return f"{self.name}"
@@ -222,7 +226,7 @@ class ContactInfo(models.Model):
     email = models.EmailField(max_length=254)
 
     def __str__(self):
-        return self.first_name, self.last_name, self.email
+        return f"{self.first_name}, {self.last_name}, {self.email}"
 
 
 class Customer(models.Model):
@@ -270,12 +274,28 @@ class Stay(models.Model):
     status_changed = MonitorField(monitor="status")
     type_changed = MonitorField(monitor="type")
     updated_datetime = models.DateTimeField(auto_now=True)
+    price = models.DecimalField(max_digits=19, decimal_places=4, default=10000.00)
 
     def get_stay_range(self):
         return (
             self.start_datetime.strftime("%Y-%m-%d %H:%S"),
             self.end_datetime.strftime("%Y-%m-%d %H:%S"),
         )
+
+    @property
+    def price_rounded(self):
+        return round(self.price, 2)
+
+    @property
+    def days(self):
+        delta = self.end_datetime - self.start_datetime
+        return delta.days
+
+    @property
+    def total_price(self):
+        stay_days = self.days
+        total_price = stay_days * self.price_rounded
+        return total_price
 
     def __str__(self):
         start, end = self.get_stay_range()
@@ -290,6 +310,25 @@ class Reservation(models.Model):
     )
     order_items = models.ManyToManyField(OrderItem)
     updated_datetime = models.DateTimeField(auto_now=True)
+
+    @property
+    def price(self):
+        total = 0
+        for order_item in self.order_items.all():
+            total += order_item.item.price
+        total += self.stay.total_price
+        return total
+
+    @property
+    def price_rounded(self):
+        total = 0
+        for order_item in self.order_items.all():
+            total += order_item.item.price_rounded
+        total += self.stay.price_rounded
+        return total
+
+    # @property
+    # def price_
 
     def __str__(self):
         return f"Reservation id: {self.id}, Stay id: {self.stay.id}, User: {self.user}"

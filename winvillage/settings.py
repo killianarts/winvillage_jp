@@ -23,6 +23,7 @@ env = environ.Env()
 DJANGO_ENVIRONMENT = env("DJANGO_ENVIRONMENT", default="dev")
 if DJANGO_ENVIRONMENT == "dev":
     env.read_env(BASE_DIR / ".env")
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -372,3 +373,11 @@ ACCOUNT_FORMS = {"signup": "winvillage.users.forms.UserSignupForm"}
 SOCIALACCOUNT_ADAPTER = "winvillage.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
 SOCIALACCOUNT_FORMS = {"signup": "winvillage.users.forms.UserSocialSignupForm"}
+
+
+SQUARE_SETTINGS = {
+    "SQUARE_APPLICATION_ID": env("SQUARE_APPLICATION_ID"),
+    "SQUARE_ACCESS_TOKEN": env("SQUARE_ACCESS_TOKEN"),
+    "SQUARE_LOCATION_ID": env("SQUARE_LOCATION_ID"),
+    "SQUARE_CURRENCY": env("SQUARE_CURRENCY", default="JPY"),
+}

@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from reservations.models import Stay
+from reservations.models import Stay, Reservation, ContactInfo
 
 
 class Step1Form(forms.Form):
@@ -28,15 +28,11 @@ class Step2Form(forms.ModelForm):
     class Meta:
         model = Stay
         fields = ["start_datetime", "end_datetime"]
+        labels = {"start_datetime": _("From"), "end_datetime": _("Until")}
         widgets = {
             "start_datetime": DateInput(),
             "end_datetime": DateInput(),
         }
-
-
-class Step3Form(forms.Form):
-    grill = forms.BooleanField(label=_("Grill"), required=False)
-    food = forms.BooleanField(label=_("Food"), required=False)
 
 
 class Step4Form(forms.Form):
@@ -45,11 +41,22 @@ class Step4Form(forms.Form):
     email = forms.EmailField(label=_("Email"))
 
 
-class ConfirmationForm(forms.Form):
-    stay_date_start = forms.DateField(widget=DateInput, label=_("From"))
-    stay_date_end = forms.DateField(widget=DateInput, label=_("Until"))
-    purchase_grill = forms.BooleanField(label=_("Grill"), required=False)
-    purchase_food = forms.BooleanField(label=_("Food"), required=False)
-    first_name = forms.CharField(max_length=255, label=_("First Name"))
-    last_name = forms.CharField(max_length=255, label=_("Last Name"))
-    email = forms.EmailField(label=_("Email"))
+# class StayFormSet(
+#     forms.inlineformset_factory(Reservation, Stay, form=Step2Form, extra=1)
+# ):
+#     pass
+#
+#
+# class ContactInfoFormSet(
+#     forms.inlineformset_factory(Reservation, ContactInfo, form=Step4Form, extra=1)
+# ):
+#     pass
+
+
+# class ConfirmationForm(forms.ModelForm):
+#     stay_form = StayFormSet()
+#     contact_info_form = ContactInfoFormSet()
+#
+#     class Meta:
+#         model = Reservation
+#         fields = ["stay", "contact_info"]

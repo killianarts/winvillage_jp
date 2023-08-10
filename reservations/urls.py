@@ -21,4 +21,5 @@ urlpatterns = [
     ),
     path("step-4/", views.step_4, name="step-4"),
     path("confirm-reservation/", views.confirm_reservation, name="confirm_reservation"),
+    path("make-payment/", views.make_payment, name="make_payment"),
 ]

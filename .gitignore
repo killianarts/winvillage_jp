@@ -13,3 +13,4 @@ staticfiles/*
 .envs/*
 db.sqlite3
 poetry-convert.py
+payments

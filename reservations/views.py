@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event
 from render_block import render_block_to_string
 from django.db.models import QuerySet
+from django.conf import settings
 
 import reservations.forms as forms
 from reservations.models import (
@@ -67,18 +68,6 @@ def index(request):
     return TemplateResponse(request, "reservations/index.html")
 
 
-# def step_1(request: HtmxHttpRequest) -> HttpResponse:
-#     initial = {"stay_type": request.session.get("stay_type", None)}
-#     form = forms.Step1Form(initial=initial)
-#     if request.method == "POST":
-#         if "submit" in request.POST:
-#             form = forms.Step1Form(request.POST)
-#             if form.is_valid():
-#                 request.session["stay_type"] = form.cleaned_data["stay_type"]
-#                 return step_2(make_get_request(request))
-#     return TemplateResponse(request, "reservations/step_1.html", {"form": form})
-
-
 def step_1(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     initial = {"stay_type": reservation.stay.type}
@@ -91,7 +80,10 @@ def step_1(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.stay.save()
                 # reservation.save()
                 return step_2(make_get_request(request))
-    return TemplateResponse(request, "reservations/step_1.html", {"form": form})
+    html = render_block_to_string(
+        "reservations/reservation_form.html", "step_1_form", {"form": form}
+    )
+    return HttpResponse(html)
 
 
 def step_2(request: HtmxHttpRequest) -> HttpResponse:
@@ -130,60 +122,14 @@ def _step_2(request: HtmxHttpRequest) -> HttpResponse:
         "weekdays": weekdays_iter,
         "month_name": month_name,
     }
-    return TemplateResponse(request, "reservations/step_2.html", context)
+    html = render_block_to_string(
+        "reservations/reservation_form.html", "step_2_form", context
+    )
+    return HttpResponse(html)
 
 
 def step_3(request: HtmxHttpRequest) -> HttpResponse:
     return _step_3(request)
-
-
-# def _step_3(request: HtmxHttpRequest) -> HttpResponse:
-#     reservation = get_or_set_reservation_session(request)
-#     initial = {
-#         "purchase_grill": request.session.get("purchase_grill", None),
-#         "purchase_food": request.session.get("purchase_food", None),
-#     }
-#     form = forms.Step3Form(initial=initial)
-#     if request.method == "POST":
-#         if "submit" in request.POST:
-#             form = forms.Step3Form(request.POST)
-#             if form.is_valid():
-#                 request.session["purchase_grill"] = form.cleaned_data["purchase_grill"]
-#                 request.session["purchase_food"] = form.cleaned_data["purchase_food"]
-#                 return step_4(make_get_request(request))
-#             return step_3(request)
-#
-#     context = {
-#         "form": form,
-#     }
-#     return TemplateResponse(request, "reservations/step_3.html", context)
-
-
-def get_combined_grill_models(request) -> QuerySet:
-    reservation = get_or_set_reservation_session(request)
-
-    all_grills = Item.objects.filter(category__title="grill")
-    reserved_grills = reservation.order_items.filter(item__category__title="grill")
-    reserved_grills_ids = reservation.order_items.filter(
-        item__category__title="grill"
-    ).values_list("id", flat=True)
-    featured_reserved_grills = all_grills.filter(id__in=reserved_grills_ids)
-
-    from django.db.models import Case, When, BooleanField
-
-    combined_grills = (
-        Grill.objects.filter(id__in=featured_grills.values_list("id", flat=True))
-        .annotate(
-            reserved=Case(
-                When(id__in=featured_reserved_grills.values("id"), then=True),
-                default=False,
-                output_field=BooleanField(),
-            )
-        )
-        .order_by("pk")
-    )
-
-    return combined_grills
 
 
 @require_POST
@@ -198,13 +144,6 @@ def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
         reservation.save()
         return step_3(make_get_request(request))
 
-    # grills = Item.objects.filter(category__title="grill", active=True)
-    # context = {"grills": grills}
-    # html = render_block_to_string(
-    #     "reservations/reservation_form.html", "step_3_form", context
-    # )
-    # return HttpResponse(html)
-
 
 @require_POST
 def remove_grill_reservation_option(request: HtmxHttpRequest, pk):
@@ -217,6 +156,7 @@ def _step_3(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     if request.method == "POST":
         return step_4(make_get_request(request))
+
     reserved_grills_ids = reservation.order_items.filter(
         item__category__title="grill", item__active=True
     ).values_list("item_id", flat=True)
@@ -239,24 +179,36 @@ def step_4(request: HtmxHttpRequest) -> HttpResponse:
 
 
 def _step_4(request: HtmxHttpRequest) -> HttpResponse:
-    initial = {
-        "first_name": request.session.get("first_name", None),
-        "last_name": request.session.get("last_name", None),
-        "email": request.session.get("email", None),
-    }
+    reservation = get_or_set_reservation_session(request)
+    initial = {}
+    if reservation.contact_info:
+        initial = {
+            "first_name": reservation.contact_info.first_name,
+            "last_name": reservation.contact_info.last_name,
+            "email": reservation.contact_info.email,
+        }
     form = forms.Step4Form(initial=initial)
     if request.method == "POST":
         form = forms.Step4Form(request.POST)
         if form.is_valid():
-            request.session["first_name"] = form.cleaned_data["first_name"]
-            request.session["last_name"] = form.cleaned_data["last_name"]
-            request.session["email"] = form.cleaned_data["email"]
+            fn = form.cleaned_data["first_name"]
+            ln = form.cleaned_data["last_name"]
+            email = form.cleaned_data["email"]
+            contact_info, created = ContactInfo.objects.get_or_create(
+                first_name=fn, last_name=ln, email=email
+            )
+            contact_info.save()
+            reservation.contact_info = contact_info
+            reservation.save()
             return confirm_reservation(make_get_request(request))
 
     context = {
         "form": form,
     }
-    return TemplateResponse(request, "reservations/step_4.html", context)
+    html = render_block_to_string(
+        "reservations/reservation_form.html", "step_4_form", context
+    )
+    return HttpResponse(html)
 
 
 def confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
@@ -264,65 +216,36 @@ def confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
 
 
 def _confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
-    initial = {
-        "stay_type": request.session.get("stay_type", None),
-        "stay_date_start": datetime.fromisoformat(
-            request.session.get("stay_date_start", None)
-        ),
-        "stay_date_end": datetime.fromisoformat(
-            request.session.get("stay_date_end", None)
-        ),
-        "purchase_grill": request.session.get("purchase_grill", None),
-        "purchase_food": request.session.get("purchase_food", None),
-        "first_name": request.session.get("first_name", None),
-        "last_name": request.session.get("last_name", None),
-        "email": request.session.get("email", None),
+    reservation = get_or_set_reservation_session(request)
+    stay_form = forms.Step2Form(instance=reservation.stay)
+    order_items = [item for item in reservation.order_items.all()]
+    contact_info = reservation.contact_info
+    contact_info_initial = {
+        "first_name": contact_info.first_name,
+        "last_name": contact_info.last_name,
+        "email": contact_info.email,
     }
-    form = forms.ConfirmationForm(initial=initial)
-    context = {"form": form}
-    if request.method == "POST":
-        form = forms.ConfirmationForm(request.POST)
-        if form.is_valid():
-            stay_type = initial["stay_type"]
-            stay_date_start = form.cleaned_data["stay_date_start"]
-            stay_date_end = form.cleaned_data["stay_date_end"]
-            purchase_grill = form.cleaned_data["purchase_grill"]
-            purchase_food = form.cleaned_data["purchase_food"]
-            first_name = form.cleaned_data["first_name"]
-            last_name = form.cleaned_data["last_name"]
-            email = form.cleaned_data["email"]
+    contact_info_form = forms.Step4Form(initial=contact_info_initial)
 
-            stay_obj = Stay.objects.create(stay_type, stay_date_start, stay_date_end)
-            stay_obj.save()
+    context = {
+        "stay_form": stay_form,
+        "order_items": order_items,
+        "contact_info_form": contact_info_form,
+        "reservation": reservation,
+    }
+    html = render_block_to_string(
+        "reservations/reservation_form.html", "confirmation_form", context
+    )
+    return HttpResponse(html)
 
-            contact_info = ContactInfo.objects.get_or_create(
-                first_name, last_name, email
-            )
 
-            reservation = Reservation.objects.get_or_create(stay_obj, contact_info)
-            reservation.save()
-            reservation_options = []
-            if purchase_grill:
-                grill = Grill.objects.get_or_create(pk=1)
-                option, created = ReservationOption.objects.get_or_create(
-                    content_type=grill
-                )
-                if created:
-                    option.save()
-                reservation_options.append(option)
-            if purchase_food:
-                food = Food.objects.get_or_create(pk=1)
-                option, created = ReservationOption.objects.get_or_create(
-                    content_type=food
-                )
-                if created:
-                    option.save()
-                reservation_options.append(option)
-            for option in reservation_options:
-                reservation.reservation_options.add(option)
-
-            return TemplateResponse(
-                request,
-                "reservations/reservation_completed.html",
-            )
-    return TemplateResponse(request, "reservations/confirmation_step.html", context)
+def make_payment(request: HtmxHttpRequest):
+    reservation = get_or_set_reservation_session(request)
+    square_settings = settings.SQUARE_SETTINGS
+    context = {
+        "reservation": reservation,
+        "SQUARE_APPLICATION_ID": square_settings.SQUARE_APPLICATION_ID,
+        "SQUARE_LOCATION_ID": square_settings.SQUARE_LOCATION_ID,
+        "SQUARE_CURRENCY": square_settings.SQUARE_CURRENCY,
+    }
+    return TemplateResponse(request, "reservations/payment_page.html", context)
