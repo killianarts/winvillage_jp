@@ -13,6 +13,7 @@ from render_block import render_block_to_string
 from django.db.models import QuerySet
 from django.conf import settings
 from square.client import Client
+from django.core.mail import send_mail
 
 import reservations.forms as forms
 from reservations.models import (
@@ -292,4 +293,24 @@ def make_payment(request):
 
 
 def send_confirmation_email(request):
-    pass
+    reservation = get_or_set_reservation_session(request)
+
+    def format_message(name, email, message):
+        return f"{name}\n{email}\n\n{message}"
+
+    def format_subject(name, email):
+        return f"[KILLIAN.arts] {name}, {email}"
+
+    sender_name = (
+        f"{reservation.contact_info.first_name} {reservation.contact_info.last_name}"
+    )
+    sender_email = f"{reservation.contact_info.email}"
+    message = f"Reservation Details are here! {reservation.stay.start_datetime.strftime('%Y-%M-%d')}"
+    formatted_subject = format_subject(sender_name, sender_email)
+    formatted_message = format_message(sender_name, sender_email, message)
+    send_mail(
+        formatted_subject,
+        formatted_message,
+        "noreply@winvillage.jp",
+        [sender_email],
+    )
