@@ -244,8 +244,8 @@ def make_payment(request: HtmxHttpRequest):
     square_settings = settings.SQUARE_SETTINGS
     context = {
         "reservation": reservation,
-        "SQUARE_APPLICATION_ID": square_settings.SQUARE_APPLICATION_ID,
-        "SQUARE_LOCATION_ID": square_settings.SQUARE_LOCATION_ID,
-        "SQUARE_CURRENCY": square_settings.SQUARE_CURRENCY,
+        "SQUARE_APPLICATION_ID": square_settings["SQUARE_APPLICATION_ID"],
+        "SQUARE_LOCATION_ID": square_settings["SQUARE_LOCATION_ID"],
+        "SQUARE_CURRENCY": square_settings["SQUARE_CURRENCY"],
     }
     return TemplateResponse(request, "reservations/payment_page.html", context)

@@ -327,6 +327,14 @@ class Reservation(models.Model):
         total += self.stay.price_rounded
         return total
 
+    @property
+    def price_fully_rounded(self):
+        total = 0
+        for order_item in self.order_items.all():
+            total += order_item.item.price_rounded
+        total += self.stay.price_rounded
+        return round(total, 0)
+
     # @property
     # def price_
 
