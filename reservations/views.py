@@ -1,9 +1,10 @@
 import calendar as stdlib_calendar
+import json
 import locale
 from datetime import datetime
 
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
@@ -11,6 +12,7 @@ from django_htmx.http import trigger_client_event
 from render_block import render_block_to_string
 from django.db.models import QuerySet
 from django.conf import settings
+from square.client import Client
 
 import reservations.forms as forms
 from reservations.models import (
@@ -239,13 +241,55 @@ def _confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
     return HttpResponse(html)
 
 
-def make_payment(request: HtmxHttpRequest):
+def payment_page(request):
     reservation = get_or_set_reservation_session(request)
+    stay_form = forms.Step2Form(instance=reservation.stay)
+    order_items = [item for item in reservation.order_items.all()]
+    contact_info = reservation.contact_info
+    contact_info_initial = {
+        "first_name": contact_info.first_name,
+        "last_name": contact_info.last_name,
+        "email": contact_info.email,
+    }
+    contact_info_form = forms.Step4Form(initial=contact_info_initial)
     square_settings = settings.SQUARE_SETTINGS
     context = {
+        "stay_form": stay_form,
+        "order_items": order_items,
+        "contact_info_form": contact_info_form,
         "reservation": reservation,
         "SQUARE_APPLICATION_ID": square_settings["SQUARE_APPLICATION_ID"],
         "SQUARE_LOCATION_ID": square_settings["SQUARE_LOCATION_ID"],
         "SQUARE_CURRENCY": square_settings["SQUARE_CURRENCY"],
     }
     return TemplateResponse(request, "reservations/payment_page.html", context)
+
+
+@require_POST
+def make_payment(request):
+    data = json.loads(request.body)
+    body = {
+        "source_id": data["sourceId"],
+        "idempotency_key": data["idempotencyKey"],
+        "amount_money": {
+            "amount": data["amountMoney"]["amount"],
+            "currency": data["amountMoney"]["currency"],
+        },
+        "autocomplete": True,
+        "location_id": data["locationId"],
+        "note": "Brief description",
+    }
+    client = Client(
+        access_token=settings.SQUARE_SETTINGS["SQUARE_ACCESS_TOKEN"],
+        environment=settings.SQUARE_SETTINGS["SQUARE_ENVIRONMENT"],
+    )
+    payments_api = client.payments
+    result = payments_api.create_payment(body=body)
+    if result.is_success():
+        return JsonResponse(result.body, safe=False)
+    elif result.is_error():
+        return JsonResponse(result.errors, safe=False)
+
+
+def send_confirmation_email(request):
+    pass
