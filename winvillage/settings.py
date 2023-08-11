@@ -47,6 +47,10 @@ SECRET_KEY = env(
     default="django-insecure-weadmo#f0(uj@@sd=+#1=q^iqcoenqpc7zqy8nlf5gas&um_pa",
 )
 
+DJANGO_SUPER_USER_NAME = env("DJANGO_SUPER_USER_NAME")
+DJANGO_SUPER_USER_EMAIL = env("DJANGO_SUPER_USER_EMAIL")
+DJANGO_SUPER_USER_PASSWORD = env("DJANGO_SUPER_USER_PASSWORD", default=None)
+
 # Application definition
 
 DJANGO_APPS = [
