@@ -79,7 +79,6 @@ THIRD_PARTY_APPS = [
     "whitenoise",
     "rosetta",
     "responsive_images",
-    "slippers",
 ]
 
 if DEBUG:
