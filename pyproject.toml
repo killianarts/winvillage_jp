@@ -7,7 +7,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-django = "^4.2.3"
 django-environ = "^0.10.0"
 django-model-utils = "^4.3.1"
 django-allauth = "^0.54.0"
@@ -33,6 +32,7 @@ tzdata = "^2023.3"
 pytz = "^2023.3"
 icalendar = "^5.0.7"
 argon2-cffi = "^21.3.0"
+django = "^4.2.4"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"
