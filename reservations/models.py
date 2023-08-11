@@ -284,7 +284,7 @@ class Stay(models.Model):
 
     @property
     def price_rounded(self):
-        return round(self.price, 2)
+        return round(self.price * self.days, 2)
 
     @property
     def days(self):
