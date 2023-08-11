@@ -10,6 +10,7 @@ __pycache__
 staticfiles/*
 /copy
 *.env
+*.env.production
 .envs/*
 db.sqlite3
 poetry-convert.py

@@ -33,7 +33,6 @@ tzdata = "^2023.3"
 pytz = "^2023.3"
 icalendar = "^5.0.7"
 argon2-cffi = "^21.3.0"
-slippers = "^0.6.1"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"
