@@ -168,7 +168,7 @@
     <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
       {% translate 'Confirm Details' %}</h2>
     <div class="space-y-5">
-      <div class="grid grid-cols-1">
+      <div class="grid grid-cols-1 divide-y-2 divide-gray-50">
         {{ form.non_field_errors }}
         {% for field in stay_form %}
           <label class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2" for="{{ field.id_for_label }}">
@@ -198,21 +198,30 @@
             {% endif %}
           </label>
         {% endfor %}
-        <div class="grid border-b-2"></div>
         {% for order_item in order_items %}
-          <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{{ order_item.item.name }}</span>
-            <span class="font-black">￥{{ order_item.item.price_rounded }}</span></div>
+          <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">
+            <span>{{ order_item.item.name }}</span>
+            <span class="font-black">￥{{ order_item.item.price_rounded }}</span>
+          </div>
         {% endfor %}
-        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
-          Price Per Day
-        {% endblocktranslate %}
-          :</span><span class="font-black">￥{{ reservation.stay.price }}</span></div>
-        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
-          Total Days
-        {% endblocktranslate %}
-          :</span><span class="font-black">{{ reservation.stay.days }}</span></div>
-        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% translate 'Total Price' %}:</span>
-          <span class="font-black">￥{{ reservation.price_rounded }}</span></div>
+        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">
+          <span>
+            {% blocktranslate %}
+              Price Per Day
+            {% endblocktranslate %}:</span>
+          <span class="font-black">￥{{ reservation.stay.price }}</span>
+        </div>
+        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">
+          <span>
+            {% blocktranslate %}
+              Total Days
+            {% endblocktranslate %}:</span>
+          <span class="font-black">{{ reservation.stay.days }}</span>
+        </div>
+        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">
+          <span>{% translate 'Total Price' %}:</span>
+          <span class="font-black">￥{{ reservation.price_rounded }}</span>
+        </div>
       </div>
       <div class="grid gap-2">
         <a href="{% url 'reservations:payment_page' %}"
