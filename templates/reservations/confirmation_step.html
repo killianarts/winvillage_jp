@@ -4,45 +4,38 @@
 <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
   <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
     {% translate 'Confirm Reservation?' %}</h2>
-  <form class="space-y-5">
-    <fieldset>
-      <legend class="sr-only">{% translate 'Reservation Confirmation' %}</legend>
-      <div class="grid grid-cols-1">
-        {{ form.non_field_errors }}
-        {% for field in form %}
-          <label class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2" for="{{ field.id_for_label }}">
-            <span>{{ field.label }}</span>
-            {% if field.name == "stay_type" %}
-              <span class="text-5xl">{{ field.value }}</span>
-            {% elif field.name == "stay_date_start" %}
-              <span>{{ field.value|date:"Y-M-d" }}</span>
-            {% elif field.name == "stay_date_end" %}
-              <span>{{ field.value|date:"Y-M-d" }}</span>
-            {% else %}
-              <span>{{ field.value }}</span>
-            {% endif %}
-            {{ field.hidden }}
-            {% if field.errors %}
-              {% for error in field.errors %}
-                <div class="flex gap-2">
-                  <p class="text-red-500 text-lg font-body font-thin">{{ error|escape }}</p>
-                </div>
-              {% endfor %}
-            {% endif %}
-          </label>
-        {% endfor %}
-      </div>
-    </fieldset>
+  <div class="space-y-5">
+    <div class="grid grid-cols-1">
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <label class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2" for="{{ field.id_for_label }}">
+          <span>{{ field.label }}</span>
+          {% if field.name == "stay_type" %}
+            <span class="text-5xl">{{ field.value }}</span>
+          {% elif field.name == "stay_date_start" %}
+            <span>{{ field.value|date:"Y-M-d" }}</span>
+          {% elif field.name == "stay_date_end" %}
+            <span>{{ field.value|date:"Y-M-d" }}</span>
+          {% else %}
+            <span>{{ field.value }}</span>
+          {% endif %}
+          {{ field.hidden }}
+          {% if field.errors %}
+            {% for error in field.errors %}
+              <div class="flex gap-2">
+                <p class="text-red-500 text-lg font-body font-thin">{{ error|escape }}</p>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </label>
+      {% endfor %}
+    </div>
     <div class="grid gap-2">
-      <button name="submit"
-              type="submit"
-              hx-post="{% url 'reservations:confirm_reservation' %}"
-              hx-target="#reservation-form-wrapper"
-              hx-swap="outerHTML"
-              class="col-span-2 bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
+      <a href="{% url 'reservations:payment_page' %}"
+         class="col-span-2 bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
         {% translate 'Confirm' %}
-      </button>
+      </a>
       <button name="back"
               type="button"
               hx-get="{% url 'reservations:step-4' %}"
@@ -53,5 +46,5 @@
         {% translate 'Back' %}
       </button>
     </div>
-  </form>
+  </div>
 </div>

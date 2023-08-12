@@ -219,6 +219,8 @@ def confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
 
 
 def _confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        return payment_page(make_get_request(request))
     reservation = get_or_set_reservation_session(request)
     stay_form = forms.Step2Form(instance=reservation.stay)
     order_items = [item for item in reservation.order_items.all()]
@@ -244,8 +246,6 @@ def _confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
 
 def payment_page(request):
     reservation = get_or_set_reservation_session(request)
-    stay_form = forms.Step2Form(instance=reservation.stay)
-    order_items = [item for item in reservation.order_items.all()]
     contact_info = reservation.contact_info
     contact_info_initial = {
         "first_name": contact_info.first_name,
@@ -255,8 +255,6 @@ def payment_page(request):
     contact_info_form = forms.Step4Form(initial=contact_info_initial)
     square_settings = settings.SQUARE_SETTINGS
     context = {
-        "stay_form": stay_form,
-        "order_items": order_items,
         "contact_info_form": contact_info_form,
         "reservation": reservation,
         "SQUARE_APPLICATION_ID": square_settings["SQUARE_APPLICATION_ID"],
