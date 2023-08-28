@@ -1,0 +1,36 @@
+{% extends 'winadmin/base.html' %}
+{% load i18n widget_tweaks %}
+{% block content %}
+  <div id="reservation-form-wrapper" class="mx-auto max-w-xl px-5">
+    <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
+      {% translate 'Winvillage Admin Login' %}</h2>
+    <form action="{% url 'winadmin:login_page' %}" method="post" class="grid">
+      {% csrf_token %}
+      <fieldset>
+        <legend class="sr-only">{% translate 'Contact Information' %}</legend>
+        <div class="grid grid-cols-1">
+          {{ form.non_field_errors }}
+          {% for field in form %}
+            <label class="text-xl mb-2 grid grid-cols-1 items-center gap-x-2" for="{{ field.id_for_label }}">
+              {{ field.label }}
+              {% render_field field class="" %}
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <div class="flex gap-2">
+                    {#                    <img class="inline-block" src="{% static 'core/warning_icon.svg' %}">#}
+                    <p class="text-red-500 text-lg font-body font-thin">{{ error|escape }}</p>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <button name="submit" type="submit"
+              class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+        Login
+      </button>
+    </form>
+  </div>
+{% endblock %}

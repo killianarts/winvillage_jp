@@ -8,49 +8,10 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
+from core.models import Item, Category
+
 
 auth_user = get_user_model()
-
-
-class Category(models.Model):
-    class Meta:
-        verbose_name = _("Category")
-        verbose_name_plural = _("Categories")
-
-    title = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"{self.pk}, {self.title}"
-
-
-class Item(models.Model):
-    class Meta:
-        verbose_name = _("Item")
-        verbose_name_plural = _("Items")
-
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=19, decimal_places=4)
-    category = models.ForeignKey(
-        Category, null=True, blank=True, on_delete=models.SET_NULL
-    )
-    image = models.ImageField(upload_to="item_images/", null=True, blank=True)
-    stock_quantity = models.IntegerField(default=1)
-    in_stock = models.BooleanField(default=True)
-    active = models.BooleanField(default=False)
-    description = models.TextField(default=_("Long description"), null=True)
-    short_description = models.CharField(
-        max_length=280, default=_("Short description"), null=True
-    )
-
-    @property
-    def price_rounded(self):
-        return round(self.price, 2)
-
-    def __str__(self):
-        return f"{self.name}"
-
-    def get_absolute_url(self):
-        return "/item/%i/" % self.id
 
 
 class OrderItem(models.Model):
@@ -140,28 +101,6 @@ class Address(models.Model):
         super(Address, self).save(*args, **kwargs)
 
 
-# class Product(models.Model):
-#     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
-#     amount = models.FloatField()
-#     amount_field = models.CharField(max_length=150)
-#     borrowed = models.BooleanField(default=False)
-#     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-#     object_id = models.PositiveIntegerField()
-#     content_object = GenericForeignKey("content_type", "object_id")
-#
-#     @property
-#     def available_amount(self):
-#         return getattr(self.content_object, self.amount_field)
-#
-#     @property
-#     def amount_without_this_product(self):
-#         amount_now = self.available_amount
-#         return amount_now - self.amount
-#
-#     def __str__(self):
-#         return "%.2f ) %s" % (self.amount, self.content_object)
-
-
 class Room(models.Model):
     class Meta:
         verbose_name = _("Room")
@@ -172,52 +111,6 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
-
-
-# class Grill(models.Model):
-#     class GrillManager(models.Manager):
-#         def get_queryset(self):
-#             return super().get_queryset().filter(featured=True)
-#
-#     objects = models.Manager()
-#     featured_grills = GrillManager()
-#     price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-#     name = models.CharField(max_length=50)
-#     description = models.TextField()
-#     featured = models.BooleanField(
-#         default=False,
-#         verbose_name=_("Featured"),
-#         help_text=_(
-#             "Featured grills are presented as reservation options during the reservation creation process."
-#         ),
-#     )
-#     model_number = models.CharField(max_length=50, default="MKJ12345")
-#     maker = models.CharField(max_length=50, default=_("Default Maker"))
-#
-#     def __str__(self):
-#         return self.name
-#
-#
-# class Food(models.Model):
-#     class FoodManager(models.Manager):
-#         def get_queryset(self):
-#             return super().get_queryset().filter(featured=True)
-#
-#     objects = models.Manager()
-#     featured_foods = FoodManager()
-#     price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-#     name = models.CharField(max_length=50)
-#     description = models.TextField()
-#     featured = models.BooleanField(
-#         default=False,
-#         verbose_name=_("Featured"),
-#         help_text=_(
-#             "Featured foods are presented as reservation options during the reservation creation process."
-#         ),
-#     )
-#
-#     def __str__(self):
-#         return self.name
 
 
 class ContactInfo(models.Model):

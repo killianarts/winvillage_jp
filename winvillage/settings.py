@@ -92,6 +92,7 @@ LOCAL_APPS = [
     "users",
     "core",
     "reservations",
+    "winadmin",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -113,7 +114,7 @@ AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = "users:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "account_login"
+# LOGIN_URL = "login_page"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -327,7 +328,7 @@ EMAIL_PORT = "1025"
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
+ADMIN_URL = env("DJANGO_ADMIN_URL", default="django-admin/")
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [("Micah Jonah Killian", "micah@killianarts.online")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers

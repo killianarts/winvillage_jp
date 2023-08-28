@@ -1,0 +1,37 @@
+{% extends 'winadmin/index.html' %}
+{% load widget_tweaks %}
+{% block subtitle %}
+  Create Category
+{% endblock %}
+{% block content %}
+  <main id="dashboard-content" class="py-10 lg:ml-72">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <form hx-post="{% url 'winadmin:create_category_page' %}"
+            hx-target="#dashboard-content"
+            hx-swap="outerHTML"
+            class="grid space-y-2 max-w-xl mx-auto" novalidate>
+        {{ form.non_field_errors }}
+        {% if messages %}
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        {% endif %}
+        {% for field in form %}
+          {% if field.errors %}
+            {% for error in field.errors %}
+              {{ error|escape }}
+            {% endfor %}
+          {% endif %}
+          <label for="{{ field.id_for_label }}" class="grid">
+            {{ field.label }}
+            {% render_field field %}
+          </label>
+        {% endfor %}
+        <button type="submit"
+                class="py-3 px-5 bg-green-700 hover:bg-green-600 text-white text-xl transition-all duration-250">
+          Submit
+        </button>
+      </form>
+    </div>
+  </main>
+{% endblock %}

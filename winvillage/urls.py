@@ -21,15 +21,19 @@ from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = i18n_patterns(path("__reload__/", include("django_browser_reload.urls")),
-                            path(settings.ADMIN_URL, admin.site.urls),
-                            path('', include('core.urls')),
-                            path('reservations/', include('reservations.urls')),
-                            prefix_default_language=False
-                            )
+urlpatterns = i18n_patterns(
+    path("__reload__/", include("django_browser_reload.urls")),
+    path(settings.ADMIN_URL, admin.site.urls),
+    path("", include("core.urls")),
+    path("reservations/", include("reservations.urls")),
+    path("winadmin/", include("winadmin.urls")),
+    prefix_default_language=False,
+)
 
 if settings.DEBUG:
     # This will only work in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    urlpatterns += [re_path(r'^media/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT})]
+    urlpatterns += [
+        re_path(r"^media/(?P<path>.*)", serve, {"document_root": settings.MEDIA_ROOT})
+    ]

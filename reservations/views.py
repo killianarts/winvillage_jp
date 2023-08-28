@@ -3,14 +3,10 @@ import json
 import locale
 from datetime import datetime
 
-from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
-from django_htmx.http import trigger_client_event
 from render_block import render_block_to_string
-from django.db.models import QuerySet
 from django.conf import settings
 from square.client import Client
 from django.core.mail import send_mail
