@@ -10,8 +10,8 @@ urlpatterns = [
     path("inventory/", views.list_inventory, name="list_inventory"),
     path(
         "inventory/item/<int:pk>/",
-        views.view_inventory_item,
-        name="view_inventory_item",
+        views.edit_inventory_item,
+        name="edit_inventory_item",
     ),
     path(
         "inventory/create/",

@@ -4,7 +4,7 @@ import locale
 from datetime import datetime
 
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
 from render_block import render_block_to_string
@@ -16,7 +16,7 @@ from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
 from core.utils import HtmxHttpRequest, make_get_request
 from core.models import Item, Category
-from winadmin.forms import LoginForm, CreateItemForm, CreateCategoryForm
+from winadmin.forms import LoginForm, CreateItemForm, CreateCategoryForm, EditItemForm
 
 # Index and Login
 
@@ -60,11 +60,6 @@ def list_inventory(request: HtmxHttpRequest) -> HttpResponse:
     items = Item.objects.all()
     context = {"items": items}
     return TemplateResponse(request, "winadmin/inventory/index.html", context)
-
-
-def view_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
-    item = Item.objects.get_or_404(pk=pk)
-    return HttpResponse(item)
 
 
 @login_required(login_url="winadmin:login_page")
@@ -123,8 +118,21 @@ def list_categories_page(request: HtmxHttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="winadmin:login_page")
-def view_inventory_item(request: HtmxHttpRequest) -> HttpResponse:
-    pass
+def edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+    return _edit_inventory_item(request, pk)
+
+
+def _edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+    item = get_object_or_404(Item, pk=pk)
+    form = EditItemForm(instance=item)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.INFO, "Item Successfully Edited")
+            return edit_inventory_item(make_get_request(request), pk)
+    return TemplateResponse(
+        request, "winadmin/inventory/edit_item.html", {"form": form, "item": item}
+    )
 
 
 @login_required(login_url="winadmin:login_page")

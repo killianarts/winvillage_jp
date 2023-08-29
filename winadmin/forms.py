@@ -26,6 +26,22 @@ class CreateItemForm(forms.ModelForm):
         ]
 
 
+class EditItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = [
+            "name",
+            "price",
+            "category",
+            "image",
+            "stock_quantity",
+            "in_stock",
+            "active",
+            "description",
+            "short_description",
+        ]
+
+
 class CreateCategoryForm(forms.ModelForm):
     class Meta:
         model = Category

@@ -1,11 +1,12 @@
 {% extends 'winadmin/index.html' %}
-{% load widget_tweaks %}
+{% load widget_tweaks i18n %}
 {% block subtitle %}
   Create Category
 {% endblock %}
 {% block content %}
   <main id="dashboard-content" class="py-10 lg:ml-72">
     <div class="px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl text-center mb-5">{% translate 'Category Create View' %}</h1>
       <form hx-post="{% url 'winadmin:create_category_page' %}"
             hx-target="#dashboard-content"
             hx-swap="outerHTML"

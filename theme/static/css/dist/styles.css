@@ -1954,6 +1954,22 @@ select {
   padding-right: 0.75rem;
 }
 
+.pl-5 {
+  padding-left: 1.25rem;
+}
+
+.pl-6 {
+  padding-left: 1.5rem;
+}
+
+.pl-10 {
+  padding-left: 2.5rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -2321,6 +2337,23 @@ select {
 
 .before\:\[content\:\'\*\'\]::before {
   content: '*';
+}
+
+.hover\:border:hover {
+  border-width: 1px;
+}
+
+.hover\:border-l-2:hover {
+  border-left-width: 2px;
+}
+
+.hover\:border-l-4:hover {
+  border-left-width: 4px;
+}
+
+.hover\:border-stone-500:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(120 113 108 / var(--tw-border-opacity));
 }
 
 .hover\:bg-gray-200:hover {

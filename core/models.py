@@ -44,4 +44,4 @@ class Item(models.Model):
         return f"{self.name}"
 
     def get_absolute_url(self):
-        return reverse("winadmin:view_inventory_item", args=[str(self.pk)])
+        return reverse("winadmin:edit_inventory_item", args=[str(self.pk)])
