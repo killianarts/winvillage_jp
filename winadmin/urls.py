@@ -26,4 +26,12 @@ urlpatterns = [
         views.create_category_page,
         name="create_category_page",
     ),
+    path("transactions/", views.view_all_transactions, name="view_all_transactions"),
+    # path("transactions/sales/", views.view_sales, name="view_sales"),
+    path(
+        "transactions/sales/",
+        views.view_sales_by_period,
+        name="view_sales_by_period",
+    ),
+    path("transactions/create/", views.create_transaction, name="create_transaction"),
 ]

@@ -1,0 +1,56 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n %}
+{% block subtitle %}
+  {% translate 'Sale List View' %}
+{% endblock %}
+{% block content %}
+  <main id="dashboard-content" class="py-10 lg:ml-72">
+    <div class="overflow-hidden">
+      <h1 class="text-3xl text-center mb-5">{% translate 'Sales Chart' %}</h1>
+      <table class="mx-auto max-w-7xl w-full table-auto divide-y divide-stone-300">
+        <thead>
+        <tr class="text-left">
+          <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-stone-900 sm:pl-0">
+            <span class="pl-6">{% translate 'Date' %}</span>
+          </th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">{% translate 'Transaction Name' %}</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">{% translate 'Product' %}</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">{% translate 'Quantity' %}</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">{% translate 'Price Per Item' %}</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">{% translate 'Sale Amount' %}</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">{% translate 'Return Amount' %}</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-stone-900">{% translate 'Balance' %}</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-stone-200">
+        {% for sale, balance in ledger %}
+          <tr class="hover:bg-stone-50">
+            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-stone-900 sm:pl-0">
+              <a hx-boost="true" class="pl-6"
+                      {#                               href="{% url 'winadmin:edit_sale' sale.pk %}"#}
+                 href="#"
+              >
+                {{ sale.transaction_datetime|date:"Y-m-d" }}
+              </a>
+            </td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ sale.get_name_display }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ sale.item }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ sale.quantity }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ sale.item.price_rounded }}</td>
+
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+              {% if sale.sale_amount %}{{ sale.sale_amount }}{% endif %}
+            </td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+              {% if sale.return_amount %}{{ sale.return_amount }}{% endif %}
+            </td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+              {{ balance }}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+{% endblock %}

@@ -1,15 +1,14 @@
 import uuid
 
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
-from core.models import Item, Category
 
+from core.models import Item, Category, ContactInfo, Customer
 
 auth_user = get_user_model()
 
@@ -111,38 +110,6 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class ContactInfo(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
-
-    def __str__(self):
-        return f"{self.first_name}, {self.last_name}, {self.email}"
-
-
-class Customer(models.Model):
-    class Meta:
-        verbose_name = _("Customer")
-        verbose_name_plural = _("Customers")
-
-    contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE, null=True)
-    user = models.OneToOneField(auth_user, on_delete=models.CASCADE, null=True)
-    # square_customer_id = models.CharField(max_length=100, null=True, blank=True)
-    # first_name = models.CharField(max_length=100, null=True)
-    # last_name = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return f"{self.contact_info.first_name} {self.contact_info.last_name}"
-
-    #
-    # def get_primary_address(self):
-    #     return self.user.address_set.get(is_primary=True)
-
-    @property
-    def full_name(self):
-        return f"{self.first_name} {self.last_name}"
 
 
 class Stay(models.Model):

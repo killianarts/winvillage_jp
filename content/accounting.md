@@ -4,9 +4,19 @@
 
 仕入れ→売上げのための出金
 
-経費→同じ出金でも人件費、交際費、消耗品費、旅費交通費、通信費、福利厚生費、広告宣伝費等
+# 経費
 
-今回は、経費帳とか現金出納帳は必要無し。
+同じ出金でも
+
+- 人件費
+- 交際費
+- 消耗品費
+- 旅費交通費
+- 通信費
+- 福利厚生費
+- 広告宣伝費等
+
+今回は、経費帳とか現金出納帳は**必要無し**。
 
 # 仕入帳
 
@@ -20,8 +30,9 @@ Accounts receivable
 What is a sale? What attributes or data does a sale have?
 
 - A date
-- A price
 - An item or service that was sold
+- A price per item
+- A total price
 - A quantity of an item sold
 -
 

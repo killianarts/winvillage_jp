@@ -1,9 +1,12 @@
 {% extends 'winadmin/index.html' %}
 {% load i18n %}
+{% block subtitle %}
+  {% translate 'Category List View' %}
+{% endblock %}
 {% block content %}
   <main id="dashboard-content" class="py-10 lg:ml-72">
     <div class="overflow-hidden">
-      <h1 class="text-3xl text-center mb-5">Category List View</h1>
+      <h1 class="text-3xl text-center mb-5">{% translate 'Category List View' %}</h1>
       <table class="mx-auto max-w-7xl w-full table-auto divide-y divide-stone-300">
         <thead>
         <tr class="text-left">

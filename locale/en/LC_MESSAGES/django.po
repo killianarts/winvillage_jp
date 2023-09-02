@@ -1,0 +1,631 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-02 11:52+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/models.py:23 core/models.py:104
+msgid "Customer"
+msgstr ""
+
+#: core/models.py:24 templates/winadmin/index.html:262
+msgid "Customers"
+msgstr ""
+
+#: core/models.py:46 templates/winadmin/inventory/index.html:17
+#: templates/winadmin/inventory/list_categories.html:13
+msgid "Category"
+msgstr ""
+
+#: core/models.py:47
+msgid "Categories"
+msgstr ""
+
+#: core/models.py:57 core/models.py:110
+msgid "Item"
+msgstr ""
+
+#: core/models.py:58
+msgid "Items"
+msgstr ""
+
+#: core/models.py:69
+msgid "Long description"
+msgstr ""
+
+#: core/models.py:71
+msgid "Short description"
+msgstr ""
+
+#: core/models.py:87
+msgid "Transaction"
+msgstr ""
+
+#: core/models.py:88 templates/winadmin/index.html:364
+msgid "Transactions"
+msgstr ""
+
+#: core/models.py:91
+msgid "Sale"
+msgstr ""
+
+#: core/models.py:92
+msgid "Purchase"
+msgstr ""
+
+#: core/models.py:93
+msgid "Return"
+msgstr ""
+
+#: core/models.py:94
+msgid "Bank Deposit"
+msgstr ""
+
+#: core/models.py:97 templates/winadmin/inventory/index.html:14
+#: templates/winadmin/transactions/list_transactions.html:16
+msgid "Name"
+msgstr ""
+
+#: core/models.py:107
+msgid "Transaction Datetime"
+msgstr ""
+
+#: core/models.py:112 templates/winadmin/transactions/list_sales.html:18
+#: templates/winadmin/transactions/list_transactions.html:18
+msgid "Quantity"
+msgstr ""
+
+#: core/models.py:114 templates/reservations/payment_page.html:393
+#: templates/reservations/reservation_form.html:222
+msgid "Total Price"
+msgstr ""
+
+#: reservations/forms.py:8 reservations/models.py:124
+msgid "Hourly"
+msgstr ""
+
+#: reservations/forms.py:9 reservations/models.py:124
+msgid "Overnight"
+msgstr ""
+
+#: reservations/forms.py:31 templates/reservations/reservation_form.html:41
+msgid "From"
+msgstr ""
+
+#: reservations/forms.py:31 templates/reservations/reservation_form.html:45
+msgid "Until"
+msgstr ""
+
+#: reservations/forms.py:39
+msgid "First Name"
+msgstr ""
+
+#: reservations/forms.py:40
+msgid "Last Name"
+msgstr ""
+
+#: reservations/forms.py:41
+msgid "Email"
+msgstr ""
+
+#: reservations/models.py:18
+msgid "Order Item"
+msgstr ""
+
+#: reservations/models.py:19
+msgid "Order Items"
+msgstr ""
+
+#: reservations/models.py:33
+msgid "Order"
+msgstr ""
+
+#: reservations/models.py:34
+msgid "Orders"
+msgstr ""
+
+#: reservations/models.py:60
+msgid "Address"
+msgstr ""
+
+#: reservations/models.py:61
+msgid "Addresses"
+msgstr ""
+
+#: reservations/models.py:105
+msgid "Room"
+msgstr ""
+
+#: reservations/models.py:106 templates/core/index.html:41
+#: templates/core/index.html:93 templates/core/index.html:182
+#: templates/core/index.html:234
+msgid "Rooms"
+msgstr ""
+
+#: reservations/models.py:117
+msgid "Not Reserved"
+msgstr ""
+
+#: reservations/models.py:118
+msgid "Reserved"
+msgstr ""
+
+#: reservations/models.py:119
+msgid "Checked In"
+msgstr ""
+
+#: reservations/models.py:120
+msgid "Checked Out"
+msgstr ""
+
+#: reservations/models.py:121
+msgid "Cancelled"
+msgstr ""
+
+#: reservations/models.py:207
+msgid "Reservation Token"
+msgstr ""
+
+#: reservations/models.py:208
+msgid "Reservation Tokens"
+msgstr ""
+
+#: templates/core/index.html:7 templates/core/index.html:122
+msgid "Glamping in Imari"
+msgstr ""
+
+#: templates/core/index.html:10 templates/core/index.html:19
+#: templates/core/index.html:71
+msgid "Win Village"
+msgstr ""
+
+#: templates/core/index.html:21 templates/core/index.html:73
+msgid "Win Village Logo"
+msgstr ""
+
+#: templates/core/index.html:39 templates/core/index.html:90
+#: templates/core/index.html:232
+msgid "About Win Village"
+msgstr ""
+
+#: templates/core/index.html:43 templates/core/index.html:95
+#: templates/core/index.html:236
+msgid "Gourmet"
+msgstr ""
+
+#: templates/core/index.html:45 templates/core/index.html:97
+#: templates/core/index.html:239
+msgid "Grills"
+msgstr ""
+
+#: templates/core/index.html:56 templates/core/index.html:104
+#: templates/core/index.html:137 templates/core/index.html:223
+#: templates/core/index.html:256 templates/reservations/index_backup.html:9
+#: templates/winadmin/index.html:340
+msgid "Make a Reservation"
+msgstr ""
+
+#: templates/core/index.html:78
+msgid "Close menu"
+msgstr ""
+
+#: templates/core/index.html:127
+msgid ""
+"\n"
+"              peace and quiet in the outdoors\n"
+"            "
+msgstr ""
+
+#: templates/core/index.html:131
+msgid "Fresh air, delicious food, comfortable beds"
+msgstr ""
+
+#: templates/core/index.html:242
+msgid "Corporate Information"
+msgstr ""
+
+#: templates/reservations/_buttons.html:8
+#, python-format
+msgid ""
+"\n"
+"      %(submit_button_text)s\n"
+"    "
+msgstr ""
+
+#: templates/reservations/_buttons.html:24
+#: templates/reservations/confirmation_step.html:46
+#: templates/reservations/reservation_form.html:159
+#: templates/reservations/reservation_form.html:245
+msgid "Back"
+msgstr ""
+
+#: templates/reservations/components/primary_button.html:8
+#: templates/reservations/components/secondary_button.html:8
+#, python-format
+msgid ""
+"\n"
+"    %(text)s\n"
+"  "
+msgstr ""
+
+#: templates/reservations/confirmation_step.html:6
+msgid "Confirm Reservation?"
+msgstr ""
+
+#: templates/reservations/confirmation_step.html:37
+msgid "Confirm"
+msgstr ""
+
+#: templates/reservations/index.html:8
+msgid "Winvillage Administration"
+msgstr ""
+
+#: templates/reservations/index.html:24
+#: templates/reservations/index_backup.html:25
+msgid "Go Back Home"
+msgstr ""
+
+#: templates/reservations/payment_page.html:385
+msgid ""
+"\n"
+"        Price Per Day\n"
+"      "
+msgstr ""
+
+#: templates/reservations/payment_page.html:389
+msgid ""
+"\n"
+"        Total Days\n"
+"      "
+msgstr ""
+
+#: templates/reservations/reservation_form.html:5
+#: templates/reservations/step_1.html:5
+msgid "Choose your reservation type"
+msgstr ""
+
+#: templates/reservations/reservation_form.html:11
+#: templates/reservations/reservation_form.html:36
+#: templates/reservations/step_1.html:19 templates/reservations/step_2.html:10
+msgid "Reservation Types"
+msgstr ""
+
+#: templates/reservations/reservation_form.html:30
+#: templates/reservations/step_2.html:4
+msgid "Choose Date of Stay"
+msgstr ""
+
+#: templates/reservations/reservation_form.html:61
+#: templates/reservations/step_3.html:6
+#: templates/reservations/step_3_backup.html:6
+msgid "Choose Options"
+msgstr ""
+
+#: templates/reservations/reservation_form.html:67
+#: templates/reservations/step_3.html:12
+#: templates/reservations/step_3_backup.html:12
+msgid "Option Types"
+msgstr ""
+
+#: templates/reservations/reservation_form.html:114
+#: templates/reservations/reservation_form.html:117
+#: templates/reservations/step_4.html:6 templates/reservations/step_4.html:12
+#: templates/winadmin/login_page.html:10
+msgid "Contact Information"
+msgstr ""
+
+#: templates/reservations/reservation_form.html:144
+msgid ""
+"\n"
+"            Next\n"
+"          "
+msgstr ""
+
+#: templates/reservations/reservation_form.html:169
+msgid "Confirm Details"
+msgstr ""
+
+#: templates/reservations/reservation_form.html:209
+msgid ""
+"\n"
+"              Price Per Day\n"
+"            "
+msgstr ""
+
+#: templates/reservations/reservation_form.html:216
+msgid ""
+"\n"
+"              Total Days\n"
+"            "
+msgstr ""
+
+#: templates/reservations/reservation_form.html:230
+msgid ""
+"\n"
+"            Confirm and Go to Checkout\n"
+"          "
+msgstr ""
+
+#: templates/reservations/step_3_backup.html:17
+msgid "($50)"
+msgstr ""
+
+#: templates/reservations/step_3_backup.html:20
+msgid "($100)"
+msgstr ""
+
+#: templates/winadmin/base.html:27
+msgid "Winvillage Administration Dashboard"
+msgstr ""
+
+#: templates/winadmin/index.html:8
+msgid "Winvillage Admin"
+msgstr ""
+
+#: templates/winadmin/index.html:12 templates/winadmin/index.html:246
+#: templates/winadmin/index.html:454
+msgid "Dashboard"
+msgstr ""
+
+#: templates/winadmin/index.html:268
+msgid "Search Customers"
+msgstr ""
+
+#: templates/winadmin/index.html:274
+msgid "Open Ticket"
+msgstr ""
+
+#: templates/winadmin/index.html:292
+msgid "Inventory"
+msgstr ""
+
+#: templates/winadmin/index.html:298
+msgid "View Inventory"
+msgstr ""
+
+#: templates/winadmin/index.html:304
+#: templates/winadmin/inventory/create_item.html:8
+#: templates/winadmin/inventory/edit_item.html:8
+msgid "Add Inventory Item"
+msgstr ""
+
+#: templates/winadmin/index.html:310
+msgid "View Categories"
+msgstr ""
+
+#: templates/winadmin/index.html:316
+msgid "Add Category"
+msgstr ""
+
+#: templates/winadmin/index.html:334
+msgid "Reservations"
+msgstr ""
+
+#: templates/winadmin/index.html:346
+msgid "Update Reservation"
+msgstr ""
+
+#: templates/winadmin/index.html:370
+#: templates/winadmin/transactions/create_transaction.html:4
+#: templates/winadmin/transactions/create_transaction.html:8
+msgid "Create Transaction"
+msgstr ""
+
+#: templates/winadmin/index.html:377
+msgid "View Sales"
+msgstr ""
+
+#: templates/winadmin/index.html:383
+msgid "View Purchases"
+msgstr ""
+
+#: templates/winadmin/index.html:400
+msgid "Reports"
+msgstr ""
+
+#: templates/winadmin/index.html:406
+msgid "Customer Reports"
+msgstr ""
+
+#: templates/winadmin/index.html:412
+msgid "Inventory Reports"
+msgstr ""
+
+#: templates/winadmin/index.html:418
+msgid "Reservation Reports"
+msgstr ""
+
+#: templates/winadmin/index.html:424
+msgid "Purchase Reports"
+msgstr ""
+
+#: templates/winadmin/index.html:434
+msgid "Log Out"
+msgstr ""
+
+#: templates/winadmin/inventory/create_category.html:9
+msgid "Category Create View"
+msgstr ""
+
+#: templates/winadmin/inventory/index.html:4
+#: templates/winadmin/inventory/index.html:9
+msgid "Inventory List View"
+msgstr ""
+
+#: templates/winadmin/inventory/index.html:16
+msgid "Price"
+msgstr ""
+
+#: templates/winadmin/inventory/index.html:18
+msgid "Stock"
+msgstr ""
+
+#: templates/winadmin/inventory/index.html:19
+msgid "In Stock?"
+msgstr ""
+
+#: templates/winadmin/inventory/index.html:20
+msgid "Active?"
+msgstr ""
+
+#: templates/winadmin/inventory/index.html:21
+msgid "Short Description"
+msgstr ""
+
+#: templates/winadmin/inventory/list_categories.html:4
+#: templates/winadmin/inventory/list_categories.html:9
+msgid "Category List View"
+msgstr ""
+
+#: templates/winadmin/login_page.html:6
+msgid "Winvillage Admin Login"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:4
+msgid "Sale List View"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:9
+msgid "Sales Chart"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:14
+#: templates/winadmin/transactions/list_transactions.html:14
+msgid "Date"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:16
+msgid "Transaction Name"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:17
+#: templates/winadmin/transactions/list_transactions.html:17
+msgid "Product"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:19
+#: templates/winadmin/transactions/list_transactions.html:19
+msgid "Price Per Item"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:20
+#: templates/winadmin/transactions/list_transactions.html:20
+msgid "Sale Amount"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:21
+#: templates/winadmin/transactions/list_transactions.html:21
+msgid "Return Amount"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:22
+#: templates/winadmin/transactions/list_transactions.html:23
+msgid "Payment Amount"
+msgstr ""
+
+#: templates/winadmin/transactions/list_sales.html:23
+msgid "Balance"
+msgstr ""
+
+#: templates/winadmin/transactions/list_transactions.html:4
+#: templates/winadmin/transactions/list_transactions.html:9
+msgid "Transaction List View"
+msgstr ""
+
+#: templates/winadmin/transactions/list_transactions.html:22
+msgid "Purchase Amount"
+msgstr ""
+
+#: templates/winadmin/transactions/list_transactions.html:24
+msgid "Remainder"
+msgstr ""
+
+#: users/admin.py:23
+msgid "Personal info"
+msgstr ""
+
+#: users/admin.py:25
+msgid "Permissions"
+msgstr ""
+
+#: users/admin.py:36
+msgid "Important dates"
+msgstr ""
+
+#: users/apps.py:7
+msgid "Users"
+msgstr ""
+
+#: users/forms.py:24 users/tests/test_forms.py:36
+msgid "This username has already been taken."
+msgstr ""
+
+#: users/models.py:26
+msgid "The Email must be set"
+msgstr ""
+
+#: users/models.py:46
+msgid "Superuser must have is_staff=True."
+msgstr ""
+
+#: users/models.py:48
+msgid "Superuser must have is_superuser=True."
+msgstr ""
+
+#: users/models.py:82
+msgid "Name of User"
+msgstr ""
+
+#: users/tests/test_views.py:71 users/views.py:23
+msgid "Information successfully updated"
+msgstr ""
+
+#: winadmin/forms.py:7
+msgid "Username"
+msgstr ""
+
+#: winadmin/forms.py:9
+msgid "Password"
+msgstr ""
+
+#: winadmin/views.py:81
+msgid "Item Successfully Added"
+msgstr ""
+
+#: winadmin/views.py:106
+msgid "Category Successfully Added"
+msgstr ""
+
+#: winadmin/views.py:111
+msgid "Input category title"
+msgstr ""
+
+#: winadmin/views.py:139
+msgid "Item Successfully Edited"
+msgstr ""
+
+#: winadmin/views.py:190 winadmin/views.py:214
+msgid "Transaction Created Successfully"
+msgstr ""
+
+#: winvillage/settings.py:249
+msgid "English"
+msgstr ""
+
+#: winvillage/settings.py:250
+msgid "Japanese"
+msgstr ""

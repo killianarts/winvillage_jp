@@ -2,7 +2,7 @@ import calendar as stdlib_calendar
 import json
 import locale
 from datetime import datetime
-
+from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
@@ -15,8 +15,15 @@ from square.client import Client
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
 from core.utils import HtmxHttpRequest, make_get_request
-from core.models import Item, Category
-from winadmin.forms import LoginForm, CreateItemForm, CreateCategoryForm, EditItemForm
+from core.models import Item, Category, Transaction
+from winadmin.forms import (
+    LoginForm,
+    CreateItemForm,
+    CreateCategoryForm,
+    EditItemForm,
+    CreateTransactionForm,
+    SetLedgerPeriodForm,
+)
 
 # Index and Login
 
@@ -72,7 +79,7 @@ def _create_inventory_item_page(request: HtmxHttpRequest) -> HttpResponse:
         form = CreateItemForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.INFO, "Item Successfully Added")
+            messages.add_message(request, messages.INFO, _("Item Successfully Added"))
             return _create_inventory_item_page(make_get_request(request))
         html = render_block_to_string(
             "winadmin/inventory/create_item.html", "content", {"form": form}
@@ -96,11 +103,13 @@ def _create_category_page(request: HtmxHttpRequest) -> HttpResponse:
         form = CreateCategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.INFO, "Category Successfully Added")
+            messages.add_message(
+                request, messages.INFO, _("Category Successfully Added")
+            )
             return _create_category_page(make_get_request(request))
         elif not form.is_valid():
             if not form.cleaned_data:
-                messages.add_message(request, messages.ERROR, "Input category title")
+                messages.add_message(request, messages.ERROR, _("Input category title"))
                 return _create_category_page(make_get_request(request))
         html = render_block_to_string(
             "winadmin/inventory/create_category.html", "form", context
@@ -128,7 +137,7 @@ def _edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     if request.method == "POST":
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.INFO, "Item Successfully Edited")
+            messages.add_message(request, messages.INFO, _("Item Successfully Edited"))
             return edit_inventory_item(make_get_request(request), pk)
     return TemplateResponse(
         request, "winadmin/inventory/edit_item.html", {"form": form, "item": item}
@@ -136,10 +145,119 @@ def _edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
 
 
 @login_required(login_url="winadmin:login_page")
-def update_inventory_item(request: HtmxHttpRequest) -> HttpResponse:
+def delete_inventory_item(request: HtmxHttpRequest) -> HttpResponse:
     pass
 
 
 @login_required(login_url="winadmin:login_page")
-def delete_inventory_item(request: HtmxHttpRequest) -> HttpResponse:
-    pass
+def view_all_transactions(request: HtmxHttpRequest) -> HttpResponse:
+    return _view_all_transactions(request)
+
+
+def _view_all_transactions(request: HtmxHttpRequest) -> HttpResponse:
+    transactions = Transaction.objects.all()
+    context = {"transactions": transactions}
+    return TemplateResponse(
+        request, "winadmin/transactions/list_transactions.html", context
+    )
+
+
+@login_required(login_url="winadmin:login_page")
+def view_sales_by_period(request: HtmxHttpRequest) -> HttpResponse:
+    return _view_sales_by_period(request)
+
+
+def _view_sales_by_period(request: HtmxHttpRequest) -> HttpResponse:
+    sales = Transaction.objects.filter(
+        name__in=["sale", "payment", "deposit", "return"]
+    ).order_by("transaction_datetime")
+    form = []
+    year = request.GET.get("year", datetime.now().year)
+    month = request.GET.get("month", datetime.now().month)
+    if request.htmx and not request.htmx.boosted:
+        form = SetLedgerPeriodForm(request.GET)
+        if form.is_valid():
+            year = form.cleaned_data["year"]
+            month = form.cleaned_data["month"]
+    else:
+        form = SetLedgerPeriodForm(initial={"year": year, "month": month})
+        if form.is_valid():
+            year = form.cleaned_data["year"]
+            month = form.cleaned_data["month"]
+    sales = sales.filter(transaction_datetime__year=year).filter(
+        transaction_datetime__month=month
+    )
+    balance = 0
+    ledger = []
+    for sale in sales:
+        if sale.name == "sale":
+            balance += sale.total_price_rounded
+        elif sale.name == "return":
+            balance -= sale.total_price_rounded
+        ledger.append([sale, balance])
+    context = {
+        "ledger": ledger,
+        "final_balance": balance,
+        "year": year,
+        "month": month,
+        "form": form,
+    }
+    if request.htmx and not request.htmx.boosted:
+        html = render_block_to_string(
+            request=request,
+            template_name="winadmin/transactions/list_sales_by_period.html",
+            block_name="content",
+            context=context,
+        )
+        return HttpResponse(html)
+    return TemplateResponse(
+        request, "winadmin/transactions/list_sales_by_period.html", context
+    )
+
+
+def create_transaction(request: HtmxHttpRequest) -> HttpResponse:
+    return _create_transaction(request)
+
+
+def _create_transaction(request: HtmxHttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = CreateTransactionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(
+                request, messages.INFO, _("Transaction Created Successfully")
+            )
+            return _create_transaction(make_get_request(request))
+        elif not form.is_valid():
+            return TemplateResponse(
+                request, "winadmin/transactions/create_transaction.html", context
+            )
+    form = CreateTransactionForm()
+    context = {"form": form}
+    return TemplateResponse(
+        request, "winadmin/transactions/create_transaction.html", context
+    )
+
+
+def edit_transaction(request: HtmxHttpRequest) -> HttpResponse:
+    return _create_transaction(request)
+
+
+def _edit_transaction(request: HtmxHttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = CreateTransactionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(
+                request, messages.INFO, _("Transaction Created Successfully")
+            )
+            return _create_transaction(make_get_request(request))
+        elif not form.is_valid():
+            return TemplateResponse(
+                request, "winadmin/transactions/create_transaction.html", context
+            )
+    form = CreateTransactionForm()
+    context = {"form": form}
+    return TemplateResponse(
+        request, "winadmin/transactions/create_transaction.html", context
+    )

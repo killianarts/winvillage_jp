@@ -30,6 +30,9 @@ urlpatterns = i18n_patterns(
     prefix_default_language=False,
 )
 
+if "rosetta" in settings.INSTALLED_APPS:
+    urlpatterns += [path("rosetta/", include("rosetta.urls"))]
+
 if settings.DEBUG:
     # This will only work in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

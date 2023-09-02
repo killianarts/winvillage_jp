@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from core.models import Item, Category
+from core.models import Item, Category, Transaction
 
 
 class LoginForm(forms.Form):
@@ -48,3 +48,21 @@ class CreateCategoryForm(forms.ModelForm):
         fields = [
             "title",
         ]
+
+
+class CreateTransactionForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        fields = [
+            "name",
+            "customer",
+            "transaction_datetime",
+            "item",
+            "quantity",
+            "total_price",
+        ]
+
+
+class SetLedgerPeriodForm(forms.Form):
+    year = forms.IntegerField()
+    month = forms.IntegerField()

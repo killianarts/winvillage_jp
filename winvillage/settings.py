@@ -252,7 +252,7 @@ LANGUAGES = (
 # Command for making Japanese messages:
 # django-admin makemessages -l ja
 LOCALE_PATHS = [
-    BASE_DIR / "locale",
+    str(BASE_DIR / "locale"),
 ]
 
 PARLER_LANGUAGES = {
@@ -276,6 +276,7 @@ PARLER_LANGUAGES = {
 # In Windows, this must be set to your system time zone.
 TIME_ZONE = "Asia/Tokyo"
 USE_I18N = True
+USE_L10N = True
 USE_TZ = True
 SITE_ID = 1
 
