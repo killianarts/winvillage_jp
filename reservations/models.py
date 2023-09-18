@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime, time, timedelta
 
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
@@ -112,7 +113,21 @@ class Room(models.Model):
         return self.name
 
 
+class StayManager(models.Manager):
+    def get_stays_for_date(self, date):
+        target_date = datetime.strptime(date, "%Y-%m-%d").date()
+        next_date = target_date + timedelta(days=1)
+
+        # ex: Stay.objects.get_stays_for_date("2023-09-13")
+        # returns all Stays that include the date within the range of their
+        # start_datetime and end_datetime.
+        return self.filter(
+            start_datetime__date__lt=next_date, end_datetime__date__gte=target_date
+        )
+
+
 class Stay(models.Model):
+    objects = StayManager()
     STATUS = Choices(
         ("not_reserved", _("Not Reserved")),
         ("reserved", _("Reserved")),
@@ -159,7 +174,7 @@ class Stay(models.Model):
 
     def __str__(self):
         start, end = self.get_stay_range()
-        return f"ID: {self.id}, {_('From')}: {start} {_('To')}: {end}"
+        return f"ID: {self.id}, {_('Start')}: {start} {_('End')}: {end}"
 
 
 class Reservation(models.Model):
