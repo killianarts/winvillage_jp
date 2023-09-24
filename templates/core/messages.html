@@ -1,0 +1,9 @@
+{% if messages %}
+  {% for message in messages %}
+    {% if message.level == "info" %}
+      <p class="text-green-500">{{ message }}</p>
+    {% elif message.level == "error" %}
+      <p class="text-red-500">{{ message }}</p>
+    {% endif %}
+  {% endfor %}
+{% endif %}

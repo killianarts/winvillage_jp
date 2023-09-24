@@ -50,7 +50,6 @@ from schedule.utils import (
     coerce_date_dict,
 )
 
-from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
 

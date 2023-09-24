@@ -57,3 +57,8 @@ def is_radio(field):
 @register.filter
 def is_file(field):
     return isinstance(field.field.widget, forms.FileInput)
+
+
+@register.filter
+def is_date(field):
+    return isinstance(field.field.widget, forms.DateInput)

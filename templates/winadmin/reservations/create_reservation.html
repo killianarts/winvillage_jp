@@ -1,0 +1,93 @@
+{% extends 'winadmin/index.html' %}
+{% load widget_tweaks widget_checks static i18n %}
+{% block subtitle %}
+  {% translate 'Create Reservation' %}
+{% endblock %}
+{% block content %}
+  <main id="dashboard-content" class="py-10 lg:ml-72">
+    <h1 class="text-center text-3xl">{% translate 'Create Reservation' %}</h1>
+    <div class="px-4 sm:px-6 lg:px-8">
+      <form id="create-reservation-form"
+            class="grid space-y-5 max-w-xl mx-auto"
+            action=""
+            method="post"
+            hx-post="{% url 'winadmin:create_reservation' %}"
+            hx-target="#dashboard-content"
+            hx-swap="outerHTML"
+            novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+          {% if messages %}
+            {% for message in messages %}
+              {% if message.level == "info" %}
+                <p class="text-green-500">{{ message }}</p>
+              {% elif message.level == "error" %}
+                <p class="text-red-500">{{ message }}</p>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% for field in form %}
+          {% if field|is_required %}
+            <label for="{{ field.id_for_label }}" class="grid">
+            <span class="flex items-center gap-2 pb-2">
+                              *
+                              {{ field.label }}
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <p class="text-red-500">{{ error|escape }}</p>
+                {% endfor %}
+              {% else %}
+                <p class="invisible">No Errors</p>
+              {% endif %}
+                            </span>
+          {% else %}
+            <label for="{{ field.id_for_label }}" class="grid">
+            <span class="flex items-center gap-2 pb-2">
+                              {{ field.label }}
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <p class="text-red-500">{{ error|escape }}</p>
+                {% endfor %}
+              {% else %}
+                <p class="invisible pt-2">No Errors</p>
+              {% endif %}
+                            </span>
+          {% endif %}
+        {% if field|is_checkbox %}
+          {% render_field field class="text-green-700" %}
+        {% endif %}
+        {% if field|is_multiple_checkbox %}
+          {% render_field field %}
+        {% endif %}
+        {% if field|is_input %}
+          {% if field|is_required %}
+            {% render_field field class="border-1" %}
+          {% else %}
+            {% render_field field class="border-1" %}
+          {% endif %}
+        {% endif %}
+        {% if field|is_textarea %}
+          {% if field|is_required %}
+            {% render_field field class="border-1" %}
+          {% else %}
+            {% render_field field class="border-1" %}
+          {% endif %}
+        {% endif %}
+        {% if field|is_select %}
+          {% render_field field %}
+        {% endif %}
+        {% if field|is_file %}
+          {% render_field field %}
+        {% endif %}
+        </label>
+        {% endfor %}
+        <button type="submit" name="submit"
+                class="py-3 px-5 bg-green-700 hover:bg-green-600 text-white text-xl transition-all duration-250">
+          Submit
+        </button>
+      </form>
+    </div>
+  </main>
+{% endblock %}

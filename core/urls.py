@@ -1,9 +1,10 @@
 from django.urls import path
 from . import views
 
-app_name = 'core'
+app_name = "core"
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('robots.txt', views.robots_txt)
+    path("", views.index, name="index"),
+    path("messages/", views.messages, name="messages"),
+    path("robots.txt", views.robots_txt),
 ]

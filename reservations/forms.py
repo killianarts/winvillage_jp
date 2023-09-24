@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from reservations.models import Stay, Reservation, ContactInfo
+from reservations.models import Stay
 
 
 class Step1Form(forms.Form):
@@ -17,6 +17,10 @@ class Step1Form(forms.Form):
 
 class DateInput(forms.DateInput):
     input_type = "date"
+
+    def __init__(self, **kwargs):
+        kwargs["format"] = "%Y-%m-%d"
+        super().__init__(**kwargs)
 
 
 # class Step2Form(forms.Form):

@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from model_utils import Choices
-from model_utils.fields import StatusField, MonitorField
 
 auth_user = get_user_model()
 
@@ -66,6 +65,7 @@ class Item(models.Model):
     stock_quantity = models.IntegerField(default=1)
     in_stock = models.BooleanField(default=True)
     active = models.BooleanField(default=False)
+    reservation_option = models.BooleanField(default=False)
     description = models.TextField(default=_("Long description"), null=True)
     short_description = models.CharField(
         max_length=280, default=_("Short description"), null=True
@@ -76,7 +76,7 @@ class Item(models.Model):
         return round(self.price, 2)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"ID: {self.pk}, Name: {self.name}"
 
     def get_absolute_url(self):
         return reverse("winadmin:edit_inventory_item", args=[str(self.pk)])
@@ -152,28 +152,3 @@ class Transaction(models.Model):
 
     def get_absolute_url(self):
         return reverse("winadmin:edit_transaction", args=[str(self.pk)])
-
-
-# Sales Journal, Purchase Journal
-# class Journal(models.Model):
-#     class Meta:
-#         verbose_name = _("Journal")
-#         verbose_name_plural = _("Journals")
-#
-#     TYPE_CHOICES = Choices(
-#         ("sales", _("Sales Journal")),
-#         ("purchase", _("Purchase Journal")),
-#         ("return", _("Return")),
-#         ("deposit", _("Bank Deposit")),
-#     )
-#     TYPE = models.CharField(max_length=30, choices=TYPE_CHOICES, verbose_name=_("Name"))
-#     transaction = models.ManyToManyField(
-#         Transaction, null=False, on_delete=models.CASCADE
-#     )
-#     balance = models.DecimalField(max_digits=19, decimal_places=4)
-#
-#     def __str__(self):
-#         return self.name, self.transaction.id
-#
-#     def get_absolute_url(self):
-#         return reverse("winadmin:edit_ledger", args=[str(self.pk)])

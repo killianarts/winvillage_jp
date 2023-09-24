@@ -24,11 +24,11 @@ class Command(BaseCommand):
                     new_password = settings.DJANGO_SUPER_USER_PASSWORD
 
                 u = User.objects.create_superuser(name, email, new_password)
-                print(f"===================================")
+                print("===================================")
                 print(
                     f"A superuser was created with name {name} email {email} and password {new_password}"
                 )
-                print(f"===================================")
+                print("===================================")
             else:
                 print("admin user found. Skipping super user creation")
             print(u)

@@ -1,8 +1,6 @@
 import calendar
 from datetime import datetime, date
 from typing import Iterable
-from django.utils.translation import gettext_lazy as _
-from django.utils.dates import WEEKDAYS
 
 class TailwindCalendar(calendar.HTMLCalendar):
     cssclasses = [style + " text-3xl p-2" for style in calendar.HTMLCalendar.cssclasses]

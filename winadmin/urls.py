@@ -34,4 +34,13 @@ urlpatterns = [
         name="view_sales_by_period",
     ),
     path("transactions/create/", views.create_transaction, name="create_transaction"),
+    path(
+        "reservations/",
+        views.view_reservations_by_period,
+        name="view_reservations_by_period",
+    ),
+    path("reservations/create/", views.create_reservation, name="create_reservation"),
+    path(
+        "reservations/edit/<int:pk>/", views.edit_reservation, name="edit_reservation"
+    ),
 ]

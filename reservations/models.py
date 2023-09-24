@@ -1,15 +1,16 @@
 import uuid
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 
+import pytz
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
 
-from core.models import Item, Category, ContactInfo, Customer
+from core.models import Item, ContactInfo
 
 auth_user = get_user_model()
 
@@ -115,7 +116,8 @@ class Room(models.Model):
 
 class StayManager(models.Manager):
     def get_stays_for_date(self, date):
-        target_date = datetime.strptime(date, "%Y-%m-%d").date()
+        time_zone = pytz.timezone("Asia/Tokyo")
+        target_date = datetime.strptime(date, "%Y-%m-%d").astimezone(time_zone).date()
         next_date = target_date + timedelta(days=1)
 
         # ex: Stay.objects.get_stays_for_date("2023-09-13")
@@ -135,19 +137,17 @@ class Stay(models.Model):
         ("checked_out", _("Checked Out")),
         ("cancelled", _("Cancelled")),
     )
-    TYPE_OF_STAY_CHOICES = Choices(
-        ("hourly", _("Hourly")), ("overnight", _("Overnight"))
-    )
+    STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     status = StatusField()
-    type = models.CharField(
+    stay_type = models.CharField(
         max_length=255,
-        choices=TYPE_OF_STAY_CHOICES,
-        default=TYPE_OF_STAY_CHOICES.hourly,
+        choices=STAY_TYPE_CHOICES,
+        default=STAY_TYPE_CHOICES.hourly,
     )
     start_datetime = models.DateTimeField(default=timezone.now)
     end_datetime = models.DateTimeField(default=timezone.now)
     status_changed = MonitorField(monitor="status")
-    type_changed = MonitorField(monitor="type")
+    type_changed = MonitorField(monitor="stay_type")
     updated_datetime = models.DateTimeField(auto_now=True)
     price = models.DecimalField(max_digits=19, decimal_places=4, default=10000.00)
 
@@ -172,6 +172,10 @@ class Stay(models.Model):
         total_price = stay_days * self.price_rounded
         return total_price
 
+    @property
+    def status_display(self):
+        return Stay.STATUS[self.status]
+
     def __str__(self):
         start, end = self.get_stay_range()
         return f"ID: {self.id}, {_('Start')}: {start} {_('End')}: {end}"
@@ -185,6 +189,16 @@ class Reservation(models.Model):
     )
     order_items = models.ManyToManyField(OrderItem)
     updated_datetime = models.DateTimeField(auto_now=True)
+
+    def add_order_item(self, item_pk):
+        item = Item.objects.get(pk=item_pk)
+        order_item = OrderItem.objects.create(item=item)
+        self.order_items.add(order_item)
+
+    def remove_order_item(self, item_pk):
+        item = Item.objects.get(pk=item_pk)
+        order_item = OrderItem.objects.get(item=item)
+        self.order_items.remove(order_item)
 
     @property
     def price(self):
@@ -214,7 +228,10 @@ class Reservation(models.Model):
     # def price_
 
     def __str__(self):
-        return f"Reservation id: {self.id}, Stay id: {self.stay.id}, User: {self.user}"
+        return f"Reservation id: {self.id}, User: {self.user}"
+
+    def get_absolute_url(self, pk):
+        return reverse("winadmin:edit_reservation", kwargs={"pk": self.pk})
 
 
 class ReservationToken(models.Model):

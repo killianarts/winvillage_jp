@@ -5,6 +5,7 @@ from datetime import datetime
 
 from django.http import HttpResponse, JsonResponse
 from django.template.response import TemplateResponse
+from django.utils.timezone import activate, get_current_timezone
 from django.views.decorators.http import require_POST
 from render_block import render_block_to_string
 from django.conf import settings
@@ -13,13 +14,9 @@ from django.core.mail import send_mail
 
 import reservations.forms as forms
 from reservations.models import (
-    Stay,
-    Reservation,
     ContactInfo,
     Item,
     OrderItem,
-    Category,
-    Order,
 )
 from core.utils import HtmxHttpRequest, make_get_request, get_or_set_reservation_session
 
@@ -100,26 +97,8 @@ def _step_2(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.stay.end_datetime = form.cleaned_data["end_datetime"]
                 reservation.stay.save()
                 return step_3(make_get_request(request))
-    current_date = datetime.now()
-    calendar_obj = stdlib_calendar.Calendar()
-    calendar_obj.setfirstweekday(stdlib_calendar.MONDAY)
-    dates_iter = calendar_obj.itermonthdates(current_date.year, current_date.month)
-    weekdays_iter = calendar_obj.iterweekdays()
-    day_names = []
-    for day in weekdays_iter:
-        day_name = stdlib_calendar.day_abbr[day]
-        day_names.append(day_name)
-
-    month_name = stdlib_calendar.month_name[current_date.month]
-
     context = {
         "form": form,
-        "current_date": current_date,
-        "calendar": calendar_obj,
-        "dates_iter": dates_iter,
-        "day_names": day_names,
-        "weekdays": weekdays_iter,
-        "month_name": month_name,
     }
     html = render_block_to_string(
         "reservations/reservation_form.html", "step_2_form", context
