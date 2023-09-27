@@ -2024,6 +2024,10 @@ select {
   outline-color: #ef4444;
 }
 
+.focus-visible\:outline-green-500:focus-visible {
+  outline-color: #22c55e;
+}
+
 .group:hover .group-hover\:translate-x-2 {
   --tw-translate-x: 0.5rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));

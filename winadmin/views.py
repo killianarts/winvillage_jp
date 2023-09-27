@@ -4,6 +4,7 @@ import pytz
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
@@ -13,7 +14,13 @@ from django.views.decorators.http import require_POST
 from render_block import render_block_to_string
 
 from core.models import Item, Category, Transaction, ContactInfo
-from core.utils import HtmxHttpRequest, make_get_request, get_or_set_reservation_session
+from core.utils import (
+    HtmxHttpRequest,
+    make_get_request,
+    get_or_set_reservation_session,
+    for_htmx,
+    htmx_form_validate,
+)
 from reservations.models import Reservation, Stay, OrderItem
 from winadmin.forms import (
     LoginForm,
@@ -25,7 +32,10 @@ from winadmin.forms import (
     SetReservationPeriodForm,
     CreateReservationForm,
     EditReservationForm,
+    StayForm,
+    ContactInfoForm,
 )
+from winvillage import settings
 
 TIMEZONE = "Asia/Tokyo"
 
@@ -325,111 +335,7 @@ def create_reservation(request: HtmxHttpRequest) -> HttpResponse:
     return _create_reservation(request)
 
 
-# def _create_reservation(request: HtmxHttpRequest) -> HttpResponse:
-#     if request.method == "POST":
-#         form = CreateReservationForm(request.POST)
-#         context = {"form": form}
-#         if "submit" in request.POST:
-#             if form.is_valid():
-#                 reservation = Reservation.objects.create()
-#                 reservation.save()
-#                 stay_type = form.cleaned_data["stay_type"]
-#                 start_datetime = form.cleaned_data["start_datetime"]
-#                 end_datetime = form.cleaned_data["end_datetime"]
-#                 first_name = form.cleaned_data["first_name"]
-#                 last_name = form.cleaned_data["last_name"]
-#                 email = form.cleaned_data["email"]
-#                 options = form.cleaned_data["options"]
-#                 stay = Stay.objects.create(
-#                     stay_type=stay_type,
-#                     start_datetime=start_datetime,
-#                     end_datetime=end_datetime,
-#                 )
-#                 stay.save()
-#                 reservation.stay = stay
-#                 contact_info, created = ContactInfo.objects.get_or_create(
-#                     first_name=first_name, last_name=last_name, email=email
-#                 )
-#                 contact_info.save()
-#                 reservation.contact_info = contact_info
-#                 for option_id in options:
-#                     order_item, created = OrderItem.objects.get_or_create(
-#                         item_id=option_id
-#                     )
-#                     order_item.save()
-#                     reservation.order_items.add(order_item)
-#                 reservation.stay.status = Stay.STATUS.reserved
-#                 stay.save()
-#                 reservation.save()
-#                 messages.add_message(
-#                     request, messages.INFO, _("Reservation successfully created.")
-#                 )
-#                 return create_reservation(make_get_request(request))
-#             else:
-#                 messages.add_message(
-#                     request, messages.ERROR, _("Reservation could not be created.")
-#                 )
-#                 return create_reservation(make_get_request(request))
-#         if request.htmx and not request.htmx.boosted:
-#             html = render_block_to_string(
-#                 request=request,
-#                 template_name="winadmin/reservations/create_reservation.html",
-#                 block_name="content",
-#                 context=context,
-#             )
-#             return HttpResponse(html)
-#
-#     form = CreateReservationForm()
-#     context = {"form": form}
-#     return TemplateResponse(
-#         request, "winadmin/reservations/create_reservation.html", context
-#     )
-
-
-def _create_reservation(request: HtmxHttpRequest) -> HttpResponse:
-    reservation = get_or_set_reservation_session(request)
-    if request.method == "POST":
-        form = CreateReservationForm(request.POST)
-        context = {"form": form}
-        if "submit" in request.POST:
-            if form.is_valid():
-                stay_type = form.cleaned_data["stay_type"]
-                start_datetime = form.cleaned_data["start_datetime"]
-                end_datetime = form.cleaned_data["end_datetime"]
-                first_name = form.cleaned_data["first_name"]
-                last_name = form.cleaned_data["last_name"]
-                email = form.cleaned_data["email"]
-                stay = Stay.objects.create(
-                    stay_type=stay_type,
-                    start_datetime=start_datetime,
-                    end_datetime=end_datetime,
-                    status=Stay.STATUS.reserved,
-                )
-                stay.save()
-                reservation.stay = stay
-                contact_info, created = ContactInfo.objects.get_or_create(
-                    first_name=first_name, last_name=last_name, email=email
-                )
-                contact_info.save()
-                reservation.contact_info = contact_info
-                reservation.save()
-                messages.add_message(
-                    request, messages.INFO, _("Reservation successfully created.")
-                )
-                return create_reservation(make_get_request(request))
-            else:
-                messages.add_message(
-                    request, messages.ERROR, _("Reservation could not be created.")
-                )
-                return create_reservation(make_get_request(request))
-        if request.htmx and not request.htmx.boosted:
-            html = render_block_to_string(
-                request=request,
-                template_name="winadmin/reservations/create_reservation.html",
-                block_name="content",
-                context=context,
-            )
-            return HttpResponse(html)
+def get_grills(reservation) -> tuple[list, QuerySet]:
     reserved_grills_ids = reservation.order_items.filter(
         item__category__title="grill", item__reservation_option=True
     ).values_list("item_id", flat=True)
@@ -440,14 +346,129 @@ def _create_reservation(request: HtmxHttpRequest) -> HttpResponse:
     )
     all_grills_ids = list(reserved_grills_ids) + list(unreserved_grills_ids)
     all_grills = Item.objects.filter(id__in=all_grills_ids).order_by("pk")
-    form = CreateReservationForm()
+    return reserved_grills_ids, all_grills
+
+
+def _create_reservation(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    square_settings = settings.SQUARE_SETTINGS
+    reserved_grills_ids, all_grills = get_grills(reservation)
     context = {
-        "form": form,
+        "reservation": reservation,
+        "SQUARE_APPLICATION_ID": square_settings["SQUARE_APPLICATION_ID"],
+        "SQUARE_LOCATION_ID": square_settings["SQUARE_LOCATION_ID"],
+        "SQUARE_CURRENCY": square_settings["SQUARE_CURRENCY"],
+        "grills": all_grills,
+        "reserved_grill_ids": reserved_grills_ids,
+    }
+    if request.method == "POST":
+        stay_form = StayForm(request.POST)
+        if stay_form.is_valid():
+            reservation.stay = stay_form.save()
+            reservation.save()
+        contact_info_form = ContactInfoForm(request.POST)
+        if contact_info_form.is_valid():
+            reservation.contact_info = contact_info_form.save()
+            reservation.save()
+        if request.htmx and not request.htmx.boosted:
+            html = render_block_to_string(
+                request=request,
+                template_name="winadmin/reservations/create_reservation.html",
+                block_name="content",
+                context=context,
+            )
+            return HttpResponse(html)
+    stay_form = StayForm()
+    contact_info_form = ContactInfoForm()
+    context = {
+        "stay_form": stay_form,
+        "contact_info_form": contact_info_form,
+        "reservation": reservation,
+        "SQUARE_APPLICATION_ID": square_settings["SQUARE_APPLICATION_ID"],
+        "SQUARE_LOCATION_ID": square_settings["SQUARE_LOCATION_ID"],
+        "SQUARE_CURRENCY": square_settings["SQUARE_CURRENCY"],
         "grills": all_grills,
         "reserved_grill_ids": reserved_grills_ids,
     }
     return TemplateResponse(
         request, "winadmin/reservations/create_reservation.html", context
+    )
+
+
+@require_POST
+def compose_reservation_stay(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    form = StayForm(request.POST)
+    if form.is_valid():
+        if reservation.stay:
+            stay = reservation.stay
+            stay.stay_type = form.cleaned_data.get("stay_type")
+            stay.start_datetime = form.cleaned_data.get("start_datetime")
+            stay.end_datetime = form.cleaned_data.get("end_datetime")
+            stay.save()
+        else:
+            stay = form.save()
+            reservation.stay = stay
+            reservation.save()
+    return create_reservation(request)
+
+
+@require_POST
+def compose_reservation(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    if "compose_stay" in request:
+        form = StayForm(request.POST)
+        if form.is_valid():
+            if reservation.stay:
+                stay = reservation.stay
+                stay.stay_type = form.cleaned_data.get("stay_type")
+                stay.start_datetime = form.cleaned_data.get("start_datetime")
+                stay.end_datetime = form.cleaned_data.get("end_datetime")
+                stay.save()
+            else:
+                stay = form.save()
+                reservation.stay = stay
+                reservation.save()
+    if "compose_contact_info" in request:
+        form = ContactInfoForm(request.POST)
+        if form.is_valid():
+            if reservation.contact_info:
+                contact_info = reservation.contact_info
+                contact_info.first_name = form.cleaned_data.get("first_name")
+                contact_info.last_name = form.cleaned_data.get("last_name")
+                contact_info.email = form.cleaned_data.get("email")
+                contact_info.save()
+            else:
+                contact_info = form.save()
+                reservation.contact_info = contact_info
+                reservation.save()
+    return create_reservation(request)
+
+
+@require_POST
+def create_contact_info(request: HtmxHttpRequest) -> HttpResponse:
+    return _create_contact_info(request)
+
+
+@htmx_form_validate(form_class=ContactInfoForm)
+def _create_contact_info(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    form = ContactInfoForm(request.POST)
+    if form.is_valid():
+        if reservation.contact_info:
+            contact_info = reservation.contact_info
+            contact_info.first_name = form.cleaned_data.get("first_name")
+            contact_info.last_name = form.cleaned_data.get("last_name")
+            contact_info.email = form.cleaned_data.get("email")
+            contact_info.save()
+        else:
+            contact_info = form.save()
+            reservation.contact_info = contact_info
+            reservation.save()
+    return TemplateResponse(
+        request,
+        "winadmin/reservations/create_reservation.html",
+        {"contact_info_form": form},
     )
 
 
@@ -461,14 +482,14 @@ def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
         order_item.save()
         reservation.order_items.add(order_item)
         reservation.save()
-        return step_3(make_get_request(request))
+        return create_reservation(make_get_request(request))
 
 
 @require_POST
 def remove_grill_reservation_option(request: HtmxHttpRequest, pk):
     get_or_set_reservation_session(request)
     OrderItem.objects.filter(user=request.user, item_id=pk).first().delete()
-    return step_3(make_get_request(request))
+    return create_reservation(make_get_request(request))
 
 
 @login_required(login_url="winadmin:login_page")

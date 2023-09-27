@@ -11,14 +11,7 @@
       <div class="space-y-2 grid grid-cols-1">
         {% for field in form %}
           <label class="text-xl" for="{{ field.id_for_label }}">
-            {#            {% if field.name == "stay_date_start" %}#}
-            {#              From:#}
-            {#              {% render_field field class="w-full mb-2" min=current_date %}#}
-            {#            {% endif %}#}
-            {#            {% if field.name == "stay_date_end" %}#}
-            {#              Until:#}
             {% render_field field class="w-full mb-2" %}
-            {#            {% endif %}#}
           </label>
         {% endfor %}
       </div>

@@ -41,6 +41,26 @@ urlpatterns = [
     ),
     path("reservations/create/", views.create_reservation, name="create_reservation"),
     path(
+        "reservations/create/add-option/<int:pk>/",
+        views.add_grill_reservation_option,
+        name="add_grill_reservation_option",
+    ),
+    path(
+        "reservations/create/remove-option/<int:pk>/",
+        views.remove_grill_reservation_option,
+        name="remove_grill_reservation_option",
+    ),
+    path(
+        "reservations/create/compose/",
+        views.compose_reservation,
+        name="compose_reservation",
+    ),
+    path(
+        "reservations/create/contact-info/",
+        views.create_contact_info,
+        name="create_contact_info",
+    ),
+    path(
         "reservations/edit/<int:pk>/", views.edit_reservation, name="edit_reservation"
     ),
 ]

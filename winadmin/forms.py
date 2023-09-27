@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 
 from core.models import Item, Category, Transaction
+from core.forms import TailwindFormMixin
+from reservations.models import Stay, Reservation, ContactInfo
 
 
 class LoginForm(forms.Form):
@@ -85,19 +87,31 @@ class DateInput(forms.DateInput):
 
 class CreateReservationForm(forms.Form):
     STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
-    GRILL_OPTIONS = (
-        (i.pk, i.name)
-        for i in Item.objects.filter(reservation_option=True).order_by("price")
-    )
     first_name = forms.CharField()
     last_name = forms.CharField()
     email = forms.EmailField()
+    stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES)
     start_datetime = forms.DateField(widget=DateInput)
     end_datetime = forms.DateField(widget=DateInput)
-    stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES)
-    options = forms.MultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple, choices=GRILL_OPTIONS, required=False
-    )
+
+
+class StayForm(forms.ModelForm):
+    class Meta:
+        model = Stay
+        fields = [
+            "stay_type",
+            "start_datetime",
+            "end_datetime",
+        ]
+        widgets = {"start_datetime": DateInput(), "end_datetime": DateInput()}
+
+
+class ContactInfoForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = ContactInfo
+        fields = ["first_name", "last_name", "email"]
+
+    do_htmx_validation = True
 
 
 class EditReservationForm(forms.Form):

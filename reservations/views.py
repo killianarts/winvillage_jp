@@ -66,7 +66,7 @@ def index(request):
 
 def step_1(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    initial = {"stay_type": reservation.stay.type}
+    initial = {"stay_type": reservation.stay.stay_type}
     form = forms.Step1Form(initial=initial)
     if request.method == "POST":
         if "submit" in request.POST:

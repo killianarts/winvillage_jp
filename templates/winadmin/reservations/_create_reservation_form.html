@@ -1,0 +1,40 @@
+{% load i18n widget_tweaks widget_checks %}
+{% for field in form %}
+  <label for="{{ field.id_for_label }}"
+         class="grid">
+  <span class="flex items-center gap-2 pb-2">
+    {% if field|is_required %}*{% endif %}
+    {{ field.label }}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        {% if field|is_required %}<p class="text-red-500">{% else %}
+          <p class="text-green-500">{% endif %}{{ error|escape }}</p>
+      {% endfor %}
+    {% else %}
+      <p class="invisible">No Errors</p>
+    {% endif %}
+  </span>
+    {% if field|is_checkbox %}
+      {% render_field field name=name class="text-green-700" %}
+    {% endif %}
+    {% if field|is_multiple_checkbox %}
+      {% render_field field name=name %}
+    {% endif %}
+    {% if field|is_input %}
+      {% render_field field name=name class="border-1" %}
+    {% endif %}
+    {% if field|is_textarea %}
+      {% if field|is_required %}
+        {% render_field field name=name class="border-1" %}
+      {% else %}
+        {% render_field field name=name class="border-1" %}
+      {% endif %}
+    {% endif %}
+    {% if field|is_select %}
+      {% render_field field name=name %}
+    {% endif %}
+    {% if field|is_file %}
+      {% render_field field name=name %}
+    {% endif %}
+  </label>
+{% endfor %}
