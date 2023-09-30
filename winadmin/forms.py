@@ -127,10 +127,10 @@ class EditReservationForm(forms.Form):
         ("checked_out", _("Checked Out")),
         ("cancelled", _("Cancelled")),
     )
-    GRILL_OPTIONS = (
-        (i.pk, i.name)
-        for i in Item.objects.filter(reservation_option=True).order_by("price")
-    )
+    # GRILL_OPTIONS = (
+    #     (i.pk, i.name)
+    #     for i in Item.objects.filter(reservation_option=True).order_by("price")
+    # )
     status = forms.ChoiceField(choices=STATUS_CHOICES)
     first_name = forms.CharField()
     last_name = forms.CharField()
