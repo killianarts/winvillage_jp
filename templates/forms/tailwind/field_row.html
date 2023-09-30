@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<div{% with classes=field.css_classes %} class="field is-horizontal {{ classes }}"{% endwith %}
+<div{% with classes=field.css_classes %} class="field is-horizontal slide-it {{ classes }}"{% endwith %}
                                          id="form-row-{{ field.name }}"
         {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}
                                          hx-get="."
@@ -31,13 +31,15 @@
         {% if field.help_text %}
           <p class="help">{{ field.help_text|safe }}</p>
         {% endif %}
-        <div class="slide-it">
-          {% if errors %}
-            <div class="help is-danger text-red-500 ">
-              {{ errors }}
-            </div>
-          {% endif %}
-        </div>
+        {% if errors %}
+          <div class="help is-danger text-red-500">
+            {{ errors }}
+          </div>
+        {% else %}
+          <div class="invisible">
+            No errors
+          </div>
+        {% endif %}
       </div>
     {% endwith %}
   </div>

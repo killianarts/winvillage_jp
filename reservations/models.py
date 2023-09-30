@@ -158,8 +158,12 @@ class Stay(models.Model):
         )
 
     @property
-    def price_rounded(self):
-        return round(self.price * self.days, 2)
+    def price_fully_rounded(self):
+        return round(self.price * self.days, 0)
+
+    @property
+    def price_per_day(self):
+        return round(self.price, 0)
 
     @property
     def days(self):
@@ -169,7 +173,7 @@ class Stay(models.Model):
     @property
     def total_price(self):
         stay_days = self.days
-        total_price = stay_days * self.price_rounded
+        total_price = stay_days * self.price_fully_rounded
         return total_price
 
     @property
@@ -213,7 +217,7 @@ class Reservation(models.Model):
         total = 0
         for order_item in self.order_items.all():
             total += order_item.item.price_rounded
-        total += self.stay.price_rounded
+        total += self.stay.price_fully_rounded
         return total
 
     @property
@@ -221,7 +225,7 @@ class Reservation(models.Model):
         total = 0
         for order_item in self.order_items.all():
             total += order_item.item.price_rounded
-        total += self.stay.price_rounded
+        total += self.stay.price_fully_rounded
         return round(total, 0)
 
     # @property

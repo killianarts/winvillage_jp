@@ -50,16 +50,7 @@ urlpatterns = [
         views.remove_grill_reservation_option,
         name="remove_grill_reservation_option",
     ),
-    path(
-        "reservations/create/compose/",
-        views.compose_reservation,
-        name="compose_reservation",
-    ),
-    path(
-        "reservations/create/contact-info/",
-        views.create_contact_info,
-        name="create_contact_info",
-    ),
+    path("reservations/create/update-price/", views.update_price, name="update_price"),
     path(
         "reservations/edit/<int:pk>/", views.edit_reservation, name="edit_reservation"
     ),

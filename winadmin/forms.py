@@ -85,7 +85,7 @@ class DateInput(forms.DateInput):
         super().__init__(**kwargs)
 
 
-class CreateReservationForm(forms.Form):
+class CreateReservationForm(TailwindFormMixin, forms.Form):
     STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     first_name = forms.CharField()
     last_name = forms.CharField()
@@ -94,8 +94,10 @@ class CreateReservationForm(forms.Form):
     start_datetime = forms.DateField(widget=DateInput)
     end_datetime = forms.DateField(widget=DateInput)
 
+    do_htmx_validation = True
 
-class StayForm(forms.ModelForm):
+
+class StayForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Stay
         fields = [
@@ -104,6 +106,8 @@ class StayForm(forms.ModelForm):
             "end_datetime",
         ]
         widgets = {"start_datetime": DateInput(), "end_datetime": DateInput()}
+
+    do_htmx_validation = True
 
 
 class ContactInfoForm(TailwindFormMixin, forms.ModelForm):

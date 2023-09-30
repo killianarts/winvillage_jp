@@ -75,6 +75,10 @@ class Item(models.Model):
     def price_rounded(self):
         return round(self.price, 2)
 
+    @property
+    def price_fully_rounded(self):
+        return round(self.price, 0)
+
     def __str__(self):
         return f"ID: {self.pk}, Name: {self.name}"
 

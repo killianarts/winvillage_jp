@@ -2,10 +2,6 @@
 {% load widget_tweaks widget_checks static i18n %}
 {% block extra_styles %}
   <style>
-
-      <
-      style >
-
       @keyframes fade-in {
           from {
               opacity: 0;
@@ -109,65 +105,64 @@
           margin-bottom: 40px;
       }
 
-      {#h3 {#}
-      {#    margin: 0;#}
-      {
-      #}#}
-      {##}
-      {#p {#}
-      {#    line-height: 24px;#}
-      {
-      #}#}
-      {##}
-      {#label {#}
-      {#    font-size: 12px;#}
-      {#    width: 100%;#}
-      {
-      #}#}
-      {##}
-      {#input {#}
-      {#    padding: 12px;#}
-      {#    width: 100%;#}
-      {#    border-radius: 5px;#}
-      {#    border-width: 1px;#}
-      {#    margin-top: 20px;#}
-      {#    font-size: 16px;#}
-      {#    border: 1px solid rgba(0, 0, 0, 0.15);#}
-      {
-      #}#}
-      {##}
-      {#input:focus {#}
-      {#    border: 1px solid #006aff;#}
-      {
-      #}#}
-      {##}
-      {#button {#}
-      {#    color: #ffffff;#}
-      {#    background-color: #006aff;#}
-      {#    border-radius: 5px;#}
-      {#    cursor: pointer;#}
-      {#    border-style: none;#}
-      {#    user-select: none;#}
-      {#    outline: none;#}
-      {#    font-size: 16px;#}
-      {#    font-weight: 500;#}
-      {#    line-height: 24px;#}
-      {#    padding: 12px;#}
-      {#    width: 100%;#}
-      {#    box-shadow: 1px;#}
-      {
-      #}#}
-      {##}
-      {#button:active {#}
-      {#    background-color: rgb(0, 85, 204);#}
-      {
-      #}#}
-      {##}
-      {#button:disabled {#}
-      {#    background-color: rgba(0, 0, 0, 0.05);#}
-      {#    color: rgba(0, 0, 0, 0.3);#}
-      {
-      #}#}
+      #card-styles-container h3 {
+          margin: 0;
+      }
+
+      #card-styles-container p {
+          line-height: 24px;
+      }
+
+      #card-styles-container label {
+          font-size: 12px;
+          width: 100%;
+      }
+
+
+      #card-styles-container input {
+          padding: 12px;
+          width: 100%;
+          border-radius: 5px;
+          border-width: 1px;
+          margin-top: 20px;
+          font-size: 16px;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+      }
+
+
+      #card-styles-container input:focus {
+          border: 1px solid #006aff;
+      }
+
+
+      #card-styles-container button,
+      #card-button button {
+          color: #ffffff;
+          background-color: #006aff;
+          border-radius: 5px;
+          cursor: pointer;
+          border-style: none;
+          user-select: none;
+          outline: none;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 24px;
+          padding: 12px;
+          width: 100%;
+          box-shadow: 1px;
+      }
+
+
+      #card-styles-container button:active {
+          background-color: rgb(0, 85, 204);
+      }
+
+      #card-styles-container button:disabled,
+      #card-button button:disabled {
+          background-color: rgba(0, 0, 0, 0.05);
+          color: rgba(0, 0, 0, 0.3);
+      }
+
 
       #payment-status-container {
           display: flex;
@@ -412,119 +407,21 @@
   {% translate 'Create Reservation' %}
 {% endblock %}
 {% block content %}
-  {#  <main id="dashboard-content" class="py-10 lg:ml-72">#}
-  {#    <h1 class="text-center text-3xl">{% translate 'Create Reservation' %}</h1>#}
-  {#    <div class="px-4 sm:px-6 lg:px-8">#}
-  {#      <form id="create-reservation-form"#}
-  {#            class="grid space-y-5 max-w-xl mx-auto"#}
-  {#            action=""#}
-  {#            method="post"#}
-  {#            hx-post="{% url 'winadmin:create_reservation' %}"#}
-  {#            hx-target="#dashboard-content"#}
-  {#            hx-swap="outerHTML"#}
-  {#            novalidate>#}
-  {#        {% csrf_token %}#}
-  {#        {{ stay_form.non_field_errors }}#}
-  {#        <div>#}
-  {#          {% if messages %}#}
-  {#            {% for message in messages %}#}
-  {#              {% if message.level == "info" %}#}
-  {#                <p class="text-green-500">{{ message }}</p>#}
-  {#              {% elif message.level == "error" %}#}
-  {#                <p class="text-red-500">{{ message }}</p>#}
-  {#              {% endif %}#}
-  {#            {% endfor %}#}
-  {#          {% endif %}#}
-  {#        </div>#}
-  {#        <div id="contact_form_fields" hx-post="{% url 'winadmin:create_reservation' %}"#}
-  {#             hx-swap="outerHTML" hx-trigger="change delay:250ms" hx-vals='{"validate":""}'>#}
-  {#          {% include 'winadmin/reservations/_create_reservation_form.html' with form=contact_info_form name="compose_contact_info" %}#}
-  {#        </div>#}
-  {#      </form>#}
-  {#      <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">#}
-  {#        {% translate 'Choose Options' %}</h2>#}
-  {#      <fieldset>#}
-  {#        <legend class="sr-only">{% translate 'Option Types' %}</legend>#}
-  {#        <div class="space-y-2 grid grid-cols-1">#}
-  {#          {% for grill in grills %}#}
-  {#            <div class="bg-white shadow sm:rounded-lg">#}
-  {#              <div class="px-4 py-5 sm:p-6">#}
-  {#                <h3 class="text-base font-semibold leading-6 text-gray-900">{{ grill.name }}</h3>#}
-  {#                <div class="mt-2 max-w-xl text-sm text-green-500">#}
-  {#                  <p>Price: {{ grill.price_rounded }}</p>#}
-  {#                </div>#}
-  {#                <div class="mt-2 max-w-xl text-sm text-gray-500">#}
-  {#                  <p>{{ grill.description }}</p>#}
-  {#                </div>#}
-  {#                <form class="mt-5">#}
-  {#                  {% if grill.id in reserved_grill_ids %}#}
-  {#                    <button hx-post="{% url 'winadmin:remove_grill_reservation_option' grill.pk %}"#}
-  {#                            hx-target="#dashboard-content"#}
-  {#                            hx-swap="outerHTML"#}
-  {#                            name="remove"#}
-  {#                            type="submit"#}
-  {#                            class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">#}
-  {#                      Remove#}
-  {#                    </button>#}
-  {#                  {% else %}#}
-  {#                    <button hx-post="{% url 'winadmin:add_grill_reservation_option' grill.pk %}"#}
-  {#                            hx-target="#dashboard-content"#}
-  {#                            hx-swap="outerHTML"#}
-  {#                            name="add"#}
-  {#                            type="submit"#}
-  {#                            class="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500">#}
-  {#                      Add#}
-  {#                    </button>#}
-  {#                  {% endif %}#}
-  {#                </form>#}
-  {#              </div>#}
-  {#            </div>#}
-  {#          {% endfor %}#}
-  {#        </div>#}
-  {#      </fieldset>#}
-  {#      <div class="grid grid-cols-1">#}
-  {#        <div class="grid border-b-2"></div>#}
-  {#        {% for order_item in reservation.order_items.all %}#}
-  {#          <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">#}
-  {#            <span>{{ order_item.item.name }}</span>#}
-  {#            <span class="font-black">￥{{ order_item.item.price_rounded }}</span></div>#}
-  {#        {% endfor %}#}
-  {#        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}#}
-  {#          Price Per Day#}
-  {#        {% endblocktranslate %}#}
-  {#          :</span><span class="font-black">￥{{ reservation.stay.price_rounded }}</span></div>#}
-  {#        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}#}
-  {#          Total Days#}
-  {#        {% endblocktranslate %}#}
-  {#          :</span><span class="font-black">{{ reservation.stay.days }}</span></div>#}
-  {#        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% translate 'Total Price' %}:</span>#}
-  {#          <span class="font-black">￥{{ reservation.price_rounded }}</span></div>#}
-  {#      </div>#}
-  {#      <form id='payment-form' class="grid">#}
-  {#        {% csrf_token %}#}
-  {#        <div id='card-container'></div>#}
-  {#        <button id='card-button'#}
-  {#                type="button"#}
-  {#                class="rounded-md bg-green-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm#}
-  {#                    hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2#}
-  {#                    focus-visible:outline-green-700">#}
-  {#          Pay ￥{{ reservation.price_fully_rounded }}#}
-  {#        </button>#}
-  {#      </form>#}
-  {#      <div id='payment-status-container'></div>#}
-  {#    </div>#}
-  {#  </main>#}
-
   <main id="dashboard-content" class="py-10 lg:ml-72">
     <h1 class="text-center text-3xl">{% translate 'Create Reservation' %}</h1>
     <div class="px-4 sm:px-6 lg:px-8">
-      <form id="contact-info-form"
+      <form id="create-reservation-form"
             class="grid space-y-5 max-w-xl mx-auto"
             action=""
             method="post"
+            hx-post="."
+            hx-trigger="keydown[metaKey&&key=='s'] from:body"
+            hx-swap="outerHTML"
+            hx-target="#dashboard-content"
+            hx-vals='{"use_block": "content"}'
             novalidate>
         {% csrf_token %}
-        {{ stay_form.non_field_errors }}
+        {{ form.non_field_errors }}
         <div id="messages">
           {% if messages %}
             {% for message in messages %}
@@ -536,126 +433,118 @@
             {% endfor %}
           {% endif %}
         </div>
-        {% block contact_form_fields %}
-          <div class="grid mx-auto"
-               hx-post="{% url 'winadmin:create_contact_info' %}"
-               hx-target="this"
-               hx-swap="outerHTML"
-               hx-vals='{"use_block": "contact_form_fields"}' hx-trigger="keyup delay:500ms">
-            {#            {% for field in contact_info_form %}#}
-            {#              <label for="{{ field.id_for_label }}">#}
-            {#              <span class="flex items-center gap-2 pb-2">#}
-            {#                {% if field|is_required %}*{% endif %}#}
-            {#                {{ field.label }}#}
-            {#                {% if field.errors %}#}
-            {#                  {% for error in field.errors %}#}
-            {#                    {% if field|is_required %}<p class="text-red-500">{% else %}#}
-            {#                      <p class="text-green-500">{% endif %}{{ error|escape }}</p>#}
-            {#                  {% endfor %}#}
-            {#                {% else %}#}
-            {#                  <p class="invisible">No Errors</p>#}
-            {#                {% endif %}#}
-            {#              </span>#}
-            {#                {% if field|is_checkbox %}#}
-            {#                  {% render_field field name=name class="text-green-700" %}#}
-            {#                {% endif %}#}
-            {#                {% if field|is_multiple_checkbox %}#}
-            {#                  {% render_field field name=name %}#}
-            {#                {% endif %}#}
-            {#                {% if field|is_input %}#}
-            {#                  {% render_field field name=name class="border-1" %}#}
-            {#                {% endif %}#}
-            {#                {% if field|is_textarea %}#}
-            {#                  {% if field|is_required %}#}
-            {#                    {% render_field field name=name class="border-1" %}#}
-            {#                  {% else %}#}
-            {#                    {% render_field field name=name class="border-1" %}#}
-            {#                  {% endif %}#}
-            {#                {% endif %}#}
-            {#                {% if field|is_select %}#}
-            {#                  {% render_field field name=name %}#}
-            {#                {% endif %}#}
-            {#                {% if field|is_file %}#}
-            {#                  {% render_field field name=name %}#}
-            {#                {% endif %}#}
-            {#              </label>#}
-            {{ contact_info_form }}
-            {#            {% endfor %}#}
+        {% block form_fields %}
+          <div class="grid mx-auto">
+            {{ form }}
           </div>
         {% endblock %}
-      </form>
-      <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
-        {% translate 'Choose Options' %}</h2>
-      <fieldset>
-        <legend class="sr-only">{% translate 'Option Types' %}</legend>
-        <div class="space-y-2 grid grid-cols-1">
-          {% for grill in grills %}
-            <div class="bg-white shadow sm:rounded-lg">
-              <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-base font-semibold leading-6 text-gray-900">{{ grill.name }}</h3>
-                <div class="mt-2 max-w-xl text-sm text-green-500">
-                  <p>Price: {{ grill.price_rounded }}</p>
-                </div>
-                <div class="mt-2 max-w-xl text-sm text-gray-500">
-                  <p>{{ grill.description }}</p>
-                </div>
-                <form class="mt-5">
-                  {% if grill.id in reserved_grill_ids %}
-                    <button hx-post="{% url 'winadmin:remove_grill_reservation_option' grill.pk %}"
-                            hx-target="#dashboard-content"
-                            hx-swap="outerHTML"
-                            name="remove"
-                            type="submit"
-                            class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
-                      Remove
-                    </button>
-                  {% else %}
-                    <button hx-post="{% url 'winadmin:add_grill_reservation_option' grill.pk %}"
-                            hx-target="#dashboard-content"
-                            hx-swap="outerHTML"
-                            name="add"
-                            type="submit"
-                            class="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500">
-                      Add
-                    </button>
-                  {% endif %}
-                </form>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      </fieldset>
-      <div class="grid grid-cols-1">
-        <div class="grid border-b-2"></div>
-        {% for order_item in reservation.order_items.all %}
-          <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">
-            <span>{{ order_item.item.name }}</span>
-            <span class="font-black">￥{{ order_item.item.price_rounded }}</span></div>
-        {% endfor %}
-        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
-          Price Per Day
-        {% endblocktranslate %}
-          :</span><span class="font-black">￥{{ reservation.stay.price_rounded }}</span></div>
-        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
-          Total Days
-        {% endblocktranslate %}
-          :</span><span class="font-black">{{ reservation.stay.days }}</span></div>
-        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% translate 'Total Price' %}:</span>
-          <span class="font-black">￥{{ reservation.price_rounded }}</span></div>
-      </div>
-      <form id='payment-form' class="grid">
-        {% csrf_token %}
-        <div id='card-container'></div>
-        <button id='card-button'
-                type="button"
+        <button name="submit"
+                type="submit"
+                hx-post="."
+                hx-swap="outerHTML"
+                hx-target="this"
+                hx-vals='{"use_block": "options"}'
                 class="rounded-md bg-green-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
                     hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                     focus-visible:outline-green-700">
-          Pay ￥{{ reservation.price_fully_rounded }}
+          {% translate 'Choose Options' %}
         </button>
       </form>
-      <div id='payment-status-container'></div>
+      {% block payment-form %}
+        <div id="payment-wrapper"
+             hx-get="{% url 'winadmin:update_price' %}"
+             hx-trigger="updatePrice from:body"
+             hx-swap="outerHTML"
+             hx-target="#payment-wrapper"
+             hx-vals='{"use_block": "payment-form"}'>
+          <div class="grid grid-cols-1">
+            <div class="grid border-b-2"></div>
+            {% for order_item in reservation.order_items.all %}
+              <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">
+                <span>{{ order_item.item.name }}</span>
+                <span class="font-black">￥{{ order_item.item.price_fully_rounded }}</span></div>
+            {% endfor %}
+            <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
+              Price Per Day
+            {% endblocktranslate %}
+              :</span><span class="font-black">￥{{ reservation.stay.price_per_day }}</span></div>
+            <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
+              Total Days
+            {% endblocktranslate %}
+              :</span><span class="font-black">{{ reservation.stay.days }}</span></div>
+            <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% translate 'Total Price' %}:</span>
+              <span class="font-black">￥{{ reservation.price_fully_rounded }}</span></div>
+          </div>
+          <form id='payment-form' class="grid">
+            {% csrf_token %}
+            <div id="card-styles-container">
+              <div id='card-container'></div>
+            </div>
+            <button id='card-button'
+                    type="button"
+                    class="rounded-md bg-green-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+                    hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                    focus-visible:outline-green-700">
+              Pay ￥{{ reservation.price_fully_rounded }}
+            </button>
+          </form>
+          <div id='payment-status-container'></div>
+        </div>
+      {% endblock %}
     </div>
   </main>
 
+{% endblock %}
+
+{% block options %}
+  <div id="options-wrapper">
+    <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
+      {% translate 'Choose Options' %}</h2>
+    <fieldset>
+      <legend class="sr-only">{% translate 'Option Types' %}</legend>
+      <div class="space-y-2 grid grid-cols-1">
+        {% for grill in grills %}
+          <div class="bg-white shadow sm:rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-base font-semibold leading-6 text-gray-900">{{ grill.name }}</h3>
+              <div class="mt-2 max-w-xl text-sm text-green-500">
+                <p>Price: {{ grill.price_fully_rounded }}</p>
+              </div>
+              <div class="mt-2 max-w-xl text-sm text-gray-500">
+                <p>{{ grill.description }}</p>
+              </div>
+              {% if grill.id in reserved_grill_ids %}
+                <form action="{% url 'winadmin:remove_grill_reservation_option' grill.pk %}"
+                      method="post"
+                      hx-post="{% url 'winadmin:remove_grill_reservation_option' grill.pk %}"
+                      hx-target="#options-wrapper"
+                      hx-swap="outerHTML"
+                      hx-vals='{"use_block": "options"}'
+                      class="mt-5">
+                  <button name="remove"
+                          type="submit"
+                          class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
+                    {% translate 'Remove' %}
+                  </button>
+                </form>
+              {% else %}
+                <form action="{% url 'winadmin:add_grill_reservation_option' grill.pk %}"
+                      hx-post="{% url 'winadmin:add_grill_reservation_option' grill.pk %}"
+                      hx-target="#options-wrapper"
+                      hx-swap="outerHTML"
+                      hx-vals='{"use_block": "options"}'
+                      class="mt-5">
+                  <button name="add"
+                          type="submit"
+                          class="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500">
+                    {% translate 'Add' %}
+                  </button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
 {% endblock %}

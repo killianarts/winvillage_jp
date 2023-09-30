@@ -125,8 +125,8 @@ def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
 
 @require_POST
 def remove_grill_reservation_option(request: HtmxHttpRequest, pk):
-    get_or_set_reservation_session(request)
-    OrderItem.objects.filter(user=request.user, item_id=pk).first().delete()
+    reservation = get_or_set_reservation_session(request)
+    reservation.order_items.filter(user=request.user, item_id=pk).first().delete()
     return step_3(make_get_request(request))
 
 
