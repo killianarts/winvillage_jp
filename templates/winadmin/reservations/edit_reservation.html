@@ -17,7 +17,7 @@
         {{ form.non_field_errors }}
         {% if messages %}
           {% for message in messages %}
-            <p class="text-green-500">{{ message }}</p>
+            <p class="text-orange-500">{{ message }}</p>
           {% endfor %}
         {% endif %}
         {% for field in form %}
@@ -50,7 +50,7 @@
             </span>
           {% endif %}
         {% if field|is_checkbox %}
-          {% render_field field class="text-green-700" %}
+          {% render_field field class="text-orange-700" %}
         {% endif %}
         {% if field|is_multiple_checkbox %}
           {% render_field field %}
@@ -80,7 +80,7 @@
         </label>
         {% endfor %}
         <button type="submit" name="submit"
-                class="py-3 px-5 bg-green-700 hover:bg-green-600 text-white text-xl transition-all duration-250">
+                class="py-3 px-5 bg-orange-700 hover:bg-orange-600 text-white text-xl transition-all duration-250">
           Submit
         </button>
       </form>

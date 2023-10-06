@@ -25,12 +25,13 @@ class CreateItemForm(forms.ModelForm):
             "stock_quantity",
             "in_stock",
             "active",
+            "reservation_option",
             "description",
             "short_description",
         ]
 
 
-class EditItemForm(forms.ModelForm):
+class EditItemForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Item
         fields = [
@@ -41,9 +42,12 @@ class EditItemForm(forms.ModelForm):
             "stock_quantity",
             "in_stock",
             "active",
+            "reservation_option",
             "description",
             "short_description",
         ]
+
+    do_htmx_validation = True
 
 
 class CreateCategoryForm(forms.ModelForm):
@@ -91,8 +95,8 @@ class CreateReservationForm(TailwindFormMixin, forms.Form):
     last_name = forms.CharField()
     email = forms.EmailField()
     stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES)
-    start_datetime = forms.DateField(widget=DateInput)
-    end_datetime = forms.DateField(widget=DateInput)
+    start_datetime = forms.DateField()
+    end_datetime = forms.DateField()
 
     do_htmx_validation = True
 
@@ -127,10 +131,6 @@ class EditReservationForm(forms.Form):
         ("checked_out", _("Checked Out")),
         ("cancelled", _("Cancelled")),
     )
-    # GRILL_OPTIONS = (
-    #     (i.pk, i.name)
-    #     for i in Item.objects.filter(reservation_option=True).order_by("price")
-    # )
     status = forms.ChoiceField(choices=STATUS_CHOICES)
     first_name = forms.CharField()
     last_name = forms.CharField()
@@ -138,6 +138,3 @@ class EditReservationForm(forms.Form):
     start_datetime = forms.DateField(widget=DateInput)
     end_datetime = forms.DateField(widget=DateInput)
     stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES)
-    # options = forms.MultipleChoiceField(
-    #     widget=forms.CheckboxSelectMultiple, choices=GRILL_OPTIONS, required=False
-    # )

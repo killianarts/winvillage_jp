@@ -10,6 +10,8 @@ from render_block import render_block_to_string
 from functools import wraps
 
 from django.forms import Form
+
+from core.models import ContactInfo
 from reservations.models import Stay, Reservation, Order
 
 

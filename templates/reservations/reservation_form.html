@@ -2,7 +2,7 @@
 
 {% block step_1_form %}
   <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
-    <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">{% translate 'Choose your reservation type' %}</h2>
+    <h2 class="text-center text-xl sm:text-3xl text-orange-950 pb-2 mb-2 border-b-2 border-neutral-100">{% translate 'Choose your reservation type' %}</h2>
     <form hx-post="{% url 'reservations:step-1' %}"
           hx-target="#reservation-form-wrapper"
           hx-swap="outerHTML"
@@ -27,7 +27,7 @@
 
 {% block step_2_form %}
   <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
-    <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">{% translate 'Choose Date of Stay' %}</h2>
+    <h2 class="text-center text-xl sm:text-3xl text-orange-950 pb-2 mb-2 border-b-2 border-neutral-100">{% translate 'Choose Date of Stay' %}</h2>
     <form hx-post="{% url 'reservations:step-2' %}"
           hx-target="#reservation-form-wrapper"
           hx-swap="outerHTML"
@@ -57,7 +57,7 @@
 
 {% block step_3_form %}
   <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
-    <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
+    <h2 class="text-center text-xl sm:text-3xl text-orange-950 pb-2 mb-2 border-b-2 border-neutral-100">
       {% translate 'Choose Options' %}</h2>
     <form hx-post="{% url 'reservations:step-3' %}"
           hx-target="#reservation-form-wrapper"
@@ -69,11 +69,11 @@
           {% for grill in grills %}
             <div class="bg-white shadow sm:rounded-lg">
               <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-base font-semibold leading-6 text-gray-900">{{ grill.name }}</h3>
-                <div class="mt-2 max-w-xl text-sm text-green-500">
+                <h3 class="text-base font-semibold leading-6 text-stone-900">{{ grill.name }}</h3>
+                <div class="mt-2 max-w-xl text-sm text-orange-500">
                   <p>Price: ￥{{ grill.price_rounded }}</p>
                 </div>
-                <div class="mt-2 max-w-xl text-sm text-gray-500">
+                <div class="mt-2 max-w-xl text-sm text-stone-500">
                   <p>{{ grill.description }}</p>
                 </div>
                 <div class="mt-5">
@@ -110,7 +110,7 @@
 
 {% block step_4_form %}
   <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
-    <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
+    <h2 class="text-center text-xl sm:text-3xl text-orange-950 pb-2 mb-2 border-b-2 border-neutral-100">
       {% translate 'Contact Information' %}</h2>
     <form class="space-y-5">
       <fieldset>
@@ -139,8 +139,8 @@
                 hx-swap="outerHTML"
                 name="submit"
                 type="submit"
-                class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500
-                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                class="bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500
+                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
           {% blocktranslate %}
             Next
           {% endblocktranslate %}
@@ -153,9 +153,9 @@
                 hx-get="{% url 'reservations:step-3' %}"
                 hx-target="#reservation-form-wrapper"
                 hx-swap="outerHTML"
-                class="bg-green-50 px-3.5 py-2.5 text-sm font-semibold text-green-950 shadow-sm
-                 hover:bg-green-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                 focus-visible:outline-green-600">
+                class="bg-orange-50 px-3.5 py-2.5 text-sm font-semibold text-orange-950 shadow-sm
+                 hover:bg-orange-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                 focus-visible:outline-orange-600">
           {% translate 'Back' %}
         </button>
       </div>
@@ -165,10 +165,10 @@
 
 {% block confirmation_form %}
   <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
-    <h2 class="text-center text-xl sm:text-3xl text-green-950 pb-2 mb-2 border-b-2 border-neutral-100">
+    <h2 class="text-center text-xl sm:text-3xl text-orange-950 pb-2 mb-2 border-b-2 border-neutral-100">
       {% translate 'Confirm Details' %}</h2>
     <div class="space-y-5">
-      <div class="grid grid-cols-1 divide-y-2 divide-gray-50">
+      <div class="grid grid-cols-1 divide-y-2 divide-stone-50">
         {{ form.non_field_errors }}
         {% for field in stay_form %}
           <label class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2" for="{{ field.id_for_label }}">
@@ -225,8 +225,8 @@
       </div>
       <div class="grid gap-2">
         <a href="{% url 'reservations:payment_page' %}"
-           class="bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-center text-white shadow-sm hover:bg-green-500
-                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+           class="bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-center text-white shadow-sm hover:bg-orange-500
+                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
           {% blocktranslate %}
             Confirm and Go to Checkout
           {% endblocktranslate %}
@@ -239,9 +239,9 @@
                 hx-get="{% url 'reservations:step-4' %}"
                 hx-target="#reservation-form-wrapper"
                 hx-swap="outerHTML"
-                class="bg-green-50 px-3.5 py-2.5 text-sm font-semibold text-green-950 shadow-sm
-                 hover:bg-green-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                 focus-visible:outline-green-600">
+                class="bg-orange-50 px-3.5 py-2.5 text-sm font-semibold text-orange-950 shadow-sm
+                 hover:bg-orange-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                 focus-visible:outline-orange-600">
           {% translate 'Back' %}
         </button>
       </div>

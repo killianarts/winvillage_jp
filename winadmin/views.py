@@ -144,14 +144,17 @@ def edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     return _edit_inventory_item(request, pk)
 
 
-def _edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+@htmx_form_validate(form_class=EditItemForm)
+def edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     item = get_object_or_404(Item, pk=pk)
     form = EditItemForm(instance=item)
     if request.method == "POST":
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.INFO, _("Item Successfully Edited"))
-            return edit_inventory_item(make_get_request(request), pk)
+            messages.success(request, _("Item Successfully Edited"))
+            # return edit_inventory_item(make_get_request(request), pk)
+        else:
+            messages.error(request, _("Error"))
     return TemplateResponse(
         request, "winadmin/inventory/edit_item.html", {"form": form, "item": item}
     )
@@ -330,9 +333,9 @@ def _view_reservations_by_period(request: HtmxHttpRequest) -> HttpResponse:
     )
 
 
-@login_required(login_url="winadmin:login_page")
-def create_reservation(request: HtmxHttpRequest) -> HttpResponse:
-    return _create_reservation(request)
+# @login_required(login_url="winadmin:login_page")
+# def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
+#     return _create_reservation_page(request)
 
 
 def get_grills(reservation) -> tuple[list, QuerySet]:
@@ -351,16 +354,17 @@ def get_grills(reservation) -> tuple[list, QuerySet]:
 
 @htmx_form_validate(form_class=CreateReservationForm)
 @for_htmx(use_block_from_params=True)
-def _create_reservation(request: HtmxHttpRequest) -> HttpResponse:
+def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    initial = {
-        "first_name": reservation.contact_info.first_name,
-        "last_name": reservation.contact_info.last_name,
-        "email": reservation.contact_info.email,
-        "stay_type": reservation.stay.stay_type,
-        "start_datetime": reservation.stay.start_datetime,
-        "end_datetime": reservation.stay.end_datetime,
-    }
+    initial = {}
+    if reservation.contact_info is not None:
+        initial["first_name"] = reservation.contact_info.first_name
+        initial["last_name"] = reservation.contact_info.last_name
+        initial["email"] = reservation.contact_info.email
+    if reservation.stay is not None:
+        initial["stay_type"] = reservation.stay.stay_type
+        initial["start_datetime"] = reservation.stay.start_datetime
+        initial["end_datetime"] = reservation.stay.end_datetime
     square_settings = settings.SQUARE_SETTINGS
     reserved_grills_ids, all_grills = get_grills(reservation)
     context = {
@@ -398,16 +402,17 @@ def _create_reservation(request: HtmxHttpRequest) -> HttpResponse:
                 contact_info = ContactInfo.objects.create(
                     first_name=first_name, last_name=last_name, email=email
                 )
+                contact_info.save()
                 reservation.contact_info = contact_info
-                reservation.contact_info.save()
+                reservation.save()
             else:
                 reservation.contact_info.first_name = first_name
                 reservation.contact_info.last_name = last_name
                 reservation.contact_info.email = email
                 reservation.save()
-        return TemplateResponse(
-            request, "winadmin/reservations/create_reservation.html", context
-        )
+        # return TemplateResponse(
+        #     request, "winadmin/reservations/create_reservation.html", context
+        # )
     form = CreateReservationForm(initial=initial)
     context = {
         "form": form,
@@ -421,6 +426,36 @@ def _create_reservation(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(
         request, "winadmin/reservations/create_reservation.html", context
     )
+
+
+# @for_htmx(use_block_from_params=True)
+# def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
+#     return TemplateResponse(request, template_path, context)
+#
+#
+# @htmx_form_validate(form_class=StayForm)
+# @for_htmx(use_block_from_params=True)
+# def _stay_form(request: HtmxHttpRequest) -> HttpResponse:
+#     if request.method == "POST":
+#         if "create" in request:
+#             pass
+#     return TemplateResponse(request, template_path, context)
+#
+#
+# @htmx_form_validate(form_class=ContactInfoForm)
+# @for_htmx(use_block_from_params=True)
+# def _contact_info_form(request: HtmxHttpRequest) -> HttpResponse:
+#     return TemplateResponse(request, template_path, context)
+#
+#
+# @for_htmx(use_block_from_params=True)
+# def _options(request: HtmxHttpRequest) -> HttpResponse:
+#     return TemplateResponse(request, template_path, context)
+#
+#
+# @for_htmx(use_block_from_params=True)
+# def _payment_form(request: HtmxHttpRequest) -> HttpResponse:
+#     return TemplateResponse(request, template_path, context)
 
 
 @require_POST

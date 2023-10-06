@@ -8,14 +8,14 @@
     {% if field.errors %}
       {% for error in field.errors %}
         {% if field|is_required %}<p class="text-red-500">{% else %}
-          <p class="text-green-500">{% endif %}{{ error|escape }}</p>
+          <p class="text-orange-500">{% endif %}{{ error|escape }}</p>
       {% endfor %}
     {% else %}
       <p class="invisible">No Errors</p>
     {% endif %}
   </span>
     {% if field|is_checkbox %}
-      {% render_field field name=name class="text-green-700" %}
+      {% render_field field name=name class="text-orange-700" %}
     {% endif %}
     {% if field|is_multiple_checkbox %}
       {% render_field field name=name %}

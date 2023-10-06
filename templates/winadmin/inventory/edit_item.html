@@ -1,82 +1,36 @@
 {% extends 'winadmin/index.html' %}
 {% load widget_tweaks widget_checks static i18n %}
 {% block subtitle %}
-  Edit Item
+  {% translate 'Edit Inventory Item' %}
 {% endblock %}
 {% block content %}
   <main id="dashboard-content" class="py-10 lg:ml-72">
-    <h1 class="text-center text-3xl">{% translate 'Add Inventory Item' %}</h1>
+    <h1 class="text-center text-3xl">{% translate 'Edit Inventory Item' %}</h1>
     <div class="px-4 sm:px-6 lg:px-8">
-      <form class="grid space-y-5 max-w-xl mx-auto" novalidate>
+      <form action="" method="post" novalidate
+            hx-post="{% url 'winadmin:edit_inventory_item' item.pk %}"
+            hx-target="#dashboard-content"
+            hx-swap="outerHTML"
+            class="grid space-y-5 max-w-xl mx-auto">
         {{ form.non_field_errors }}
-        {% if messages %}
-          {% for message in messages %}
-            <p class="text-green-500">{{ message }}</p>
-          {% endfor %}
-        {% endif %}
-        {% for field in form %}
-          {% if field|is_required %}
-            <label for="{{ field.id_for_label }}" class="grid">
-            <span class="flex items-center gap-2 pb-2">
-              *
-              {{ field.label }}
-            {# Error Handling #}
-              {% if field.errors %}
-                {% for error in field.errors %}
-                  <p class="text-red-500">{{ error|escape }}</p>
-                {% endfor %}
-              {% else %}
-                <p class="invisible">No Errors</p>
+        <div id="messages">
+          {% if messages %}
+            {% for message in messages %}
+              {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                <p class="text-orange-500">{{ message }}</p>
+              {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <p class="text-red-500">{{ message }}</p>
               {% endif %}
-            </span>
-          {% else %}
-            <label for="{{ field.id_for_label }}" class="grid">
-            <span class="flex items-center gap-2 pb-2">
-              {{ field.label }}
-            {# Error Handling #}
-              {% if field.errors %}
-                {% for error in field.errors %}
-                  <p class="text-red-500">{{ error|escape }}</p>
-                {% endfor %}
-              {% else %}
-                <p class="invisible pt-2">No Errors</p>
-              {% endif %}
-            </span>
+            {% endfor %}
           {% endif %}
-        {% if field|is_checkbox %}
-          {% render_field field class="text-green-700" %}
-        {% endif %}
-        {% if field|is_input %}
-          {% if field|is_required %}
-            {% render_field field class="border-1" %}
-          {% else %}
-            {% render_field field class="border-1" %}
-          {% endif %}
-        {% endif %}
-        {% if field|is_textarea %}
-          {% if field|is_required %}
-            {% render_field field class="border-1" %}
-          {% else %}
-            {% render_field field class="border-1" %}
-          {% endif %}
-        {% endif %}
-        {% if field|is_select %}
-          {% render_field field %}
-        {% endif %}
-        {% if field|is_file %}
-          {% render_field field %}
-        {% endif %}
-
-
-        </label>
-        {% endfor %}
-        <button hx-post="{% url 'winadmin:edit_inventory_item' item.pk %}"
-                hx-target="#dashboard-content"
-                hx-swap="outerHTML"
-                type="submit" name="submit"
-                class="py-3 px-5 bg-green-700 hover:bg-green-600 text-white text-xl transition-all duration-250">
-          Submit
-        </button>
+        </div>
+        <div class="grid mx-auto">
+          {{ form }}
+          <button type="submit" name="submit"
+                  class="py-3 px-5 bg-orange-700 hover:bg-orange-600 text-white text-xl transition-all duration-250">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   </main>

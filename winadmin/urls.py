@@ -39,7 +39,9 @@ urlpatterns = [
         views.view_reservations_by_period,
         name="view_reservations_by_period",
     ),
-    path("reservations/create/", views.create_reservation, name="create_reservation"),
+    path(
+        "reservations/create/", views.create_reservation_page, name="create_reservation"
+    ),
     path(
         "reservations/create/add-option/<int:pk>/",
         views.add_grill_reservation_option,
