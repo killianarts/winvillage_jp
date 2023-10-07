@@ -71,7 +71,6 @@ THIRD_PARTY_APPS = [
     "django_tailwind_cli",
     "widget_tweaks",
     "render_block",
-    "theme",
     "django_extensions",
     "parler",
     "whitenoise",
@@ -81,10 +80,6 @@ THIRD_PARTY_APPS = [
 
 if DEBUG:
     THIRD_PARTY_APPS += ["django_browser_reload"]
-
-TAILWIND_APP_NAME = "theme"
-
-INTERNAL_IPS = ["127.0.0.1"]
 
 LOCAL_APPS = [
     "users",
