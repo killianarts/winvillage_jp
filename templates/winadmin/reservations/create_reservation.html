@@ -345,7 +345,7 @@
           statusContainer.style.visibility = 'visible';
       }
 
-      document.addEventListener('DOMContentLoaded', async function () {
+      document.addEventListener('loadPaymentForm', async function () {
               if (!window.Square) {
                   throw new Error('Square.js failed to load properly');
               }
@@ -522,6 +522,7 @@
 
 {% block payment-form %}
   <div id="payment-wrapper"
+       _="on htmx:afterSettle trigger loadPaymentForm on me"
        hx-get="{% url 'winadmin:update_price' %}"
        hx-trigger="updatePrice from:body"
        hx-swap="outerHTML"
@@ -559,5 +560,7 @@
       </button>
     </form>
     <div id='payment-status-container'></div>
+    {#    <div id="loaded-form" class="hidden text-3xl font-black" _="on loadPaymentForm remove .hidden from me">Loaded form#}
+  </div>
   </div>
 {% endblock %}
