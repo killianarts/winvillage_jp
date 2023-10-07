@@ -72,9 +72,9 @@ def step_1(request: HtmxHttpRequest) -> HttpResponse:
         if "submit" in request.POST:
             form = forms.Step1Form(request.POST)
             if form.is_valid():
-                reservation.stay.type = form.cleaned_data["stay_type"]
+                reservation.stay.stay_type = form.cleaned_data["stay_type"]
                 reservation.stay.save()
-                # reservation.save()
+                reservation.save()
                 return step_2(make_get_request(request))
     html = render_block_to_string(
         "reservations/reservation_form.html", "step_1_form", {"form": form}

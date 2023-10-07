@@ -16,6 +16,8 @@
             <span>{{ field.value|date:"Y-M-d" }}</span>
           {% elif field.name == "stay_date_end" %}
             <span>{{ field.value|date:"Y-M-d" }}</span>
+          {% elif field.name == "price" %}
+            <span>{{ field.price_fully_rounded }}</span>
           {% else %}
             <span>{{ field.value }}</span>
           {% endif %}

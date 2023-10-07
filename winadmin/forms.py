@@ -89,14 +89,22 @@ class DateInput(forms.DateInput):
         super().__init__(**kwargs)
 
 
+class DateTimeInput(forms.DateTimeInput):
+    input_type = "date"
+
+    def __init__(self, **kwargs):
+        kwargs["format"] = "%Y-%m-%d"
+        super().__init__(**kwargs)
+
+
 class CreateReservationForm(TailwindFormMixin, forms.Form):
     STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     first_name = forms.CharField()
     last_name = forms.CharField()
     email = forms.EmailField()
     stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES)
-    start_datetime = forms.DateField()
-    end_datetime = forms.DateField()
+    start_datetime = forms.DateField(widget=DateInput)
+    end_datetime = forms.DateField(widget=DateInput)
 
     do_htmx_validation = True
 

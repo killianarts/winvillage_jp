@@ -407,7 +407,7 @@
   {% translate 'Create Reservation' %}
 {% endblock %}
 {% block content %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
+  <main id="dashboard-content" hx-ext="morph" class="py-10 lg:ml-72">
     <h1 class="text-center text-3xl">{% translate 'Create Reservation' %}</h1>
     <div class="px-4 sm:px-6 lg:px-8">
       <form id="create-reservation-form"
@@ -415,9 +415,9 @@
             action=""
             method="post"
             hx-post="."
-            hx-trigger="keydown[metaKey&&key=='s'] from:body"
-            hx-swap="outerHTML"
-            hx-target="#dashboard-content"
+            hx-trigger="keydown[metaKey&&shiftKey&&key=='s'] from:body"
+            hx-swap="morph:innerHTML"
+            hx-target="#admin-content-wrapper"
             hx-vals='{"use_block": "content"}'
             novalidate>
         {% csrf_token %}

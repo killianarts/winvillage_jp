@@ -68,7 +68,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "django_htmx",
-    "tailwind",
+    "django_tailwind_cli",
     "widget_tweaks",
     "render_block",
     "theme",

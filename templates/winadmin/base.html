@@ -1,4 +1,4 @@
-{% load static tailwind_tags %}
+{% load static tailwind_cli %}
 {% load static %}
 {% load i18n %}
 
@@ -75,7 +75,7 @@
 {% block header %}
   {#    {% include 'core/header.html' %}#}
 {% endblock %}
-<div>
+<div id="admin-content-wrapper">
   <!-- '_page.html' template content will replace everything in here -->
   {% block content %}
   {% endblock %}

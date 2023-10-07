@@ -398,11 +398,13 @@ def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.stay.start_datetime = start_datetime
                 reservation.stay.end_datetime = end_datetime
                 reservation.stay.save()
+                reservation.save()
             if not reservation.contact_info:
-                contact_info = ContactInfo.objects.create(
+                contact_info, created = ContactInfo.objects.get_or_create(
                     first_name=first_name, last_name=last_name, email=email
                 )
-                contact_info.save()
+                if created:
+                    contact_info.save()
                 reservation.contact_info = contact_info
                 reservation.save()
             else:
@@ -410,9 +412,9 @@ def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.contact_info.last_name = last_name
                 reservation.contact_info.email = email
                 reservation.save()
-        # return TemplateResponse(
-        #     request, "winadmin/reservations/create_reservation.html", context
-        # )
+        return TemplateResponse(
+            request, "winadmin/reservations/create_reservation.html", context
+        )
     form = CreateReservationForm(initial=initial)
     context = {
         "form": form,
