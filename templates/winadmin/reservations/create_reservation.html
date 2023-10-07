@@ -407,17 +407,17 @@
   {% translate 'Create Reservation' %}
 {% endblock %}
 {% block content %}
-  <main id="dashboard-content" hx-ext="morph" class="py-10 lg:ml-72">
-    <h1 class="text-center text-3xl">{% translate 'Create Reservation' %}</h1>
+  <main id="dashboard-content" class="py-10 lg:ml-72">
     <div class="px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl">{% translate 'Create Reservation' %}</h1>
       <form id="create-reservation-form"
-            class="grid space-y-5 max-w-xl mx-auto"
+            class="space-y-5 max-w-xl"
             action=""
             method="post"
             hx-post="."
+            hx-swap="outerHTML"
             hx-trigger="keydown[metaKey&&shiftKey&&key=='s'] from:body"
-            hx-swap="morph:innerHTML"
-            hx-target="#admin-content-wrapper"
+            hx-target="#dashboard-content"
             hx-vals='{"use_block": "content"}'
             novalidate>
         {% csrf_token %}
@@ -434,7 +434,7 @@
           {% endif %}
         </div>
         {% block form_fields %}
-          <div class="grid mx-auto">
+          <div class="grid">
             {{ form }}
           </div>
         {% endblock %}
@@ -450,47 +450,6 @@
           {% translate 'Choose Options' %}
         </button>
       </form>
-      {% block payment-form %}
-        <div id="payment-wrapper"
-             hx-get="{% url 'winadmin:update_price' %}"
-             hx-trigger="updatePrice from:body"
-             hx-swap="outerHTML"
-             hx-target="#payment-wrapper"
-             hx-vals='{"use_block": "payment-form"}'>
-          <div class="grid grid-cols-1">
-            <div class="grid border-b-2"></div>
-            {% for order_item in reservation.order_items.all %}
-              <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">
-                <span>{{ order_item.item.name }}</span>
-                <span class="font-black">￥{{ order_item.item.price_fully_rounded }}</span></div>
-            {% endfor %}
-            <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
-              Price Per Day
-            {% endblocktranslate %}
-              :</span><span class="font-black">￥{{ reservation.stay.price_per_day }}</span></div>
-            <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
-              Total Days
-            {% endblocktranslate %}
-              :</span><span class="font-black">{{ reservation.stay.days }}</span></div>
-            <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% translate 'Total Price' %}:</span>
-              <span class="font-black">￥{{ reservation.price_fully_rounded }}</span></div>
-          </div>
-          <form id='payment-form' class="grid">
-            {% csrf_token %}
-            <div id="card-styles-container">
-              <div id='card-container'></div>
-            </div>
-            <button id='card-button'
-                    type="button"
-                    class="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
-                    hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                    focus-visible:outline-orange-700">
-              Pay ￥{{ reservation.price_fully_rounded }}
-            </button>
-          </form>
-          <div id='payment-status-container'></div>
-        </div>
-      {% endblock %}
     </div>
   </main>
 
@@ -546,5 +505,59 @@
         {% endfor %}
       </div>
     </fieldset>
+    <form action="."
+          hx-post="."
+          hx-target="this"
+          hx-swap="outerHTML"
+          hx-vals='{"use_block": "payment-form"}'
+          class="mt-5">
+      <button name="pay"
+              type="submit"
+              class="inline-flex items-center rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500">
+        {% translate 'Pay' %}
+      </button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block payment-form %}
+  <div id="payment-wrapper"
+       hx-get="{% url 'winadmin:update_price' %}"
+       hx-trigger="updatePrice from:body"
+       hx-swap="outerHTML"
+       hx-target="#payment-wrapper"
+       hx-vals='{"use_block": "payment-form"}'>
+    <div class="grid grid-cols-1">
+      <div class="grid border-b-2"></div>
+      {% for order_item in reservation.order_items.all %}
+        <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2">
+          <span>{{ order_item.item.name }}</span>
+          <span class="font-black">￥{{ order_item.item.price_fully_rounded }}</span></div>
+      {% endfor %}
+      <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
+        Price Per Day
+      {% endblocktranslate %}
+        :</span><span class="font-black">￥{{ reservation.stay.price_per_day }}</span></div>
+      <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
+        Total Days
+      {% endblocktranslate %}
+        :</span><span class="font-black">{{ reservation.stay.days }}</span></div>
+      <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% translate 'Total Price' %}:</span>
+        <span class="font-black">￥{{ reservation.price_fully_rounded }}</span></div>
+    </div>
+    <form id='payment-form' class="grid">
+      {% csrf_token %}
+      <div id="card-styles-container">
+        <div id='card-container'></div>
+      </div>
+      <button id='card-button'
+              type="button"
+              class="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+                    hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                    focus-visible:outline-orange-700">
+        Pay ￥{{ reservation.price_fully_rounded }}
+      </button>
+    </form>
+    <div id='payment-status-container'></div>
   </div>
 {% endblock %}
