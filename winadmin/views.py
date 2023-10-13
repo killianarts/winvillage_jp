@@ -617,7 +617,7 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
 
 
 def send_confirmation_email(request):
-    subscription_id = "r2rRb32AP4gWx0JRBxdiPw"
+    subscription_id = "WDIcNty2xGipa-5mfN2MpQ"
 
     body = {"event_type": "payment.created"}
     client = get_client()
