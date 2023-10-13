@@ -287,3 +287,4 @@ def send_confirmation_email(request):
         "noreply@winvillage.jp",
         [sender_email],
     )
+    return HttpResponse("Sent")
