@@ -16,3 +16,6 @@ db.sqlite3
 poetry-convert.py
 payments
 CONFIDENTIAL
+*.pem
+Procfile.dev
+ngrok

@@ -56,4 +56,10 @@ urlpatterns = [
     path(
         "reservations/edit/<int:pk>/", views.edit_reservation, name="edit_reservation"
     ),
+    path("reservations/make-payment/", views.make_payment, name="make_payment"),
+    path(
+        "reservations/send-confirmation-email/",
+        views.send_confirmation_email,
+        name="send_confirmation_email",
+    ),
 ]

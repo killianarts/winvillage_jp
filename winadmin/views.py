@@ -1,17 +1,20 @@
+import uuid
 from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
-from django.utils.timezone import get_current_timezone, activate, deactivate
+from django.urls import reverse
+from django.utils.timezone import activate, deactivate
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event
 from render_block import render_block_to_string
+from square.client import Client
 
 from core.models import Item, Category, Transaction, ContactInfo
 from core.utils import (
@@ -32,16 +35,21 @@ from winadmin.forms import (
     SetReservationPeriodForm,
     CreateReservationForm,
     EditReservationForm,
-    StayForm,
-    ContactInfoForm,
+    SquarePaymentTokenForm,
 )
-from winvillage import settings
+from winvillage.settings import SQUARE_SETTINGS
+
+SQUARE_APPLICATION_ID = SQUARE_SETTINGS["SQUARE_APPLICATION_ID"]
+SQUARE_LOCATION_ID = SQUARE_SETTINGS["SQUARE_LOCATION_ID"]
+SQUARE_CURRENCY = SQUARE_SETTINGS["SQUARE_CURRENCY"]
+SQUARE_ACCESS_TOKEN = SQUARE_SETTINGS["SQUARE_ACCESS_TOKEN"]
+SQUARE_ENVIRONMENT = SQUARE_SETTINGS["SQUARE_ENVIRONMENT"]
 
 TIMEZONE = "Asia/Tokyo"
 
 
 # Index and Login
-@login_required()
+@login_required(login_url="winadmin:login_page")
 def index(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, "winadmin/index.html", {})
 
@@ -365,13 +373,12 @@ def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
         initial["stay_type"] = reservation.stay.stay_type
         initial["start_datetime"] = reservation.stay.start_datetime
         initial["end_datetime"] = reservation.stay.end_datetime
-    square_settings = settings.SQUARE_SETTINGS
     reserved_grills_ids, all_grills = get_grills(reservation)
     context = {
         "reservation": reservation,
-        "SQUARE_APPLICATION_ID": square_settings["SQUARE_APPLICATION_ID"],
-        "SQUARE_LOCATION_ID": square_settings["SQUARE_LOCATION_ID"],
-        "SQUARE_CURRENCY": square_settings["SQUARE_CURRENCY"],
+        "SQUARE_APPLICATION_ID": SQUARE_APPLICATION_ID,
+        "SQUARE_LOCATION_ID": SQUARE_LOCATION_ID,
+        "SQUARE_CURRENCY": SQUARE_CURRENCY,
         "grills": all_grills,
         "reserved_grill_ids": reserved_grills_ids,
     }
@@ -419,9 +426,9 @@ def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
     context = {
         "form": form,
         "reservation": reservation,
-        "SQUARE_APPLICATION_ID": square_settings["SQUARE_APPLICATION_ID"],
-        "SQUARE_LOCATION_ID": square_settings["SQUARE_LOCATION_ID"],
-        "SQUARE_CURRENCY": square_settings["SQUARE_CURRENCY"],
+        "SQUARE_APPLICATION_ID": SQUARE_APPLICATION_ID,
+        "SQUARE_LOCATION_ID": SQUARE_LOCATION_ID,
+        "SQUARE_CURRENCY": SQUARE_CURRENCY,
         "grills": all_grills,
         "reserved_grill_ids": reserved_grills_ids,
     }
@@ -560,3 +567,65 @@ def _edit_reservation(request: HtmxHttpRequest, pk: int) -> HttpResponse:
         "winadmin/reservations/edit_reservation.html",
         {"form": form, "reservation": reservation},
     )
+
+
+def get_client():
+    client = Client(access_token=SQUARE_ACCESS_TOKEN, environment=SQUARE_ENVIRONMENT)
+    return client
+
+
+@for_htmx(use_block_from_params=True)
+def make_payment(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    context = None
+    """This function just gets the token from the Square SDK and then handles the rest."""
+    if request.method == "POST":
+        form = SquarePaymentTokenForm(request.POST)
+        token = None
+        if form.is_valid():
+            token = form.cleaned_data["token"]
+        session = {"purchase_amount": 1000}
+        body = {
+            "source_id": token,
+            "idempotency_key": str(uuid.uuid4()),
+            "amount_money": {
+                "amount": session["purchase_amount"],
+                "currency": SQUARE_CURRENCY,
+            },
+            "autocomplete": True,
+            "location_id": SQUARE_LOCATION_ID,
+            "note": "Brief description",
+        }
+        client = get_client()
+        payments_api = client.payments
+        payment = payments_api.create_payment(body=body)
+        context = {"payment": payment}
+        return TemplateResponse(
+            request, "winadmin/reservations/create_reservation.html", context
+        )
+    form = SquarePaymentTokenForm()
+    context = {
+        "form": form,
+        "reservation": reservation,
+        "SQUARE_APPLICATION_ID": SQUARE_APPLICATION_ID,
+        "SQUARE_LOCATION_ID": SQUARE_LOCATION_ID,
+        "SQUARE_CURRENCY": SQUARE_CURRENCY,
+    }
+    return TemplateResponse(
+        request, "winadmin/reservations/create_reservation.html", context
+    )
+
+
+def send_confirmation_email(request):
+    subscription_id = "8gLmZAd_EQL3wQweCePfkQ"
+
+    body = {"event_type": "payment.created"}
+    client = get_client()
+    webhook_subscriptions_api = client.webhook_subscriptions
+    result = webhook_subscriptions_api.test_webhook_subscription(subscription_id, body)
+    print(result)
+
+    if result.is_success():
+        return JsonResponse(result.body, safe=False)
+    elif result.is_error():
+        return JsonResponse(result.errors, safe=False)

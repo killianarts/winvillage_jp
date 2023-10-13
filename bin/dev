@@ -1,0 +1,12 @@
+#!/bin/bash
+if ! command -v honcho &> /dev/null
+then
+  echo "Installing honcho…"
+  poetry add honcho
+fi
+python manage.py makemessages -l ja --ignore=env --ignore=node_modules
+python manage.py makemessages -l en --ignore=env --ignore=node_modules
+python manage.py compilemessages
+python manage.py makemigrations
+python manage.py migrate
+honcho start -f Procfile.dev

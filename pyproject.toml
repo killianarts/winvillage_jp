@@ -34,6 +34,8 @@ argon2-cffi = "^21.3.0"
 django = "^4.2.4"
 ruff = "^0.0.290"
 django-tailwind-cli = {extras = ["django-extensions"], version = "^2.4.3"}
+honcho = "^1.1.0"
+pyopenssl = "^23.2.0"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"

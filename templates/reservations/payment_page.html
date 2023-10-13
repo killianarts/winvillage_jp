@@ -361,7 +361,7 @@
 {% block content %}
 
   <div class="max-w-lg mx-auto">
-    <h1 class="text-center text-3xl my-10">Payment details</h1>
+    <h1 class="text-center text-3xl my-10">{% blocktrans %}Payment details{% endblocktrans %}</h1>
     <div class="grid grid-cols-1">
       {% for field in contact_info_form %}
         <label class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2" for="{{ field.id_for_label }}">
@@ -382,14 +382,14 @@
         <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{{ order_item.item.name }}</span>
           <span class="font-black">￥{{ order_item.item.price_rounded }}</span></div>
       {% endfor %}
-      <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
-        Price Per Day
-      {% endblocktranslate %}
-        :</span><span class="font-black">￥{{ reservation.stay.price_per_day }}</span></div>
-      <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% blocktranslate %}
-        Total Days
-      {% endblocktranslate %}
-        :</span><span class="font-black">{{ reservation.stay.days }}</span></div>
+      <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>
+        {% blocktrans %}Price Per Day{% endblocktrans %}
+                        :</span><span class="font-black">￥{{ reservation.stay.price_per_day }}</span></div>
+      <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>
+        {% blocktranslate %}
+          Total Days
+        {% endblocktranslate %}
+          :</span><span class="font-black">{{ reservation.stay.days }}</span></div>
       <div class="text-xl mb-2 grid grid-cols-2 items-center gap-x-2"><span>{% translate 'Total Price' %}:</span>
         <span class="font-black">￥{{ reservation.price_rounded }}</span></div>
     </div>
@@ -401,7 +401,7 @@
               class="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
               hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
               focus-visible:outline-orange-700">
-        Pay ￥{{ reservation.price_fully_rounded }}
+        {% trans "Pay" %} ￥{{ reservation.price_fully_rounded }}
       </button>
 
     </form>

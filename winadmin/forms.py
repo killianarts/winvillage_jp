@@ -146,3 +146,7 @@ class EditReservationForm(forms.Form):
     start_datetime = forms.DateField(widget=DateInput)
     end_datetime = forms.DateField(widget=DateInput)
     stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES)
+
+
+class SquarePaymentTokenForm(forms.Form):
+    token = forms.CharField(widget=forms.HiddenInput())
