@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-13 04:03+0000\n"
+"POT-Creation-Date: 2023-10-16 05:23+0000\n"
 "PO-Revision-Date: 2023-09-02 11:53+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: core/models.py:22 core/models.py:108
+#: core/models.py:22 core/models.py:112
 msgid "Customer"
 msgstr "顧客"
 
@@ -27,73 +27,73 @@ msgstr "顧客"
 msgid "Customers"
 msgstr "顧客"
 
-#: core/models.py:45 templates/winadmin/inventory/index.html:17
+#: core/models.py:49 templates/winadmin/inventory/index.html:17
 #: templates/winadmin/inventory/list_categories.html:13
 msgid "Category"
 msgstr "カテゴリー"
 
-#: core/models.py:46
+#: core/models.py:50
 msgid "Categories"
 msgstr "カテゴリー"
 
-#: core/models.py:56 core/models.py:114
+#: core/models.py:60 core/models.py:118
 msgid "Item"
 msgstr "アイテム"
 
-#: core/models.py:57
+#: core/models.py:61
 msgid "Items"
 msgstr "アイテム"
 
-#: core/models.py:69
+#: core/models.py:73
 msgid "Long description"
 msgstr "長い説明"
 
-#: core/models.py:71
+#: core/models.py:75
 msgid "Short description"
 msgstr "短い説明"
 
-#: core/models.py:91
+#: core/models.py:95
 msgid "Transaction"
 msgstr "取引"
 
-#: core/models.py:92 templates/winadmin/index.html:364
+#: core/models.py:96 templates/winadmin/index.html:364
 msgid "Transactions"
 msgstr "取引"
 
-#: core/models.py:95
+#: core/models.py:99
 msgid "Sale"
 msgstr "売上"
 
-#: core/models.py:96
+#: core/models.py:100
 msgid "Purchase"
 msgstr "仕入れ"
 
-#: core/models.py:97
+#: core/models.py:101
 msgid "Return"
 msgstr "返品"
 
-#: core/models.py:98
+#: core/models.py:102
 msgid "Bank Deposit"
 msgstr "預金振込"
 
-#: core/models.py:101 templates/winadmin/inventory/index.html:14
+#: core/models.py:105 templates/winadmin/inventory/index.html:14
 #: templates/winadmin/transactions/list_transactions.html:16
 msgid "Name"
 msgstr "名前"
 
-#: core/models.py:111
+#: core/models.py:115
 #, fuzzy
 #| msgid "Transaction List View"
 msgid "Transaction Datetime"
 msgstr "引取のリストビュー"
 
-#: core/models.py:116 templates/winadmin/transactions/list_sales.html:18
+#: core/models.py:120 templates/winadmin/transactions/list_sales.html:18
 #: templates/winadmin/transactions/list_sales_by_period.html:36
 #: templates/winadmin/transactions/list_transactions.html:18
 msgid "Quantity"
 msgstr "数量"
 
-#: core/models.py:118 templates/reservations/payment_page.html:393
+#: core/models.py:122 templates/reservations/payment_page.html:393
 #: templates/reservations/reservation_form.html:226
 #: templates/winadmin/reservations/create_reservation.html:147
 #: templates/winadmin/reservations/create_reservation_page.html:503
@@ -120,17 +120,17 @@ msgid "Until"
 msgstr "まで"
 
 #: reservations/forms.py:43
-#: templates/winadmin/transactions/list_reservations_by_period.html:38
+#: templates/winadmin/reservations/list_reservations_by_period.html:38
 msgid "First Name"
 msgstr "名前"
 
 #: reservations/forms.py:44
-#: templates/winadmin/transactions/list_reservations_by_period.html:37
+#: templates/winadmin/reservations/list_reservations_by_period.html:37
 msgid "Last Name"
 msgstr "姓"
 
 #: reservations/forms.py:45
-#: templates/winadmin/transactions/list_reservations_by_period.html:39
+#: templates/winadmin/reservations/list_reservations_by_period.html:39
 msgid "Email"
 msgstr "メール"
 
@@ -188,11 +188,11 @@ msgstr "チェクアウトした"
 msgid "Cancelled"
 msgstr "キャンセルした"
 
-#: reservations/models.py:243
+#: reservations/models.py:252
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:244
+#: reservations/models.py:253
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -479,9 +479,23 @@ msgstr "仕入れのレポート"
 msgid "Log Out"
 msgstr "ログアウト"
 
+#: templates/winadmin/inventory/create_category.html:4
+msgid "Create Category"
+msgstr ""
+
 #: templates/winadmin/inventory/create_category.html:9
 msgid "Category Create View"
 msgstr "カテゴリーの制作ビュー"
+
+#: templates/winadmin/inventory/create_category.html:33
+#: templates/winadmin/inventory/create_item.html:78
+#: templates/winadmin/inventory/edit_item.html:31
+msgid "Submit"
+msgstr ""
+
+#: templates/winadmin/inventory/create_item.html:4
+msgid "Create Item"
+msgstr ""
 
 #: templates/winadmin/inventory/edit_item.html:4
 #: templates/winadmin/inventory/edit_item.html:8
@@ -496,7 +510,7 @@ msgid "Inventory List View"
 msgstr "在庫のリストビュー"
 
 #: templates/winadmin/inventory/index.html:16
-#: templates/winadmin/transactions/list_reservations_by_period.html:40
+#: templates/winadmin/reservations/list_reservations_by_period.html:40
 msgid "Price"
 msgstr "値段"
 
@@ -566,13 +580,15 @@ msgstr ""
 "\n"
 "合計の日にち"
 
-#: templates/winadmin/reservations/create_reservation.html:185
-msgid "Payment Successful!"
-msgstr ""
-
-#: templates/winadmin/reservations/create_reservation.html:187
+#: templates/winadmin/reservations/create_reservation.html:191
 msgid "Payment Failed! Error: "
 msgstr ""
+
+#: templates/winadmin/reservations/create_reservation.html:201
+#, fuzzy
+#| msgid "Payment Amount"
+msgid "Payment Complete!"
+msgstr "支払金額"
 
 #: templates/winadmin/reservations/edit_reservation.html:4
 #: templates/winadmin/reservations/edit_reservation.html:8
@@ -581,39 +597,39 @@ msgstr ""
 msgid "Edit Reservation"
 msgstr "予約を更新する"
 
-#: templates/winadmin/transactions/list_reservations_by_period.html:4
+#: templates/winadmin/reservations/list_reservations_by_period.html:4
 #, fuzzy
 #| msgid "Transaction List View"
 msgid "Reservations List View"
 msgstr "引取のリストビュー"
 
-#: templates/winadmin/transactions/list_reservations_by_period.html:9
+#: templates/winadmin/reservations/list_reservations_by_period.html:9
 #, fuzzy
 #| msgid "Reservations"
 msgid "Reservations Chart"
 msgstr "予約"
 
-#: templates/winadmin/transactions/list_reservations_by_period.html:19
+#: templates/winadmin/reservations/list_reservations_by_period.html:19
 #: templates/winadmin/transactions/list_sales_by_period.html:18
 msgid "Filter"
 msgstr ""
 
-#: templates/winadmin/transactions/list_reservations_by_period.html:21
+#: templates/winadmin/reservations/list_reservations_by_period.html:21
 #: templates/winadmin/transactions/list_sales_by_period.html:20
 msgid "Year"
 msgstr ""
 
-#: templates/winadmin/transactions/list_reservations_by_period.html:22
+#: templates/winadmin/reservations/list_reservations_by_period.html:22
 #: templates/winadmin/transactions/list_sales_by_period.html:21
 msgid "Month"
 msgstr ""
 
-#: templates/winadmin/transactions/list_reservations_by_period.html:33
-#: templates/winadmin/transactions/list_reservations_by_period.html:35
+#: templates/winadmin/reservations/list_reservations_by_period.html:33
+#: templates/winadmin/reservations/list_reservations_by_period.html:35
 msgid "Stay Start"
 msgstr ""
 
-#: templates/winadmin/transactions/list_reservations_by_period.html:36
+#: templates/winadmin/reservations/list_reservations_by_period.html:36
 msgid "Status"
 msgstr ""
 
@@ -746,19 +762,19 @@ msgstr "カテゴリーが追加できました"
 msgid "Input category title"
 msgstr "カテゴリーのタイトルを入力してください"
 
-#: winadmin/views.py:162
+#: winadmin/views.py:158
 msgid "Item Successfully Edited"
 msgstr "アイテムが更新できました"
 
-#: winadmin/views.py:165
+#: winadmin/views.py:161
 msgid "Error"
 msgstr ""
 
-#: winadmin/views.py:256 winadmin/views.py:281
+#: winadmin/views.py:252 winadmin/views.py:277
 msgid "Transaction Created Successfully"
 msgstr "引取が制作できました"
 
-#: winadmin/views.py:562
+#: winadmin/views.py:560
 #, fuzzy
 #| msgid "Information successfully updated"
 msgid "Reservation successfully edited."

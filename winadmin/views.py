@@ -5,18 +5,18 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
-from django.urls import reverse
 from django.utils.timezone import activate, deactivate
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event
 from render_block import render_block_to_string
+from sendgrid import Mail, SendGridAPIClient
 from square.client import Client
 
-from core.models import Item, Category, Transaction, ContactInfo
+from core.models import Item, Category, Transaction, ContactInfo, Customer
 from core.utils import (
     HtmxHttpRequest,
     make_get_request,
@@ -37,13 +37,13 @@ from winadmin.forms import (
     EditReservationForm,
     SquarePaymentTokenForm,
 )
-from winvillage.settings import SQUARE_SETTINGS
+from winvillage import settings
 
-SQUARE_APPLICATION_ID = SQUARE_SETTINGS["SQUARE_APPLICATION_ID"]
-SQUARE_LOCATION_ID = SQUARE_SETTINGS["SQUARE_LOCATION_ID"]
-SQUARE_CURRENCY = SQUARE_SETTINGS["SQUARE_CURRENCY"]
-SQUARE_ACCESS_TOKEN = SQUARE_SETTINGS["SQUARE_ACCESS_TOKEN"]
-SQUARE_ENVIRONMENT = SQUARE_SETTINGS["SQUARE_ENVIRONMENT"]
+SQUARE_APPLICATION_ID = settings.SQUARE_SETTINGS["SQUARE_APPLICATION_ID"]
+SQUARE_LOCATION_ID = settings.SQUARE_SETTINGS["SQUARE_LOCATION_ID"]
+SQUARE_CURRENCY = settings.SQUARE_SETTINGS["SQUARE_CURRENCY"]
+SQUARE_ACCESS_TOKEN = settings.SQUARE_SETTINGS["SQUARE_ACCESS_TOKEN"]
+SQUARE_ENVIRONMENT = settings.SQUARE_SETTINGS["SQUARE_ENVIRONMENT"]
 
 TIMEZONE = "Asia/Tokyo"
 
@@ -148,10 +148,6 @@ def list_categories_page(request: HtmxHttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="winadmin:login_page")
-def edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
-    return _edit_inventory_item(request, pk)
-
-
 @htmx_form_validate(form_class=EditItemForm)
 def edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     item = get_object_or_404(Item, pk=pk)
@@ -301,8 +297,10 @@ def view_reservations_by_period(request: HtmxHttpRequest) -> HttpResponse:
 
 
 def _view_reservations_by_period(request: HtmxHttpRequest) -> HttpResponse:
-    reservations = Reservation.objects.select_related("stay", "contact_info").order_by(
-        "stay__start_datetime"
+    reservations = (
+        Reservation.objects.select_related("stay", "contact_info")
+        .exclude(stay__status="not_reserved")
+        .order_by("stay__start_datetime")
     )
     form = []
     active_timezone = activate(TIMEZONE)
@@ -331,13 +329,13 @@ def _view_reservations_by_period(request: HtmxHttpRequest) -> HttpResponse:
     if request.htmx and not request.htmx.boosted:
         html = render_block_to_string(
             request=request,
-            template_name="winadmin/transactions/list_reservations_by_period.html",
+            template_name="winadmin/reservations/list_reservations_by_period.html",
             block_name="content",
             context=context,
         )
         return HttpResponse(html)
     return TemplateResponse(
-        request, "winadmin/transactions/list_reservations_by_period.html", context
+        request, "winadmin/reservations/list_reservations_by_period.html", context
     )
 
 
@@ -574,11 +572,17 @@ def get_client():
     return client
 
 
+def get_or_create_customer(reservation):
+    customer, created = Customer.objects.get_or_create(
+        contact_info=reservation.contact_info
+    )
+    customer.save()
+    return customer, created
+
+
 @for_htmx(use_block_from_params=True)
 def make_payment(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    context = None
-    """This function just gets the token from the Square SDK and then handles the rest."""
     if request.method == "POST":
         form = SquarePaymentTokenForm(request.POST)
         token = None
@@ -599,10 +603,14 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
         client = get_client()
         payments_api = client.payments
         payment = payments_api.create_payment(body=body)
-        context = {"payment": payment}
-        return TemplateResponse(
-            request, "winadmin/reservations/create_reservation.html", context
-        )
+        if payment.is_success():
+            get_or_create_customer(reservation)
+            send_confirmation_email(reservation)
+            reservation.set_status("reserved")
+            context = {"payment": payment}
+            return TemplateResponse(
+                request, "winadmin/reservations/create_reservation.html", context
+            )
     form = SquarePaymentTokenForm()
     context = {
         "form": form,
@@ -616,16 +624,37 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
     )
 
 
-def send_confirmation_email(request):
-    subscription_id = "WDIcNty2xGipa-5mfN2MpQ"
+# def send_confirmation_email(reservation):
+#     def format_message(name, email, message):
+#         return f"{name}\n{email}\n\n{message}"
+#
+#     def format_subject(name, email):
+#         return f"[KILLIAN.arts] {name}, {email}"
+#
+#     sender_name = (
+#         f"{reservation.contact_info.first_name} {reservation.contact_info.last_name}"
+#     )
+#     sender_email = f"{reservation.contact_info.email}"
+#     message = f"Reservation Details are here! {reservation.stay.start_datetime.strftime('%Y-%m-%d')}"
+#     formatted_subject = format_subject(sender_name, sender_email)
+#     formatted_message = format_message(sender_name, sender_email, message)
+#     send_mail(
+#         formatted_subject,
+#         formatted_message,
+#         "noreply@winvillage.jp",
+#         [sender_email],
+#     )
 
-    body = {"event_type": "payment.created"}
-    client = get_client()
-    webhook_subscriptions_api = client.webhook_subscriptions
-    result = webhook_subscriptions_api.test_webhook_subscription(subscription_id, body)
-    print(result)
 
-    if result.is_success():
-        return JsonResponse(result.body, safe=False)
-    elif result.is_error():
-        return JsonResponse(result.errors, safe=False)
+def send_confirmation_email(reservation):
+    message = Mail(
+        from_email="noreply@winvillage.jp",
+        to_emails=reservation.contact_info.email,
+        subject=f"{_('Winvillage Reservation Confirmation For')}, {reservation.contact_info.first_name}",
+        html_content="This is some placeholder text",
+    )
+    sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
+    response = sg.send(message)
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)

@@ -1,24 +1,21 @@
-import calendar as stdlib_calendar
 import json
 import locale
-from datetime import datetime
 
+from django.conf import settings
+from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
 from django.template.response import TemplateResponse
-from django.utils.timezone import activate, get_current_timezone
 from django.views.decorators.http import require_POST
 from render_block import render_block_to_string
-from django.conf import settings
 from square.client import Client
-from django.core.mail import send_mail
 
 import reservations.forms as forms
+from core.utils import HtmxHttpRequest, make_get_request, get_or_set_reservation_session
 from reservations.models import (
     ContactInfo,
     Item,
     OrderItem,
 )
-from core.utils import HtmxHttpRequest, make_get_request, get_or_set_reservation_session
 
 
 def set_locale(locale_code):

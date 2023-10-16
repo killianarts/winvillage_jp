@@ -9,4 +9,5 @@ python manage.py makemessages -l en --ignore=env --ignore=node_modules
 python manage.py compilemessages
 python manage.py makemigrations
 python manage.py migrate
+ruff check . --watch
 honcho start -f Procfile.dev

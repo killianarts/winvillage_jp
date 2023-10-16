@@ -1,6 +1,10 @@
 import calendar
+from zoneinfo import ZoneInfo
 from datetime import datetime, date
 from typing import Iterable
+
+TIME_ZONE = "Tokyo/Asia"
+
 
 class TailwindCalendar(calendar.HTMLCalendar):
     cssclasses = [style + " text-3xl p-2" for style in calendar.HTMLCalendar.cssclasses]
@@ -16,8 +20,6 @@ def generate_html_calendar(year, month):
     return html_calendar
 
 
-def get_calendar_month(the_date=datetime.now()) -> Iterable[date]:
-    calendar_month = calendar.Calendar().itermonthdates(
-        the_date.year, the_date.month
-    )
+def get_calendar_month(the_date=datetime.now(tz=ZoneInfo(TIME_ZONE))) -> Iterable[date]:
+    calendar_month = calendar.Calendar().itermonthdates(the_date.year, the_date.month)
     return calendar_month

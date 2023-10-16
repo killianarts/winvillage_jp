@@ -29,7 +29,7 @@ class Customer(models.Model):
     # last_name = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return f"{self.contact_info.first_name} {self.contact_info.last_name}"
+        return f"{self.full_name}"
 
     #
     # def get_primary_address(self):
@@ -37,7 +37,11 @@ class Customer(models.Model):
 
     @property
     def full_name(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.contact_info.first_name} {self.contact_info.last_name}"
+
+    @property
+    def email(self):
+        return f"{self.contact_info.email}"
 
 
 class Category(models.Model):

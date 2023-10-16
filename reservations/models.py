@@ -184,6 +184,15 @@ class Stay(models.Model):
         start, end = self.get_stay_range()
         return f"ID: {self.id}, {_('Start')}: {start} {_('End')}: {end}"
 
+    def set_status(self, status_choice):
+        new_status = getattr(self.STATUS, status_choice, None)
+        if new_status is not None:
+            self.status = new_status
+            self.save()
+            return new_status
+        else:
+            raise ValueError(f"{_('Invalid status choice')}: {status_choice}")
+
 
 class Reservation(models.Model):
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
@@ -228,8 +237,8 @@ class Reservation(models.Model):
         total += self.stay.price_fully_rounded
         return round(total, 0)
 
-    # @property
-    # def price_
+    def set_status(self, status_choice: str):
+        return self.stay.set_status(status_choice)
 
     def __str__(self):
         return f"Reservation id: {self.id}, User: {self.user}"

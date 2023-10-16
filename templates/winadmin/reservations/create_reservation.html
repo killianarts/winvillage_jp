@@ -180,13 +180,26 @@
       {{ form }}
     </form>
     {% block payment-status-container %}
-      <div id='payment-status-container' class="text-black">
+      <div id="payment-status-container" class="text-black">
         {% if payment.is_success %}
-          {% translate 'Payment Successful!' %}
+          <div hx-get="."
+               hx-trigger="load"
+               hx-swap="outerHTML"
+               hx-target="#dashboard-content"
+               hx-vals='{"use_block": "payment-complete"}'></div>
         {% elif payment.errors %}
           {% translate 'Payment Failed! Error: ' %}{{ payment.errors.detail }}
         {% endif %}
       </div>
+      </div>
     {% endblock %}
-  </div>
+{% endblock %}
+
+{% block payment-complete %}
+  <main id="dashboard-content" class="py-10 lg:ml-72">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl">{% translate 'Payment Complete!' %}</h1>
+      <a href={% url 'winadmin:create_reservation' %}>Create a New Reservation</a>
+    </div>
+  </main>
 {% endblock %}

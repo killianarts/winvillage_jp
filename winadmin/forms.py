@@ -2,9 +2,9 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 
-from core.models import Item, Category, Transaction
 from core.forms import TailwindFormMixin
-from reservations.models import Stay, Reservation, ContactInfo
+from core.models import Item, Category, Transaction
+from reservations.models import Stay, ContactInfo
 
 
 class LoginForm(forms.Form):
