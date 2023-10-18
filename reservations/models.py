@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
-import pytz
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -10,12 +10,12 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
 
-from core.models import Item, ContactInfo
+from core.models import Item, ContactInfo, BaseModel
 
 auth_user = get_user_model()
 
 
-class OrderItem(models.Model):
+class OrderItem(BaseModel):
     class Meta:
         verbose_name = _("Order Item")
         verbose_name_plural = _("Order Items")
@@ -23,8 +23,6 @@ class OrderItem(models.Model):
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"OrderItem_ID: {self.id}, Item_name: {self.item.name}"
@@ -57,7 +55,7 @@ class Order(models.Model):
         return int(total)
 
 
-class Address(models.Model):
+class Address(BaseModel):
     class Meta:
         verbose_name = _("Address")
         verbose_name_plural = _("Addresses")
@@ -102,21 +100,9 @@ class Address(models.Model):
         super(Address, self).save(*args, **kwargs)
 
 
-class Room(models.Model):
-    class Meta:
-        verbose_name = _("Room")
-        verbose_name_plural = _("Rooms")
-
-    name = models.CharField(max_length=20)
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-
-    def __str__(self):
-        return self.name
-
-
 class StayManager(models.Manager):
     def get_stays_for_date(self, date):
-        time_zone = pytz.timezone("Asia/Tokyo")
+        time_zone = ZoneInfo("Asia/Tokyo")
         target_date = datetime.strptime(date, "%Y-%m-%d").astimezone(time_zone).date()
         next_date = target_date + timedelta(days=1)
 
@@ -128,7 +114,7 @@ class StayManager(models.Manager):
         )
 
 
-class Stay(models.Model):
+class Stay(BaseModel):
     objects = StayManager()
     STATUS = Choices(
         ("not_reserved", _("Not Reserved")),
@@ -148,7 +134,6 @@ class Stay(models.Model):
     end_datetime = models.DateTimeField(default=timezone.now)
     status_changed = MonitorField(monitor="status")
     type_changed = MonitorField(monitor="stay_type")
-    updated_datetime = models.DateTimeField(auto_now=True)
     price = models.DecimalField(max_digits=19, decimal_places=4, default=10000.00)
 
     def get_stay_range(self):

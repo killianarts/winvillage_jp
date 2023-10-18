@@ -1,14 +1,26 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 from model_utils import Choices
 
 auth_user = get_user_model()
 
 
-class ContactInfo(models.Model):
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class ContactInfo(BaseModel):
+    class Meta:
+        verbose_name = _("Contact Info")
+        verbose_name_plural = _("Contact Infos")
+
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254)
@@ -17,23 +29,16 @@ class ContactInfo(models.Model):
         return f"{self.first_name}, {self.last_name}, {self.email}"
 
 
-class Customer(models.Model):
+class Customer(BaseModel):
     class Meta:
         verbose_name = _("Customer")
         verbose_name_plural = _("Customers")
 
-    contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE, null=True)
+    contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE)
     user = models.OneToOneField(auth_user, on_delete=models.CASCADE, null=True)
-    # square_customer_id = models.CharField(max_length=100, null=True, blank=True)
-    # first_name = models.CharField(max_length=100, null=True)
-    # last_name = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return f"{self.full_name}"
-
-    #
-    # def get_primary_address(self):
-    #     return self.user.address_set.get(is_primary=True)
 
     @property
     def full_name(self):
@@ -44,7 +49,27 @@ class Customer(models.Model):
         return f"{self.contact_info.email}"
 
 
-class Category(models.Model):
+class TicketNote(BaseModel):
+    class Meta:
+        verbose_name = _("Ticket Note")
+        verbose_name_plural = _("Ticket Notes")
+
+    user = models.OneToOneField(auth_user, on_delete=models.CASCADE, null=True)
+    text = models.TextField()
+
+
+class Ticket(BaseModel):
+    class Meta:
+        verbose_name = _("Ticket")
+        verbose_name_plural = _("Tickets")
+
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    reference_number = models.IntegerField()
+    note = models.ForeignKey(TicketNote, on_delete=models.CASCADE)
+    is_resolved = models.BooleanField(default=False)
+
+
+class Category(BaseModel):
     class Meta:
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
@@ -90,7 +115,7 @@ class Item(models.Model):
         return reverse("winadmin:edit_inventory_item", args=[str(self.pk)])
 
 
-class Transaction(models.Model):
+class Transaction(BaseModel):
     class Meta:
         verbose_name = _("Transaction")
         verbose_name_plural = _("Transactions")

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-16 05:23+0000\n"
+"POT-Creation-Date: 2023-10-18 00:42+0000\n"
 "PO-Revision-Date: 2023-09-02 11:53+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,81 +19,113 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: core/models.py:22 core/models.py:112
+#: core/models.py:21
+#, fuzzy
+#| msgid "Contact Information"
+msgid "Contact Info"
+msgstr "連絡情報"
+
+#: core/models.py:22
+#, fuzzy
+#| msgid "Contact Information"
+msgid "Contact Infos"
+msgstr "連絡情報"
+
+#: core/models.py:34 core/models.py:137
 msgid "Customer"
 msgstr "顧客"
 
-#: core/models.py:23 templates/winadmin/index.html:262
+#: core/models.py:35 templates/winadmin/index.html:262
 msgid "Customers"
 msgstr "顧客"
 
-#: core/models.py:49 templates/winadmin/inventory/index.html:17
+#: core/models.py:54
+msgid "Ticket Note"
+msgstr ""
+
+#: core/models.py:55
+msgid "Ticket Notes"
+msgstr ""
+
+#: core/models.py:63
+#, fuzzy
+#| msgid "Open Ticket"
+msgid "Ticket"
+msgstr "チケットを作る"
+
+#: core/models.py:64
+#, fuzzy
+#| msgid "Open Ticket"
+msgid "Tickets"
+msgstr "チケットを作る"
+
+#: core/models.py:74 templates/winadmin/inventory/index.html:17
 #: templates/winadmin/inventory/list_categories.html:13
 msgid "Category"
 msgstr "カテゴリー"
 
-#: core/models.py:50
+#: core/models.py:75
 msgid "Categories"
 msgstr "カテゴリー"
 
-#: core/models.py:60 core/models.py:118
+#: core/models.py:85 core/models.py:143
 msgid "Item"
 msgstr "アイテム"
 
-#: core/models.py:61
+#: core/models.py:86
 msgid "Items"
 msgstr "アイテム"
 
-#: core/models.py:73
+#: core/models.py:98
 msgid "Long description"
 msgstr "長い説明"
 
-#: core/models.py:75
+#: core/models.py:100
 msgid "Short description"
 msgstr "短い説明"
 
-#: core/models.py:95
+#: core/models.py:120
 msgid "Transaction"
 msgstr "取引"
 
-#: core/models.py:96 templates/winadmin/index.html:364
+#: core/models.py:121 templates/winadmin/index.html:364
 msgid "Transactions"
 msgstr "取引"
 
-#: core/models.py:99
+#: core/models.py:124
 msgid "Sale"
 msgstr "売上"
 
-#: core/models.py:100
+#: core/models.py:125
 msgid "Purchase"
 msgstr "仕入れ"
 
-#: core/models.py:101
+#: core/models.py:126
 msgid "Return"
 msgstr "返品"
 
-#: core/models.py:102
+#: core/models.py:127
 msgid "Bank Deposit"
 msgstr "預金振込"
 
-#: core/models.py:105 templates/winadmin/inventory/index.html:14
+#: core/models.py:130 templates/winadmin/inventory/index.html:14
 #: templates/winadmin/transactions/list_transactions.html:16
 msgid "Name"
 msgstr "名前"
 
-#: core/models.py:115
+#: core/models.py:140
 #, fuzzy
 #| msgid "Transaction List View"
 msgid "Transaction Datetime"
 msgstr "引取のリストビュー"
 
-#: core/models.py:120 templates/winadmin/transactions/list_sales.html:18
+#: core/models.py:145 templates/winadmin/transactions/list_sales.html:18
 #: templates/winadmin/transactions/list_sales_by_period.html:36
 #: templates/winadmin/transactions/list_transactions.html:18
 msgid "Quantity"
 msgstr "数量"
 
-#: core/models.py:122 templates/reservations/payment_page.html:393
+#: core/models.py:147 templates/reservations/payment_page.html:393
 #: templates/reservations/reservation_form.html:226
 #: templates/winadmin/reservations/create_reservation.html:147
 #: templates/winadmin/reservations/create_reservation_page.html:503
@@ -101,12 +133,12 @@ msgstr "数量"
 msgid "Total Price"
 msgstr "合計"
 
-#: reservations/forms.py:8 reservations/models.py:140 winadmin/forms.py:101
+#: reservations/forms.py:8 reservations/models.py:126 winadmin/forms.py:101
 #: winadmin/forms.py:134
 msgid "Hourly"
 msgstr "時間制"
 
-#: reservations/forms.py:9 reservations/models.py:140 winadmin/forms.py:101
+#: reservations/forms.py:9 reservations/models.py:126 winadmin/forms.py:101
 #: winadmin/forms.py:134
 msgid "Overnight"
 msgstr "泊まる"
@@ -142,57 +174,47 @@ msgstr "注文のアイテム"
 msgid "Order Items"
 msgstr "注文のアイテム"
 
-#: reservations/models.py:35
+#: reservations/models.py:33
 msgid "Order"
 msgstr "注文"
 
-#: reservations/models.py:36
+#: reservations/models.py:34
 msgid "Orders"
 msgstr "注文"
 
-#: reservations/models.py:62
+#: reservations/models.py:60
 msgid "Address"
 msgstr "住所"
 
-#: reservations/models.py:63
+#: reservations/models.py:61
 msgid "Addresses"
 msgstr "住所"
 
-#: reservations/models.py:107
-msgid "Room"
-msgstr "部屋"
-
-#: reservations/models.py:108 templates/core/index.html:39
-#: templates/core/index.html:91 templates/core/index.html:180
-#: templates/core/index.html:232
-msgid "Rooms"
-msgstr "部屋"
-
-#: reservations/models.py:134 winadmin/forms.py:136
+#: reservations/models.py:120 winadmin/forms.py:136
 msgid "Not Reserved"
 msgstr "予約なし"
 
-#: reservations/models.py:135 winadmin/forms.py:137
+#: reservations/models.py:121 winadmin/forms.py:137
 msgid "Reserved"
 msgstr "予約あり"
 
-#: reservations/models.py:136 winadmin/forms.py:138
+#: reservations/models.py:122 winadmin/forms.py:138
 msgid "Checked In"
 msgstr "チェクインしている"
 
-#: reservations/models.py:137 winadmin/forms.py:139
+#: reservations/models.py:123 winadmin/forms.py:139
 msgid "Checked Out"
 msgstr "チェクアウトした"
 
-#: reservations/models.py:138 winadmin/forms.py:140
+#: reservations/models.py:124 winadmin/forms.py:140
 msgid "Cancelled"
 msgstr "キャンセルした"
 
-#: reservations/models.py:252
+#: reservations/models.py:237
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:253
+#: reservations/models.py:238
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -213,6 +235,11 @@ msgstr ""
 #: templates/core/index.html:230
 msgid "About Win Village"
 msgstr ""
+
+#: templates/core/index.html:39 templates/core/index.html:91
+#: templates/core/index.html:180 templates/core/index.html:232
+msgid "Rooms"
+msgstr "部屋"
 
 #: templates/core/index.html:41 templates/core/index.html:93
 #: templates/core/index.html:234
@@ -787,6 +814,9 @@ msgstr ""
 #: winvillage/settings.py:243
 msgid "Japanese"
 msgstr ""
+
+#~ msgid "Room"
+#~ msgstr "部屋"
 
 #~ msgid "Winvillage Administration"
 #~ msgstr "ウィンビレッジ管理"

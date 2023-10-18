@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-16 05:23+0000\n"
+"POT-Creation-Date: 2023-10-18 00:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,79 +18,103 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/models.py:22 core/models.py:112
+#: core/models.py:21
+msgid "Contact Info"
+msgstr ""
+
+#: core/models.py:22
+msgid "Contact Infos"
+msgstr ""
+
+#: core/models.py:34 core/models.py:137
 msgid "Customer"
 msgstr ""
 
-#: core/models.py:23 templates/winadmin/index.html:262
+#: core/models.py:35 templates/winadmin/index.html:262
 msgid "Customers"
 msgstr ""
 
-#: core/models.py:49 templates/winadmin/inventory/index.html:17
+#: core/models.py:54
+msgid "Ticket Note"
+msgstr ""
+
+#: core/models.py:55
+msgid "Ticket Notes"
+msgstr ""
+
+#: core/models.py:63
+msgid "Ticket"
+msgstr ""
+
+#: core/models.py:64
+msgid "Tickets"
+msgstr ""
+
+#: core/models.py:74 templates/winadmin/inventory/index.html:17
 #: templates/winadmin/inventory/list_categories.html:13
 msgid "Category"
 msgstr ""
 
-#: core/models.py:50
+#: core/models.py:75
 msgid "Categories"
 msgstr ""
 
-#: core/models.py:60 core/models.py:118
+#: core/models.py:85 core/models.py:143
 msgid "Item"
 msgstr ""
 
-#: core/models.py:61
+#: core/models.py:86
 msgid "Items"
 msgstr ""
 
-#: core/models.py:73
+#: core/models.py:98
 msgid "Long description"
 msgstr ""
 
-#: core/models.py:75
+#: core/models.py:100
 msgid "Short description"
 msgstr ""
 
-#: core/models.py:95
+#: core/models.py:120
 msgid "Transaction"
 msgstr ""
 
-#: core/models.py:96 templates/winadmin/index.html:364
+#: core/models.py:121 templates/winadmin/index.html:364
 msgid "Transactions"
 msgstr ""
 
-#: core/models.py:99
+#: core/models.py:124
 msgid "Sale"
 msgstr ""
 
-#: core/models.py:100
+#: core/models.py:125
 msgid "Purchase"
 msgstr ""
 
-#: core/models.py:101
+#: core/models.py:126
 msgid "Return"
 msgstr ""
 
-#: core/models.py:102
+#: core/models.py:127
 msgid "Bank Deposit"
 msgstr ""
 
-#: core/models.py:105 templates/winadmin/inventory/index.html:14
+#: core/models.py:130 templates/winadmin/inventory/index.html:14
 #: templates/winadmin/transactions/list_transactions.html:16
 msgid "Name"
 msgstr ""
 
-#: core/models.py:115
+#: core/models.py:140
 msgid "Transaction Datetime"
 msgstr ""
 
-#: core/models.py:120 templates/winadmin/transactions/list_sales.html:18
+#: core/models.py:145 templates/winadmin/transactions/list_sales.html:18
 #: templates/winadmin/transactions/list_sales_by_period.html:36
 #: templates/winadmin/transactions/list_transactions.html:18
 msgid "Quantity"
 msgstr ""
 
-#: core/models.py:122 templates/reservations/payment_page.html:393
+#: core/models.py:147 templates/reservations/payment_page.html:393
 #: templates/reservations/reservation_form.html:226
 #: templates/winadmin/reservations/create_reservation.html:147
 #: templates/winadmin/reservations/create_reservation_page.html:503
@@ -98,12 +122,12 @@ msgstr ""
 msgid "Total Price"
 msgstr ""
 
-#: reservations/forms.py:8 reservations/models.py:140 winadmin/forms.py:101
+#: reservations/forms.py:8 reservations/models.py:126 winadmin/forms.py:101
 #: winadmin/forms.py:134
 msgid "Hourly"
 msgstr ""
 
-#: reservations/forms.py:9 reservations/models.py:140 winadmin/forms.py:101
+#: reservations/forms.py:9 reservations/models.py:126 winadmin/forms.py:101
 #: winadmin/forms.py:134
 msgid "Overnight"
 msgstr ""
@@ -139,57 +163,47 @@ msgstr ""
 msgid "Order Items"
 msgstr ""
 
-#: reservations/models.py:35
+#: reservations/models.py:33
 msgid "Order"
 msgstr ""
 
-#: reservations/models.py:36
+#: reservations/models.py:34
 msgid "Orders"
 msgstr ""
 
-#: reservations/models.py:62
+#: reservations/models.py:60
 msgid "Address"
 msgstr ""
 
-#: reservations/models.py:63
+#: reservations/models.py:61
 msgid "Addresses"
 msgstr ""
 
-#: reservations/models.py:107
-msgid "Room"
-msgstr ""
-
-#: reservations/models.py:108 templates/core/index.html:39
-#: templates/core/index.html:91 templates/core/index.html:180
-#: templates/core/index.html:232
-msgid "Rooms"
-msgstr ""
-
-#: reservations/models.py:134 winadmin/forms.py:136
+#: reservations/models.py:120 winadmin/forms.py:136
 msgid "Not Reserved"
 msgstr ""
 
-#: reservations/models.py:135 winadmin/forms.py:137
+#: reservations/models.py:121 winadmin/forms.py:137
 msgid "Reserved"
 msgstr ""
 
-#: reservations/models.py:136 winadmin/forms.py:138
+#: reservations/models.py:122 winadmin/forms.py:138
 msgid "Checked In"
 msgstr ""
 
-#: reservations/models.py:137 winadmin/forms.py:139
+#: reservations/models.py:123 winadmin/forms.py:139
 msgid "Checked Out"
 msgstr ""
 
-#: reservations/models.py:138 winadmin/forms.py:140
+#: reservations/models.py:124 winadmin/forms.py:140
 msgid "Cancelled"
 msgstr ""
 
-#: reservations/models.py:252
+#: reservations/models.py:237
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:253
+#: reservations/models.py:238
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -209,6 +223,11 @@ msgstr ""
 #: templates/core/index.html:37 templates/core/index.html:88
 #: templates/core/index.html:230
 msgid "About Win Village"
+msgstr ""
+
+#: templates/core/index.html:39 templates/core/index.html:91
+#: templates/core/index.html:180 templates/core/index.html:232
+msgid "Rooms"
 msgstr ""
 
 #: templates/core/index.html:41 templates/core/index.html:93
