@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-25 00:52+0000\n"
+"POT-Creation-Date: 2023-10-25 05:19+0000\n"
 "PO-Revision-Date: 2023-10-21 04:59+0000\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,6 +112,7 @@ msgid "Total Price"
 msgstr "合計"
 
 #: core/templates/core/forms/tailwind/field_row.html:42
+#: customer/templates/ticket/forms/tailwind/field_row.html:37
 msgid "No errors"
 msgstr ""
 
@@ -174,25 +175,29 @@ msgstr ""
 msgid "Corporate Information"
 msgstr "会社概要"
 
-#: customer/forms.py:10 customer/templates/customer/customer_list.html:43
-#: reservations/forms.py:43 winadmin/forms.py:105
+#: customer/forms.py:10 customer/forms.py:19 customer/forms.py:28
+#: customer/templates/customer/customer_list.html:43 reservations/forms.py:43
+#: winadmin/forms.py:105
 #: winadmin/templates/winadmin/reservations/list_reservations_by_period.html:38
 msgid "First Name"
 msgstr "名前"
 
-#: customer/forms.py:11 customer/templates/customer/customer_list.html:41
-#: reservations/forms.py:44 winadmin/forms.py:106
+#: customer/forms.py:11 customer/forms.py:20 customer/forms.py:29
+#: customer/templates/customer/customer_list.html:41 reservations/forms.py:44
+#: winadmin/forms.py:106
 #: winadmin/templates/winadmin/reservations/list_reservations_by_period.html:37
 msgid "Last Name"
 msgstr "姓"
 
-#: customer/forms.py:12 customer/templates/customer/customer_list.html:44
-#: reservations/forms.py:45 winadmin/forms.py:107
+#: customer/forms.py:12 customer/forms.py:21 customer/forms.py:30
+#: customer/templates/customer/customer_list.html:44 reservations/forms.py:45
+#: winadmin/forms.py:107
 #: winadmin/templates/winadmin/reservations/list_reservations_by_period.html:39
 msgid "Email"
 msgstr "メール"
 
-#: customer/forms.py:13 customer/templates/customer/customer_list.html:45
+#: customer/forms.py:13 customer/forms.py:22 customer/forms.py:31
+#: customer/templates/customer/customer_list.html:45
 msgid "Phone #"
 msgstr "電話番号"
 
@@ -242,12 +247,12 @@ msgid "Customer Details"
 msgstr "顧客"
 
 #: customer/templates/customer/customer_detail.html:24
-#: templates/ticket/ticket_detail.html:24
+#: templates/ticket/ticket_detail.html:26
 msgid "Submit Modifications"
 msgstr ""
 
 #: customer/templates/customer/customer_detail.html:28
-#: templates/ticket/ticket_detail.html:28
+#: templates/ticket/ticket_detail.html:30
 #, fuzzy
 #| msgid "Delete Item"
 msgid "Delete"

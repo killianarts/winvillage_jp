@@ -52,16 +52,16 @@ class TicketCreateForm(TicketFormMixin, forms.Form):
     last_name = forms.CharField()
     email = forms.EmailField()
     phone = PhoneNumberField()
-    text = forms.CharField(widget=forms.Textarea)
+    notes = forms.CharField(widget=forms.Textarea)
 
     do_htmx_validation = False
 
 
-class TicketDetailForm(TailwindFormMixin, forms.Form):
+class TicketDetailForm(TicketFormMixin, forms.Form):
     first_name = forms.CharField()
     last_name = forms.CharField()
     email = forms.EmailField()
     phone = PhoneNumberField()
-    text = forms.CharField(widget=forms.Textarea)
+    notes = forms.CharField(widget=forms.Textarea)
 
     do_htmx_validation = False

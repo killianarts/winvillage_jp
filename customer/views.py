@@ -145,6 +145,21 @@ def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
     ticket: Ticket = get_object_or_404(Ticket, id=ticket_id)
     if request.method == "POST":
         form = forms.TicketDetailForm(request.POST)
+        if form.is_valid():
+            form_data = {
+                "first_name": form.cleaned_data["first_name"],
+                "last_name": form.cleaned_data["last_name"],
+                "email": form.cleaned_data["email"],
+                "phone": form.cleaned_data["phone"],
+                "notes": form.cleaned_data["notes"],
+            }
+            if "add-note" in request.POST:
+                ticket.add_note(form_data)
+                messages.success(request, _("Note added to ticket."))
+            if "resolve-ticket" in request.POST:
+                ticket.is_resolved = True
+                ticket.add_note(form_data)
+                messages.success(request, _("Note added and ticket closed"))
     else:
         initial = {
             "first_name": ticket.customer.first_name,

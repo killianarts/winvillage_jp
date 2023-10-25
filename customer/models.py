@@ -92,12 +92,16 @@ class Ticket(BaseModel):
     notes = models.ManyToManyField(TicketNote)
     is_resolved = models.BooleanField(default=False)
 
-    def create_note(self, text):
-        note = TicketNote.objects.create(text)
-        note.save()
-        self.notes.add(note)
+    def add_note(self, data):
+        ticket_note = TicketNote.objects.create(text=data["notes"])
+        ticket_note.save()
+        self.customer.first_name = data["first_name"]
+        self.customer.last_name = data["last_name"]
+        self.customer.email = data["email"]
+        self.customer.phone = data["phone"]
+        self.customer.save()
+        self.notes.add(ticket_note)
         self.save()
-        return note
 
     def update_note(self, note_id, text):
         note = TicketNote.objects.filter(ticket=self, id=note_id).first()
