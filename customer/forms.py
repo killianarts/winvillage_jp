@@ -34,8 +34,8 @@ class CustomerFilterForm(TailwindFormMixin, forms.Form):
 
 
 class TicketFormRenderer(TemplatesSetting):
-    form_template_name = "customer/ticket/forms/tailwind/div.html"
-    single_field_row_template = "customer/ticket/forms/tailwind/field_row.html"
+    form_template_name = "ticket/forms/tailwind/div.html"
+    single_field_row_template = "ticket/forms/tailwind/field_row.html"
 
 
 class TicketFormMixin:
