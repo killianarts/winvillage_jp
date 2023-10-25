@@ -1,4 +1,6 @@
 from django.urls import path
+
+from customer import views as customer
 from . import views
 
 app_name = "winadmin"
@@ -6,12 +8,17 @@ app_name = "winadmin"
 urlpatterns = [
     path("", views.index, name="index"),
     path("login/", views.login_page, name="login_page"),
-    path("logoout/", views._logout, name="logout"),
+    path("logout/", views._logout, name="logout"),
     path("inventory/", views.list_inventory, name="list_inventory"),
     path(
         "inventory/item/<int:pk>/",
         views.edit_inventory_item,
         name="edit_inventory_item",
+    ),
+    path(
+        "inventory/item/<int:pk>/delete/",
+        views.delete_inventory_item,
+        name="delete_inventory_item",
     ),
     path(
         "inventory/create/",
@@ -25,6 +32,11 @@ urlpatterns = [
         "inventory/category/create/",
         views.create_category_page,
         name="create_category_page",
+    ),
+    path(
+        "inventory/category/<int:pk>/",
+        views.edit_category_page,
+        name="edit_category_page",
     ),
     path("transactions/", views.view_all_transactions, name="view_all_transactions"),
     # path("transactions/sales/", views.view_sales, name="view_sales"),
@@ -61,5 +73,24 @@ urlpatterns = [
         "reservations/send-confirmation-email/",
         views.send_confirmation_email,
         name="send_confirmation_email",
+    ),
+    path("customer/create/", customer.customer_create, name="customer_create"),
+    path(
+        "customer/create-bulk/",
+        customer.customer_create_bulk,
+        name="customer_create_bulk",
+    ),
+    path("customer/list/", customer.customer_list, name="customer_list"),
+    path(
+        "customer/detail/<int:customer_id>/",
+        customer.customer_detail,
+        name="customer_detail",
+    ),
+    path("ticket/create/", customer.ticket_create, name="ticket_create"),
+    path("ticket/list/", customer.ticket_list, name="ticket_list"),
+    path(
+        "ticket/detail/<int:ticket_id>/",
+        customer.ticket_detail,
+        name="ticket_detail",
     ),
 ]

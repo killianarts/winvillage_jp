@@ -64,9 +64,6 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
     "django_htmx",
     "django_tailwind_cli",
     "widget_tweaks",
@@ -76,6 +73,7 @@ THIRD_PARTY_APPS = [
     "whitenoise",
     "rosetta",
     "responsive_images",
+    "phonenumbers",
 ]
 
 if DEBUG:
@@ -86,6 +84,7 @@ LOCAL_APPS = [
     "core",
     "reservations",
     "winadmin",
+    "customer",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -100,7 +99,6 @@ MIGRATION_MODULES = {"sites": "core.contrib.sites.migrations"}
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
@@ -233,8 +231,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en"
-# LANGUAGE_CODE = 'ja'
+# LANGUAGE_CODE = "en"
+LANGUAGE_CODE = "ja"
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#languages
 # from django.utils.translation import gettext_lazy as _
@@ -320,6 +318,12 @@ EMAIL_TIMEOUT = 5
 DEFAULT_FROM_EMAIL = "admin@winvillage.jp"
 EMAIL_HOST = "localhost"
 EMAIL_PORT = "1025"
+
+# Phone Numbers
+PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
+PHONENUMBER_DEFAULT_REGION = "JP"
+PHONENUMBER_DEFAULT_FORMAT = "INTERNATIONAL"
+
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
@@ -328,9 +332,6 @@ ADMIN_URL = env("DJANGO_ADMIN_URL", default="django-admin/")
 ADMINS = [("Micah Jonah Killian", "micah@killianarts.online")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
-# https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings
-# Force the `admin` sign in process to go through the `django-allauth` workflow
-DJANGO_ADMIN_FORCE_ALLAUTH = env.bool("DJANGO_ADMIN_FORCE_ALLAUTH", default=False)
 
 # LOGGING
 # ------------------------------------------------------------------------------
@@ -354,25 +355,6 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["console"]},
 }
-
-# django-allauth
-# ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_REQUIRED = True
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ADAPTER = "winvillage.users.adapters.AccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/forms.html
-ACCOUNT_FORMS = {"signup": "winvillage.users.forms.UserSignupForm"}
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-SOCIALACCOUNT_ADAPTER = "winvillage.users.adapters.SocialAccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/forms.html
-SOCIALACCOUNT_FORMS = {"signup": "winvillage.users.forms.UserSocialSignupForm"}
-
 
 SQUARE_SETTINGS = {
     "SQUARE_APPLICATION_ID": env("SQUARE_APPLICATION_ID"),

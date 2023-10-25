@@ -1,0 +1,15 @@
+{% if messages %}
+  <ul id="message-list">
+    {% for message in messages %}
+      {% if message.level_tag == "info" %}
+        <li class="text-blue-500">{{ message }}</li>
+      {% elif message.level_tag == "error" %}
+        <li class="text-red-500">{{ message }}</li>
+      {% elif message.level_tag == "success" %}
+        <li class="text-green-500">{{ message }}</li>
+      {% elif message.level_tag == "warning" %}
+        <li class="text-yellow-500">{{ message }}</li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}

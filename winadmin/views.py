@@ -30,6 +30,7 @@ from winadmin.forms import (
     CreateItemForm,
     CreateCategoryForm,
     EditItemForm,
+    EditCategoryForm,
     CreateTransactionForm,
     SetLedgerPeriodForm,
     SetReservationPeriodForm,
@@ -54,12 +55,12 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, "winadmin/index.html", {})
 
 
+@htmx_form_validate(form_class=LoginForm)
 def login_page(request: HtmxHttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
-        # return index(make_get_request(request))
         return redirect("winadmin:index")
     form = LoginForm()
-    context = {"form": form}
+
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -68,9 +69,8 @@ def login_page(request: HtmxHttpRequest) -> HttpResponse:
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                # return index(make_get_request(request))
                 return redirect("winadmin:index")
-
+    context = {"form": form}
     return TemplateResponse(request, "winadmin/login_page.html", context)
 
 
@@ -87,7 +87,7 @@ def _logout(request: HtmxHttpRequest) -> HttpResponse:
 def list_inventory(request: HtmxHttpRequest) -> HttpResponse:
     items = Item.objects.all()
     context = {"items": items}
-    return TemplateResponse(request, "winadmin/inventory/index.html", context)
+    return TemplateResponse(request, "winadmin/inventory/list_inventory.html", context)
 
 
 @login_required(login_url="winadmin:login_page")
@@ -123,7 +123,9 @@ def _create_category_page(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = CreateCategoryForm(request.POST)
         if form.is_valid():
-            form.save()
+            title = form.cleaned_data["title"]
+            category = Category.objects.create(title=title)
+            category.save()
             messages.add_message(
                 request, messages.INFO, _("Category Successfully Added")
             )
@@ -137,6 +139,31 @@ def _create_category_page(request: HtmxHttpRequest) -> HttpResponse:
         )
         return HttpResponse(html)
     return TemplateResponse(request, "winadmin/inventory/create_category.html", context)
+
+
+@for_htmx(use_block_from_params=True)
+def edit_category_page(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+    if request.method == "POST":
+        form = CreateCategoryForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            category = get_object_or_404(Category, pk=pk)
+            category.title = title
+            category.save()
+            messages.add_message(
+                request, messages.INFO, _("Category Successfully Edited")
+            )
+            context = {"form": form, "category": category}
+            return TemplateResponse(
+                request, "winadmin/inventory/edit_category.html", context
+            )
+        elif not form.is_valid():
+            if not form.cleaned_data:
+                messages.add_message(request, messages.ERROR, _("Input category title"))
+    category = get_object_or_404(Category, pk=pk)
+    form = EditCategoryForm(initial={"title": category.title})
+    context = {"form": form, "category": category}
+    return TemplateResponse(request, "winadmin/inventory/edit_category.html", context)
 
 
 def list_categories_page(request: HtmxHttpRequest) -> HttpResponse:
@@ -153,20 +180,34 @@ def edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     item = get_object_or_404(Item, pk=pk)
     form = EditItemForm(instance=item)
     if request.method == "POST":
+        form = EditItemForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
             messages.success(request, _("Item Successfully Edited"))
-            # return edit_inventory_item(make_get_request(request), pk)
+            context = {"form": form, "item": item}
+            return TemplateResponse(
+                request, "winadmin/inventory/edit_item.html", context
+            )
         else:
+            form = EditItemForm(request.POST, instance=item)
             messages.error(request, _("Error"))
     return TemplateResponse(
         request, "winadmin/inventory/edit_item.html", {"form": form, "item": item}
     )
 
 
+@require_POST
 @login_required(login_url="winadmin:login_page")
-def delete_inventory_item(request: HtmxHttpRequest) -> HttpResponse:
-    pass
+def delete_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+    item = get_object_or_404(Item, pk=pk)
+    form = EditItemForm(request.POST, instance=item)
+    if form.is_valid():
+        item.delete()
+        messages.success(request, _("Item Successfully Deleted"))
+    else:
+        form = EditItemForm(request.POST, instance=item)
+        messages.error(request, _("Error"))
+    return redirect("winadmin:list_inventory")
 
 
 # Transactions

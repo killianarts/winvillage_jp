@@ -19,7 +19,7 @@ Here is the given HTML content converted to Markdown:
 - CRUD operations
 - mailing list
 - ticket system for managing problems?
-- Search customers
+- Search customer
 - Customer details
 - has_paid
 - payment_successful

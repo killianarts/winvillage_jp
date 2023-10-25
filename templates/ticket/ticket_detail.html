@@ -1,0 +1,53 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n %}
+{% block title %}
+  {% blocktrans %}Ticket Details{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+  <main id="dashboard-content" class="py-10 lg:ml-72">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl">{% translate 'Ticket Details' %}</h1>
+      <form action="." method="post" novalidate
+            hx-post="{% url 'winadmin:ticket_detail' ticket.id %}"
+            hx-target="#dashboard-content"
+            hx-swap="outerHTML"
+            class="max-w-sm">
+        {{ form.non_field_errors }}
+        <div id="messages">
+          {% include 'core/messages.html' %}
+        </div>
+        <div class="grid">
+          {% for field in form %}
+            <label for="{{ field.is_for_label }}">{{ field.label }}</label>
+            {{ field }}
+          {% endfor %}
+        </div>
+
+        <div class="space-y-5 grid">
+          <button type="submit" name="submit"
+                  class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+            {% trans "Submit Modifications" %}
+          </button>
+          <button type="submit" name="delete"
+                  class="bg-red-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-red-600">
+            {% trans "Delete" %}
+          </button>
+        </div>
+      </form>
+      {% block notes %}
+        {% for note in notes %}
+          {{ note.text }}
+        {% endfor %}
+      {% endblock %}
+    </div>
+  </main>
+{% endblock %}
+
+{% block deleted %}
+  <div hx-get="{% url 'winadmin:ticket_list' %}"
+       hx-replace-url="{% url 'winadmin:ticket_list' %}"
+       hx-target="this"
+       hx-trigger="load"
+       hx-swap="outerHTML"></div>
+{% endblock %}

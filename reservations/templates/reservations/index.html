@@ -1,0 +1,41 @@
+{% extends 'winadmin/base.html' %}
+{% load i18n static %}
+{% block extra_scripts %}
+
+{% endblock %}
+
+{% block title %}
+  {% translate 'Winvillage' %}
+{% endblock %}
+{% block subtitle %}
+  {% translate 'Create a Reservation' %}
+{% endblock %}
+
+{% block content %}
+  <div class="relative min-h-screen w-full md:grid md:grid-cols-3">
+    <nav class="w-screen place-items-center bg-orange-800 md:grid md:w-full">
+      <div class="flex items-center p-5 md:block md:px-0">
+        <div class="flex flex-1">
+          <a href="{% url 'core:index' %}" class="md:mx-auto">
+            <img src="{% static 'core/img/logo.svg' %}" class="max-h-16 md:max-h-52" alt=""></a>
+        </div>
+        <a href="{% url 'core:index' %}">
+          <button type="submit"
+                  class="mx-auto flex items-center px-6 py-2 text-orange-50 font-black gap-2 bg-orange-900
+                                   cursor-pointer
+                           transition-all duration-250 hover:bg-orange-950">
+            {% translate 'Go Back Home' %}
+          </button>
+        </a>
+      </div>
+    </nav>
+    <div class="absolute inset-0 col-span-2 flex items-center justify-center md:relative">
+      <div hx-get="{% url 'reservations:step-1' %}" hx-target="this" hx-swap="outerHTML" hx-trigger="load"
+           hx-indicator="#loading-indicator">
+        {#        Get the first step of the reservation process form#}
+      </div>
+      <div id="loading-indicator">
+      </div>
+    </div>
+  </div>
+{% endblock %}

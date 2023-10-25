@@ -1,0 +1,25 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n %}
+{% block title %}
+  {% blocktrans %}Create Many Random Customers{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+  <main id="dashboard-content" class="py-10 lg:ml-72">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl">{% translate 'Create Customer' %}</h1>
+      <div id="messages">{% include 'core/messages.html' %}</div>
+      <form>
+        {% blocktrans %}How many:{% endblocktrans %} <input type="number" name="howmany" value="1">
+        <button hx-post="."
+                hx-trigger="click"
+                hx-target="#customers-created"
+                hx-swap="beforeend">
+          {% blocktrans %}Make some!{% endblocktrans %}
+        </button>
+      </form>
+      <p id="customers-created">
+      </p>
+    </div>
+  </main>
+{% endblock %}

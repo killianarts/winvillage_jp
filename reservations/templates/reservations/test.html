@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+{% load l10n %}
+
+{% block title %}
+  Make a Reservation
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-center text-3xl">Calendars</h1>
+  {#    <h2 class="text-xl">Calendar w/Python-generated HTML</h2>#}
+  {#    {{ formatted_calendar }}#}
+
+  {#        <h2 class="text-xl">Calendar formatted in template</h2>#}
+  {#        <div class="mx-auto grid max-w-xl grid-cols-7 place-items-center">#}
+  {#            {% for date in calendar %}#}
+  {#                {% if date.month is not current_date.month %}#}
+  {#                    <span class="p-5 text-neutral-500">{{ date.day }}</span>#}
+  {#                {% else %}#}
+  {#                    <span class="bg-blue-200 p-5 text-lg">{{ date.day }}</span>#}
+  {#                {% endif %}#}
+  {#            {% endfor %}#}
+  {#        </div>#}
+
+  {#    <a class="text-blue-500 underline underline-offset-5" href={% querystring_for_date current_date %}>Go to Calendar</a>#}
+
+  <h2 class="text-center text-xl">Tailwind Calendar Component</h2>
+  <div class="mx-auto max-w-xs">
+    <div class="flex items-center">
+      <h2 class="flex-auto text-sm font-semibold text-stone-900">{{ month_name|localize }}</h2>
+      <button type="button"
+              class="flex flex-none items-center justify-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
+        <span class="sr-only">Previous month</span>
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd"
+                d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                clip-rule="evenodd"/>
+        </svg>
+      </button>
+      <button type="button"
+              class="ml-2 flex flex-none items-center justify-center text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
+        <span class="sr-only">Next month</span>
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd"
+                d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                clip-rule="evenodd"/>
+        </svg>
+      </button>
+    </div>
+    <div class="mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
+      {% for day in day_names %}
+        <div>{{ day|slice:"0:1" }}</div>
+      {% endfor %}
+    </div>
+    <div class="mt-2 grid grid-cols-7 text-sm">
+      <!--
+        Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+        Is selected, include: "text-white"
+        Is not selected and is today, include: "text-orange-600"
+        Is not selected and is not today and is current month, include: "text-stone-900"
+        Is not selected and is not today and is not current month, include: "text-stone-400"
+        Is selected and is today, include: "bg-orange-600"
+        Is selected and is not today, include: "bg-stone-900"
+        Is not selected, include: "hover:bg-stone-200"
+        Is selected or is today, include: "font-semibold"
+      -->
+      {% for date in dates_iter %}
+        {% if date.month is not current_date.month %}
+          <div class="py-2">
+            <button type="button"
+                    class="mx-auto flex h-8 w-8 items-center justify-center rounded-full text-stone-400 hover:bg-stone-200">
+              <time datetime="{{ date }}">{{ date.day }}</time>
+            </button>
+          </div>
+        {% elif date.weekday == calendar.firstweekday %}
+          <div class="py-2">
+            <button type="button"
+                    class="mx-auto flex h-8 w-8 items-center justify-center rounded-full text-red-400 hover:bg-red-200">
+              <time datetime="{{ date }}">{{ date.day }}</time>
+            </button>
+          </div>
+        {% else %}
+          <div class="py-2">
+            <button type="button"
+                    class="mx-auto flex h-8 w-8 items-center justify-center rounded-full text-stone-900 hover:bg-stone-200">
+              <time datetime="{{ date }}">{{ date.day }}</time>
+            </button>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+    </div>
+  </div>
+
+
+{% endblock %}

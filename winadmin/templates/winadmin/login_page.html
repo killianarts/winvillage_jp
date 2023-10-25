@@ -1,0 +1,37 @@
+{% extends 'winadmin/base.html' %}
+{% load i18n widget_tweaks %}
+{% block content %}
+  <div id="reservation-form-wrapper" class="mx-auto max-w-xl px-5">
+    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+      {% translate 'Winvillage Admin Login' %}</h2>
+    <form action="{% url 'winadmin:login_page' %}" method="post" class="grid" novalidate>
+      {% csrf_token %}
+      {#      <fieldset>#}
+      {#        <legend class="sr-only">{% translate 'Contact Information' %}</legend>#}
+      {#        <div class="grid grid-cols-1">#}
+      {#          {{ form.non_field_errors }}#}
+      {#          {% for field in form %}#}
+      {#            <label class="mb-2 grid grid-cols-1 items-center gap-x-2 text-xl" for="{{ field.id_for_label }}">#}
+      {#              {{ field.label }}#}
+      {#              {% render_field field class="" %}#}
+      {#              {% if field.errors %}#}
+      {#                {% for error in field.errors %}#}
+      {#                  <div class="flex gap-2">#}
+      {#                    <img class="inline-block" src="{% static 'core/warning_icon.svg' %}">#}
+      {#                    <p class="text-lg font-thin text-red-500 font-body">{{ error|escape }}</p>#}
+      {#                  </div>#}
+      {#                {% endfor %}#}
+      {#              {% endif %}#}
+      {#            </label>#}
+      {#          {% endfor %}#}
+      {#        </div>#}
+      {#      </fieldset>#}
+      {{ form }}
+      <button name="submit" type="submit"
+              class="bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
+        {% trans "Login" %}
+      </button>
+    </form>
+  </div>
+{% endblock %}

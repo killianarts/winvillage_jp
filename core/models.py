@@ -5,6 +5,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 
+from customer.models import Customer
+
 auth_user = get_user_model()
 
 
@@ -21,52 +23,12 @@ class ContactInfo(BaseModel):
         verbose_name = _("Contact Info")
         verbose_name_plural = _("Contact Infos")
 
-    first_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50, verbose_name=_("First name"))
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254)
 
     def __str__(self):
         return f"{self.first_name}, {self.last_name}, {self.email}"
-
-
-class Customer(BaseModel):
-    class Meta:
-        verbose_name = _("Customer")
-        verbose_name_plural = _("Customers")
-
-    contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE)
-    user = models.OneToOneField(auth_user, on_delete=models.CASCADE, null=True)
-
-    def __str__(self):
-        return f"{self.full_name}"
-
-    @property
-    def full_name(self):
-        return f"{self.contact_info.first_name} {self.contact_info.last_name}"
-
-    @property
-    def email(self):
-        return f"{self.contact_info.email}"
-
-
-class TicketNote(BaseModel):
-    class Meta:
-        verbose_name = _("Ticket Note")
-        verbose_name_plural = _("Ticket Notes")
-
-    user = models.OneToOneField(auth_user, on_delete=models.CASCADE, null=True)
-    text = models.TextField()
-
-
-class Ticket(BaseModel):
-    class Meta:
-        verbose_name = _("Ticket")
-        verbose_name_plural = _("Tickets")
-
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    reference_number = models.IntegerField()
-    note = models.ForeignKey(TicketNote, on_delete=models.CASCADE)
-    is_resolved = models.BooleanField(default=False)
 
 
 class Category(BaseModel):

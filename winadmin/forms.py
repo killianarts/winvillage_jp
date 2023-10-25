@@ -7,11 +7,12 @@ from core.models import Item, Category, Transaction
 from reservations.models import Stay, ContactInfo
 
 
-class LoginForm(forms.Form):
+class LoginForm(TailwindFormMixin, forms.Form):
     username = forms.CharField(label=_("Username"), max_length=30)
     password = forms.CharField(
         label=_("Password"), widget=forms.PasswordInput, max_length=30
     )
+    do_htmx_validation = True
 
 
 class CreateItemForm(forms.ModelForm):
@@ -50,12 +51,14 @@ class EditItemForm(TailwindFormMixin, forms.ModelForm):
     do_htmx_validation = True
 
 
-class CreateCategoryForm(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = [
-            "title",
-        ]
+class CreateCategoryForm(TailwindFormMixin, forms.Form):
+    title = forms.CharField()
+    do_htmx_validation = False
+
+
+class EditCategoryForm(TailwindFormMixin, forms.Form):
+    title = forms.CharField()
+    do_htmx_validation = False
 
 
 class CreateTransactionForm(forms.ModelForm):
@@ -99,12 +102,12 @@ class DateTimeInput(forms.DateTimeInput):
 
 class CreateReservationForm(TailwindFormMixin, forms.Form):
     STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES)
-    start_datetime = forms.DateField(widget=DateInput)
-    end_datetime = forms.DateField(widget=DateInput)
+    first_name = forms.CharField(label=_("First Name"))
+    last_name = forms.CharField(label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))
+    stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES, label=_("Stay Type"))
+    start_datetime = forms.DateField(widget=DateInput, label=_("Start Date"))
+    end_datetime = forms.DateField(widget=DateInput, label=_("End Date"))
 
     do_htmx_validation = True
 

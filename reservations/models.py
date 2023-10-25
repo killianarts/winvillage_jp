@@ -11,6 +11,7 @@ from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
 
 from core.models import Item, ContactInfo, BaseModel
+from customer.models import Customer
 
 auth_user = get_user_model()
 
@@ -34,6 +35,7 @@ class Order(models.Model):
         verbose_name_plural = _("Orders")
 
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True)
+    # customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     items = models.ManyToManyField(OrderItem)
     ordered = models.BooleanField(default=False)
     ordered_date = models.DateTimeField(blank=True, null=True)
@@ -115,6 +117,10 @@ class StayManager(models.Manager):
 
 
 class Stay(BaseModel):
+    class Meta:
+        verbose_name = _("Stay")
+        verbose_name_plural = _("Stays")
+
     objects = StayManager()
     STATUS = Choices(
         ("not_reserved", _("Not Reserved")),
@@ -180,6 +186,10 @@ class Stay(BaseModel):
 
 
 class Reservation(models.Model):
+    class Meta:
+        verbose_name = _("Reservation")
+        verbose_name_plural = _("Reservations")
+
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
     stay = models.ForeignKey(Stay, on_delete=models.CASCADE, null=True, blank=True)
     contact_info = models.ForeignKey(

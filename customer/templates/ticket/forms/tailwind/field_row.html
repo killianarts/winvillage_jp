@@ -1,0 +1,44 @@
+{% load i18n %}
+{% load widget_tweaks %}
+
+<div{% with classes=field.css_classes %} class="slide-it {{ classes }}"{% endwith %}
+                                         id="form-row-{{ field.name }}">
+  {% if field.label %}
+    <label for={{ field.id_for_label }}></label>
+    {{ field.label_tag }}
+  {% endif %}
+  <div class="">
+    {% with error_class=errors %}
+      <div class="">
+        <div class="grid">
+          {% if field|widget_type == "select" %}
+            <div class="select {{ error_class }}">
+              {{ field }}
+            </div>
+          {% else %}
+            {#            This is the field you want to edit #}
+            {{ field|add_class:error_class }}
+          {% endif %}
+        </div>
+        {% if field.help_text %}
+          <p class="text-blue-500">{{ field.help_text|safe }}</p>
+        {% endif %}
+        {% if errors %}
+          <p class="text-red-500">
+            {{ errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+      </div>
+    {% endwith %}
+  </div>
+  {% if field.label %}
+    </label>
+  {% endif %}
+  {% if forloop.last %}
+    {% for field in hidden_fields %}{{ field }}{% endfor %}
+  {% endif %}
+</div>

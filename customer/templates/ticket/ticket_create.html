@@ -1,0 +1,33 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n %}
+{% block title %}
+  {% blocktrans %}Create a ticket{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+  <main id="dashboard-content" class="py-10 lg:ml-72">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl">{% translate 'Create Ticket' %}</h1>
+      <div id="messages">{% include 'core/messages.html' %}</div>
+      <form action="." method="post" novalidate
+            class="max-w-sm"
+            hx-post="." hx-swap="outerHTML" hx-target="#dashboard-content"
+            hx-vals='{"use_block": "content"}'>
+        {{ form }}
+        <button name="submit"
+                type="submit"
+                class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+          {% trans "Create Ticket" %}
+        </button>
+      </form>
+    </div>
+  </main>
+{% endblock %}
+
+{% block created %}
+  <div hx-get="{% url 'winadmin:customer_list' %}"
+       hx-replace-url="{% url 'winadmin:customer_list' %}"
+       hx-target="this"
+       hx-trigger="load"
+       hx-swap="outerHTML"></div>
+{% endblock %}
