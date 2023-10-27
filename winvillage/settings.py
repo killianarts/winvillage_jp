@@ -74,7 +74,6 @@ THIRD_PARTY_APPS = [
     "rosetta",
     "responsive_images",
     "phonenumbers",
-    # "djcelery",
 ]
 
 if DEBUG:
