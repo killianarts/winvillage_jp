@@ -4,33 +4,31 @@
   {% translate 'Category List View' %}
 {% endblock %}
 {% block content %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
-    <div class="overflow-hidden">
-      <h1 class="mb-5 text-center text-3xl">{% translate 'Category List View' %}</h1>
-      <table class="mx-auto w-full max-w-7xl table-auto divide-y divide-stone-300">
-        <thead>
-        <tr class="text-left">
-          <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">{% translate 'Category' %}</th>
+  <div class="overflow-hidden">
+    <h1 class="mb-5 text-3xl">{% translate 'Categories' %}</h1>
+    <table class="w-full max-w-7xl table-auto divide-y divide-stone-300">
+      <thead>
+      <tr class="text-left">
+        <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">{% translate 'Category' %}</th>
+      </tr>
+      </thead>
+      <tbody class="divide-y divide-stone-200">
+      {% for category in categories %}
+        <tr class="hover:bg-stone-50">
+          <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
+            <a hx-get="{% url 'winadmin:edit_category_page' category.pk %}"
+               hx-target="#dashboard-content"
+               hx-swap="outerHTML"
+               hx-push-url="true"
+               hx-vals='{"use_block":"content"}'
+               class="pl-6"
+               href="{% url 'winadmin:edit_category_page' category.pk %}">
+              {{ category.name }}
+            </a>
+          </td>
         </tr>
-        </thead>
-        <tbody class="divide-y divide-stone-200">
-        {% for category in categories %}
-          <tr class="hover:bg-stone-50">
-            <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
-              <a hx-get="{% url 'winadmin:edit_category_page' category.pk %}"
-                 hx-target="#dashboard-content"
-                 hx-swap="outerHTML"
-                 hx-push-url="true"
-                 hx-vals='{"use_block":"content"}'
-                 class="pl-6"
-                 href="{% url 'winadmin:edit_category_page' category.pk %}">
-                {{ category.title }}
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </main>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

@@ -4,26 +4,27 @@
   {% translate 'Sale List View' %}
 {% endblock %}
 {% block content %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
-    <div class="overflow-hidden">
-      <h1 class="mb-5 text-center text-3xl">{% translate 'Sales Chart' %}</h1>
-      <form hx-get="{% url 'winadmin:view_sales_by_period' %}"
-            hx-trigger="click, change delay:0ms"
-            hx-swap="outerHTML"
-            hx-target="#dashboard-content"
-            hx-push-url="true"
-            class="mx-auto w-full max-w-7xl">
-
-        <div class="mb-5 max-w-fit space-y-2 divide-y">
-          <p>{% translate 'Filter' %}</p>
-          <div class="flex justify-center pt-5 font-mono slashed-zero tabular-nums space-x-5">
-            <div>{% translate 'Year' %}: {{ form.year }}</div>
-            <div>{% translate 'Month' %}: {{ form.month }}</div>
-          </div>
+  <div class="overflow-hidden">
+    <h1 class="mb-5 text-3xl">{% translate 'Sales Chart' %}</h1>
+    <form hx-get="{% url 'winadmin:view_sales_by_period' %}"
+          hx-trigger="change delay:0ms"
+          hx-swap="outerHTML"
+          hx-target="#sales-table-wrapper"
+          hx-push-url="true"
+          hx-vals='{"use_block": "sales_table"}'
+          class="max-w-7xl">
+      <div class="mb-5 max-w-fit space-y-2 divide-y">
+        <p>{% translate 'Filter' %}</p>
+        <div class="flex justify-center pt-5 font-mono slashed-zero tabular-nums space-x-5">
+          <div>{% translate 'Year' %}: {{ form.year }}</div>
+          <div>{% translate 'Month' %}: {{ form.month }}</div>
         </div>
-      
-        <h2 class="mb-5 text-center text-2xl">{{ year }}-{{ month }}</h2>
-        <table class="mx-auto w-full max-w-7xl table-auto divide-y divide-stone-300">
+      </div>
+    </form>
+    {% block sales_table %}
+      <div id="sales-table-wrapper">
+        <h2 class="mb-5 text-2xl">{{ year }}-{{ month }}</h2>
+        <table id="sales-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
           <thead>
           <tr class="text-left">
             <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
@@ -42,10 +43,7 @@
           {% for sale, balance in ledger %}
             <tr class="hover:bg-stone-50">
               <td class="whitespace-nowrap py-4 pr-3 pl-4 font-mono text-sm font-medium slashed-zero tabular-nums text-stone-900 sm:pl-0">
-                <a hx-boost="true" class="pl-6"
-                        {#                               href="{% url 'winadmin:edit_sale' sale.pk %}"#}
-                   href="#"
-                >
+                <a hx-boost="true" class="pl-6" href="#">
                   {% timezone "Asia/Tokyo" %}
                     {{ sale.transaction_datetime|date:"Y-m-d" }}
                   {% endtimezone %}
@@ -86,7 +84,7 @@
           </tr>
           </tbody>
         </table>
-      </form>
-    </div>
-  </main>
+      </div>
+    {% endblock %}
+  </div>
 {% endblock %}

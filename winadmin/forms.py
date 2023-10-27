@@ -15,7 +15,7 @@ class LoginForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = True
 
 
-class ItemCreateForm(forms.ModelForm):
+class ItemCreateForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Item
         fields = [
@@ -52,12 +52,12 @@ class ItemEditForm(TailwindFormMixin, forms.ModelForm):
 
 
 class CategoryCreateForm(TailwindFormMixin, forms.Form):
-    title = forms.CharField()
+    name = forms.CharField(label=_("Category Name"))
     do_htmx_validation = False
 
 
 class CategoryDetailForm(TailwindFormMixin, forms.Form):
-    title = forms.CharField()
+    name = forms.CharField(label=_("Category Name"))
     do_htmx_validation = False
 
 

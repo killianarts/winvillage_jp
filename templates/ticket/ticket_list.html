@@ -5,9 +5,8 @@
 {% endblock %}
 {% block content %}
   <div class="overflow-hidden">
-    <h1 class="mb-5 text-center text-3xl">{% translate 'Customer Chart' %}</h1>
-    <div
-            id="customer-list-form" class="mx-auto w-full max-w-7xl">
+    <h1 class="mb-5 text-3xl">{% translate 'Tickets' %}</h1>
+    <div id="customer-list-form" class="">
       <div id="messages">{% include 'core/messages.html' %}</div>
       <div class="mb-5 max-w-fit space-y-2 divide-y">
         <p>{% translate 'Filter' %}</p>
@@ -26,14 +25,9 @@
                    required=""
                    id="id_first_name">
           </label>
-          {#            </form>#}
-          {#            <div>{% translate 'Email' %}: {{ form.email }}</div>#}
-          {#            <div>{% translate 'Phone Number' %}: {{ form.phone }}</div>#}
         </div>
       </div>
-      {#        <h2 class="mb-5 text-center text-2xl">{{ year }}-{{ month }}</h2>#}
-      <table class=" mx-auto w-full max-w-7xl table-auto divide-y divide-stone-300
-            ">
+      <table class="w-full max-w-7xl table-auto divide-y divide-stone-300">
         <thead>
         <tr class="text-left">
           <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">

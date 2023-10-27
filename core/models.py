@@ -38,10 +38,10 @@ class Category(BaseModel):
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
 
-    title = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name=_("Category Name"))
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.name}"
 
 
 class Item(models.Model):
@@ -94,6 +94,16 @@ class Item(models.Model):
         return reverse("winadmin:edit_inventory_item", args=[str(self.pk)])
 
 
+class TransactionSalesManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .filter(name__in=["sale", "payment", "deposit", "return"])
+            .order_by("transaction_datetime")
+        )
+
+
 class Transaction(BaseModel):
     class Meta:
         verbose_name = _("Transaction")
@@ -125,6 +135,8 @@ class Transaction(BaseModel):
     total_price = models.DecimalField(
         max_digits=19, decimal_places=4, verbose_name=_("Total Price")
     )
+    objects = models.Manager()
+    sales = TransactionSalesManager()
 
     @property
     def price_rounded(self):

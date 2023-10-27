@@ -34,7 +34,6 @@ class Step2Form(forms.ModelForm):
     class Meta:
         model = Stay
         fields = ["start_datetime", "end_datetime"]
-        labels = {"start_datetime": _("From"), "end_datetime": _("Until")}
         widgets = {
             "start_datetime": DateInput(),
             "end_datetime": DateInput(),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-27 05:02+0000\n"
+"POT-Creation-Date: 2023-10-27 06:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,13 +31,17 @@ msgid "First name"
 msgstr ""
 
 #: core/models.py:38 core/models.py:58
-#: winadmin/templates/winadmin/inventory/category_list.html:13
-#: winadmin/templates/winadmin/inventory/item_list.html:20
+#: winadmin/templates/winadmin/inventory/category_list.html:12
+#: winadmin/templates/winadmin/inventory/item_list.html:19
 msgid "Category"
 msgstr ""
 
-#: core/models.py:39
+#: core/models.py:39 winadmin/templates/winadmin/inventory/category_list.html:8
 msgid "Categories"
+msgstr ""
+
+#: core/models.py:41 winadmin/forms.py:55 winadmin/forms.py:60
+msgid "Category Name"
 msgstr ""
 
 #: core/models.py:49 core/models.py:122
@@ -49,11 +53,11 @@ msgid "Items"
 msgstr ""
 
 #: core/models.py:52 core/models.py:109
-#: winadmin/templates/winadmin/inventory/item_list.html:17
+#: winadmin/templates/winadmin/inventory/item_list.html:16
 msgid "Name"
 msgstr ""
 
-#: core/models.py:54 winadmin/templates/winadmin/inventory/item_list.html:19
+#: core/models.py:54 winadmin/templates/winadmin/inventory/item_list.html:18
 msgid "Price"
 msgstr ""
 
@@ -65,11 +69,11 @@ msgstr ""
 msgid "Stock Quantity"
 msgstr ""
 
-#: core/models.py:67 winadmin/templates/winadmin/inventory/item_list.html:22
+#: core/models.py:67 winadmin/templates/winadmin/inventory/item_list.html:21
 msgid "In Stock?"
 msgstr ""
 
-#: core/models.py:68 winadmin/templates/winadmin/inventory/item_list.html:23
+#: core/models.py:68 winadmin/templates/winadmin/inventory/item_list.html:22
 msgid "Active?"
 msgstr ""
 
@@ -89,7 +93,7 @@ msgstr ""
 msgid "Short description"
 msgstr ""
 
-#: core/models.py:78 winadmin/templates/winadmin/inventory/item_list.html:24
+#: core/models.py:78 winadmin/templates/winadmin/inventory/item_list.html:23
 msgid "Short Description"
 msgstr ""
 
@@ -126,15 +130,15 @@ msgid "Transaction Datetime"
 msgstr ""
 
 #: core/models.py:124
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:34
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
 msgid "Quantity"
 msgstr ""
 
 #: core/models.py:126 reservations/templates/reservations/payment_page.html:393
-#: reservations/templates/reservations/reservation_form.html:222
+#: reservations/templates/reservations/reservation_form.html:223
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:503
 #: winadmin/templates/winadmin/reservations/reservation_create.html:135
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:81
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:79
 msgid "Total Price"
 msgstr ""
 
@@ -204,28 +208,28 @@ msgstr ""
 
 #: customer/forms.py:10 customer/forms.py:19 customer/forms.py:28
 #: customer/forms.py:51 customer/forms.py:61 customer/forms.py:71
-#: customer/templates/customer/customer_list.html:43 reservations/forms.py:45
+#: customer/templates/customer/customer_list.html:34 reservations/forms.py:44
 #: winadmin/forms.py:105 winadmin/forms.py:146
 msgid "First Name"
 msgstr ""
 
 #: customer/forms.py:11 customer/forms.py:20 customer/forms.py:29
 #: customer/forms.py:52 customer/forms.py:62 customer/forms.py:72
-#: customer/templates/customer/customer_list.html:41 reservations/forms.py:46
+#: customer/templates/customer/customer_list.html:32 reservations/forms.py:45
 #: winadmin/forms.py:106 winadmin/forms.py:147
 msgid "Last Name"
 msgstr ""
 
 #: customer/forms.py:12 customer/forms.py:21 customer/forms.py:30
 #: customer/forms.py:53 customer/forms.py:63 customer/forms.py:73
-#: customer/templates/customer/customer_list.html:44 reservations/forms.py:47
+#: customer/templates/customer/customer_list.html:35 reservations/forms.py:46
 #: winadmin/forms.py:107 winadmin/forms.py:148
 msgid "Email"
 msgstr ""
 
 #: customer/forms.py:13 customer/forms.py:22 customer/forms.py:31
 #: customer/forms.py:54 customer/forms.py:64 customer/forms.py:74
-#: customer/templates/customer/customer_list.html:45 reservations/forms.py:48
+#: customer/templates/customer/customer_list.html:36 reservations/forms.py:47
 msgid "Phone #"
 msgstr ""
 
@@ -249,7 +253,7 @@ msgstr ""
 msgid "Ticket"
 msgstr ""
 
-#: customer/models.py:89
+#: customer/models.py:89 templates/ticket/ticket_list.html:8
 msgid "Tickets"
 msgstr ""
 
@@ -281,14 +285,13 @@ msgstr ""
 msgid "Customer List View"
 msgstr ""
 
-#: customer/templates/customer/customer_list.html:9
-#: templates/ticket/ticket_list.html:8
+#: customer/templates/customer/customer_list.html:8
 msgid "Customer Chart"
 msgstr ""
 
-#: customer/templates/customer/customer_list.html:14
-#: templates/ticket/ticket_list.html:13
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:18
+#: customer/templates/customer/customer_list.html:10
+#: templates/ticket/ticket_list.html:12
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:17
 msgid "Filter"
 msgstr ""
 
@@ -302,47 +305,47 @@ msgstr ""
 msgid "Create Ticket"
 msgstr ""
 
-#: customer/views.py:28
+#: customer/views.py:29
 msgid "Customer named { customer.full_name } created successfully!"
 msgstr ""
 
-#: customer/views.py:33
+#: customer/views.py:34
 msgid "Customer couldn't be created!"
 msgstr ""
 
-#: customer/views.py:82
+#: customer/views.py:84
 msgid "Customer edited successfully!"
 msgstr ""
 
-#: customer/views.py:86
+#: customer/views.py:88
 msgid "Customer deleted successfully!"
 msgstr ""
 
-#: customer/views.py:90
+#: customer/views.py:92
 msgid "Customer couldn't be edited!"
 msgstr ""
 
-#: customer/views.py:129
+#: customer/views.py:131
 msgid "Ticket created successfully!"
 msgstr ""
 
-#: customer/views.py:133
+#: customer/views.py:135
 msgid "Ticket couldn't be created!"
 msgstr ""
 
-#: customer/views.py:155
+#: customer/views.py:157
 msgid "Ticket reopened."
 msgstr ""
 
-#: customer/views.py:158
+#: customer/views.py:160
 msgid "Ticket reopened"
 msgstr ""
 
-#: customer/views.py:173
+#: customer/views.py:175
 msgid "Note added to ticket."
 msgstr ""
 
-#: customer/views.py:176
+#: customer/views.py:178
 msgid "Note added and ticket closed"
 msgstr ""
 
@@ -354,14 +357,6 @@ msgstr ""
 #: reservations/forms.py:11 reservations/models.py:132 winadmin/forms.py:104
 #: winadmin/forms.py:137
 msgid "Overnight"
-msgstr ""
-
-#: reservations/forms.py:37
-msgid "From"
-msgstr ""
-
-#: reservations/forms.py:37
-msgid "Until"
 msgstr ""
 
 #: reservations/models.py:21
@@ -442,8 +437,8 @@ msgstr ""
 
 #: reservations/templates/reservations/_buttons.html:24
 #: reservations/templates/reservations/confirmation_step.html:48
-#: reservations/templates/reservations/reservation_form.html:159
-#: reservations/templates/reservations/reservation_form.html:245
+#: reservations/templates/reservations/reservation_form.html:160
+#: reservations/templates/reservations/reservation_form.html:246
 msgid "Back"
 msgstr ""
 
@@ -507,6 +502,8 @@ msgid "Reservation Types"
 msgstr ""
 
 #: reservations/templates/reservations/reservation_form.html:19
+#: reservations/templates/reservations/reservation_form.html:51
+#: reservations/templates/reservations/reservation_form.html:106
 msgid "Next"
 msgstr ""
 
@@ -524,66 +521,77 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:59
+#: reservations/templates/reservations/reservation_form.html:60
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:431
 #: winadmin/templates/winadmin/reservations/reservation_create.html:41
 #: winadmin/templates/winadmin/reservations/reservation_create.html:51
 msgid "Choose Options"
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:66
+#: reservations/templates/reservations/reservation_form.html:67
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:433
 #: winadmin/templates/winadmin/reservations/reservation_create.html:53
 msgid "Option Types"
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:86
+#: reservations/templates/reservations/reservation_form.html:74
+msgid "Price:"
+msgstr ""
+
+#: reservations/templates/reservations/reservation_form.html:87
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:456
 #: winadmin/templates/winadmin/reservations/reservation_create.html:76
 msgid "Remove"
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:95
+#: reservations/templates/reservations/reservation_form.html:96
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:469
 #: winadmin/templates/winadmin/reservations/reservation_create.html:89
 msgid "Add"
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:113
-#: reservations/templates/reservations/reservation_form.html:119
+#: reservations/templates/reservations/reservation_form.html:115
+#: reservations/templates/reservations/reservation_form.html:121
 msgid "Contact Information"
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:144
+#: reservations/templates/reservations/reservation_form.html:145
 msgid ""
 "\n"
 "            Next\n"
 "          "
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:169
+#: reservations/templates/reservations/reservation_form.html:170
 msgid "Confirm Details"
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:209
+#: reservations/templates/reservations/reservation_form.html:210
 msgid ""
 "\n"
 "              Price Per Day\n"
 "            "
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:216
+#: reservations/templates/reservations/reservation_form.html:217
 msgid ""
 "\n"
 "              Total Days\n"
 "            "
 msgstr ""
 
-#: reservations/templates/reservations/reservation_form.html:230
+#: reservations/templates/reservations/reservation_form.html:231
 msgid ""
 "\n"
-"            Confirm and Go to Checkout\n"
+"            Make Reservation\n"
 "          "
+msgstr ""
+
+#: templates/custom_form.html:64
+#: winadmin/templates/winadmin/inventory/category_create.html:29
+#: winadmin/templates/winadmin/inventory/category_edit.html:27
+#: winadmin/templates/winadmin/inventory/item_create.html:15
+msgid "Submit"
 msgstr ""
 
 #: templates/customer/customer_create_bulk.html:4
@@ -614,15 +622,15 @@ msgstr ""
 msgid "Close Ticket"
 msgstr ""
 
-#: templates/ticket/ticket_list.html:40
+#: templates/ticket/ticket_list.html:34
 msgid "Ticket Number"
 msgstr ""
 
-#: templates/ticket/ticket_list.html:42
+#: templates/ticket/ticket_list.html:36
 msgid "Customer Name"
 msgstr ""
 
-#: templates/ticket/ticket_list.html:43
+#: templates/ticket/ticket_list.html:37
 msgid "Closed?"
 msgstr ""
 
@@ -705,7 +713,7 @@ msgid "View Inventory"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:310
-#: winadmin/templates/winadmin/inventory/item_create.html:8
+#: winadmin/templates/winadmin/inventory/item_create.html:7
 msgid "Add Inventory Item"
 msgstr ""
 
@@ -746,15 +754,8 @@ msgstr ""
 msgid "Create Category"
 msgstr ""
 
-#: winadmin/templates/winadmin/inventory/category_create.html:9
+#: winadmin/templates/winadmin/inventory/category_create.html:7
 msgid "Category Create View"
-msgstr ""
-
-#: winadmin/templates/winadmin/inventory/category_create.html:31
-#: winadmin/templates/winadmin/inventory/category_edit.html:27
-#: winadmin/templates/winadmin/inventory/item_create.html:76
-#: winadmin/templates/winadmin/inventory/item_detail.html:23
-msgid "Submit"
 msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_edit.html:4
@@ -766,7 +767,6 @@ msgid "Category Edit View"
 msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_list.html:4
-#: winadmin/templates/winadmin/inventory/category_list.html:9
 msgid "Category List View"
 msgstr ""
 
@@ -779,26 +779,30 @@ msgstr ""
 msgid "Edit Inventory Item"
 msgstr ""
 
-#: winadmin/templates/winadmin/inventory/item_detail.html:30
+#: winadmin/templates/winadmin/inventory/item_detail.html:17
+msgid "Edit Item"
+msgstr ""
+
+#: winadmin/templates/winadmin/inventory/item_detail.html:21
 msgid "Delete Item"
 msgstr ""
 
 #: winadmin/templates/winadmin/inventory/item_list.html:4
-#: winadmin/templates/winadmin/inventory/item_list.html:9
+#: winadmin/templates/winadmin/inventory/item_list.html:8
 msgid "Inventory Item List View"
 msgstr ""
 
-#: winadmin/templates/winadmin/inventory/item_list.html:21
+#: winadmin/templates/winadmin/inventory/item_list.html:20
 msgid "Stock"
 msgstr ""
 
-#: winadmin/templates/winadmin/inventory/item_list.html:40
-#: winadmin/templates/winadmin/inventory/item_list.html:43
+#: winadmin/templates/winadmin/inventory/item_list.html:39
+#: winadmin/templates/winadmin/inventory/item_list.html:42
 msgid "True"
 msgstr ""
 
-#: winadmin/templates/winadmin/inventory/item_list.html:40
-#: winadmin/templates/winadmin/inventory/item_list.html:43
+#: winadmin/templates/winadmin/inventory/item_list.html:39
+#: winadmin/templates/winadmin/inventory/item_list.html:42
 msgid "False"
 msgstr ""
 
@@ -850,43 +854,43 @@ msgstr ""
 msgid "Sale List View"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:9
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:8
 msgid "Sales Chart"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:20
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:19
 msgid "Year"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:21
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:20
 msgid "Month"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:30
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
 msgid "Date"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:32
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:33
 msgid "Transaction Name"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:33
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:34
 msgid "Product"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:36
 msgid "Price Per Item"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:36
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:37
 msgid "Sale Amount"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:37
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:38
 msgid "Return Amount"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:38
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
 msgid "Balance"
 msgstr ""
 
@@ -895,39 +899,39 @@ msgstr ""
 msgid "Create Transaction"
 msgstr ""
 
-#: winadmin/views.py:103
+#: winadmin/views.py:104
 msgid "Item Successfully Added"
 msgstr ""
 
-#: winadmin/views.py:130
+#: winadmin/views.py:126
 msgid "Category Successfully Added"
 msgstr ""
 
-#: winadmin/views.py:135 winadmin/views.py:162
+#: winadmin/views.py:131 winadmin/views.py:158
 msgid "Input category title"
 msgstr ""
 
-#: winadmin/views.py:154
+#: winadmin/views.py:150
 msgid "Category Successfully Edited"
 msgstr ""
 
-#: winadmin/views.py:186
+#: winadmin/views.py:182
 msgid "Item Successfully Edited"
 msgstr ""
 
-#: winadmin/views.py:193 winadmin/views.py:209
+#: winadmin/views.py:189 winadmin/views.py:205
 msgid "Error"
 msgstr ""
 
-#: winadmin/views.py:206
+#: winadmin/views.py:202
 msgid "Item Successfully Deleted"
 msgstr ""
 
-#: winadmin/views.py:291 winadmin/views.py:316
+#: winadmin/views.py:280 winadmin/views.py:305
 msgid "Transaction Created Successfully"
 msgstr ""
 
-#: winadmin/views.py:599
+#: winadmin/views.py:588
 msgid "Reservation successfully edited."
 msgstr ""
 
@@ -937,8 +941,4 @@ msgstr ""
 
 #: winvillage/settings.py:242
 msgid "Japanese"
-msgstr ""
-
-#: reservations/templates/reservations/reservation_form.html:74
-msgid "Price:"
 msgstr ""

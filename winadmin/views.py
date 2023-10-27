@@ -95,17 +95,13 @@ def item_create(request: HtmxHttpRequest) -> HttpResponse:
     return _item_create(request)
 
 
+@for_htmx(use_block_from_params=True)
 def _item_create(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = ItemCreateForm(request.POST)
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.INFO, _("Item Successfully Added"))
-            return _item_create(make_get_request(request))
-        html = render_block_to_string(
-            "winadmin/inventory/item_create.html", "content", {"form": form}
-        )
-        return HttpResponse(html)
     form = ItemCreateForm()
     return TemplateResponse(
         request, "winadmin/inventory/item_create.html", {"form": form}
@@ -123,8 +119,8 @@ def _category_create(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = CategoryCreateForm(request.POST)
         if form.is_valid():
-            title = form.cleaned_data["title"]
-            category = Category.objects.create(title=title)
+            name = form.cleaned_data["name"]
+            category = Category.objects.create(name=name)
             category.save()
             messages.add_message(
                 request, messages.INFO, _("Category Successfully Added")
@@ -227,16 +223,31 @@ def sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     return _sales_list_by_period(request)
 
 
-def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
-    sales = Transaction.objects.filter(
-        name__in=["sale", "payment", "deposit", "return"]
-    ).order_by("transaction_datetime")
-    form = []
-    active_timezone = activate(TIMEZONE)
+def get_current_year_and_month(request, tz=TIMEZONE):
+    active_timezone = activate(tz)
     year = request.GET.get("year", datetime.now(tz=active_timezone).year)
     month = request.GET.get("month", datetime.now(tz=active_timezone).month)
+    return year, month
+
+
+def get_balance_and_ledger(sales: Transaction):
+    balance = 0
+    ledger = []
+    for sale in sales:
+        if sale.name == "sale":
+            balance += sale.total_price_rounded
+        elif sale.name == "return":
+            balance -= sale.total_price_rounded
+        ledger.append([sale, balance])
+    return balance, ledger
+
+
+@for_htmx(use_block_from_params=True)
+def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
+    sales = Transaction.sales.all()
+    year, month = get_current_year_and_month(request)
     deactivate()
-    if request.htmx and not request.htmx.boosted:
+    if request.htmx:
         form = SetLedgerPeriodForm(request.GET)
         if form.is_valid():
             year = form.cleaned_data["year"]
@@ -249,14 +260,7 @@ def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     sales = sales.filter(transaction_datetime__year=year).filter(
         transaction_datetime__month=month
     )
-    balance = 0
-    ledger = []
-    for sale in sales:
-        if sale.name == "sale":
-            balance += sale.total_price_rounded
-        elif sale.name == "return":
-            balance -= sale.total_price_rounded
-        ledger.append([sale, balance])
+    balance, ledger = get_balance_and_ledger(sales)
     context = {
         "ledger": ledger,
         "final_balance": balance,
@@ -264,14 +268,6 @@ def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         "month": month,
         "form": form,
     }
-    if request.htmx and not request.htmx.boosted:
-        html = render_block_to_string(
-            request=request,
-            template_name="winadmin/transactions/sales_list_by_period.html",
-            block_name="content",
-            context=context,
-        )
-        return HttpResponse(html)
     return TemplateResponse(
         request, "winadmin/transactions/sales_list_by_period.html", context
     )

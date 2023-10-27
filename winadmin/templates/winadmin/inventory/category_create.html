@@ -4,33 +4,29 @@
   {% blocktrans %}Create Category{% endblocktrans %}
 {% endblock %}
 {% block content %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
-    <div class="px-4 sm:px-6 lg:px-8">
-      <h1 class="mb-5 text-center text-3xl">{% translate 'Category Create View' %}</h1>
-      <form hx-post="{% url 'winadmin:create_category_page' %}"
-            hx-target="#dashboard-content"
-            hx-swap="outerHTML"
-            class="mx-auto grid max-w-xl space-y-2" novalidate>
-        {{ form.non_field_errors }}
-        <div id="messages">
-          {% include 'core/messages.html' %}
-        </div>
-        {% for field in form %}
-          {% if field.errors %}
-            {% for error in field.errors %}
-              {{ error|escape }}
-            {% endfor %}
-          {% endif %}
-          <label for="{{ field.id_for_label }}" class="grid">
-            {{ field.label }}
-            {% render_field field %}
-          </label>
-        {% endfor %}
-        <button type="submit"
-                class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
-          {% trans "Submit" %}
-        </button>
-      </form>
+  <h1 class="mb-5 text-3xl">{% translate 'Category Create View' %}</h1>
+  <form hx-post="{% url 'winadmin:create_category_page' %}"
+        hx-target="#dashboard-content"
+        hx-swap="outerHTML"
+        class="grid max-w-xl space-y-2" novalidate>
+    {{ form.non_field_errors }}
+    <div id="messages">
+      {% include 'core/messages.html' %}
     </div>
-  </main>
+    {% for field in form %}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          {{ error|escape }}
+        {% endfor %}
+      {% endif %}
+      <label for="{{ field.id_for_label }}" class="grid">
+        {{ field.label }}
+        {% render_field field %}
+      </label>
+    {% endfor %}
+    <button type="submit"
+            class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+      {% trans "Submit" %}
+    </button>
+  </form>
 {% endblock %}

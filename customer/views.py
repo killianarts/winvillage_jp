@@ -10,6 +10,7 @@ from django_htmx.http import HttpResponseClientRedirect
 import customer.forms as forms
 from core.utils import (
     HtmxHttpRequest,
+    for_htmx,
 )
 from customer.models import Customer, make_customers, TicketNote, Ticket
 
@@ -47,6 +48,7 @@ def customer_create_bulk(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, "customer/customer_create_bulk.html", {})
 
 
+@for_htmx(use_block_from_params=True)
 def customer_list(request: HtmxHttpRequest) -> HttpResponse:
     customers = Customer.objects.all()
     customer_form = forms.CustomerFilterForm()

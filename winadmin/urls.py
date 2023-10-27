@@ -37,7 +37,6 @@ urlpatterns = [
         name="edit_category_page",
     ),
     path("transactions/", views.transaction_list, name="view_all_transactions"),
-    # path("transactions/sales/", views.view_sales, name="view_sales"),
     path(
         "transactions/sales/",
         views.sales_list_by_period,
