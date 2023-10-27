@@ -133,15 +133,19 @@ def _step_3(request: HtmxHttpRequest) -> HttpResponse:
         return step_4(make_get_request(request))
 
     reserved_grills_ids = reservation.order_items.filter(
-        item__category__title="grill", item__active=True
+        item__category__name="grill", item__reservation_option=True
     ).values_list("item_id", flat=True)
+
     unreserved_grills_ids = (
-        Item.objects.filter(category__title="grill", active=True)
+        Item.objects.filter(category__name="grill", reservation_option=True)
         .exclude(id__in=reserved_grills_ids)
         .values_list("id", flat=True)
     )
+
     all_grills_ids = list(reserved_grills_ids) + list(unreserved_grills_ids)
+
     all_grills = Item.objects.filter(id__in=all_grills_ids).order_by("pk")
+
     context = {"grills": all_grills, "reserved_grill_ids": reserved_grills_ids}
     html = render_block_to_string(
         "reservations/reservation_form.html", "step_3_form", context

@@ -331,6 +331,7 @@ def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     return _reservation_list_by_period(request)
 
 
+@for_htmx(use_block_from_params=True)
 def _reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     reservations = (
         Reservation.objects.select_related("stay", "contact_info")
@@ -342,7 +343,7 @@ def _reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     year = request.GET.get("year", datetime.now(tz=active_timezone).year)
     month = request.GET.get("month", datetime.now(tz=active_timezone).month)
     deactivate()
-    if request.htmx and not request.htmx.boosted:
+    if request.htmx:
         form = SetReservationPeriodForm(request.GET)
         if form.is_valid():
             year = form.cleaned_data["year"]
@@ -361,16 +362,8 @@ def _reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         "month": month,
         "form": form,
     }
-    if request.htmx and not request.htmx.boosted:
-        html = render_block_to_string(
-            request=request,
-            template_name="winadmin/reservations/reservation_list_by_period",
-            block_name="content",
-            context=context,
-        )
-        return HttpResponse(html)
     return TemplateResponse(
-        request, "winadmin/reservations/reservation_list_by_period", context
+        request, "winadmin/reservations/reservation_list_by_period.html", context
     )
 
 
@@ -379,12 +372,12 @@ def _reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
 #     return _create_reservation_page(request)
 
 
-def get_grills(reservation) -> tuple[list, QuerySet]:
+def get_grills(reservation: Reservation) -> tuple[list, QuerySet]:
     reserved_grills_ids = reservation.order_items.filter(
-        item__category__title="grill", item__reservation_option=True
+        item__category__name="grill", item__reservation_option=True
     ).values_list("item_id", flat=True)
     unreserved_grills_ids = (
-        Item.objects.filter(category__title="grill", reservation_option=True)
+        Item.objects.filter(category__name="grill", reservation_option=True)
         .exclude(id__in=reserved_grills_ids)
         .values_list("id", flat=True)
     )
