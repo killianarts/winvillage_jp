@@ -27,15 +27,15 @@ from core.utils import (
 from reservations.models import Reservation, Stay, OrderItem
 from winadmin.forms import (
     LoginForm,
-    CreateItemForm,
-    CreateCategoryForm,
-    EditItemForm,
-    EditCategoryForm,
-    CreateTransactionForm,
+    ItemCreateForm,
+    CategoryCreateForm,
+    ItemEditForm,
+    CategoryDetailForm,
+    TransactionCreateForm,
     SetLedgerPeriodForm,
     SetReservationPeriodForm,
-    CreateReservationForm,
-    EditReservationForm,
+    ReservationCreateForm,
+    ReservationDetailForm,
     SquarePaymentTokenForm,
 )
 from winvillage import settings
@@ -84,44 +84,44 @@ def _logout(request: HtmxHttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="winadmin:login_page")
-def list_inventory(request: HtmxHttpRequest) -> HttpResponse:
+def item_list(request: HtmxHttpRequest) -> HttpResponse:
     items = Item.objects.all()
     context = {"items": items}
-    return TemplateResponse(request, "winadmin/inventory/list_inventory.html", context)
+    return TemplateResponse(request, "winadmin/inventory/item_list.html", context)
 
 
 @login_required(login_url="winadmin:login_page")
-def create_inventory_item_page(request: HtmxHttpRequest) -> HttpResponse:
-    return _create_inventory_item_page(request)
+def item_create(request: HtmxHttpRequest) -> HttpResponse:
+    return _item_create(request)
 
 
-def _create_inventory_item_page(request: HtmxHttpRequest) -> HttpResponse:
+def _item_create(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = CreateItemForm(request.POST)
+        form = ItemCreateForm(request.POST)
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.INFO, _("Item Successfully Added"))
-            return _create_inventory_item_page(make_get_request(request))
+            return _item_create(make_get_request(request))
         html = render_block_to_string(
-            "winadmin/inventory/create_item.html", "content", {"form": form}
+            "winadmin/inventory/item_create.html", "content", {"form": form}
         )
         return HttpResponse(html)
-    form = CreateItemForm()
+    form = ItemCreateForm()
     return TemplateResponse(
-        request, "winadmin/inventory/create_item.html", {"form": form}
+        request, "winadmin/inventory/item_create.html", {"form": form}
     )
 
 
 @login_required(login_url="winadmin:login_page")
-def create_category_page(request: HtmxHttpRequest) -> HttpResponse:
-    return _create_category_page(request)
+def category_create(request: HtmxHttpRequest) -> HttpResponse:
+    return _category_create(request)
 
 
-def _create_category_page(request: HtmxHttpRequest) -> HttpResponse:
-    form = CreateCategoryForm()
+def _category_create(request: HtmxHttpRequest) -> HttpResponse:
+    form = CategoryCreateForm()
     context = {"form": form}
     if request.method == "POST":
-        form = CreateCategoryForm(request.POST)
+        form = CategoryCreateForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data["title"]
             category = Category.objects.create(title=title)
@@ -129,22 +129,22 @@ def _create_category_page(request: HtmxHttpRequest) -> HttpResponse:
             messages.add_message(
                 request, messages.INFO, _("Category Successfully Added")
             )
-            return _create_category_page(make_get_request(request))
+            return _category_create(make_get_request(request))
         elif not form.is_valid():
             if not form.cleaned_data:
                 messages.add_message(request, messages.ERROR, _("Input category title"))
-                return _create_category_page(make_get_request(request))
+                return _category_create(make_get_request(request))
         html = render_block_to_string(
-            "winadmin/inventory/create_category.html", "form", context
+            "winadmin/inventory/category_create.html", "form", context
         )
         return HttpResponse(html)
-    return TemplateResponse(request, "winadmin/inventory/create_category.html", context)
+    return TemplateResponse(request, "winadmin/inventory/category_create.html", context)
 
 
 @for_htmx(use_block_from_params=True)
-def edit_category_page(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+def category_edit(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     if request.method == "POST":
-        form = CreateCategoryForm(request.POST)
+        form = CategoryCreateForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data["title"]
             category = get_object_or_404(Category, pk=pk)
@@ -155,81 +155,79 @@ def edit_category_page(request: HtmxHttpRequest, pk: int) -> HttpResponse:
             )
             context = {"form": form, "category": category}
             return TemplateResponse(
-                request, "winadmin/inventory/edit_category.html", context
+                request, "winadmin/inventory/category_edit.html", context
             )
         elif not form.is_valid():
             if not form.cleaned_data:
                 messages.add_message(request, messages.ERROR, _("Input category title"))
     category = get_object_or_404(Category, pk=pk)
-    form = EditCategoryForm(initial={"title": category.title})
+    form = CategoryDetailForm(initial={"title": category.title})
     context = {"form": form, "category": category}
-    return TemplateResponse(request, "winadmin/inventory/edit_category.html", context)
+    return TemplateResponse(request, "winadmin/inventory/category_edit.html", context)
 
 
-def list_categories_page(request: HtmxHttpRequest) -> HttpResponse:
+def category_list(request: HtmxHttpRequest) -> HttpResponse:
     categories = Category.objects.all()
     context = {
         "categories": categories,
     }
-    return TemplateResponse(request, "winadmin/inventory/list_categories.html", context)
+    return TemplateResponse(request, "winadmin/inventory/category_list.html", context)
 
 
 @login_required(login_url="winadmin:login_page")
-@htmx_form_validate(form_class=EditItemForm)
-def edit_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+@htmx_form_validate(form_class=ItemEditForm)
+def item_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     item = get_object_or_404(Item, pk=pk)
-    form = EditItemForm(instance=item)
+    form = ItemEditForm(instance=item)
     if request.method == "POST":
-        form = EditItemForm(request.POST, instance=item)
+        form = ItemEditForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
             messages.success(request, _("Item Successfully Edited"))
             context = {"form": form, "item": item}
             return TemplateResponse(
-                request, "winadmin/inventory/edit_item.html", context
+                request, "winadmin/inventory/item_detail.html", context
             )
         else:
-            form = EditItemForm(request.POST, instance=item)
+            form = ItemEditForm(request.POST, instance=item)
             messages.error(request, _("Error"))
     return TemplateResponse(
-        request, "winadmin/inventory/edit_item.html", {"form": form, "item": item}
+        request, "winadmin/inventory/item_detail.html", {"form": form, "item": item}
     )
 
 
 @require_POST
 @login_required(login_url="winadmin:login_page")
-def delete_inventory_item(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+def item_delete(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     item = get_object_or_404(Item, pk=pk)
-    form = EditItemForm(request.POST, instance=item)
+    form = ItemEditForm(request.POST, instance=item)
     if form.is_valid():
         item.delete()
         messages.success(request, _("Item Successfully Deleted"))
     else:
-        form = EditItemForm(request.POST, instance=item)
+        form = ItemEditForm(request.POST, instance=item)
         messages.error(request, _("Error"))
     return redirect("winadmin:list_inventory")
 
 
 # Transactions
 @login_required(login_url="winadmin:login_page")
-def view_all_transactions(request: HtmxHttpRequest) -> HttpResponse:
-    return _view_all_transactions(request)
+def transaction_list(request: HtmxHttpRequest) -> HttpResponse:
+    return _transaction_list(request)
 
 
-def _view_all_transactions(request: HtmxHttpRequest) -> HttpResponse:
+def _transaction_list(request: HtmxHttpRequest) -> HttpResponse:
     transactions = Transaction.objects.all()
     context = {"transactions": transactions}
-    return TemplateResponse(
-        request, "winadmin/transactions/list_transactions.html", context
-    )
+    return TemplateResponse(request, "winadmin/transactions/transaction_list", context)
 
 
 @login_required(login_url="winadmin:login_page")
-def view_sales_by_period(request: HtmxHttpRequest) -> HttpResponse:
-    return _view_sales_by_period(request)
+def sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
+    return _sales_list_by_period(request)
 
 
-def _view_sales_by_period(request: HtmxHttpRequest) -> HttpResponse:
+def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     sales = Transaction.objects.filter(
         name__in=["sale", "payment", "deposit", "return"]
     ).order_by("transaction_datetime")
@@ -269,63 +267,63 @@ def _view_sales_by_period(request: HtmxHttpRequest) -> HttpResponse:
     if request.htmx and not request.htmx.boosted:
         html = render_block_to_string(
             request=request,
-            template_name="winadmin/transactions/list_sales_by_period.html",
+            template_name="winadmin/transactions/sales_list_by_period.html",
             block_name="content",
             context=context,
         )
         return HttpResponse(html)
     return TemplateResponse(
-        request, "winadmin/transactions/list_sales_by_period.html", context
+        request, "winadmin/transactions/sales_list_by_period.html", context
     )
 
 
 @login_required(login_url="winadmin:login_page")
-def create_transaction(request: HtmxHttpRequest) -> HttpResponse:
-    return _create_transaction(request)
+def transaction_create(request: HtmxHttpRequest) -> HttpResponse:
+    return _transaction_create(request)
 
 
-def _create_transaction(request: HtmxHttpRequest) -> HttpResponse:
+def _transaction_create(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = CreateTransactionForm(request.POST)
+        form = TransactionCreateForm(request.POST)
         if form.is_valid():
             form.save()
             messages.add_message(
                 request, messages.INFO, _("Transaction Created Successfully")
             )
-            return _create_transaction(make_get_request(request))
+            return _transaction_create(make_get_request(request))
         elif not form.is_valid():
             return TemplateResponse(
-                request, "winadmin/transactions/create_transaction.html", {}
+                request, "winadmin/transactions/transaction_create.html", {}
             )
-    form = CreateTransactionForm()
+    form = TransactionCreateForm()
     context = {"form": form}
     return TemplateResponse(
-        request, "winadmin/transactions/create_transaction.html", context
+        request, "winadmin/transactions/transaction_create.html", context
     )
 
 
 @login_required(login_url="winadmin:login_page")
-def edit_transaction(request: HtmxHttpRequest) -> HttpResponse:
-    return _create_transaction(request)
+def transaction_detail(request: HtmxHttpRequest) -> HttpResponse:
+    return _transaction_detail(request)
 
 
-def _edit_transaction(request: HtmxHttpRequest) -> HttpResponse:
+def _transaction_detail(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = CreateTransactionForm(request.POST)
+        form = TransactionCreateForm(request.POST)
         if form.is_valid():
             form.save()
             messages.add_message(
                 request, messages.INFO, _("Transaction Created Successfully")
             )
-            return _create_transaction(make_get_request(request))
+            return _transaction_create(make_get_request(request))
         elif not form.is_valid():
             return TemplateResponse(
-                request, "winadmin/transactions/create_transaction.html", {}
+                request, "winadmin/transactions/transaction_create.html", {}
             )
-    form = CreateTransactionForm()
+    form = TransactionCreateForm()
     context = {"form": form}
     return TemplateResponse(
-        request, "winadmin/transactions/create_transaction.html", context
+        request, "winadmin/transactions/transaction_create.html", context
     )
 
 
@@ -333,11 +331,11 @@ def _edit_transaction(request: HtmxHttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="winadmin:login_page")
-def view_reservations_by_period(request: HtmxHttpRequest) -> HttpResponse:
-    return _view_reservations_by_period(request)
+def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
+    return _reservation_list_by_period(request)
 
 
-def _view_reservations_by_period(request: HtmxHttpRequest) -> HttpResponse:
+def _reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     reservations = (
         Reservation.objects.select_related("stay", "contact_info")
         .exclude(stay__status="not_reserved")
@@ -370,13 +368,13 @@ def _view_reservations_by_period(request: HtmxHttpRequest) -> HttpResponse:
     if request.htmx and not request.htmx.boosted:
         html = render_block_to_string(
             request=request,
-            template_name="winadmin/reservations/list_reservations_by_period.html",
+            template_name="winadmin/reservations/reservation_list_by_period",
             block_name="content",
             context=context,
         )
         return HttpResponse(html)
     return TemplateResponse(
-        request, "winadmin/reservations/list_reservations_by_period.html", context
+        request, "winadmin/reservations/reservation_list_by_period", context
     )
 
 
@@ -399,9 +397,9 @@ def get_grills(reservation) -> tuple[list, QuerySet]:
     return reserved_grills_ids, all_grills
 
 
-@htmx_form_validate(form_class=CreateReservationForm)
+@htmx_form_validate(form_class=ReservationCreateForm)
 @for_htmx(use_block_from_params=True)
-def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
+def reservation_create(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     initial = {}
     if reservation.contact_info is not None:
@@ -422,7 +420,7 @@ def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
         "reserved_grill_ids": reserved_grills_ids,
     }
     if request.method == "POST":
-        form = CreateReservationForm(request.POST)
+        form = ReservationCreateForm(request.POST)
         context["form"] = form
         if form.is_valid():
             stay_type = form.cleaned_data["stay_type"]
@@ -459,9 +457,9 @@ def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.contact_info.email = email
                 reservation.save()
         return TemplateResponse(
-            request, "winadmin/reservations/create_reservation.html", context
+            request, "winadmin/reservations/reservation_create.html", context
         )
-    form = CreateReservationForm(initial=initial)
+    form = ReservationCreateForm(initial=initial)
     context = {
         "form": form,
         "reservation": reservation,
@@ -472,7 +470,7 @@ def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
         "reserved_grill_ids": reserved_grills_ids,
     }
     return TemplateResponse(
-        request, "winadmin/reservations/create_reservation.html", context
+        request, "winadmin/reservations/reservation_create.html", context
     )
 
 
@@ -520,7 +518,7 @@ def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
     reserved_grill_ids, all_grills = get_grills(reservation)
     context = {"reserved_grill_ids": reserved_grill_ids, "grills": all_grills}
     response = TemplateResponse(
-        request, "winadmin/reservations/create_reservation.html", context
+        request, "winadmin/reservations/reservation_create.html", context
     )
     return trigger_client_event(response, "updatePrice")
 
@@ -533,7 +531,7 @@ def remove_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpRespons
     reserved_grill_ids, all_grills = get_grills(reservation)
     context = {"reserved_grill_ids": reserved_grill_ids, "grills": all_grills}
     response = TemplateResponse(
-        request, "winadmin/reservations/create_reservation.html", context
+        request, "winadmin/reservations/reservation_create.html", context
     )
     return trigger_client_event(response, "updatePrice")
 
@@ -543,16 +541,16 @@ def update_price(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     context = {"reservation": reservation}
     return TemplateResponse(
-        request, "winadmin/reservations/create_reservation.html", context
+        request, "winadmin/reservations/reservation_create.html", context
     )
 
 
 @login_required(login_url="winadmin:login_page")
-def edit_reservation(request: HtmxHttpRequest, pk) -> HttpResponse:
-    return _edit_reservation(request, pk)
+def reservation_detail(request: HtmxHttpRequest, pk) -> HttpResponse:
+    return _reservation_detail(request, pk)
 
 
-def _edit_reservation(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+def _reservation_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     reservation = get_object_or_404(Reservation, pk=pk)
     stay_type = reservation.stay.stay_type
     start_datetime = reservation.stay.start_datetime
@@ -570,7 +568,7 @@ def _edit_reservation(request: HtmxHttpRequest, pk: int) -> HttpResponse:
         "email": email,
         "options": options,
     }
-    form = EditReservationForm(initial=initial)
+    form = ReservationDetailForm(initial=initial)
     if request.method == "POST":
         if form.is_valid():
             stay_type = form.cleaned_data["stay_type"]
@@ -600,10 +598,10 @@ def _edit_reservation(request: HtmxHttpRequest, pk: int) -> HttpResponse:
             messages.add_message(
                 request, messages.INFO, _("Reservation successfully edited.")
             )
-            return edit_reservation(make_get_request(request), pk)
+            return reservation_detail(make_get_request(request), pk)
     return TemplateResponse(
         request,
-        "winadmin/reservations/edit_reservation.html",
+        "winadmin/reservations/reservation_detail.html",
         {"form": form, "reservation": reservation},
     )
 
@@ -650,7 +648,7 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
             reservation.set_status("reserved")
             context = {"payment": payment}
             return TemplateResponse(
-                request, "winadmin/reservations/create_reservation.html", context
+                request, "winadmin/reservations/reservation_create.html", context
             )
     form = SquarePaymentTokenForm()
     context = {
@@ -661,7 +659,7 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
         "SQUARE_CURRENCY": SQUARE_CURRENCY,
     }
     return TemplateResponse(
-        request, "winadmin/reservations/create_reservation.html", context
+        request, "winadmin/reservations/reservation_create.html", context
     )
 
 

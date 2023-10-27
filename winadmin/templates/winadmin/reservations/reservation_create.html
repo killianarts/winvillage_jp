@@ -8,43 +8,40 @@
   {% translate 'Create Reservation' %}
 {% endblock %}
 {% block content %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
-    <div class="px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl">{% translate 'Create Reservation' %}</h1>
-      <form id="create-reservation-form"
-            class="max-w-xl space-y-5"
-            action=""
-            method="post"
+  <h1 class="text-3xl">{% translate 'Create Reservation' %}</h1>
+  <form id="create-reservation-form"
+        class="max-w-xl space-y-5"
+        action=""
+        method="post"
+        hx-post="."
+        hx-swap="outerHTML"
+        hx-trigger="keydown[metaKey&&shiftKey&&key=='s'] from:body"
+        hx-target="#create-reservation-form"
+        hx-vals='{"use_block": "content"}'
+        novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div id="messages">
+      {% include 'core/messages.html' %}
+    </div>
+    {% block form_fields %}
+      <div class="grid">
+        {{ form }}
+      </div>
+    {% endblock %}
+    <button name="submit"
+            type="submit"
             hx-post="."
             hx-swap="outerHTML"
-            hx-trigger="keydown[metaKey&&shiftKey&&key=='s'] from:body"
-            hx-target="#dashboard-content"
-            hx-vals='{"use_block": "content"}'
-            novalidate>
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        <div id="messages">
-          {% include 'core/messages.html' %}
-        </div>
-        {% block form_fields %}
-          <div class="grid">
-            {{ form }}
-          </div>
-        {% endblock %}
-        <button name="submit"
-                type="submit"
-                hx-post="."
-                hx-swap="outerHTML"
-                hx-target="this"
-                hx-vals='{"use_block": "options"}'
-                class="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+            hx-target="this"
+            hx-vals='{"use_block": "options"}'
+            class="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
                     hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                     focus-visible:outline-orange-700">
-          {% translate 'Choose Options' %}
-        </button>
-      </form>
-    </div>
-  </main>
+      {% translate 'Choose Options' %}
+    </button>
+  </form>
+
 
 {% endblock %}
 

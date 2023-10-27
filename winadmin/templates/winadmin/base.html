@@ -69,19 +69,32 @@
 </head>
 
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-
-{% block header %}
-  {#    {% include 'core/header.html' %}#}
-{% endblock %}
-<div id="admin-content-wrapper">
-  <!-- '_page.html' template content will replace everything in here -->
-  {% block content %}
+{% block body %}
+  {% block header %}
+    {#    {% include 'core/header.html' %}#}
   {% endblock %}
-</div>
-{% block footer %}
-  {#    {% include 'core/footer.html' %}#}
+  <main id="admin-main-wrapper">
+    {# Margin makes room for sidebar. #}
+    <div id="dashboard-content" class="py-10 lg:ml-72">
+      <div class="px-4 sm:px-6 lg:px-8">
+        <!-- '_page.html' template content will replace everything in here -->
+        {% block main %}
+          {% block top_content %}
+            {% block messages %}
+              <div id="messages">{% include 'core/messages.html' %}</div>
+            {% endblock %}
+          {% endblock %}
+          {% block pre_content %}{% endblock %}
+          {% block content %}{% endblock %}
+          {% block post_content %}{% endblock %}
+        {% endblock %}
+      </div>
+    </div>
+  </main>
+  {% block footer %}
+    {#    {% include 'core/footer.html' %}#}
+  {% endblock %}
 {% endblock %}
-
 </body>
 
 </html>

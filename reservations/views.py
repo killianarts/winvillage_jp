@@ -161,16 +161,18 @@ def _step_4(request: HtmxHttpRequest) -> HttpResponse:
             "first_name": reservation.contact_info.first_name,
             "last_name": reservation.contact_info.last_name,
             "email": reservation.contact_info.email,
+            "phone": reservation.contact_info.phone,
         }
     form = forms.Step4Form(initial=initial)
     if request.method == "POST":
         form = forms.Step4Form(request.POST)
         if form.is_valid():
-            fn = form.cleaned_data["first_name"]
-            ln = form.cleaned_data["last_name"]
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
             email = form.cleaned_data["email"]
+            phone = form.cleaned_data["phone"]
             contact_info, created = ContactInfo.objects.get_or_create(
-                first_name=fn, last_name=ln, email=email
+                first_name=first_name, last_name=last_name, email=email, phone=phone
             )
             contact_info.save()
             reservation.contact_info = contact_info

@@ -74,6 +74,7 @@ THIRD_PARTY_APPS = [
     "rosetta",
     "responsive_images",
     "phonenumbers",
+    # "djcelery",
 ]
 
 if DEBUG:
@@ -355,7 +356,7 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["console"]},
 }
-
+# Square settings
 SQUARE_SETTINGS = {
     "SQUARE_APPLICATION_ID": env("SQUARE_APPLICATION_ID"),
     "SQUARE_ACCESS_TOKEN": env("SQUARE_ACCESS_TOKEN"),
@@ -363,3 +364,15 @@ SQUARE_SETTINGS = {
     "SQUARE_CURRENCY": env("SQUARE_CURRENCY", default="JPY"),
     "SQUARE_ENVIRONMENT": env("SQUARE_ENVIRONMENT", default="sandbox"),
 }
+
+REDIS_URL = env("REDIS_URL", default="redis://127.0.0.1:6379/0")
+
+# Celery Settings
+CELERY_BROKER_URL = REDIS_URL
+CELERYD_TASK_SOFT_TIME_LIMIT = 60
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_TASK_DEFAULT_QUEUE = "default"
+CELERY_CREATE_MISSING_QUEUES = True

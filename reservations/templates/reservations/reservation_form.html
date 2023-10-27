@@ -6,20 +6,18 @@
     <form hx-post="{% url 'reservations:step-1' %}"
           hx-target="#reservation-form-wrapper"
           hx-swap="outerHTML"
-          action="{% url 'reservations:step-2' %}" method="post" novalidate
+          action="." method="post" novalidate
           class="space-y-5">
       <fieldset>
         <legend class="sr-only">{% translate 'Reservation Types' %}</legend>
         <div>
           {% for field in form %}
-            <div id="messages">
-              {% include 'core/messages.html' %}
-            </div>
             {% render_field field class="text-2xl accent-red-500 space-y-2" %}
           {% endfor %}
         </div>
       </fieldset>
-      {% include 'reservations/_buttons.html' with submit_button_text='Next' %}
+      {% translate 'Next' as submit_button_text %}
+      {% include 'reservations/_buttons.html' with submit_button_text=submit_button_text %}
     </form>
   </div>
 {% endblock %}
@@ -36,13 +34,13 @@
         <legend class="sr-only">{% translate 'Reservation Types' %}</legend>
         <div class="grid grid-cols-1 space-y-2">
           {% for field in form %}
-            <label class="text-xl" for="{{ field.id_for_label }}">
+            <label class="text-xl" for="{{ field.id_for_label }}" id="{{ field.id_for_label }}">
               {% if field.name == "start_datetime" %}
-                {% translate 'From' %}:
+                {% translate 'Start' %}:
                 {% render_field field class="mb-2 w-full" min=current_date %}
               {% endif %}
               {% if field.name == "end_datetime" %}
-                {% translate 'Until' %}:
+                {% translate 'End' %}:
                 {% render_field field class="mb-2 w-full" %}
               {% endif %}
             </label>
@@ -50,7 +48,8 @@
         </div>
       </fieldset>
       {% url 'reservations:step-1' as url %}
-      {% include 'reservations/_buttons.html' with submit_button_text='Next' back_url=url %}
+      {% translate 'Next' as submit_button_text %}
+      {% include 'reservations/_buttons.html' with submit_button_text=submit_button_text back_url=url %}
     </form>
   </div>
 {% endblock %}
@@ -72,7 +71,7 @@
               <div class="px-4 py-5 sm:p-6">
                 <h3 class="text-base font-semibold leading-6 text-stone-900">{{ grill.name }}</h3>
                 <div class="mt-2 max-w-xl text-sm text-orange-500">
-                  <p>Price: ￥{{ grill.price_rounded }}</p>
+                  <p>{% trans "Price:" %} ￥{{ grill.price_rounded }}</p>
                 </div>
                 <div class="mt-2 max-w-xl text-sm text-stone-500">
                   <p>{{ grill.description }}</p>
@@ -85,7 +84,7 @@
                             name="remove"
                             type="submit"
                             class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
-                      Remove
+                      {% trans "Remove" %}
                     </button>
                   {% else %}
                     <button hx-post="{% url 'reservations:add_grill' grill.pk %}"
@@ -94,7 +93,7 @@
                             name="remove"
                             type="submit"
                             class="inline-flex items-center rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500">
-                      Add
+                      {% trans "Add" %}
                     </button>
                   {% endif %}
                 </div>
@@ -104,7 +103,8 @@
         </div>
       </fieldset>
       {% url 'reservations:step-2' as url %}
-      {% include 'reservations/_buttons.html' with submit_button_text="Next" back_url=url %}
+      {% translate 'Next' as submit_button_text %}
+      {% include 'reservations/_buttons.html' with submit_button_text=submit_button_text back_url=url %}
     </form>
   </div>
 {% endblock %}
@@ -138,8 +138,7 @@
         </div>
       </fieldset>
       <div class="grid gap-2">
-        <button
-                name="submit"
+        <button name="submit"
                 type="submit"
                 class="bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500
                  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
@@ -175,7 +174,7 @@
         {% for field in stay_form %}
           <label class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl" for="{{ field.id_for_label }}">
             {{ field.as_hidden }}
-            <span>{{ field.label }}</span><span class="font-black">{{ field.value|date:"Y-M-d" }}</span>
+            <span>{{ field.label }}</span><span class="font-black">{{ field.value|date:"Y-m-d" }}</span>
             {% if field.errors %}
               {% for error in field.errors %}
                 <div class="flex gap-2">
@@ -230,7 +229,7 @@
            class="bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-center text-white shadow-sm hover:bg-orange-500
                  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
           {% blocktranslate %}
-            Confirm and Go to Checkout
+            Make Reservation
           {% endblocktranslate %}
         </a>
         <button name="back"

@@ -9,51 +9,47 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("login/", views.login_page, name="login_page"),
     path("logout/", views._logout, name="logout"),
-    path("inventory/", views.list_inventory, name="list_inventory"),
+    path("inventory/", views.item_list, name="list_inventory"),
     path(
         "inventory/item/<int:pk>/",
-        views.edit_inventory_item,
+        views.item_detail,
         name="edit_inventory_item",
     ),
     path(
         "inventory/item/<int:pk>/delete/",
-        views.delete_inventory_item,
+        views.item_delete,
         name="delete_inventory_item",
     ),
     path(
         "inventory/create/",
-        views.create_inventory_item_page,
+        views.item_create,
         name="create_inventory_item_page",
     ),
-    path(
-        "inventory/category/", views.list_categories_page, name="list_categories_page"
-    ),
+    path("inventory/category/", views.category_list, name="list_categories_page"),
     path(
         "inventory/category/create/",
-        views.create_category_page,
+        views.category_create,
         name="create_category_page",
     ),
     path(
         "inventory/category/<int:pk>/",
-        views.edit_category_page,
+        views.category_edit,
         name="edit_category_page",
     ),
-    path("transactions/", views.view_all_transactions, name="view_all_transactions"),
+    path("transactions/", views.transaction_list, name="view_all_transactions"),
     # path("transactions/sales/", views.view_sales, name="view_sales"),
     path(
         "transactions/sales/",
-        views.view_sales_by_period,
+        views.sales_list_by_period,
         name="view_sales_by_period",
     ),
-    path("transactions/create/", views.create_transaction, name="create_transaction"),
+    path("transactions/create/", views.transaction_create, name="create_transaction"),
     path(
         "reservations/",
-        views.view_reservations_by_period,
+        views.reservation_list_by_period,
         name="view_reservations_by_period",
     ),
-    path(
-        "reservations/create/", views.create_reservation_page, name="create_reservation"
-    ),
+    path("reservations/create/", views.reservation_create, name="create_reservation"),
     path(
         "reservations/create/add-option/<int:pk>/",
         views.add_grill_reservation_option,
@@ -66,7 +62,7 @@ urlpatterns = [
     ),
     path("reservations/create/update-price/", views.update_price, name="update_price"),
     path(
-        "reservations/edit/<int:pk>/", views.edit_reservation, name="edit_reservation"
+        "reservations/edit/<int:pk>/", views.reservation_detail, name="edit_reservation"
     ),
     path("reservations/make-payment/", views.make_payment, name="make_payment"),
     path(

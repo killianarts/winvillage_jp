@@ -5,52 +5,55 @@
 {% endblock %}
 
 {% block content %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
-    <div class="px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl">{% translate 'Ticket Details' %}</h1>
-      <form action="." method="post" novalidate
-            hx-post="{% url 'winadmin:ticket_detail' ticket.id %}"
-            hx-target="#dashboard-content"
-            hx-swap="outerHTML"
-            class="max-w-sm">
-        {{ form.non_field_errors }}
-        <div id="messages">
-          {% include 'core/messages.html' %}
-        </div>
-        <div class="grid">
-          {{ form }}
-        </div>
-        <div class="space-y-5 grid">
-          <button type="submit" name="add-note"
-                  class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
-            {% trans "Add Note" %}
-          </button>
-          <button type="submit" name="resolve-ticket"
-                  class="bg-red-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-red-600">
-            {% trans "Resolve Ticket" %}
-          </button>
-        </div>
-        {% block notes %}
-          {% for note in notes %}
-            <!-- Global notification live region, render this permanently at the end of the document -->
-            <div class="mt-5 pointer-events-auto flex w-full max-w-md rounded-lg bg-stone-50 shadow-lg ring-1 ring-black ring-opacity-5">
-              <div class="w-0 flex-1 p-4">
-                <div class="flex items-start">
-                  <div class="ml-3 w-0 flex-1">
-                    <p class="text-sm font-medium text-gray-900">
-                      {{ note.user }} - {{ note.created_at|date:"Y-m-d" }} {{ note.created_at|time:"H:i" }}
-                    </p>
-                    <p class="mt-1 text-sm text-gray-500">{{ note.text }}</p>
-                  </div>
-                </div>
+
+  <h1 class="text-3xl">{% translate 'Ticket Details' %}</h1>
+  <form action="." method="post" novalidate
+        hx-post="{% url 'winadmin:ticket_detail' ticket.id %}"
+        hx-target="#dashboard-content"
+        hx-swap="outerHTML"
+        class="max-w-sm">
+    {{ form.non_field_errors }}
+    <div class="grid">
+      {{ form }}
+    </div>
+    {% if ticket.is_closed %}
+      <div class="space-y-5 grid">
+        <button type="submit"
+                name="reopen-ticket"
+                class="bg-green-700 px-5 py-3 text-xl text-green-50 transition-all duration-250 hover:bg-green-600">
+          {% trans "Reopen Ticket" %}
+        </button>
+      </div>
+    {% else %}
+      <div class="space-y-5 grid">
+        <button type="submit" name="add-note"
+                class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+          {% trans "Add Note" %}
+        </button>
+        <button type="submit" name="close-ticket"
+                class="bg-red-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-red-600">
+          {% trans "Close Ticket" %}
+        </button>
+      </div>
+    {% endif %}
+    {% block notes %}
+      {% for note in notes %}
+        <!-- Global notification live region, render this permanently at the end of the document -->
+        <div class="mt-5 pointer-events-auto flex w-full max-w-md rounded-lg bg-stone-50 shadow-lg ring-1 ring-black ring-opacity-5">
+          <div class="w-0 flex-1 p-4">
+            <div class="flex items-start">
+              <div class="ml-3 w-0 flex-1">
+                <p class="text-sm font-medium text-gray-900">
+                  {{ note.user }} - {{ note.created_at|date:"Y-m-d" }} {{ note.created_at|time:"H:i" }}
+                </p>
+                <p class="mt-1 text-sm text-gray-500">{{ note.text }}</p>
               </div>
             </div>
-          {% endfor %}
-        {% endblock %}
-      </form>
-
-    </div>
-  </main>
+          </div>
+        </div>
+      {% endfor %}
+    {% endblock %}
+  </form>
 {% endblock %}
 
 {% block deleted %}

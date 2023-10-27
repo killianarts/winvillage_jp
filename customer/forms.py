@@ -48,20 +48,29 @@ class TicketFormMixin:
 
 
 class TicketCreateForm(TicketFormMixin, forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    phone = PhoneNumberField()
-    notes = forms.CharField(widget=forms.Textarea)
+    first_name = forms.CharField(label=_("First Name"))
+    last_name = forms.CharField(label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))
+    phone = PhoneNumberField(label=_("Phone #"))
+    notes = forms.CharField(label=_("Notes"), widget=forms.Textarea)
 
     do_htmx_validation = False
 
 
 class TicketDetailForm(TicketFormMixin, forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    phone = PhoneNumberField()
-    notes = forms.CharField(widget=forms.Textarea)
+    first_name = forms.CharField(label=_("First Name"))
+    last_name = forms.CharField(label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))
+    phone = PhoneNumberField(label=_("Phone #"))
+    notes = forms.CharField(label=_("Notes"), widget=forms.Textarea)
+
+    do_htmx_validation = False
+
+
+class TicketReopenForm(TicketFormMixin, forms.Form):
+    first_name = forms.CharField(label=_("First Name"))
+    last_name = forms.CharField(label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))
+    phone = PhoneNumberField(label=_("Phone #"))
 
     do_htmx_validation = False

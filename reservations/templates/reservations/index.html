@@ -1,4 +1,4 @@
-{% extends 'winadmin/base.html' %}
+{% extends 'core/base.html' %}
 {% load i18n static %}
 {% block extra_scripts %}
 
@@ -21,9 +21,8 @@
         </div>
         <a href="{% url 'core:index' %}">
           <button type="submit"
-                  class="mx-auto flex items-center px-6 py-2 text-orange-50 font-black gap-2 bg-orange-900
-                                   cursor-pointer
-                           transition-all duration-250 hover:bg-orange-950">
+                  class="mx-auto flex items-center px-6 py-2 text-orange-50 font-black gap-2 bg-orange-900 cursor-pointer
+                         transition-all duration-250 hover:bg-orange-950">
             {% translate 'Go Back Home' %}
           </button>
         </a>

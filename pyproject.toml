@@ -34,6 +34,7 @@ honcho = "^1.1.0"
 pyopenssl = "^23.2.0"
 sendgrid = "^6.10.0"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "^7.2.0"}
+celery = {extras = ["redis"], version = "^5.3.4"}
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"

@@ -1,5 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from phonenumber_field.formfields import PhoneNumberField
+
 from reservations.models import Stay
 
 
@@ -43,6 +45,7 @@ class Step4Form(forms.Form):
     first_name = forms.CharField(max_length=255, label=_("First Name"))
     last_name = forms.CharField(max_length=255, label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
+    phone = PhoneNumberField(label=_("Phone #"))
 
 
 # class StayFormSet(

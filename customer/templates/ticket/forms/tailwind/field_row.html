@@ -9,7 +9,7 @@
                                          id="form-row-{{ field.name }}">
 
   {% if field.label %}
-    <label for={{ field.id_for_label }}>
+    <label for="{{ field.id_for_label }}" id="{{ field.id_for_label }}_label">
     {{ field.label }}
   {% endif %}
   {#  <div class="">#}

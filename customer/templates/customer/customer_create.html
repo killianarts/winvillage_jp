@@ -5,10 +5,9 @@
 {% endblock %}
 
 {% block content %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
+  <div id="dashboard-content" class="py-10 lg:ml-72">
     <div class="px-4 sm:px-6 lg:px-8">
       <h1 class="text-3xl">{% translate 'Create Customer' %}</h1>
-      <div id="messages">{% include 'core/messages.html' %}</div>
       <form action="." method="post" novalidate
             hx-post="." hx-swap="outerHTML" hx-target="#dashboard-content"
             hx-vals='{"use_block": "created"}'>
@@ -16,7 +15,7 @@
         <button name="submit" type="submit">{% trans "Create Customer" %}</button>
       </form>
     </div>
-  </main>
+  </div>
 {% endblock %}
 
 {% block created %}

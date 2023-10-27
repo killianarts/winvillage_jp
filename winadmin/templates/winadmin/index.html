@@ -263,15 +263,21 @@
                   </a>
                   <ul class="indent-12">
                     <li>
-                      <a href="#"
+                      <a href="{% url 'winadmin:customer_list' %}"
                          class="flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-stone-400 group hover:bg-stone-800 hover:text-white">
                         {% translate 'Search Customers' %}
                       </a>
                     </li>
                     <li>
-                      <a href="#"
+                      <a href="{% url 'winadmin:ticket_create' %}"
                          class="flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-stone-400 group hover:bg-stone-800 hover:text-white">
-                        {% translate 'Open Ticket' %}
+                        {% translate 'Create Ticket' %}
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'winadmin:ticket_list' %}"
+                         class="flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-stone-400 group hover:bg-stone-800 hover:text-white">
+                        {% translate 'View Tickets' %}
                       </a>
                     </li>
                   </ul>

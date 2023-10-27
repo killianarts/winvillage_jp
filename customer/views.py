@@ -113,12 +113,12 @@ def ticket_create(request: HtmxHttpRequest) -> HttpResponse:
                 last_name = form.cleaned_data["last_name"]
                 email = form.cleaned_data["email"]
                 phone = form.cleaned_data["phone"]
-                text = form.cleaned_data["text"]
+                notes = form.cleaned_data["notes"]
                 customer, create = Customer.objects.get_or_create(
                     first_name=first_name, last_name=last_name, email=email, phone=phone
                 )
                 customer.save()
-                note = TicketNote.objects.create(text=text)
+                note = TicketNote.objects.create(user=request.user, text=notes)
                 note.save()
                 ticket = Ticket.objects.create(customer=customer)
                 ticket.save()
@@ -144,22 +144,38 @@ def ticket_list(request: HtmxHttpRequest) -> HttpResponse:
 def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
     ticket: Ticket = get_object_or_404(Ticket, id=ticket_id)
     if request.method == "POST":
-        form = forms.TicketDetailForm(request.POST)
-        if form.is_valid():
-            form_data = {
-                "first_name": form.cleaned_data["first_name"],
-                "last_name": form.cleaned_data["last_name"],
-                "email": form.cleaned_data["email"],
-                "phone": form.cleaned_data["phone"],
-                "notes": form.cleaned_data["notes"],
-            }
-            if "add-note" in request.POST:
-                ticket.add_note(form_data)
-                messages.success(request, _("Note added to ticket."))
-            if "resolve-ticket" in request.POST:
-                ticket.is_resolved = True
-                ticket.add_note(form_data)
-                messages.success(request, _("Note added and ticket closed"))
+        if ticket.is_closed:
+            form = forms.TicketReopenForm(request.POST)
+            if form.is_valid():
+                form_data = {
+                    "first_name": form.cleaned_data["first_name"],
+                    "last_name": form.cleaned_data["last_name"],
+                    "email": form.cleaned_data["email"],
+                    "phone": form.cleaned_data["phone"],
+                    "notes": _("Ticket reopened."),
+                }
+                ticket.reopen_ticket(user=request.user, data=form_data)
+                messages.success(request, _("Ticket reopened"))
+                del form_data["notes"]
+                form = forms.TicketDetailForm(initial=form_data)
+        else:
+            form = forms.TicketDetailForm(request.POST)
+            if form.is_valid():
+                form_data = {
+                    "first_name": form.cleaned_data["first_name"],
+                    "last_name": form.cleaned_data["last_name"],
+                    "email": form.cleaned_data["email"],
+                    "phone": form.cleaned_data["phone"],
+                    "notes": form.cleaned_data["notes"],
+                }
+                if "add-note" in request.POST:
+                    ticket.add_note(user=request.user, data=form_data)
+                    messages.success(request, _("Note added to ticket."))
+                if "close-ticket" in request.POST:
+                    ticket.close_ticket(user=request.user, data=form_data)
+                    messages.success(request, _("Note added and ticket closed"))
+                    del form_data["notes"]
+                    form = forms.TicketReopenForm(initial=form_data)
     else:
         initial = {
             "first_name": ticket.customer.first_name,
@@ -167,7 +183,10 @@ def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
             "email": ticket.customer.email,
             "phone": ticket.customer.phone,
         }
-        form = forms.TicketDetailForm(initial=initial)
+        if ticket.is_closed:
+            form = forms.TicketReopenForm(initial=initial)
+        else:
+            form = forms.TicketDetailForm(initial=initial)
     context = {
         "form": form,
         "ticket": ticket,

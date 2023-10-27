@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
+from phonenumber_field.modelfields import PhoneNumberField
 
 from customer.models import Customer
 
@@ -26,6 +27,7 @@ class ContactInfo(BaseModel):
     first_name = models.CharField(max_length=50, verbose_name=_("First name"))
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254)
+    phone = PhoneNumberField(max_length=254)
 
     def __str__(self):
         return f"{self.first_name}, {self.last_name}, {self.email}"
@@ -47,19 +49,34 @@ class Item(models.Model):
         verbose_name = _("Item")
         verbose_name_plural = _("Items")
 
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=19, decimal_places=4)
-    category = models.ForeignKey(
-        Category, null=True, blank=True, on_delete=models.SET_NULL
+    name = models.CharField(verbose_name=_("Name"), max_length=100)
+    price = models.DecimalField(
+        verbose_name=_("Price"), max_digits=19, decimal_places=4
     )
-    image = models.ImageField(upload_to="item_images/", null=True, blank=True)
-    stock_quantity = models.IntegerField(default=1)
-    in_stock = models.BooleanField(default=True)
-    active = models.BooleanField(default=False)
-    reservation_option = models.BooleanField(default=False)
-    description = models.TextField(default=_("Long description"), null=True)
+    category = models.ForeignKey(
+        Category,
+        verbose_name=_("Category"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    image = models.ImageField(
+        upload_to="item_images/", verbose_name=_("Image"), null=True, blank=True
+    )
+    stock_quantity = models.IntegerField(default=1, verbose_name=_("Stock Quantity"))
+    in_stock = models.BooleanField(default=True, verbose_name=_("In Stock?"))
+    active = models.BooleanField(default=False, verbose_name=_("Active?"))
+    reservation_option = models.BooleanField(
+        default=False, verbose_name=_("Reservation Option?")
+    )
+    description = models.TextField(
+        default=_("Long description"), verbose_name=_("Description"), null=True
+    )
     short_description = models.CharField(
-        max_length=280, default=_("Short description"), null=True
+        max_length=280,
+        default=_("Short description"),
+        verbose_name=_("Short Description"),
+        null=True,
     )
 
     @property

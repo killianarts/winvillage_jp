@@ -15,7 +15,7 @@ class LoginForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = True
 
 
-class CreateItemForm(forms.ModelForm):
+class ItemCreateForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = [
@@ -32,7 +32,7 @@ class CreateItemForm(forms.ModelForm):
         ]
 
 
-class EditItemForm(TailwindFormMixin, forms.ModelForm):
+class ItemEditForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Item
         fields = [
@@ -51,17 +51,17 @@ class EditItemForm(TailwindFormMixin, forms.ModelForm):
     do_htmx_validation = True
 
 
-class CreateCategoryForm(TailwindFormMixin, forms.Form):
+class CategoryCreateForm(TailwindFormMixin, forms.Form):
     title = forms.CharField()
     do_htmx_validation = False
 
 
-class EditCategoryForm(TailwindFormMixin, forms.Form):
+class CategoryDetailForm(TailwindFormMixin, forms.Form):
     title = forms.CharField()
     do_htmx_validation = False
 
 
-class CreateTransactionForm(forms.ModelForm):
+class TransactionCreateForm(forms.ModelForm):
     class Meta:
         model = Transaction
         fields = [
@@ -100,7 +100,7 @@ class DateTimeInput(forms.DateTimeInput):
         super().__init__(**kwargs)
 
 
-class CreateReservationForm(TailwindFormMixin, forms.Form):
+class ReservationCreateForm(TailwindFormMixin, forms.Form):
     STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
@@ -133,7 +133,7 @@ class ContactInfoForm(TailwindFormMixin, forms.ModelForm):
     do_htmx_validation = True
 
 
-class EditReservationForm(forms.Form):
+class ReservationDetailForm(forms.Form):
     STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     STATUS_CHOICES = Choices(
         ("not_reserved", _("Not Reserved")),
@@ -143,12 +143,12 @@ class EditReservationForm(forms.Form):
         ("cancelled", _("Cancelled")),
     )
     status = forms.ChoiceField(choices=STATUS_CHOICES)
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    start_datetime = forms.DateField(widget=DateInput)
-    end_datetime = forms.DateField(widget=DateInput)
-    stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES)
+    first_name = forms.CharField(label=_("First Name"))
+    last_name = forms.CharField(label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))
+    start_datetime = forms.DateField(widget=DateInput, label=_("Start"))
+    end_datetime = forms.DateField(widget=DateInput, label=_("End"))
+    stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES, label=_("Stay Type"))
 
 
 class SquarePaymentTokenForm(forms.Form):

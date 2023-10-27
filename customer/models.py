@@ -76,8 +76,8 @@ class TicketNote(BaseModel):
         verbose_name = _("Ticket Note")
         verbose_name_plural = _("Ticket Notes")
 
-    user = models.OneToOneField(auth_user, on_delete=models.CASCADE, null=True)
-    text = models.TextField()
+    user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True)
+    text = models.TextField(null=False, blank=False)
 
     def __str__(self):
         return f"{self.text}, {self.created_at.strftime('%Y-%m-%d')}"
@@ -90,10 +90,10 @@ class Ticket(BaseModel):
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     notes = models.ManyToManyField(TicketNote)
-    is_resolved = models.BooleanField(default=False)
+    is_closed = models.BooleanField(default=False)
 
-    def add_note(self, data):
-        ticket_note = TicketNote.objects.create(text=data["notes"])
+    def add_note(self, user, data):
+        ticket_note = TicketNote.objects.create(user=user, text=data["notes"])
         ticket_note.save()
         self.customer.first_name = data["first_name"]
         self.customer.last_name = data["last_name"]
@@ -111,6 +111,30 @@ class Ticket(BaseModel):
             return note
         else:
             return None
+
+    def close_ticket(self, user, data):
+        ticket_note = TicketNote.objects.create(user=user, text=data["notes"])
+        ticket_note.save()
+        self.customer.first_name = data["first_name"]
+        self.customer.last_name = data["last_name"]
+        self.customer.email = data["email"]
+        self.customer.phone = data["phone"]
+        self.customer.save()
+        self.notes.add(ticket_note)
+        self.is_closed = True
+        self.save()
+
+    def reopen_ticket(self, user, data):
+        ticket_note = TicketNote.objects.create(user=user, text=data["notes"])
+        ticket_note.save()
+        self.customer.first_name = data["first_name"]
+        self.customer.last_name = data["last_name"]
+        self.customer.email = data["email"]
+        self.customer.phone = data["phone"]
+        self.customer.save()
+        self.notes.add(ticket_note)
+        self.is_closed = False
+        self.save()
 
     def delete_note(self, note_id):
         note = TicketNote.objects.filter(ticket=self, id=note_id).first()
