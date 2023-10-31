@@ -9,46 +9,50 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("login/", views.login_page, name="login_page"),
     path("logout/", views._logout, name="logout"),
-    path("inventory/", views.item_list, name="list_inventory"),
+    path("inventory/list/", views.item_list, name="item_list"),
     path(
         "inventory/item/<int:pk>/",
         views.item_detail,
-        name="edit_inventory_item",
+        name="item_detail",
     ),
     path(
         "inventory/item/<int:pk>/delete/",
         views.item_delete,
-        name="delete_inventory_item",
+        name="item_delete",
     ),
     path(
         "inventory/create/",
         views.item_create,
-        name="create_inventory_item_page",
+        name="item_create",
     ),
-    path("inventory/category/", views.category_list, name="list_categories_page"),
+    path("inventory/category/", views.category_list, name="category_list"),
     path(
         "inventory/category/create/",
         views.category_create,
-        name="create_category_page",
+        name="category_create",
     ),
     path(
         "inventory/category/<int:pk>/",
-        views.category_edit,
-        name="edit_category_page",
+        views.category_detail,
+        name="category_detail",
     ),
-    path("transactions/", views.transaction_list, name="view_all_transactions"),
     path(
-        "transactions/sales/",
-        views.sales_list_by_period,
-        name="view_sales_by_period",
+        "transactions/list/",
+        views.transaction_list_by_period,
+        name="transaction_list_by_period",
     ),
-    path("transactions/create/", views.transaction_create, name="create_transaction"),
+    path(
+        "transactions/sale/list/",
+        views.sale_list_by_period,
+        name="sale_list_by_period",
+    ),
+    path("transactions/create/", views.transaction_create, name="transaction_create"),
     path(
         "reservations/",
         views.reservation_list_by_period,
-        name="view_reservations_by_period",
+        name="reservation_list_by_period",
     ),
-    path("reservations/create/", views.reservation_create, name="create_reservation"),
+    path("reservations/create/", views.reservation_create, name="reservation_create"),
     path(
         "reservations/create/add-option/<int:pk>/",
         views.add_grill_reservation_option,
@@ -61,7 +65,9 @@ urlpatterns = [
     ),
     path("reservations/create/update-price/", views.update_price, name="update_price"),
     path(
-        "reservations/edit/<int:pk>/", views.reservation_detail, name="edit_reservation"
+        "reservations/edit/<int:pk>/",
+        views.reservation_detail,
+        name="reservation_detail",
     ),
     path("reservations/make-payment/", views.make_payment, name="make_payment"),
     path(
@@ -88,4 +94,12 @@ urlpatterns = [
         customer.ticket_detail,
         name="ticket_detail",
     ),
+]
+
+urlpatterns += [
+    path(
+        "inventory/", views.inventory_management_page, name="inventory_management_page"
+    ),
+    path("transactions/sale/", views.sale_management_page, name="sale_management_page"),
+    # "inventory/", views.inventory_management_page, name="inventory_management_page"
 ]

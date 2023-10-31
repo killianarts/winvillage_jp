@@ -128,11 +128,12 @@
           </h1>
           <p class="mt-6 text-lg leading-8 text-stone-300">{% trans 'Fresh air, delicious food, comfortable beds' %}</p>
           <div class="mt-10 flex items-center justify-center gap-x-6">
-            <a href="{% url 'reservations:index' %}"
-               class="bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-orange-50 shadow-sm
-                           transition-all duration-250 hover:bg-orange-700 focus-visible:outline focus-visible:outline-2
-                           focus-visible:outline-offset-2 focus-visible:outline-orange-700">
-              {% translate 'Make a Reservation' %}</a>
+            <a href="{% url 'reservations:index' %}">
+                            {% #button %}
+              {% translate 'Make a Reservation' %}
+{#              {% include 'patterns/buttons/button/button.html' with children=text %}#}
+                            {% /button %}
+            </a>
             <a href="#"
                class="text-sm font-semibold leading-6 text-orange-50 transition-all duration-250 group hover:text-orange-200">
               Learn more

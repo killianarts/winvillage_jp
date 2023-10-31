@@ -1,0 +1,4 @@
+name: Button
+context:
+  children: Click Me
+  data-script: "on click if my innerHTML is 'Click Me' put 'Clicked!' into my innerHTML else put 'Click Me' into my innerHTML end"

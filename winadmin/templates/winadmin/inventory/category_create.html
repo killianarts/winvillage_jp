@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
   <h1 class="mb-5 text-3xl">{% translate 'Category Create View' %}</h1>
-  <form hx-post="{% url 'winadmin:create_category_page' %}"
+  <form hx-post="."
         hx-target="#dashboard-content"
         hx-swap="outerHTML"
         class="grid max-w-xl space-y-2" novalidate>

@@ -8,41 +8,41 @@
   {% translate 'Create Reservation' %}
 {% endblock %}
 {% block content %}
-  <h1 class="text-3xl">{% translate 'Create Reservation' %}</h1>
-  <form id="create-reservation-form"
-        class="max-w-xl space-y-5"
-        action=""
-        method="post"
-        hx-post="."
-        hx-swap="outerHTML"
-        hx-trigger="keydown[metaKey&&shiftKey&&key=='s'] from:body"
-        hx-target="#create-reservation-form"
-        hx-vals='{"use_block": "content"}'
-        novalidate>
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <div id="messages">
-      {% include 'core/messages.html' %}
-    </div>
-    {% block form_fields %}
-      <div class="grid">
-        {{ form }}
+  <div id="reservation-create-form-wrapper">
+    <h1 class="text-3xl">{% translate 'Create Reservation' %}</h1>
+    <form id="create-reservation-form"
+          class="max-w-xl space-y-5"
+          action=""
+          method="post"
+          hx-post="."
+          hx-swap="outerHTML"
+          hx-trigger="keydown[metaKey&&shiftKey&&key=='s'] from:body"
+          hx-target="#create-reservation-form"
+          hx-vals='{"use_block": "content"}'
+          novalidate>
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div id="messages">
+        {% include 'core/messages.html' %}
       </div>
-    {% endblock %}
-    <button name="submit"
-            type="submit"
-            hx-post="."
-            hx-swap="outerHTML"
-            hx-target="this"
-            hx-vals='{"use_block": "options"}'
-            class="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+      {% block form_fields %}
+        <div class="grid">
+          {{ form }}
+        </div>
+      {% endblock %}
+      <button name="submit"
+              type="submit"
+              hx-post="."
+              hx-swap="outerHTML"
+              hx-target="this"
+              hx-vals='{"use_block": "options"}'
+              class="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
                     hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                     focus-visible:outline-orange-700">
-      {% translate 'Choose Options' %}
-    </button>
-  </form>
-
-
+        {% translate 'Choose Options' %}
+      </button>
+    </form>
+  </div>
 {% endblock %}
 
 {% block options %}
@@ -173,7 +173,7 @@
           <div hx-get="."
                hx-trigger="load"
                hx-swap="outerHTML"
-               hx-target="#dashboard-content"
+               hx-target="#reservation-create-form-wrapper"
                hx-vals='{"use_block": "payment-complete"}'></div>
         {% elif payment.errors %}
           {% translate 'Payment Failed! Error: ' %}{{ payment.errors.detail }}
@@ -184,10 +184,8 @@
 {% endblock %}
 
 {% block payment-complete %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
-    <div class="px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl">{% translate 'Payment Complete!' %}</h1>
-      <a href={% url 'winadmin:create_reservation' %}>Create a New Reservation</a>
-    </div>
-  </main>
+  <h1 class="text-3xl">{% translate 'Payment Complete!' %}</h1>
+  <a href={% url 'winadmin:reservation_create' %}>
+    {% #button text=text %}{% translate 'Create a New Reservation'%}{%  /button %}
+  </a>
 {% endblock %}

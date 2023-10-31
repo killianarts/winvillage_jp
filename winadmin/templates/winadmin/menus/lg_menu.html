@@ -1,0 +1,11 @@
+<ul class="-mx-2 space-y-1">
+  {% for item in menu %}
+    <li>
+      <!-- Current: "bg-stone-800 text-white", Default: "text-stone-400 hover:text-white hover:bg-stone-800" -->
+      <a href="{{ item.url }}"
+         class=" flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-stone-300 group {% if item.selected %}bg-stone-800 text-white{% endif %}">
+        {{ item.title }}
+      </a>
+    </li>
+  {% endfor %}
+</ul>

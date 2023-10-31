@@ -43,7 +43,7 @@
           {% for reservation in reservations %}
             <tr class="hover:bg-stone-50">
               <td class="whitespace-nowrap py-4 pr-3 pl-4 font-mono text-sm font-medium slashed-zero tabular-nums text-stone-900 sm:pl-0">
-                <a hx-boost="true" class="pl-6" href="{% url 'winadmin:edit_reservation' reservation.pk %}">
+                <a class="pl-6" href="{% url 'winadmin:reservation_detail' reservation.pk %}">
                   {% timezone "Asia/Tokyo" %}
                     {{ reservation.stay.start_datetime|date:"Y-m-d" }}
                   {% endtimezone %}

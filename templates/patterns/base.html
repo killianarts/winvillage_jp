@@ -1,0 +1,45 @@
+{% load static tailwind_cli i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+  <title>
+    {% block title %}BASE{% endblock %}
+    {% block title_divider %} - {% endblock %}
+    {% block subtitle %}KILLIAN ARTS LAB{% endblock %}
+  </title>
+  {% tailwind_css %}
+  <!-- _hyperscript library -->
+  <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
+  {% block hyperscript_behaviors %}{% endblock %}
+  <script src="{% static 'base/js/hyperscript.js' %}" defer></script>
+  <!-- HTMX library -->
+  <script src="{% static 'base/js/htmx.js' %}" defer></script>
+
+  {% tailwind_css %}
+  {% block extra_scripts %}
+  {% endblock %}
+  {% block extra_styles %}
+  {% endblock %}
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+{% block header %}
+{% endblock %}
+{% block pre_content %}{% endblock %}
+{% block content %}
+  <main class="grid h-screen place-items-center">
+    {{ pattern_library_rendered_pattern }}
+  </main>
+  {% block content_top %}
+  {% endblock %}
+  {% block content_main %}
+  {% endblock %}
+  {% block content_bottom %}
+  {% endblock %}
+{% endblock %}
+{% block post_content %}{% endblock %}
+{% block footer %}
+{% endblock %}
+</body>
+</html>

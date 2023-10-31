@@ -1,0 +1,23 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n %}
+{% block subtitle %}
+  {% blocktrans %}Edit Category{% endblocktrans %}
+{% endblock %}
+{% block content %}
+  <h1 class="mb-5 text-3xl">{% translate 'Category Edit View' %}</h1>
+  {% block form %}
+    <form id="category-form"
+          action="." method="post"
+          hx-post="."
+          hx-target="this"
+          hx-swap="outerHTML"
+          hx-vals='{"use_block": "form"}'
+          class="grid max-w-xl space-y-2" novalidate>
+      {{ form }}
+      <button type="submit" name="submit"
+              class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+        {% trans "Submit" %}
+      </button>
+    </form>
+  {% endblock %}
+{% endblock %}

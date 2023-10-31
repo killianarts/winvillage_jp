@@ -1,0 +1,6 @@
+{% var endpoint=url %}
+<!-- Current: "bg-stone-800 text-white", Default: "text-stone-400 hover:text-white hover:bg-stone-800" -->
+<a href="{% url endpoint %}"
+   class="flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 group {{ class|default:"text-stone-400 hover:bg-stone-800 hover:text-white" }}">
+  {{ children }}
+</a>

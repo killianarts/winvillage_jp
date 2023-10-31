@@ -52,7 +52,20 @@ TIMEZONE = "Asia/Tokyo"
 # Index and Login
 @login_required(login_url="winadmin:login_page")
 def index(request: HtmxHttpRequest) -> HttpResponse:
-    return TemplateResponse(request, "winadmin/index.html", {})
+    greeting = "Hello"
+    return TemplateResponse(request, "winadmin/index.html", {"greeting": greeting})
+
+
+def inventory_management_page(request: HtmxHttpRequest) -> HttpResponse:
+    return TemplateResponse(
+        request, "winadmin/index.html", {"greeting": "Hello from inventory."}
+    )
+
+
+def sale_management_page(request: HtmxHttpRequest) -> HttpResponse:
+    return TemplateResponse(
+        request, "winadmin/index.html", {"greeting": "Hello from sales."}
+    )
 
 
 @htmx_form_validate(form_class=LoginForm)
@@ -138,28 +151,28 @@ def _category_create(request: HtmxHttpRequest) -> HttpResponse:
 
 
 @for_htmx(use_block_from_params=True)
-def category_edit(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+def category_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     if request.method == "POST":
         form = CategoryCreateForm(request.POST)
         if form.is_valid():
-            title = form.cleaned_data["title"]
+            name = form.cleaned_data["name"]
             category = get_object_or_404(Category, pk=pk)
-            category.title = title
+            category.name = name
             category.save()
             messages.add_message(
                 request, messages.INFO, _("Category Successfully Edited")
             )
             context = {"form": form, "category": category}
             return TemplateResponse(
-                request, "winadmin/inventory/category_edit.html", context
+                request, "winadmin/inventory/category_detail.html", context
             )
         elif not form.is_valid():
             if not form.cleaned_data:
-                messages.add_message(request, messages.ERROR, _("Input category title"))
+                messages.add_message(request, messages.ERROR, _("Input category name"))
     category = get_object_or_404(Category, pk=pk)
-    form = CategoryDetailForm(initial={"title": category.title})
+    form = CategoryDetailForm(initial={"name": category.name})
     context = {"form": form, "category": category}
-    return TemplateResponse(request, "winadmin/inventory/category_edit.html", context)
+    return TemplateResponse(request, "winadmin/inventory/category_detail.html", context)
 
 
 def category_list(request: HtmxHttpRequest) -> HttpResponse:
@@ -207,19 +220,10 @@ def item_delete(request: HtmxHttpRequest, pk: int) -> HttpResponse:
 
 
 # Transactions
-@login_required(login_url="winadmin:login_page")
-def transaction_list(request: HtmxHttpRequest) -> HttpResponse:
-    return _transaction_list(request)
-
-
-def _transaction_list(request: HtmxHttpRequest) -> HttpResponse:
-    transactions = Transaction.objects.all()
-    context = {"transactions": transactions}
-    return TemplateResponse(request, "winadmin/transactions/transaction_list", context)
 
 
 @login_required(login_url="winadmin:login_page")
-def sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
+def sale_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     return _sales_list_by_period(request)
 
 
@@ -295,6 +299,37 @@ def _transaction_create(request: HtmxHttpRequest) -> HttpResponse:
     context = {"form": form}
     return TemplateResponse(
         request, "winadmin/transactions/transaction_create.html", context
+    )
+
+
+@login_required(login_url="winadmin:login_page")
+def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
+    transactions = Transaction.objects.all()
+    year, month = get_current_year_and_month(request)
+    deactivate()
+    if request.htmx:
+        form = SetLedgerPeriodForm(request.GET)
+        if form.is_valid():
+            year = form.cleaned_data["year"]
+            month = form.cleaned_data["month"]
+    else:
+        form = SetLedgerPeriodForm(initial={"year": year, "month": month})
+        if form.is_valid():
+            year = form.cleaned_data["year"]
+            month = form.cleaned_data["month"]
+    transactions = transactions.filter(transaction_datetime__year=year).filter(
+        transaction_datetime__month=month
+    )
+    balance, ledger = get_balance_and_ledger(transactions)
+    context = {
+        "ledger": ledger,
+        "final_balance": balance,
+        "year": year,
+        "month": month,
+        "form": form,
+    }
+    return TemplateResponse(
+        request, "winadmin/transactions/transaction_list_by_period.html", context
     )
 
 
@@ -539,6 +574,7 @@ def reservation_detail(request: HtmxHttpRequest, pk) -> HttpResponse:
     return _reservation_detail(request, pk)
 
 
+@for_htmx(use_block_from_params=True)
 def _reservation_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     reservation = get_object_or_404(Reservation, pk=pk)
     stay_type = reservation.stay.stay_type
@@ -602,7 +638,10 @@ def get_client():
 
 def get_or_create_customer(reservation):
     customer, created = Customer.objects.get_or_create(
-        contact_info=reservation.contact_info
+        first_name=reservation.contact_info.first_name,
+        last_name=reservation.contact_info.last_name,
+        email=reservation.contact_info.email,
+        phone=reservation.contact_info.phone,
     )
     customer.save()
     return customer, created

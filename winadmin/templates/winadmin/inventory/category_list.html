@@ -16,13 +16,13 @@
       {% for category in categories %}
         <tr class="hover:bg-stone-50">
           <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
-            <a hx-get="{% url 'winadmin:edit_category_page' category.pk %}"
+            <a hx-get="{% url 'winadmin:category_detail' category.pk %}"
                hx-target="#dashboard-content"
                hx-swap="outerHTML"
                hx-push-url="true"
                hx-vals='{"use_block":"content"}'
                class="pl-6"
-               href="{% url 'winadmin:edit_category_page' category.pk %}">
+               href="{% url 'winadmin:category_detail' category.pk %}">
               {{ category.name }}
             </a>
           </td>

@@ -61,29 +61,6 @@ class CategoryDetailForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = False
 
 
-class TransactionCreateForm(forms.ModelForm):
-    class Meta:
-        model = Transaction
-        fields = [
-            "name",
-            "customer",
-            "transaction_datetime",
-            "item",
-            "quantity",
-            "total_price",
-        ]
-
-
-class SetLedgerPeriodForm(forms.Form):
-    year = forms.IntegerField()
-    month = forms.IntegerField()
-
-
-class SetReservationPeriodForm(forms.Form):
-    year = forms.IntegerField()
-    month = forms.IntegerField()
-
-
 class DateInput(forms.DateInput):
     input_type = "date"
 
@@ -98,6 +75,30 @@ class DateTimeInput(forms.DateTimeInput):
     def __init__(self, **kwargs):
         kwargs["format"] = "%Y-%m-%d"
         super().__init__(**kwargs)
+
+
+class TransactionCreateForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = Transaction
+        fields = [
+            "name",
+            "customer",
+            "transaction_datetime",
+            "item",
+            "quantity",
+            "total_price",
+        ]
+        widgets = {"transaction_datetime": DateInput()}
+
+
+class SetLedgerPeriodForm(forms.Form):
+    year = forms.IntegerField()
+    month = forms.IntegerField()
+
+
+class SetReservationPeriodForm(forms.Form):
+    year = forms.IntegerField()
+    month = forms.IntegerField()
 
 
 class ReservationCreateForm(TailwindFormMixin, forms.Form):
@@ -133,7 +134,7 @@ class ContactInfoForm(TailwindFormMixin, forms.ModelForm):
     do_htmx_validation = True
 
 
-class ReservationDetailForm(forms.Form):
+class ReservationDetailForm(TailwindFormMixin, forms.Form):
     STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     STATUS_CHOICES = Choices(
         ("not_reserved", _("Not Reserved")),

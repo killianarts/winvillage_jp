@@ -6,7 +6,7 @@
 {% block content %}
   <div class="overflow-hidden">
     <h1 class="mb-5 text-3xl">{% translate 'Sales Chart' %}</h1>
-    <form hx-get="{% url 'winadmin:view_sales_by_period' %}"
+    <form hx-get="."
           hx-trigger="change delay:0ms"
           hx-swap="outerHTML"
           hx-target="#sales-table-wrapper"

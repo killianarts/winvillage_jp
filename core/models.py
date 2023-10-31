@@ -91,7 +91,7 @@ class Item(models.Model):
         return f"ID: {self.pk}, Name: {self.name}"
 
     def get_absolute_url(self):
-        return reverse("winadmin:edit_inventory_item", args=[str(self.pk)])
+        return reverse("winadmin:item_detail", args=[str(self.pk)])
 
 
 class TransactionSalesManager(models.Manager):
@@ -99,7 +99,7 @@ class TransactionSalesManager(models.Manager):
         return (
             super()
             .get_queryset()
-            .filter(name__in=["sale", "payment", "deposit", "return"])
+            .filter(name__in=["sale", "purchase", "deposit", "return"])
             .order_by("transaction_datetime")
         )
 
