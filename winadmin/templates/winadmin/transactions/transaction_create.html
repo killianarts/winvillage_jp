@@ -7,12 +7,12 @@
   <h1 class="text-3xl">{% translate 'Create Transaction' %}</h1>
   <form class="grid max-w-xl space-y-5" novalidate>
     {{ form }}
-    <button hx-post="{% url 'winadmin:create_transaction' %}"
+    <button hx-post="."
             hx-target="#dashboard-content"
             hx-swap="outerHTML"
             type="submit" name="submit"
             class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
-      Submit
+      {% trans "Submit" %}
     </button>
   </form>
 {% endblock %}

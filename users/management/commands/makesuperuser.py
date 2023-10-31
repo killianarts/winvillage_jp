@@ -12,7 +12,7 @@ class Command(BaseCommand):
             u = None
             if (
                 not User.objects.filter(email=settings.DJANGO_SUPER_USER_EMAIL).exists()
-                # and not User.objects.filter(is_superuser=True).exists()
+                and not User.objects.filter(is_superuser=True).exists()
             ):
                 print("DJANGO_SUPER_USER_EMAIL not found, creating one")
                 name = settings.DJANGO_SUPER_USER_NAME
