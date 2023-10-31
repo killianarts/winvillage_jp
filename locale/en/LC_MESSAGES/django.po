@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-31 03:49+0000\n"
+"POT-Creation-Date: 2023-10-31 04:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -186,7 +186,7 @@ msgstr ""
 #: core/templates/core/index.html:54 core/templates/core/index.html:102
 #: core/templates/core/index.html:133 core/templates/core/index.html:222
 #: core/templates/core/index.html:255 winadmin/templates/winadmin/index.html:89
-#: winadmin/templates/winadmin/index.html:160
+#: winadmin/templates/winadmin/index.html:161
 msgid "Make a Reservation"
 msgstr ""
 
@@ -310,7 +310,7 @@ msgstr ""
 #: customer/templates/ticket/ticket_create.html:8
 #: customer/templates/ticket/ticket_create.html:18
 #: winadmin/templates/winadmin/index.html:54
-#: winadmin/templates/winadmin/index.html:125
+#: winadmin/templates/winadmin/index.html:126
 msgid "Create Ticket"
 msgstr ""
 
@@ -697,7 +697,7 @@ msgid "Winvillage Administration Dashboard"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:19
-#: winadmin/templates/winadmin/index.html:189
+#: winadmin/templates/winadmin/index.html:192
 msgid "Winvillage Admin"
 msgstr ""
 
@@ -706,71 +706,73 @@ msgid "Dashboard"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:50
-#: winadmin/templates/winadmin/index.html:121
+#: winadmin/templates/winadmin/index.html:122
 msgid "Customer Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:53
-#: winadmin/templates/winadmin/index.html:124
+#: winadmin/templates/winadmin/index.html:125
 msgid "Search Customers"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:55
-#: winadmin/templates/winadmin/index.html:126
+#: winadmin/templates/winadmin/index.html:127
 msgid "View Tickets"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:65
-#: winadmin/templates/winadmin/index.html:136
+#: winadmin/templates/winadmin/index.html:137
 msgid "Inventory Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:68
-#: winadmin/templates/winadmin/index.html:139
+#: winadmin/templates/winadmin/index.html:140
 msgid "View Inventory"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:69
-#: winadmin/templates/winadmin/index.html:140
+#: winadmin/templates/winadmin/index.html:141
 #: winadmin/templates/winadmin/inventory/item_create.html:7
 msgid "Add Inventory Item"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:70
-#: winadmin/templates/winadmin/index.html:141
+#: winadmin/templates/winadmin/index.html:142
 msgid "View Categories"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:71
-#: winadmin/templates/winadmin/index.html:142
+#: winadmin/templates/winadmin/index.html:143
 msgid "Add Category"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:85
-#: winadmin/templates/winadmin/index.html:156
+#: winadmin/templates/winadmin/index.html:157
 msgid "Sales Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:88
-#: winadmin/templates/winadmin/index.html:159
+#: winadmin/templates/winadmin/index.html:160
 msgid "View Sales"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:90
-#: winadmin/templates/winadmin/index.html:161
+#: winadmin/templates/winadmin/index.html:162
 msgid "View Reservations"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:98
-#: winadmin/templates/winadmin/index.html:169
+#: winadmin/templates/winadmin/index.html:170
 msgid "Purchase Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:101
+#: winadmin/templates/winadmin/index.html:173
 msgid "View Transactions"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:102
+#: winadmin/templates/winadmin/index.html:174
 #: winadmin/templates/winadmin/transactions/transaction_create.html:4
 #: winadmin/templates/winadmin/transactions/transaction_create.html:7
 msgid "Create Transaction"

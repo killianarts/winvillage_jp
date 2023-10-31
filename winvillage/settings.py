@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from pathlib import Path
 import environ
+from django.apps import apps
 
 # For translation
 from django.utils.translation import gettext_lazy as _
@@ -163,7 +164,9 @@ default_loaders = [
 ]
 
 cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
-
+TEMPLATE_BUILTINS = ["slippers.templatetags.slippers"]
+if apps.is_installed("pattern_library"):
+    TEMPLATE_BUILTINS.append("pattern_library.loader_tags")
 # APP_DIRS unnecessary if django.template.loaders.app_directories.Loader is set.
 TEMPLATES = [
     {
@@ -182,7 +185,6 @@ TEMPLATES = [
             ],
             "loaders": default_loaders if DEBUG else cached_loaders,
             "builtins": [
-                "pattern_library.loader_tags",
                 "slippers.templatetags.slippers",
             ],
         },
