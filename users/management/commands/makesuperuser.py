@@ -12,9 +12,9 @@ class Command(BaseCommand):
             u = None
             if (
                 not User.objects.filter(email=settings.DJANGO_SUPER_USER_EMAIL).exists()
-                and not User.objects.filter(is_superuser=True).exists()
+                # and not User.objects.filter(is_superuser=True).exists()
             ):
-                print("admin user not found, creating one")
+                print("DJANGO_SUPER_USER_EMAIL not found, creating one")
                 name = settings.DJANGO_SUPER_USER_NAME
                 email = settings.DJANGO_SUPER_USER_EMAIL
                 new_password = None
@@ -26,11 +26,11 @@ class Command(BaseCommand):
                 u = User.objects.create_superuser(email, new_password, name=name)
                 print("===================================")
                 print(
-                    f"A superuser was created with name {name} email {email} and password {new_password}"
+                    f"A super user was created with name {name} email {email} and password {new_password}"
                 )
                 print("===================================")
             else:
-                print("admin user found. Skipping super user creation")
+                print("DJANGO_SUPER_USER_EMAIL found. Skipping super user creation")
             print(u)
         except Exception as e:
             print(f"There was an error: {e}")
