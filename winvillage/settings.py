@@ -165,7 +165,7 @@ default_loaders = [
 
 cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
 TEMPLATE_BUILTINS = ["slippers.templatetags.slippers"]
-if apps.is_installed("pattern_library"):
+if "pattern_library" in INSTALLED_APPS:
     TEMPLATE_BUILTINS.append("pattern_library.loader_tags")
 # APP_DIRS unnecessary if django.template.loaders.app_directories.Loader is set.
 TEMPLATES = [

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-31 04:00+0000\n"
+"POT-Creation-Date: 2023-10-31 04:12+0000\n"
 "PO-Revision-Date: 2023-10-31 03:49+0000\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1043,11 +1043,11 @@ msgstr "引取が制作できました"
 msgid "Reservation successfully edited."
 msgstr "予約を変更できました"
 
-#: winvillage/settings.py:270
+#: winvillage/settings.py:272
 msgid "English"
 msgstr "英語"
 
-#: winvillage/settings.py:271
+#: winvillage/settings.py:273
 msgid "Japanese"
 msgstr "日本語"
 
