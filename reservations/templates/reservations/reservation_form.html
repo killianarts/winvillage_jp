@@ -10,11 +10,7 @@
           class="space-y-5">
       <fieldset>
         <legend class="sr-only">{% translate 'Reservation Types' %}</legend>
-        <div>
-          {% for field in form %}
-            {% render_field field class="text-2xl accent-red-500 space-y-2" %}
-          {% endfor %}
-        </div>
+        {{ form }}
       </fieldset>
       {% translate 'Next' as submit_button_text %}
       {% include 'reservations/_buttons.html' with submit_button_text=submit_button_text %}
@@ -33,18 +29,7 @@
       <fieldset>
         <legend class="sr-only">{% translate 'Reservation Types' %}</legend>
         <div class="grid grid-cols-1 space-y-2">
-          {% for field in form %}
-            <label class="text-xl" for="{{ field.id_for_label }}" id="{{ field.id_for_label }}">
-              {% if field.name == "start_datetime" %}
-                {% translate 'Start' %}:
-                {% render_field field class="mb-2 w-full" min=current_date %}
-              {% endif %}
-              {% if field.name == "end_datetime" %}
-                {% translate 'End' %}:
-                {% render_field field class="mb-2 w-full" %}
-              {% endif %}
-            </label>
-          {% endfor %}
+          {{ form }}
         </div>
       </fieldset>
       {% url 'reservations:step-1' as url %}

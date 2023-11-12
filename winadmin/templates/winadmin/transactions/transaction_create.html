@@ -4,15 +4,17 @@
   {% translate 'Create Transaction' %}
 {% endblock %}
 {% block content %}
-  <h1 class="text-3xl">{% translate 'Create Transaction' %}</h1>
-  <form class="grid max-w-xl space-y-5" novalidate>
-    {{ form }}
-    <button hx-post="."
-            hx-target="#dashboard-content"
-            hx-swap="outerHTML"
-            type="submit" name="submit"
-            class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
-      {% trans "Submit" %}
-    </button>
-  </form>
+  <div id="form-wrapper">
+    <h1 class="text-3xl">{% translate 'Create Order' %}</h1>
+    <form class="grid max-w-xl space-y-5" novalidate>
+      {{ form }}
+      <button hx-post="."
+              hx-target="#form-wrapper"
+              hx-swap="outerHTML"
+              type="submit" name="submit"
+              class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+        {% trans "Submit" %}
+      </button>
+    </form>
+  </div>
 {% endblock %}

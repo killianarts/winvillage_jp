@@ -14,7 +14,7 @@ import environ
 from django.apps import apps
 
 # For translation
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, get_language
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -292,6 +292,7 @@ PARLER_LANGUAGES = {
         "hide_untranslated": False,
     },
 }
+
 
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

@@ -5,6 +5,7 @@ from functools import wraps
 from django.forms import Form
 from django.http.request import HttpRequest, QueryDict
 from django.http.response import HttpResponse
+from django_htmx.http import HttpResponseClientRedirect
 from django_htmx.middleware import HtmxDetails
 
 from render_block import render_block_to_string
@@ -135,6 +136,8 @@ def for_htmx(
         @wraps(view)
         def _view(request, *args, **kwargs):
             resp = view(request, *args, **kwargs)
+            if isinstance(resp, HttpResponseClientRedirect):
+                return resp
             if is_htmx(request):
                 if (
                     if_hx_target is None

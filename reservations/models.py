@@ -136,8 +136,8 @@ class Stay(BaseModel):
         choices=STAY_TYPE_CHOICES,
         default=STAY_TYPE_CHOICES.hourly,
     )
-    start_datetime = models.DateTimeField(default=timezone.now)
-    end_datetime = models.DateTimeField(default=timezone.now)
+    start_datetime = models.DateTimeField(default=timezone.now, verbose_name=_("Start"))
+    end_datetime = models.DateTimeField(default=timezone.now, verbose_name=_("End"))
     status_changed = MonitorField(monitor="status")
     type_changed = MonitorField(monitor="stay_type")
     price = models.DecimalField(max_digits=19, decimal_places=4, default=10000.00)

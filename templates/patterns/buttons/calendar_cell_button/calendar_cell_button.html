@@ -1,0 +1,13 @@
+{% var date=date %}
+{% var url=url %}
+<form action="." method="post"
+      hx-post="."
+      hx-swap="outerHTML"
+      hx-target="#reservation-form-wrapper"
+      hx-vals='{"use_block": "reservation-form"}'>
+  {{ children }}
+  <button {% attrs name value %}
+          class="mx-auto flex relative z-10 h-8 w-8 items-center justify-center tabular-nums {{ class }}">
+    <time datetime="{{ date|date:"Y-m-d" }}">{{ date.day }}</time>
+  </button>
+</form>

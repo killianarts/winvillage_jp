@@ -1,0 +1,131 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load l10n widget_tweaks %}
+{% block title %}
+  {% trans "Calendar" %}
+{% endblock %}
+{% block content %}
+  <div class="max-w-sm mt-10 mx-auto p-10 border border-stone-200 shadow-sm">
+    {% block calendar %}
+      <div id="calendar" class="mx-auto">
+        <div id="calendar-switcher" class="flex items-center">
+          <h2 class="flex-auto text-sm font-semibold text-stone-900">{{ month_name }}</h2>
+          <form action="." method="get" class="flex"
+                hx-get="."
+                hx-target="#calendar"
+                hx-swap="outerHTML"
+                hx-vals='{"use_block": "calendar"}'>
+            {{ form }}
+            {% if thedate > today %}
+              {# No reservations in the past. #}
+              {# First Load: date == today. Users can only increment date. #}
+              {# If date incremented: date > today #}
+              <button name="get_previous_month" type="submit"
+                      class="flex flex-none items-center justify-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
+                <span class="sr-only">Previous month</span>
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                        clip-rule="evenodd"/>
+                </svg>
+              </button>
+            {% endif %}
+            <button name="get_next_month" type="submit"
+                    class="ml-2 flex flex-none items-center justify-center text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
+              <span class="sr-only">Next month</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+        <div id="calendar-header" class="mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
+          {% for day in weekdays %}
+            <div>{{ day }}</div>
+          {% endfor %}
+        </div>
+        <div id="calendar-body" class="mt-2 grid grid-cols-7 text-sm">
+          <!--
+            Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+            Is selected, include: "text-white"
+            Is not selected and is today, include: "text-orange-600"
+            Is not selected and is not today and is current month, include: "text-stone-900"
+            Is not selected and is not today and is not current month, include: "text-stone-400"
+            Is selected and is today, include: "bg-orange-600"
+            Is selected and is not today, include: "bg-stone-900"
+            Is not selected, include: "hover:bg-stone-200"
+            Is selected or is today, include: "font-semibold"
+          -->
+          {% for date, form, is_available in dates %}
+            {% if date < today %}
+              {# Don't show dates in the past. #}
+              <div class="p-2">
+                <span class="mx-auto flex h-8 w-8 items-center justify-center rounded-full tabular-nums text-stone-200 pointer-events-none">
+                  <time datetime="{{ date }}">{{ date.day }}</time>
+                </span>
+              </div>
+            {% elif date.month != month %}
+              <div class="p-2">
+                {% #calendar_cell_button date=date name="set_range" type="submit" class="text-stone-400 hover:bg-stone-100" %}
+                {{ form }}
+                {% /calendar_cell_button %}
+              </div>
+            {% elif not is_available %}
+              <div class="p-2">
+                <span class="mx-auto flex h-8 w-8 items-center justify-center rounded-full tabular-nums text-red-200 pointer-events-none">
+                  X
+                </span>
+              </div>
+            {% elif date == today %}
+              <div class="p-2">
+                {% #calendar_cell_button date=date name="set_range" type="submit" class="text-blue-500 hover:bg-blue-200" %}
+                {{ form }}
+                {% /calendar_cell_button %}
+              </div>
+            {% elif date_a and date_a == date %}
+              <div class="p-2">
+                {% #calendar_cell_button date=date name="set_range" type="submit" class="text-stone-900 bg-orange-400" %}
+                {{ form }}
+                {% /calendar_cell_button %}
+              </div>
+            {% elif date_b and date_b == date %}
+              <div class="p-2">
+                {% #calendar_cell_button date=date name="set_range" type="submit" class="text-stone-900 bg-orange-400" %}
+                {{ form }}
+                {% /calendar_cell_button %}
+              </div>
+            {% elif date_a and date_b %}
+              {% if date > date_a and date < date_b %}
+                <div class="p-2">
+                  {% #calendar_cell_button date=date name="set_range" type="submit" class="text-stone-900 bg-blue-400" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                </div>
+              {% else %}
+                <div class="p-2">
+                  {% #calendar_cell_button date=date name="set_range" type="submit" class="text-stone-900 hover:bg-stone-400" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                </div>
+              {% endif %}
+            {% else %}
+              <div class="p-2">
+                {% #calendar_cell_button date=date name="set_range" type="submit" class="text-stone-900 hover:bg-stone-400" %}
+                {{ form }}
+                {% /calendar_cell_button %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      </div>
+    {% endblock %}
+  {% block buttons %}
+    <form action="." method="get" class="mx-auto w-fit"
+          hx-get="." hx-swap="outerHTML" hx-target="#calendar" hx-vals='{"use_block": "calendar"}'>
+      <button name="delete_session" type="submit">Delete Session</button>
+    </form>
+  {% endblock %}
+{% endblock %}

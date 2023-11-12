@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 dir="base/static/base/js"
 hyperscript="https://unpkg.com/hyperscript.org"
 htmx="https://unpkg.com/htmx.org"

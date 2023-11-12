@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+{% load i18n static %}
+
+{% block title %}
+  {% translate 'Choose Options' %}
+{% endblock %}
+{% block subtitle %}
+  {% translate 'Winvillage' %}
+{% endblock %}
+
+{% block content_main %}
+  <div class="flex flex-col sm:flex-row">
+    <nav class="sm:min-h-screen flex justify-center items-center bg-orange-800 sm:w-72">
+      <div class="flex justify-between min-w-full items-center p-5 sm:block sm:px-0">
+        <div>
+          <a href="{% url 'core:index' %}">
+            <img src="{% static 'core/img/logo.svg' %}" class="mx-auto max-h-16 sm:max-h-52" alt="">
+          </a>
+        </div>
+        <div>
+          <a href="{% url 'core:index' %}">
+            <button type="submit"
+                    class="mx-auto flex items-center px-6 py-2 text-orange-50 font-black gap-2 bg-orange-900 cursor-pointer
+                         transition-all duration-250 hover:bg-orange-950">
+              {% translate 'Go Back Home' %}
+            </button>
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div class="mx-auto sm:grid sm:place-items-center">
+      {% block reservation-form %}
+        <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5">
+          {% block option-selection %}
+            <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+              {% translate 'Choose Options' %}</h2>
+            {% for grill, form in grills %}
+              <form hx-post="{% url 'reservations:option_select' %}"
+                    hx-target="#reservation-form-wrapper"
+                    hx-vals='{"use_block": "option-selection"}'
+                    action="." method="post" novalidate
+                    class="space-y-5">
+                {{ form }}
+                <fieldset>
+                  <legend class="sr-only">{% translate 'Option Types' %}</legend>
+                  <div class="grid grid-cols-1 space-y-2">
+                    <div class="bg-white shadow sm:rounded-lg">
+                      <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-base font-semibold leading-6 text-stone-900">{{ grill.name }}</h3>
+                        <div class="mt-2 max-w-xl text-sm text-orange-500">
+                          <p>{% trans "Price:" %} ￥{{ grill.price_rounded }}</p>
+                        </div>
+                        <div class="mt-2 max-w-xl text-sm text-stone-500">
+                          <p>{{ grill.description }}</p>
+                        </div>
+                        <div class="mt-5">
+                          {% if grill.id in selected_grill_ids %}
+                            <button name="toggle_option"
+                                    type="submit"
+                                    class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
+                              {% trans "Remove" %}
+                            </button>
+                          {% else %}
+                            <button name="toggle_option"
+                                    type="submit"
+                                    class="inline-flex items-center rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500">
+                              {% trans "Add" %}
+                            </button>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            {% endfor %}
+            {% #button name="confirm-date" type="submit" %}{% blocktrans %}Next{% endblocktrans %}{% /button %}
+          {% endblock %}
+        </div>
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}
+
+
+
+

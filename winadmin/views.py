@@ -302,6 +302,7 @@ def _transaction_create(request: HtmxHttpRequest) -> HttpResponse:
     )
 
 
+@for_htmx(use_block_from_params=True)
 @login_required(login_url="winadmin:login_page")
 def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     transactions = Transaction.objects.all()
