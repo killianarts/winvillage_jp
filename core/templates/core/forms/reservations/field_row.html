@@ -26,16 +26,15 @@
               {{ field }}
             </div>
           {% else %}
-            {#            This is the field you want to edit #}
-            {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}
-              {% url 'reservations:contact_information_input' as hx_post %}
-              {% with hx_vals_value='{"use_block": "contact-information-input"}' %}
-                {% render_field field hx-post=hx_post hx-trigger="change" hx-swap="innerHTML" hx-target="#reservation-form-wrapper" hx-val=hx_vals_value %}
-              {% endwith %}
-              {#              {{ field|attr:'hx-val={"use_block": "contact-information-input"}' }}#}
-            {% else %}
-              {% render_field field error_class=error_class %}
-            {% endif %}
+            {#            This is the field you want to edit#}
+            {#            {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}#}
+            {#              {% url 'reservations:contact_information_input' as hx_post %}#}
+            {#              {% with hx_vals_value='{"use_block": "contact-information-input"}' %}#}
+            {#                {% render_field field hx-post=hx_post hx-trigger="change" hx-swap="innerHTML" hx-target="#reservation-form-wrapper" hx-val=hx_vals_value %}#}
+            {#              {% endwith %}#}
+            {#            {% else %}#}
+            {% render_field field error_class=error_class %}
+            {#            {% endif %}#}
           {% endif %}
         </div>
         {% if field.help_text %}

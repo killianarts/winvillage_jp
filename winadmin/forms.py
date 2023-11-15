@@ -118,10 +118,10 @@ class StayForm(TailwindFormMixin, forms.ModelForm):
         model = Stay
         fields = [
             "stay_type",
-            "start_datetime",
-            "end_datetime",
+            "start_date",
+            "end_date",
         ]
-        widgets = {"start_datetime": DateInput(), "end_datetime": DateInput()}
+        widgets = {"start_date": DateInput(), "end_date": DateInput()}
 
     do_htmx_validation = True
 

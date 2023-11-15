@@ -30,7 +30,7 @@ def index(request):
 
 
 @for_htmx(use_block_from_params=True)
-def index(request: HtmxHttpRequest) -> HttpResponse:
+def index_with_normal_session(request: HtmxHttpRequest) -> HttpResponse:
     tz = ZoneInfo(TIME_ZONE)
     today_date = datetime.now(tz=tz).date()
     form = DateForm(initial={"date": today_date})
@@ -94,13 +94,61 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, "reservations/index.html", context)
 
 
+@for_htmx(use_block_from_params=True)
+def index(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    tz = ZoneInfo(TIME_ZONE)
+    today_date = datetime.now(tz=tz).date()
+    form = DateForm(initial={"date": today_date})
+    calendars = generate_calendars(today_date)
+    if reservation.stay.start_date:
+        start_date = reservation.stay.start_date
+    else:
+        start_date = None
+    if reservation.stay.end_date:
+        end_date = reservation.stay.end_date
+    else:
+        end_date = None
+    if request.method == "GET":
+        if "get_previous_month" in request.GET:
+            form = DateForm(request.GET)
+            if form.is_valid():
+                date = form.cleaned_data["date"]
+                date = get_previous_month(date)
+                form = DateForm(initial={"date": date})
+                calendars = generate_calendars(date)
+        elif "get_next_month" in request.GET:
+            form = DateForm(request.GET)
+            if form.is_valid():
+                date = form.cleaned_data["date"]
+                date = get_next_month(date)
+                form = DateForm(initial={"date": date})
+                calendars = generate_calendars(date)
+    if request.method == "POST":
+        if "select_date" in request.POST:
+            calendar_cell_form = DateForm(request.POST)
+            if calendar_cell_form.is_valid():
+                selected_date = calendar_cell_form.cleaned_data["date"]
+                start_date, end_date = reservation.set_dates(selected_date)
+    price = reservation.stay_price
+    context = {
+        "calendars": calendars,
+        "today_date": today_date,
+        "form": form,
+        "start_date": start_date,
+        "end_date": end_date,
+        "price": price,
+    }
+    return TemplateResponse(request, "reservations/index.html", context)
+
+
 def time_select(request: HtmxHttpRequest) -> HttpResponse:
     pass
     # return TemplateResponse(request, template_path, context)
 
 
 @for_htmx(use_block_from_params=True)
-def option_select(request: HtmxHttpRequest) -> HttpResponse:
+def option_select_with_normal_session(request: HtmxHttpRequest) -> HttpResponse:
     previous_url = request.META.get("HTTP_REFERER")
     all_grills = (
         Item.objects.filter(category__name="grill")
@@ -132,9 +180,28 @@ def option_select(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, "reservations/index.html", context)
 
 
+@for_htmx(use_block_from_params=True)
+def option_select(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    if request.method == "POST":
+        form = forms.GrillOptionForm(request.POST)
+        if form.is_valid():
+            grill_id = form.cleaned_data["grill_id"]
+            if "add_grill" in request.POST:
+                reservation.add_order_item(grill_id)
+            if "remove_grill" in request.POST:
+                reservation.remove_order_item(grill_id)
+    grills = reservation.get_grills()
+    context = {
+        "grills": grills,
+    }
+    return TemplateResponse(request, "reservations/index.html", context)
+
+
 @htmx_form_validate(form_class=forms.ContactInfoForm)
 @for_htmx(use_block_from_params=True)
 def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
     initial = {
         "first_name": request.session.get("first_name", ""),
         "last_name": request.session.get("last_name", ""),
@@ -143,17 +210,39 @@ def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
     }
     form = forms.ContactInfoForm(initial=initial)
 
-    contact_info = False
+    contact_info = request.session.get("contact_info_is_valid", False)
     if request.method == "POST":
         form = forms.ContactInfoForm(request.POST)
-        form.is_valid()
-        request.session["first_name"] = form.cleaned_data["first_name"]
-        request.session["last_name"] = form.cleaned_data["last_name"]
-        request.session["email"] = form.cleaned_data["email"]
-        request.session["phone"] = form.cleaned_data["phone"].as_national
         if form.is_valid():
-            contact_info = True
+            request.session["first_name"] = form.cleaned_data["first_name"]
+            request.session["last_name"] = form.cleaned_data["last_name"]
+            request.session["email"] = form.cleaned_data["email"]
+            request.session["phone"] = form.cleaned_data["phone"].as_national
+            reservation.first_name = form.cleaned_data["first_name"]
+            reservation.last_name = form.cleaned_data["last_name"]
+            reservation.email = form.cleaned_data["email"]
+            reservation.phone = form.cleaned_data["phone"]
+            reservation.save()
+            contact_info = request.session["contact_info_is_valid"] = True
+        else:
+            request.session["first_name"] = request.POST.get("first_name", "")
+            request.session["last_name"] = request.POST.get("last_name", "")
+            request.session["email"] = request.POST.get("email", "")
+            request.session["phone"] = request.POST.get("phone", "")
+            contact_info = request.session["contact_info_is_valid"] = False
     context = {"form": form, "contact_info": contact_info}
+    return TemplateResponse(request, "reservations/index.html", context)
+
+
+@for_htmx(use_block_from_params=True)
+def reservation_confirm(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    if request.method == "POST":
+        if "submit" in request.POST:
+            reservation.confirm()
+    context = {
+        "reservation": reservation,
+    }
     return TemplateResponse(request, "reservations/index.html", context)
 
 
@@ -170,7 +259,7 @@ def send_confirmation_email(request):
         f"{reservation.contact_info.first_name} {reservation.contact_info.last_name}"
     )
     sender_email = f"{reservation.contact_info.email}"
-    message = f"Reservation Details are here! {reservation.stay.start_datetime.strftime('%Y-%M-%d')}"
+    message = f"Reservation Details are here! {reservation.stay.start_date.strftime('%Y-%M-%d')}"
     formatted_subject = format_subject(sender_name, sender_email)
     formatted_message = format_message(sender_name, sender_email, message)
     send_mail(
@@ -180,75 +269,6 @@ def send_confirmation_email(request):
         [sender_email],
     )
     return HttpResponse("Sent")
-
-
-# def step_4(request: HtmxHttpRequest) -> HttpResponse:
-#     return _step_4(request)
-#
-#
-# def _step_4(request: HtmxHttpRequest) -> HttpResponse:
-#     reservation = get_or_set_reservation_session(request)
-#     initial = {}
-#     if reservation.contact_info:
-#         initial = {
-#             "first_name": reservation.contact_info.first_name,
-#             "last_name": reservation.contact_info.last_name,
-#             "email": reservation.contact_info.email,
-#             "phone": reservation.contact_info.phone,
-#         }
-#     form = forms.Step4Form(initial=initial)
-#     if request.method == "POST":
-#         form = forms.Step4Form(request.POST)
-#         if form.is_valid():
-#             first_name = form.cleaned_data["first_name"]
-#             last_name = form.cleaned_data["last_name"]
-#             email = form.cleaned_data["email"]
-#             phone = form.cleaned_data["phone"]
-#             contact_info, created = ContactInfo.objects.get_or_create(
-#                 first_name=first_name, last_name=last_name, email=email, phone=phone
-#             )
-#             contact_info.save()
-#             reservation.contact_info = contact_info
-#             reservation.save()
-#             return confirm_reservation(make_get_request(request))
-#
-#     context = {
-#         "form": form,
-#     }
-#     html = render_block_to_string(
-#         "reservations/reservation_form.html", "step_4_form", context
-#     )
-#     return HttpResponse(html)
-#
-#
-# def confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
-#     return _confirm_reservation(request)
-#
-#
-# def _confirm_reservation(request: HtmxHttpRequest) -> HttpResponse:
-#     if request.method == "POST":
-#         return payment_page(make_get_request(request))
-#     reservation = get_or_set_reservation_session(request)
-#     stay_form = forms.Step2Form(instance=reservation.stay)
-#     order_items = [item for item in reservation.order_items.all()]
-#     contact_info = reservation.contact_info
-#     contact_info_initial = {
-#         "first_name": contact_info.first_name,
-#         "last_name": contact_info.last_name,
-#         "email": contact_info.email,
-#     }
-#     contact_info_form = forms.Step4Form(initial=contact_info_initial)
-#
-#     context = {
-#         "stay_form": stay_form,
-#         "order_items": order_items,
-#         "contact_info_form": contact_info_form,
-#         "reservation": reservation,
-#     }
-#     html = render_block_to_string(
-#         "reservations/reservation_form.html", "confirmation_form", context
-#     )
-#     return HttpResponse(html)
 
 
 # def payment_page(request):

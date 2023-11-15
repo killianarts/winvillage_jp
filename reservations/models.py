@@ -9,9 +9,11 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
+from phonenumber_field.modelfields import PhoneNumberField
 
 from core.models import Item, ContactInfo, BaseModel
 from customer.models import Customer
+from reservations.forms import GrillOptionForm
 
 auth_user = get_user_model()
 
@@ -136,21 +138,24 @@ class Stay(BaseModel):
         choices=STAY_TYPE_CHOICES,
         default=STAY_TYPE_CHOICES.hourly,
     )
-    start_datetime = models.DateTimeField(default=timezone.now, verbose_name=_("Start"))
-    end_datetime = models.DateTimeField(default=timezone.now, verbose_name=_("End"))
+    start_date = models.DateField(verbose_name=_("Start"), null=True)
+    end_date = models.DateField(verbose_name=_("End"), null=True)
     status_changed = MonitorField(monitor="status")
     type_changed = MonitorField(monitor="stay_type")
     price = models.DecimalField(max_digits=19, decimal_places=4, default=10000.00)
 
     def get_stay_range(self):
         return (
-            self.start_datetime.strftime("%Y-%m-%d %H:%S"),
-            self.end_datetime.strftime("%Y-%m-%d %H:%S"),
+            self.start_date,
+            self.end_date,
         )
 
     @property
     def price_fully_rounded(self):
-        return round(self.price * self.days, 0)
+        if self.days:
+            return round(self.price * self.days, 0)
+        else:
+            return 0
 
     @property
     def price_per_day(self):
@@ -158,8 +163,11 @@ class Stay(BaseModel):
 
     @property
     def days(self):
-        delta = self.end_datetime - self.start_datetime
-        return delta.days
+        if self.start_date and self.end_date:
+            delta = self.end_date - self.start_date
+            return delta.days
+        else:
+            return None
 
     @property
     def total_price(self):
@@ -185,28 +193,61 @@ class Stay(BaseModel):
             raise ValueError(f"{_('Invalid status choice')}: {status_choice}")
 
 
-class Reservation(models.Model):
+class Reservation(BaseModel):
     class Meta:
         verbose_name = _("Reservation")
         verbose_name_plural = _("Reservations")
 
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
     stay = models.ForeignKey(Stay, on_delete=models.CASCADE, null=True, blank=True)
-    contact_info = models.ForeignKey(
-        ContactInfo, on_delete=models.CASCADE, null=True, blank=True
+    first_name = models.CharField(
+        max_length=50, verbose_name=_("First name"), null=True
     )
+    last_name = models.CharField(max_length=50, null=True)
+    email = models.EmailField(max_length=254, null=True)
+    phone = PhoneNumberField(max_length=254, null=True)
     order_items = models.ManyToManyField(OrderItem)
-    updated_datetime = models.DateTimeField(auto_now=True)
 
-    def add_order_item(self, item_pk):
-        item = Item.objects.get(pk=item_pk)
+    def add_order_item(self, item_id):
+        item = Item.objects.get(id=item_id)
         order_item = OrderItem.objects.create(item=item)
         self.order_items.add(order_item)
 
-    def remove_order_item(self, item_pk):
-        item = Item.objects.get(pk=item_pk)
-        order_item = OrderItem.objects.get(item=item)
+    def remove_order_item(self, item_id):
+        order_item = self.order_items.get(item_id=item_id)
         self.order_items.remove(order_item)
+        order_item.delete()
+
+    def get_grills(self):
+        all_grills = (
+            Item.objects.filter(category__name="grill")
+            .filter(reservation_option=True)
+            .order_by("pk")
+        )
+        reserved_grills_ids = self.order_items.filter(
+            item__category__name="grill", item__reservation_option=True
+        ).values_list("item_id", flat=True)
+        grills = []
+        for grill in all_grills:
+            is_reserved = False
+            if grill.id in reserved_grills_ids:
+                is_reserved = True
+            form = GrillOptionForm(initial={"grill_id": grill.id})
+            grills.append([grill, form, is_reserved])
+        return grills
+
+    def set_dates(self, selected_date: datetime):
+        if not self.stay.start_date or selected_date < self.stay.start_date:
+            self.stay.start_date = selected_date
+            if self.stay.end_date:
+                self.stay.end_date = None
+        elif self.stay.start_date and not self.stay.end_date:
+            self.stay.end_date = selected_date
+        elif self.stay.start_date and self.stay.end_date:
+            self.stay.start_date = selected_date
+            self.stay.end_date = None
+        self.stay.save()
+        return self.stay.start_date, self.stay.end_date
 
     @property
     def price(self):
@@ -221,8 +262,11 @@ class Reservation(models.Model):
         total = 0
         for order_item in self.order_items.all():
             total += order_item.item.price_rounded
-        total += self.stay.price_fully_rounded
-        return total
+        if self.stay.price:
+            total += self.stay.price_fully_rounded
+            return total
+        else:
+            return None
 
     @property
     def price_fully_rounded(self):
@@ -232,14 +276,29 @@ class Reservation(models.Model):
         total += self.stay.price_fully_rounded
         return round(total, 0)
 
+    @property
+    def stay_price(self):
+        return self.stay.total_price
+
+    @property
+    def start(self):
+        return self.stay.start_date
+
+    @property
+    def end(self):
+        return self.stay.end_date
+
     def set_status(self, status_choice: str):
         return self.stay.set_status(status_choice)
+
+    def confirm(self):
+        self.set_status("reserved")
 
     def __str__(self):
         return f"Reservation id: {self.id}, User: {self.user}"
 
     def get_absolute_url(self, pk):
-        return reverse("winadmin:edit_reservation", kwargs={"pk": self.pk})
+        return reverse("winadmin:reservation_detail", kwargs={"pk": self.pk})
 
 
 class ReservationToken(models.Model):

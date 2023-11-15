@@ -13,6 +13,11 @@ urlpatterns = [
         name="contact_information_input",
     ),
     path(
+        "reservation-confirm/",
+        views.reservation_confirm,
+        name="reservation_confirm",
+    ),
+    path(
         "send-confirmation-email/",
         views.send_confirmation_email,
         name="send_confirmation_email",

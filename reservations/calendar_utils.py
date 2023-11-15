@@ -63,7 +63,7 @@ class Period:
         )
 
         reservations_count = Reservation.objects.filter(
-            stay__start_datetime=datetime_with_tz
+            stay__start_date=datetime_with_tz
         ).count()
         return reservations_count < 4
 
@@ -120,7 +120,7 @@ def check_availability(date_):
     datetime_with_tz = timezone.make_aware(datetime.combine(date_, time.min), tzinfo)
 
     reservations_count = Reservation.objects.filter(
-        stay__start_datetime=datetime_with_tz
+        stay__start_date=datetime_with_tz
     ).count()
     return reservations_count < 4
 

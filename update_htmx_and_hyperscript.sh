@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-dir="base/static/base/js"
+dir="core/static/core/js"
 hyperscript="https://unpkg.com/hyperscript.org"
 htmx="https://unpkg.com/htmx.org"
 

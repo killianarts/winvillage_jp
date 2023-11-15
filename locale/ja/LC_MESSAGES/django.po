@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-09 09:05+0000\n"
+"POT-Creation-Date: 2023-11-15 02:28+0000\n"
 "PO-Revision-Date: 2023-11-08 03:59+0000\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr "連絡情報"
 msgid "Contact Infos"
 msgstr "連絡情報"
 
-#: core/models.py:27
+#: core/models.py:27 reservations/models.py:204
 msgid "First name"
 msgstr "名前"
 
@@ -59,7 +59,8 @@ msgstr "アイテム"
 msgid "Name"
 msgstr "名前"
 
-#: core/models.py:54 winadmin/templates/winadmin/inventory/item_list.html:18
+#: core/models.py:54 reservations/templates/reservations/index.html:194
+#: winadmin/templates/winadmin/inventory/item_list.html:18
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:39
 msgid "Price"
 msgstr "値段"
@@ -138,7 +139,8 @@ msgstr "引取デートタイム"
 msgid "Quantity"
 msgstr "数量"
 
-#: core/models.py:136 reservations/templates/reservations/payment_page.html:393
+#: core/models.py:136 reservations/templates/reservations/index.html:403
+#: reservations/templates/reservations/payment_page.html:393
 #: reservations/templates/reservations/reservation_form.html:208
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:503
 #: winadmin/templates/winadmin/reservations/reservation_create.html:135
@@ -152,12 +154,13 @@ msgid "Glamping in Imari"
 msgstr ""
 
 #: core/templates/core/base.html:11
-#: reservations/templates/reservations/index.html:8
+#: reservations/templates/reservations/index.html:10
 #: reservations/templates/reservations/index_old.html:8
 #: reservations/templates/reservations/option_selection.html:8
 msgid "Winvillage"
 msgstr ""
 
+#: core/templates/core/forms/reservations/field_row.html:49
 #: core/templates/core/forms/tailwind/field_row.html:42
 #: customer/templates/ticket/forms/tailwind/field_row.html:37
 msgid "No errors"
@@ -195,7 +198,7 @@ msgstr ""
 #: core/templates/core/index.html:54 core/templates/core/index.html:102
 #: core/templates/core/index.html:133 core/templates/core/index.html:222
 #: core/templates/core/index.html:255
-#: reservations/templates/reservations/index.html:5
+#: reservations/templates/reservations/index.html:7
 #: winadmin/templates/winadmin/index.html:89
 #: winadmin/templates/winadmin/index.html:173
 msgid "Make a Reservation"
@@ -222,23 +225,23 @@ msgstr "会社概要"
 
 #: customer/forms.py:10 customer/forms.py:19 customer/forms.py:28
 #: customer/forms.py:51 customer/forms.py:61 customer/forms.py:71
-#: customer/templates/customer/customer_list.html:34 reservations/forms.py:108
-#: winadmin/forms.py:106 winadmin/forms.py:147
+#: customer/templates/customer/customer_list.html:34 reservations/forms.py:71
+#: reservations/forms.py:85 winadmin/forms.py:106 winadmin/forms.py:147
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:37
 msgid "First Name"
 msgstr "名前"
 
 #: customer/forms.py:11 customer/forms.py:20 customer/forms.py:29
 #: customer/forms.py:52 customer/forms.py:62 customer/forms.py:72
-#: customer/templates/customer/customer_list.html:32 reservations/forms.py:109
-#: winadmin/forms.py:107 winadmin/forms.py:148
+#: customer/templates/customer/customer_list.html:32 winadmin/forms.py:107
+#: winadmin/forms.py:148
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:36
 msgid "Last Name"
 msgstr "姓"
 
 #: customer/forms.py:12 customer/forms.py:21 customer/forms.py:30
 #: customer/forms.py:53 customer/forms.py:63 customer/forms.py:73
-#: customer/templates/customer/customer_list.html:35 reservations/forms.py:110
+#: customer/templates/customer/customer_list.html:35 reservations/forms.py:98
 #: winadmin/forms.py:108 winadmin/forms.py:149
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:38
 msgid "Email"
@@ -371,111 +374,87 @@ msgstr "メモはチケットに追加しました。"
 msgid "Note added and ticket closed"
 msgstr "メモはチケットに追加し、チケットは閉じました"
 
-#: reservations/forms.py:18 reservations/models.py:132 winadmin/forms.py:105
-#: winadmin/forms.py:138
-msgid "Hourly"
-msgstr "時間制"
-
-#: reservations/forms.py:19 reservations/models.py:132 winadmin/forms.py:105
-#: winadmin/forms.py:138
-msgid "Overnight"
-msgstr "泊まる"
-
-#: reservations/forms.py:62
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:29
-msgid "Date"
-msgstr "日付"
-
-#: reservations/forms.py:64
-#, fuzzy
-#| msgid "Start Date"
-msgid "Start Time"
-msgstr "開始日"
-
-#: reservations/forms.py:67
-#, fuzzy
-#| msgid "End Date"
-msgid "End Time"
-msgstr "終了日"
-
-#: reservations/forms.py:92
-msgid "End time must be after start time"
-msgstr ""
-
-#: reservations/models.py:21
+#: reservations/models.py:23
 msgid "Order Item"
 msgstr "注文のアイテム"
 
-#: reservations/models.py:22
+#: reservations/models.py:24
 msgid "Order Items"
 msgstr "注文のアイテム"
 
-#: reservations/models.py:34
+#: reservations/models.py:36
 msgid "Order"
 msgstr "注文"
 
-#: reservations/models.py:35
+#: reservations/models.py:37
 msgid "Orders"
 msgstr "注文"
 
-#: reservations/models.py:62
+#: reservations/models.py:64
 msgid "Address"
 msgstr "住所"
 
-#: reservations/models.py:63
+#: reservations/models.py:65
 msgid "Addresses"
 msgstr "住所"
 
-#: reservations/models.py:121
+#: reservations/models.py:123
 msgid "Stay"
 msgstr "滞在"
 
-#: reservations/models.py:122
+#: reservations/models.py:124
 msgid "Stays"
 msgstr "滞在"
 
-#: reservations/models.py:126 winadmin/forms.py:140
+#: reservations/models.py:128 winadmin/forms.py:140
 msgid "Not Reserved"
 msgstr "予約なし"
 
-#: reservations/models.py:127 winadmin/forms.py:141
+#: reservations/models.py:129 winadmin/forms.py:141
 msgid "Reserved"
 msgstr "予約あり"
 
-#: reservations/models.py:128 winadmin/forms.py:142
+#: reservations/models.py:130 winadmin/forms.py:142
 msgid "Checked In"
 msgstr "チェクインしている"
 
-#: reservations/models.py:129 winadmin/forms.py:143
+#: reservations/models.py:131 winadmin/forms.py:143
 msgid "Checked Out"
 msgstr "チェクアウトした"
 
-#: reservations/models.py:130 winadmin/forms.py:144
+#: reservations/models.py:132 winadmin/forms.py:144
 msgid "Cancelled"
 msgstr "キャンセルした"
 
-#: reservations/models.py:139 winadmin/forms.py:150
+#: reservations/models.py:134 winadmin/forms.py:105 winadmin/forms.py:138
+msgid "Hourly"
+msgstr "時間制"
+
+#: reservations/models.py:134 winadmin/forms.py:105 winadmin/forms.py:138
+msgid "Overnight"
+msgstr "泊まる"
+
+#: reservations/models.py:141 winadmin/forms.py:150
 msgid "Start"
 msgstr "開始日"
 
-#: reservations/models.py:140 winadmin/forms.py:151
+#: reservations/models.py:142 winadmin/forms.py:151
 msgid "End"
 msgstr "終了日"
 
-#: reservations/models.py:190
+#: reservations/models.py:198
 msgid "Reservation"
 msgstr "予約"
 
-#: reservations/models.py:191
+#: reservations/models.py:199
 msgid "Reservations"
 msgstr "予約"
 
-#: reservations/models.py:247
+#: reservations/models.py:303
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:248
+#: reservations/models.py:304
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -489,6 +468,7 @@ msgstr ""
 
 #: reservations/templates/reservations/_buttons.html:24
 #: reservations/templates/reservations/confirmation_step.html:48
+#: reservations/templates/reservations/index.html:426
 #: reservations/templates/reservations/reservation_form.html:145
 #: reservations/templates/reservations/reservation_form.html:231
 msgid "Back"
@@ -511,32 +491,34 @@ msgstr "予約を確認しますか？"
 msgid "Confirm"
 msgstr "確認する"
 
-#: reservations/templates/reservations/index.html:25
+#: reservations/templates/reservations/index.html:27
 #: reservations/templates/reservations/index_old.html:26
 #: reservations/templates/reservations/option_selection.html:25
 msgid "Go Back Home"
 msgstr "ホームに戻る"
 
-#: reservations/templates/reservations/index.html:35
+#: reservations/templates/reservations/index.html:37
 msgid "Choose the date"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:204
-#: reservations/templates/reservations/index.html:265
-#: reservations/templates/reservations/option_selection.html:77
-#: reservations/templates/reservations/reservation_form.html:15
-#: reservations/templates/reservations/reservation_form.html:36
-#: reservations/templates/reservations/reservation_form.html:91
-msgid "Next"
-msgstr "次へ"
-
-#: reservations/templates/reservations/index.html:213
-msgid ""
-"Delete\n"
-"                                                                             Session"
+#: reservations/templates/reservations/index.html:203
+msgid "Continue, Choose Time"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:224
+#: reservations/templates/reservations/index.html:213
+#, fuzzy
+#| msgid "Choose Options"
+msgid "Continue, Choose Options"
+msgstr "オプションを選んでください"
+
+#: reservations/templates/reservations/index.html:219
+#: reservations/templates/reservations/index.html:299
+#: reservations/templates/reservations/index.html:330
+#: reservations/templates/reservations/index.html:338
+msgid "Continue"
+msgstr ""
+
+#: reservations/templates/reservations/index.html:243
 #: reservations/templates/reservations/option_selection.html:5
 #: reservations/templates/reservations/option_selection.html:36
 #: reservations/templates/reservations/reservation_form.html:45
@@ -546,7 +528,7 @@ msgstr ""
 msgid "Choose Options"
 msgstr "オプションを選んでください"
 
-#: reservations/templates/reservations/index.html:233
+#: reservations/templates/reservations/index.html:252
 #: reservations/templates/reservations/option_selection.html:45
 #: reservations/templates/reservations/reservation_form.html:52
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:433
@@ -554,13 +536,13 @@ msgstr "オプションを選んでください"
 msgid "Option Types"
 msgstr "オプションのタイプ"
 
-#: reservations/templates/reservations/index.html:239
+#: reservations/templates/reservations/index.html:258
 #: reservations/templates/reservations/option_selection.html:51
 #: reservations/templates/reservations/reservation_form.html:59
 msgid "Price:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:249
+#: reservations/templates/reservations/index.html:268
 #: reservations/templates/reservations/option_selection.html:61
 #: reservations/templates/reservations/reservation_form.html:72
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:456
@@ -568,7 +550,7 @@ msgstr ""
 msgid "Remove"
 msgstr "消す"
 
-#: reservations/templates/reservations/index.html:255
+#: reservations/templates/reservations/index.html:274
 #: reservations/templates/reservations/option_selection.html:67
 #: reservations/templates/reservations/reservation_form.html:81
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:469
@@ -576,9 +558,70 @@ msgstr "消す"
 msgid "Add"
 msgstr "追加"
 
+#: reservations/templates/reservations/index.html:291
+#: reservations/templates/reservations/index.html:325
+#, fuzzy
+#| msgid "Go Back Home"
+msgid "Go Back"
+msgstr "ホームに戻る"
+
+#: reservations/templates/reservations/index.html:307
+#: reservations/templates/reservations/index.html:314
+#: reservations/templates/reservations/reservation_form.html:100
+#: reservations/templates/reservations/reservation_form.html:106
+msgid "Contact Information"
+msgstr "連絡情報"
+
+#: reservations/templates/reservations/index.html:349
+#: reservations/templates/reservations/reservation_form.html:155
+msgid "Confirm Details"
+msgstr "詳細を確認する"
+
+#: reservations/templates/reservations/index.html:390
+#: reservations/templates/reservations/reservation_form.html:195
+msgid ""
+"\n"
+"              Price Per Day\n"
+"            "
+msgstr ""
+"\n"
+"１日の値段"
+
+#: reservations/templates/reservations/index.html:397
+#: reservations/templates/reservations/reservation_form.html:202
+msgid ""
+"\n"
+"              Total Days\n"
+"            "
+msgstr ""
+"\n"
+"合計の日々"
+
+#: reservations/templates/reservations/index.html:411
+#: reservations/templates/reservations/reservation_form.html:216
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "            Next\n"
+#| "          "
+msgid ""
+"\n"
+"            Make Reservation\n"
+"          "
+msgstr ""
+"\n"
+"次へ"
+
 #: reservations/templates/reservations/index_old.html:11
 msgid "Create a Reservation"
 msgstr "予約を制作する"
+
+#: reservations/templates/reservations/option_selection.html:77
+#: reservations/templates/reservations/reservation_form.html:15
+#: reservations/templates/reservations/reservation_form.html:36
+#: reservations/templates/reservations/reservation_form.html:91
+msgid "Next"
+msgstr "次へ"
 
 #: reservations/templates/reservations/payment_page.html:364
 msgid "Payment details"
@@ -616,51 +659,10 @@ msgstr "予約のタイプ"
 msgid "Choose Date of Stay"
 msgstr "滞在の日付を選ぶ"
 
-#: reservations/templates/reservations/reservation_form.html:100
-#: reservations/templates/reservations/reservation_form.html:106
-msgid "Contact Information"
-msgstr "連絡情報"
-
 #: reservations/templates/reservations/reservation_form.html:130
 msgid ""
 "\n"
 "            Next\n"
-"          "
-msgstr ""
-"\n"
-"次へ"
-
-#: reservations/templates/reservations/reservation_form.html:155
-msgid "Confirm Details"
-msgstr "詳細を確認する"
-
-#: reservations/templates/reservations/reservation_form.html:195
-msgid ""
-"\n"
-"              Price Per Day\n"
-"            "
-msgstr ""
-"\n"
-"１日の値段"
-
-#: reservations/templates/reservations/reservation_form.html:202
-msgid ""
-"\n"
-"              Total Days\n"
-"            "
-msgstr ""
-"\n"
-"合計の日々"
-
-#: reservations/templates/reservations/reservation_form.html:216
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "            Next\n"
-#| "          "
-msgid ""
-"\n"
-"            Make Reservation\n"
 "          "
 msgstr ""
 "\n"
@@ -1013,6 +1015,11 @@ msgstr "売上のリストビュー"
 msgid "Sales Chart"
 msgstr "売上帳"
 
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:29
+msgid "Date"
+msgstr "日付"
+
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:33
 msgid "Transaction Name"
 msgstr "引取名"
@@ -1111,6 +1118,16 @@ msgstr "英語"
 msgid "Japanese"
 msgstr "日本語"
 
+#, fuzzy
+#~| msgid "Start Date"
+#~ msgid "Start Time"
+#~ msgstr "開始日"
+
+#, fuzzy
+#~| msgid "End Date"
+#~ msgid "End Time"
+#~ msgstr "終了日"
+
 #~ msgid "Purchase Management"
 #~ msgstr "仕入管理"
 
@@ -1179,3 +1196,7 @@ msgstr "日本語"
 
 #~ msgid "Amount Received"
 #~ msgstr "受入金額"
+
+#: reservations/templates/reservations/index.html:353
+msgid "Start Date:"
+msgstr ""
