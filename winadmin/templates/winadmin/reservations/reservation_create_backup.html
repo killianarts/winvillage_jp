@@ -1,0 +1,161 @@
+{% extends 'winadmin/index.html' %}
+{% load widget_tweaks widget_checks static i18n %}
+{% block extra_scripts %}
+  <script src="{% static 'core/js/idiomorph-ext.js' %}"></script>
+  <script type='text/javascript' src='https://sandbox.web.squarecdn.com/v1/square.js'></script>
+{% endblock %}
+{% block subtitle %}
+  {% translate 'Create Reservation' %}
+{% endblock %}
+{% block content %}
+  <div id="reservation-create-form-wrapper">
+    <h1 class="text-3xl">{% translate 'Create Reservation' %}</h1>
+    <form id="create-reservation-form"
+          class="max-w-xl space-y-5"
+          action=""
+          method="post"
+          hx-post="."
+          hx-swap="outerHTML"
+          hx-trigger="keydown[metaKey&&shiftKey&&key=='s'] from:body"
+          hx-target="#create-reservation-form"
+          hx-vals='{"use_block": "content"}'>
+      {{ form }}
+      <div hx-get="." hx-vals='{"use_block": "options"}' hx-swap="outerHTML" hx-target="this" hx-trigger="load"></div>
+      {% #button name="submit" type="submit" %}
+      {% translate 'Choose Options' %}
+      {% /button %}
+    </form>
+  </div>
+{% endblock %}
+
+{% block options %}
+  <div id="options-wrapper">
+    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+      {% translate 'Choose Options' %}</h2>
+    <fieldset>
+      <legend class="sr-only">{% translate 'Option Types' %}</legend>
+      <div class="grid grid-cols-1 space-y-2">
+        {% for grill, form, is_reserved in grills %}
+          <form hx-post="{% url 'reservations:option_select' %}"
+                hx-target="#reservation-form-wrapper"
+                hx-vals='{"use_block": "option-select"}'
+                action="{% url 'reservations:option_select' %}" method="post" novalidate
+                class="space-y-5">
+            {{ form }}
+            <fieldset>
+              <legend class="sr-only">{% translate 'Option Types' %}</legend>
+              <div class="grid grid-cols-1 space-y-2">
+                <div class="bg-white shadow sm:rounded-lg">
+                  <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-base font-semibold leading-6 text-stone-900">{{ grill.name }}</h3>
+                    <div class="mt-2 max-w-xl text-sm text-orange-500">
+                      <p>{% trans "Price:" %} ￥{{ grill.price_fully_rounded }}</p>
+                    </div>
+                    <div class="mt-2 max-w-xl text-sm text-stone-500">
+                      <p>{{ grill.description }}</p>
+                    </div>
+                    <div class="mt-5">
+                      {% if is_reserved %}
+                        <button name="remove_grill"
+                                type="submit"
+                                class="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
+                          {% trans "Remove" %}
+                        </button>
+                      {% else %}
+                        <button name="add_grill"
+                                type="submit"
+                                class="inline-flex items-center rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500">
+                          {% trans "Add" %}
+                        </button>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </div>
+{% endblock %}
+
+{% block payment-form %}
+  <div id="payment-wrapper"
+       hx-get="{% url 'winadmin:update_price' %}"
+       hx-trigger="updatePrice from:body"
+       hx-swap="outerHTML"
+       hx-target="#payment-wrapper"
+       hx-vals='{"use_block": "payment-form"}'>
+    <div class="grid grid-cols-1">
+      <div class="grid border-b-2"></div>
+      {% for order_item in reservation.order_items.all %}
+        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+          <span>{{ order_item.item.name }}</span>
+          <span class="font-black">￥{{ order_item.item.price_fully_rounded }}</span></div>
+      {% endfor %}
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl"><span>{% blocktranslate %}
+        Price Per Day
+      {% endblocktranslate %}
+        :</span><span class="font-black">￥{{ reservation.stay.price_per_day }}</span></div>
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl"><span>{% blocktranslate %}
+        Total Days
+      {% endblocktranslate %}
+        :</span><span class="font-black">{{ reservation.stay.days }}</span></div>
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl"><span>{% translate 'Total Price' %}:</span>
+        <span class="font-black">￥{{ reservation.price_fully_rounded }}</span></div>
+    </div>
+    <form id='payment-form' class="grid"
+          hx-trigger="createPayment"
+          hx-post="{% url 'winadmin:make_payment' %}"
+          hx-target="#payment-status-container"
+          hx-swap="outerHTML"
+          hx-vals='{"use_block": "payment-status-container"}'>
+      {% csrf_token %}
+      <div id="card-styles-container">
+        <div id='card-container'></div>
+      </div>
+      <button id='card-button'
+              type="button"
+              class="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm
+              hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+              focus-visible:outline-orange-700"
+              _="init
+                  call Square.payments('{{ SQUARE_APPLICATION_ID }}', '{{ SQUARE_LOCATION_ID }}')
+                  set :payments to the result
+                  call :payments.card()
+                  set :card to the result
+                  call :card.attach(#card-container)
+                end
+                on click
+                  call :card.tokenize()
+                  if the result's status is really 'OK'
+                    set #id_token's @value to the result's token
+                    then send createPayment to #payment-form
+                  else log `Tokenization failed with status: ${result.status}`">
+        {% trans "Pay" %} ￥{{ reservation.price_fully_rounded }}
+      </button>
+      {{ form }}
+    </form>
+    {% block payment-status-container %}
+      <div id="payment-status-container" class="text-black">
+        {% if payment.is_success %}
+          <div hx-get="."
+               hx-trigger="load"
+               hx-swap="outerHTML"
+               hx-target="#reservation-create-form-wrapper"
+               hx-vals='{"use_block": "payment-complete"}'></div>
+        {% elif payment.errors %}
+          {% translate 'Payment Failed! Error: ' %}{{ payment.errors.detail }}
+        {% endif %}
+      </div>
+      </div>
+    {% endblock %}
+{% endblock %}
+
+{% block payment-complete %}
+  <h1 class="text-3xl">{% translate 'Payment Complete!' %}</h1>
+  <a href={% url 'winadmin:reservation_create' %}>
+    {% #button text=text %}{% translate 'Create a New Reservation' %}{% /button %}
+  </a>
+{% endblock %}

@@ -4,29 +4,17 @@
   {% blocktrans %}Create Category{% endblocktrans %}
 {% endblock %}
 {% block content %}
-  <h1 class="mb-5 text-3xl">{% translate 'Category Create View' %}</h1>
-  <form hx-post="."
-        hx-target="#dashboard-content"
-        hx-swap="outerHTML"
-        class="grid max-w-xl space-y-2" novalidate>
-    {{ form.non_field_errors }}
-    <div id="messages">
-      {% include 'core/messages.html' %}
-    </div>
-    {% for field in form %}
-      {% if field.errors %}
-        {% for error in field.errors %}
-          {{ error|escape }}
-        {% endfor %}
-      {% endif %}
-      <label for="{{ field.id_for_label }}" class="grid">
-        {{ field.label }}
-        {% render_field field %}
-      </label>
-    {% endfor %}
-    <button type="submit"
-            class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+  <div id="content-wrapper">
+    <h1 class="mb-5 text-3xl">{% translate 'Category Create View' %}</h1>
+    <form hx-post="." novalidate
+          hx-target="#content-wrapper"
+          hx-swap="morph:outerHTML"
+          hx-vals='{"use_block": "content"}'
+          class="grid max-w-xl space-y-2">
+      {{ form }}
+      {% #button name="submit" type="submit" %}
       {% trans "Submit" %}
-    </button>
-  </form>
+      {% /button %}
+    </form>
+  </div>
 {% endblock %}

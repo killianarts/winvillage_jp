@@ -1,6 +1,7 @@
 components:
   button: "patterns/buttons/button/button.html"
   calendar_cell_button: "patterns/buttons/calendar_cell_button/calendar_cell_button.html"
+  winadmin_calendar_cell_button: "patterns/buttons/winadmin_calendar_cell_button/winadmin_calendar_cell_button.html"
   sidebar_button: "patterns/buttons/button/sidebar_button.html"
   mobile_navigation_body: "patterns/navigations/mobile_navigation/mobile_navigation_body.html"
   mobile_navigation_link: "patterns/navigations/mobile_navigation/mobile_navigation_link.html"

@@ -45,21 +45,21 @@
               <td class="whitespace-nowrap py-4 pr-3 pl-4 font-mono text-sm font-medium slashed-zero tabular-nums text-stone-900 sm:pl-0">
                 <a class="pl-6" href="{% url 'winadmin:reservation_detail' reservation.pk %}">
                   {% timezone "Asia/Tokyo" %}
-                    {{ reservation.stay.start_datetime|date:"Y-m-d" }}
+                    {{ reservation.stay.start_date|date:"Y-m-d" }}
                   {% endtimezone %}
                 </a>
               </td>
               <td class="whitespace-nowrap px-3 py-4 font-mono text-sm font-medium slashed-zero tabular-nums text-stone-600 text-stone-900">
                 {% timezone "Asia/Tokyo" %}
-                  {{ reservation.stay.end_datetime|date:"Y-m-d" }}
+                  {{ reservation.stay.end_date|date:"Y-m-d" }}
                 {% endtimezone %}
               </td>
               <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ reservation.stay.status_display }}</td>
-              <td class="whitespace-nowrap px-3 py-4 font-mono text-sm slashed-zero tabular-nums text-stone-600">{{ reservation.contact_info.last_name }}</td>
-              <td class="whitespace-nowrap px-3 py-4 font-mono text-sm slashed-zero tabular-nums text-stone-600">{{ reservation.contact_info.first_name }}</td>
+              <td class="whitespace-nowrap px-3 py-4 font-mono text-sm slashed-zero tabular-nums text-stone-600">{{ reservation.last_name }}</td>
+              <td class="whitespace-nowrap px-3 py-4 font-mono text-sm slashed-zero tabular-nums text-stone-600">{{ reservation.first_name }}</td>
 
               <td class="whitespace-nowrap px-3 py-4 font-mono text-sm slashed-zero tabular-nums text-stone-600">
-                {{ reservation.contact_info.email }}
+                {{ reservation.email }}
               </td>
               <td class="whitespace-nowrap px-3 py-4 font-mono text-sm slashed-zero tabular-nums text-stone-600">
                 {{ reservation.stay.price_rounded }}

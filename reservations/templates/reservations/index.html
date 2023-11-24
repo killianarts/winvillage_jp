@@ -194,15 +194,33 @@
               <p class="text-center text-xl">{% trans "Price" %}:￥{{ price }}</p>
             {% endif %}
             {% if start_date and not end_date %}
-              <a href="{% url 'reservations:time_select' %}"
-                 class="mx-auto w-fit block"
-                 hx-get="{% url 'reservations:time_select' %}"
-                 hx-target="#reservation-form-wrapper"
-                 hx-vals='{"use_block": "option-select"}'>
-                {% #button %}
-                {% blocktrans %}Continue, Choose Time{% endblocktrans %}
-                {% /button %}
-              </a>
+              <div id="time-select-wrapper">
+                <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+                  {% blocktrans %}Select Start and End Times{% endblocktrans %}</h2>
+                <form action="{% url 'reservations:index' %}" method="post"
+                      hx-post="{% url 'reservations:index' %}"
+                      hx-target="#reservation-form-wrapper"
+                      hx-vals='{"use_block": "reservation-form"}'
+                      hx-trigger="change from:select"
+                      class="grid space-y-5 max-w-fit mx-auto">
+                  <input type="hidden" name="select_time" value="set">
+                  {{ time_form }}
+                  {% if not start_time or not end_time %}
+                    <div class="mx-auto w-fit">
+                      {% #button class="text-stone-300 bg-stone-100 pointer-events-none" %}
+                      {% blocktrans %}Continue{% endblocktrans %}
+                      {% /button %}
+                    </div>
+                  {% else %}
+                    <a href="{% url 'reservations:option_select' %}"
+                       hx-get="{% url 'reservations:option_select' %}"
+                       hx-target="#reservation-form-wrapper"
+                       hx-vals='{"use_block": "option-select"}'>
+                      {% #button %}Continue, choose options{% /button %}
+                    </a>
+                  {% endif %}
+                </form>
+              </div>
             {% elif start_date and end_date %}
               <a href="{% url 'reservations:option_select' %}"
                  class="mx-auto w-fit block"
@@ -220,21 +238,34 @@
                 {% /button %}
               </div>
             {% endif %}
-            {#            <form action="."#}
-            {#                  method="post"#}
-            {#                  class="mx-auto w-fit"#}
-            {#                  hx-post="."#}
-            {#                  hx-target="#reservation-form-wrapper"#}
-            {#                  hx-swap="outerHTML"#}
-            {#                  hx-vals='{"use_block": "reservation-form"}'>#}
-            {#              {% #button name="delete_session" type="submit" %}#}
-            {#              {% blocktrans %}Delete Session{% endblocktrans %}#}
-            {#              {% /button %}#}
-            {#            </form>#}
+            <div class="mx-auto w-fit"
+                 hx-post="{% url 'core:flush_session' %}"
+                 hx-target="this"
+                 hx-swap="innerHTML">
+              {% #button name="delete_session" type="submit" %}
+              {% blocktrans %}Delete Session{% endblocktrans %}
+              {% /button %}
+            </div>
           {% endblock %}
         </div>
       {% endblock %}
     </div>
+  </div>
+{% endblock %}
+
+{% block time-select %}
+  <div id="time-select-wrapper">
+    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+      {% blocktrans %}Select Start and End Times{% endblocktrans %}</h2>
+    <form action="{% url 'reservations:index' %}" method="post" class="grid space-y-5 max-w-fit mx-auto">
+      {{ form }}
+      <a href="{% url 'reservations:option_select' %}"
+         hx-get="{% url 'reservations:option_select' %}"
+         hx-target="#reservation-form-wrapper"
+         hx-vals='{"use_block": "option-select"}'>
+        {% #button %}Continue, choose options{% /button %}
+      </a>
+    </form>
   </div>
 {% endblock %}
 
@@ -255,7 +286,7 @@
             <div class="px-4 py-5 sm:p-6">
               <h3 class="text-base font-semibold leading-6 text-stone-900">{{ grill.name }}</h3>
               <div class="mt-2 max-w-xl text-sm text-orange-500">
-                <p>{% trans "Price:" %} ￥{{ grill.price_rounded }}</p>
+                <p>{% trans "Price:" %} ￥{{ grill.price_fully_rounded }}</p>
               </div>
               <div class="mt-2 max-w-xl text-sm text-stone-500">
                 <p>{{ grill.description }}</p>
@@ -305,14 +336,24 @@
 {% block contact-information-input %}
   <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
     {% translate 'Contact Information' %}</h2>
-  <form class="space-y-5" action="{% url 'reservations:contact_information_input' %}" method="post"
+  <form id="contact-information-form"
+        class="space-y-5"
         hx-post="{% url 'reservations:contact_information_input' %}"
         hx-target="#reservation-form-wrapper"
         hx-vals='{"use_block": "contact-information-input"}'
+        hx-trigger="validateInput"
   >
     <fieldset>
       <legend class="sr-only">{% translate 'Contact Information' %}</legend>
-      <div class="grid grid-cols-1">
+      <div id="validateInput-sender" class="grid grid-cols-1"
+           _="on keyup from <input/> in me debounced at 750ms
+                set :inputs to value of <input/> in me then
+                if :inputs does not include '' and :inputs does not include null
+                  trigger validateInput end end
+                on focusout from <input/> in me debounced at 750ms
+                set :inputs to value of <input/> in me then
+                if :inputs does not include '' and :inputs does not include null
+                  trigger validateInput end end">
         {{ form }}
       </div>
     </fieldset>
@@ -330,8 +371,8 @@
         {% blocktrans %}Continue{% endblocktrans %}
         {% /button %}
       {% else %}
-        <a href="{% url 'reservations:reservation_confirm' %}"
-           hx-get="{% url 'reservations:reservation_confirm' %}"
+        <a href="{% url 'reservations:reservation_details_review' %}"
+           hx-get="{% url 'reservations:reservation_details_review' %}"
            hx-target="#reservation-form-wrapper"
            hx-vals='{"use_block": "confirmation-form"}'>
           {% #button %}
@@ -344,82 +385,88 @@
 {% endblock %}
 
 {% block confirmation-form %}
-  <div id="reservation-form-wrapper" class="mx-auto max-w-5xl px-5">
-    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-      {% translate 'Confirm Details' %}</h2>
-    <div class="space-y-5">
-      <div class="grid grid-cols-1 divide-y-2 divide-stone-50">
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Start Date:{% endblocktrans %}</span>
-          <span>{{ reservation.start }}</span>
-        </div>
+  <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+    {% translate 'Confirm Details' %}</h2>
+  <div class="space-y-5">
+    <div class="grid grid-cols-1 divide-y-2 divide-stone-50">
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+        <span>{% blocktrans %}Start Date:{% endblocktrans %}</span>
+        <span>{{ reservation.start }}</span>
+      </div>
+      {% if reservation.end %}
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
           <span>{% blocktrans %}End Date:{% endblocktrans %}</span>
           <span>{{ reservation.end }}</span>
         </div>
+      {% endif %}
+      {% if reservation.start_time and reservation.end_time and not reservation.stay.end_date %}
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}First Name:{% endblocktrans %}</span>
-          <span>{{ reservation.first_name }}</span>
+          <span>{% blocktrans %}Start Time:{% endblocktrans %}</span>
+          <span>{{ reservation.start_time }}</span>
         </div>
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Last Name:{% endblocktrans %}</span>
-          <span>{{ reservation.last_name }}</span>
+          <span>{% blocktrans %}End Time:{% endblocktrans %}</span>
+          <span>{{ reservation.end_time }}</span>
         </div>
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Email:{% endblocktrans %}</span>
-          <span>{{ reservation.email }}</span>
-        </div>
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Phone:{% endblocktrans %}</span>
-          <span>{{ reservation.phone.as_national }}</span>
-        </div>
-        {% for order_item in reservation.order_items.all %}
-          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-            <span>{{ order_item.item.name }}</span>
-            <span>￥{{ order_item.item.price_rounded }}</span>
-          </div>
-        {% endfor %}
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>
-            {% blocktranslate %}
-              Price Per Day
-            {% endblocktranslate %}:</span>
-          <span>￥{{ reservation.stay.price_per_day }}</span>
-        </div>
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>
-            {% blocktranslate %}
-              Total Days
-            {% endblocktranslate %}:</span>
-          <span>{{ reservation.stay.days }}</span>
-        </div>
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% translate 'Total Price' %}:</span>
-          <span>￥{{ reservation.price_rounded }}</span>
-        </div>
+      {% endif %}
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+        <span>{% blocktrans %}First Name:{% endblocktrans %}</span>
+        <span>{{ reservation.first_name }}</span>
       </div>
-      <div class="grid gap-2">
-        <button name="submit" type="submit"
-                class="bg-orange-600 px-3.5 py-2.5 text-sm font-semibold text-center text-white shadow-sm hover:bg-orange-500
-                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
-          {% blocktranslate %}
-            Make Reservation
-          {% endblocktranslate %}
-        </button>
-        <button name="back"
-                {# If there are two buttons of type="submit" in a form, the first one to appear will have priority when a user #}
-                {# presses the enter key to "submit" it. Making the back button of type="button" will prevent it from taking #}
-                {# priority over the next button on enter key press. #}
-                type="button"
-                hx-get="{% url 'reservations:option_select' %}"
-                hx-target="#reservation-form-wrapper"
-                hx-swap="outerHTML"
-                class="bg-orange-50 px-3.5 py-2.5 text-sm font-semibold text-orange-950 shadow-sm
-                 hover:bg-orange-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                 focus-visible:outline-orange-600">
-          {% translate 'Back' %}
-        </button>
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+        <span>{% blocktrans %}Last Name:{% endblocktrans %}</span>
+        <span>{{ reservation.last_name }}</span>
+      </div>
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+        <span>{% blocktrans %}Email:{% endblocktrans %}</span>
+        <span>{{ reservation.email }}</span>
+      </div>
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+        <span>{% blocktrans %}Phone:{% endblocktrans %}</span>
+        <span>{{ reservation.phone.as_national }}</span>
+      </div>
+      {% for order_item in reservation.order_items.all %}
+        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+          <span>{{ order_item.item.name }}</span>
+          <span>￥{{ order_item.item.price_fully_rounded }}</span>
+        </div>
+      {% endfor %}
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+        <span>{% translate 'Stay Price' %}:</span>
+        <span>￥{{ reservation.stay.price }}</span>
+      </div>
+      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+        <span>{% translate 'Total Price' %}:</span>
+        <span>￥{{ reservation.price }}</span>
       </div>
     </div>
+
+    <div class="flex justify-center space-x-5">
+      <a href="{% url 'reservations:contact_information_input' %}"
+         hx-get="{% url 'reservations:contact_information_input' %}"
+         hx-target="#reservation-form-wrapper"
+         hx-vals='{"use_block": "contact-information-input"}'>
+        {% #button class="text-orange-50 bg-orange-300 hover:bg-orange-400" %}
+        {% blocktrans %}Go Back{% endblocktrans %}
+        {% /button %}
+      </a>
+      <a href="{% url 'reservations:reservation_confirm' %}"
+         hx-get="{% url 'reservations:reservation_confirm' %}"
+         hx-target="#reservation-form-wrapper"
+         hx-vals='{"use_block": "reservation-confirm"}'>
+        {% #button %}
+        {% blocktranslate %}
+          Make Reservation
+        {% endblocktranslate %}
+        {% /button %}
+      </a>
+    </div>
   </div>
+{% endblock %}
+
+{% block reservation-confirm %}
+  <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+    {% translate 'Reservation Confirmed!' %}</h2>
+  <p class="text-center">{% blocktrans %}An email has been sent to you with the details of your
+                                         reservation.{% endblocktrans %}</p>
 {% endblock %}

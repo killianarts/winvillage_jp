@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from zoneinfo import ZoneInfo
 
 from django.contrib.auth import get_user_model
@@ -10,10 +10,10 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
 from phonenumber_field.modelfields import PhoneNumberField
-
 from core.models import Item, ContactInfo, BaseModel
 from customer.models import Customer
 from reservations.forms import GrillOptionForm
+from dateutil.relativedelta import relativedelta
 
 auth_user = get_user_model()
 
@@ -118,6 +118,16 @@ class StayManager(models.Manager):
         )
 
 
+class SpecialDate(models.Model):
+    date = models.DateField()
+    name = models.CharField(max_length=255)
+    daily_price = models.DecimalField(max_digits=19, decimal_places=4)
+    hourly_price = models.DecimalField(max_digits=19, decimal_places=4)
+
+    def __str__(self):
+        return self.name
+
+
 class Stay(BaseModel):
     class Meta:
         verbose_name = _("Stay")
@@ -140,9 +150,11 @@ class Stay(BaseModel):
     )
     start_date = models.DateField(verbose_name=_("Start"), null=True)
     end_date = models.DateField(verbose_name=_("End"), null=True)
+    start_time = models.TimeField(verbose_name=_("Start"), null=True)
+    end_time = models.TimeField(verbose_name=_("End"), null=True)
     status_changed = MonitorField(monitor="status")
     type_changed = MonitorField(monitor="stay_type")
-    price = models.DecimalField(max_digits=19, decimal_places=4, default=10000.00)
+    # price = models.DecimalField(max_digits=19, decimal_places=4, default=10000.00)
 
     def get_stay_range(self):
         return (
@@ -158,8 +170,26 @@ class Stay(BaseModel):
             return 0
 
     @property
-    def price_per_day(self):
-        return round(self.price, 0)
+    def price(self):
+        total_price = 0
+        if not self.end_date and self.start_time and self.end_time:
+            current_datetime = datetime.combine(self.start_date, self.start_time)
+            end_datetime = datetime.combine(self.start_date, self.end_time)
+            while current_datetime < end_datetime:
+                total_price += 2000
+                current_datetime += timedelta(hours=1)
+        elif self.start_date and self.end_date:
+            current_date = self.start_date
+            while current_date <= self.end_date:
+                special_dates = SpecialDate.objects.filter(date=current_date)
+                if special_dates.exists():
+                    total_price += special_dates.first().price
+                elif current_date.weekday() > 4:
+                    total_price += 15000
+                else:
+                    total_price += 10000
+                current_date += timedelta(days=1)  # increment the date by 1 day
+        return round(total_price, 0)
 
     @property
     def days(self):
@@ -168,12 +198,6 @@ class Stay(BaseModel):
             return delta.days
         else:
             return None
-
-    @property
-    def total_price(self):
-        stay_days = self.days
-        total_price = stay_days * self.price_fully_rounded
-        return total_price
 
     @property
     def status_display(self):
@@ -241,7 +265,11 @@ class Reservation(BaseModel):
             self.stay.start_date = selected_date
             if self.stay.end_date:
                 self.stay.end_date = None
-        elif self.stay.start_date and not self.stay.end_date:
+        elif (
+            self.stay.start_date
+            and not self.stay.end_date
+            and selected_date != self.stay.start_date
+        ):
             self.stay.end_date = selected_date
         elif self.stay.start_date and self.stay.end_date:
             self.stay.start_date = selected_date
@@ -249,24 +277,26 @@ class Reservation(BaseModel):
         self.stay.save()
         return self.stay.start_date, self.stay.end_date
 
+    def check_availability(self, date_):
+        tzinfo = timezone.get_current_timezone()
+        datetime_with_tz = timezone.make_aware(
+            datetime.combine(date_, time.min), tzinfo
+        )
+
+        reservations_count = self.objects.filter(
+            stay__start_date__lte=datetime_with_tz,
+            stay__end_date__gte=datetime_with_tz,
+            stay__status="reserved",
+        ).count()
+        return reservations_count < 4
+
     @property
     def price(self):
         total = 0
         for order_item in self.order_items.all():
             total += order_item.item.price
-        total += self.stay.total_price
-        return total
-
-    @property
-    def price_rounded(self):
-        total = 0
-        for order_item in self.order_items.all():
-            total += order_item.item.price_rounded
-        if self.stay.price:
-            total += self.stay.price_fully_rounded
-            return total
-        else:
-            return None
+        total += self.stay.price
+        return round(total, 0)
 
     @property
     def price_fully_rounded(self):
@@ -277,16 +307,26 @@ class Reservation(BaseModel):
         return round(total, 0)
 
     @property
-    def stay_price(self):
-        return self.stay.total_price
-
-    @property
     def start(self):
         return self.stay.start_date
 
     @property
     def end(self):
         return self.stay.end_date
+
+    @property
+    def start_time(self):
+        return self.stay.start_time
+
+    @property
+    def end_time(self):
+        return self.stay.end_time
+
+    def set_times(self, start_time: time, end_time: time):
+        self.stay.start_time = start_time
+        self.stay.end_time = end_time
+        self.stay.save()
+        return self.stay.start_time, self.stay.end_time
 
     def set_status(self, status_choice: str):
         return self.stay.set_status(status_choice)

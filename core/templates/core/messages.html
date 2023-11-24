@@ -1,14 +1,16 @@
 {% if messages %}
-  <ul id="message-list">
+  <ul id="message-list"
+      class="space-y-5"
+      _="on load wait 1s then transition my opacity to 0 over 500ms then remove me">
     {% for message in messages %}
       {% if message.level_tag == "info" %}
-        <li class="text-blue-500">{{ message }}</li>
+        <li class="text-blue-500 px-5 py-2 rounded-lg bg-blue-100 border border-blue-200">{{ message }}</li>
       {% elif message.level_tag == "error" %}
-        <li class="text-red-500">{{ message }}</li>
+        <li class="text-red-500 px-5 py-2 rounded-lg bg-red-100 border border-red-200">{{ message }}</li>
       {% elif message.level_tag == "success" %}
-        <li class="text-green-500">{{ message }}</li>
+        <li class="text-green-500 px-5 py-2 rounded-lg bg-green-100 border border-green-200">{{ message }}</li>
       {% elif message.level_tag == "warning" %}
-        <li class="text-yellow-500">{{ message }}</li>
+        <li class="text-yellow-500 px-5 py-2 rounded-lg bg-yellow-100 border border-yellow-200">{{ message }}</li>
       {% endif %}
     {% endfor %}
   </ul>

@@ -119,9 +119,15 @@ def check_availability(date_):
     tzinfo = timezone.get_current_timezone()
     datetime_with_tz = timezone.make_aware(datetime.combine(date_, time.min), tzinfo)
 
-    reservations_count = Reservation.objects.filter(
-        stay__start_date=datetime_with_tz
-    ).count()
+    reservations_count = (
+        Reservation.objects.filter(
+            stay__start_date__lte=datetime_with_tz,
+            stay__end_date__gte=datetime_with_tz,
+            stay__status="reserved",
+        )
+        .select_related("stay")
+        .count()
+    )
     return reservations_count < 4
 
 

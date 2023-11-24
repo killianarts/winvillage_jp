@@ -2,7 +2,6 @@ from datetime import date as stdlib_date
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
@@ -13,6 +12,7 @@ from core.utils import (
     for_htmx,
     htmx_form_validate,
 )
+from customer.models import Customer
 from reservations.calendar_utils import (
     get_previous_month,
     get_next_month,
@@ -22,7 +22,10 @@ from reservations.forms import DateForm
 from reservations.models import (
     Item,
 )
+from reservations.tasks import send_confirmation_email
 from winvillage.settings import TIME_ZONE
+
+RESERVATION_TEMPLATE = "reservations/index.html"
 
 
 def index(request):
@@ -100,15 +103,19 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     tz = ZoneInfo(TIME_ZONE)
     today_date = datetime.now(tz=tz).date()
     form = DateForm(initial={"date": today_date})
+    if reservation.start_time and reservation.end_time:
+        initial = {
+            "start_time": reservation.start_time,
+            "end_time": reservation.end_time,
+        }
+    else:
+        initial = None
+    time_form = forms.TimeSelectForm(initial=initial)
     calendars = generate_calendars(today_date)
-    if reservation.stay.start_date:
-        start_date = reservation.stay.start_date
-    else:
-        start_date = None
-    if reservation.stay.end_date:
-        end_date = reservation.stay.end_date
-    else:
-        end_date = None
+    start_date = reservation.stay.start_date if reservation.stay.start_date else None
+    end_date = reservation.stay.end_date if reservation.stay.end_date else None
+    start_time = reservation.stay.start_time if reservation.stay.start_time else None
+    end_time = reservation.stay.end_time if reservation.stay.end_time else None
     if request.method == "GET":
         if "get_previous_month" in request.GET:
             form = DateForm(request.GET)
@@ -130,26 +137,29 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
             if calendar_cell_form.is_valid():
                 selected_date = calendar_cell_form.cleaned_data["date"]
                 start_date, end_date = reservation.set_dates(selected_date)
-    price = reservation.stay_price
+        if "select_time" in request.POST:
+            time_form = forms.TimeSelectForm(request.POST)
+            if time_form.is_valid():
+                start_time = time_form.cleaned_data["start_time"]
+                end_time = time_form.cleaned_data["end_time"]
+                reservation.set_times(start_time, end_time)
+    price = reservation.stay.price
     context = {
         "calendars": calendars,
         "today_date": today_date,
         "form": form,
+        "time_form": time_form,
         "start_date": start_date,
         "end_date": end_date,
+        "start_time": start_time,
+        "end_time": end_time,
         "price": price,
     }
-    return TemplateResponse(request, "reservations/index.html", context)
-
-
-def time_select(request: HtmxHttpRequest) -> HttpResponse:
-    pass
-    # return TemplateResponse(request, template_path, context)
+    return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
 @for_htmx(use_block_from_params=True)
 def option_select_with_normal_session(request: HtmxHttpRequest) -> HttpResponse:
-    previous_url = request.META.get("HTTP_REFERER")
     all_grills = (
         Item.objects.filter(category__name="grill")
         .filter(reservation_option=True)
@@ -173,7 +183,6 @@ def option_select_with_normal_session(request: HtmxHttpRequest) -> HttpResponse:
                 request.session["reservation_options"] = [grill_id]
     selected_grill_ids = request.session.get("reservation_options", False)
     context = {
-        "previous_url": previous_url,
         "grills": grills,
         "selected_grill_ids": selected_grill_ids,
     }
@@ -195,7 +204,7 @@ def option_select(request: HtmxHttpRequest) -> HttpResponse:
     context = {
         "grills": grills,
     }
-    return TemplateResponse(request, "reservations/index.html", context)
+    return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
 @htmx_form_validate(form_class=forms.ContactInfoForm)
@@ -210,9 +219,11 @@ def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
     }
     form = forms.ContactInfoForm(initial=initial)
 
-    contact_info = request.session.get("contact_info_is_valid", False)
+    contact_info = request.session.get("is_valid", False)
     if request.method == "POST":
         form = forms.ContactInfoForm(request.POST)
+        if "input_form_name" in request.POST:
+            print("input_form_name in POST")
         if form.is_valid():
             request.session["first_name"] = form.cleaned_data["first_name"]
             request.session["last_name"] = form.cleaned_data["last_name"]
@@ -223,52 +234,65 @@ def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
             reservation.email = form.cleaned_data["email"]
             reservation.phone = form.cleaned_data["phone"]
             reservation.save()
-            contact_info = request.session["contact_info_is_valid"] = True
+            contact_info = request.session["is_valid"] = True
         else:
-            request.session["first_name"] = request.POST.get("first_name", "")
-            request.session["last_name"] = request.POST.get("last_name", "")
-            request.session["email"] = request.POST.get("email", "")
-            request.session["phone"] = request.POST.get("phone", "")
-            contact_info = request.session["contact_info_is_valid"] = False
+            request.session["first_name"] = request.POST.get("first_name", None)
+            request.session["last_name"] = request.POST.get("last_name", None)
+            request.session["email"] = request.POST.get("email", None)
+            request.session["phone"] = request.POST.get("phone", None)
+            contact_info = request.session["is_valid"] = False
     context = {"form": form, "contact_info": contact_info}
-    return TemplateResponse(request, "reservations/index.html", context)
+    return TemplateResponse(request, RESERVATION_TEMPLATE, context)
+
+
+@for_htmx(use_block_from_params=True)
+def reservation_details_review(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    context = {
+        "reservation": reservation,
+    }
+    return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
 @for_htmx(use_block_from_params=True)
 def reservation_confirm(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    if request.method == "POST":
-        if "submit" in request.POST:
-            reservation.confirm()
-    context = {
-        "reservation": reservation,
-    }
-    return TemplateResponse(request, "reservations/index.html", context)
+    response = send_confirmation_email.delay(reservation.id)
+    if response:
+        reservation.confirm()
+        customer, created = Customer.objects.get_or_create(
+            first_name=reservation.first_name,
+            last_name=reservation.last_name,
+            email=reservation.email,
+            phone=reservation.phone,
+        )
+        request.session.flush()
+    return TemplateResponse(request, RESERVATION_TEMPLATE, {})
 
 
-def send_confirmation_email(request):
-    reservation = get_or_set_reservation_session(request)
-
-    def format_message(name, email, message):
-        return f"{name}\n{email}\n\n{message}"
-
-    def format_subject(name, email):
-        return f"[Winvillage] {name}, {email}"
-
-    sender_name = (
-        f"{reservation.contact_info.first_name} {reservation.contact_info.last_name}"
-    )
-    sender_email = f"{reservation.contact_info.email}"
-    message = f"Reservation Details are here! {reservation.stay.start_date.strftime('%Y-%M-%d')}"
-    formatted_subject = format_subject(sender_name, sender_email)
-    formatted_message = format_message(sender_name, sender_email, message)
-    send_mail(
-        formatted_subject,
-        formatted_message,
-        "noreply@winvillage.jp",
-        [sender_email],
-    )
-    return HttpResponse("Sent")
+# def send_confirmation_email(request):
+#     reservation = get_or_set_reservation_session(request)
+#
+#     def format_message(name, email, message):
+#         return f"{name}\n{email}\n\n{message}"
+#
+#     def format_subject(name, email):
+#         return f"[Winvillage] {name}, {email}"
+#
+#     sender_name = (
+#         f"{reservation.contact_info.first_name} {reservation.contact_info.last_name}"
+#     )
+#     sender_email = f"{reservation.contact_info.email}"
+#     message = f"Reservation Details are here! {reservation.stay.start_date.strftime('%Y-%M-%d')}"
+#     formatted_subject = format_subject(sender_name, sender_email)
+#     formatted_message = format_message(sender_name, sender_email, message)
+#     send_mail(
+#         formatted_subject,
+#         formatted_message,
+#         "noreply@winvillage.jp",
+#         [sender_email],
+#     )
+#     return HttpResponse("Sent")
 
 
 # def payment_page(request):

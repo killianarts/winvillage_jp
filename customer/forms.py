@@ -9,10 +9,10 @@ from core.forms import TailwindFormMixin
 class CustomerDetailForm(TailwindFormMixin, forms.Form):
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
-    email = forms.CharField(label=_("Email"))
-    phone = forms.CharField(label=_("Phone #"))
+    email = forms.EmailField(label=_("Email"))
+    phone = PhoneNumberField(label=_("Phone #"))
 
-    do_htmx_validation = False
+    do_htmx_validation = True
 
 
 class CustomerCreateForm(TailwindFormMixin, forms.Form):

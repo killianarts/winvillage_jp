@@ -54,14 +54,17 @@ urlpatterns = [
     ),
     path("reservations/create/", views.reservation_create, name="reservation_create"),
     path(
-        "reservations/create/add-option/<int:pk>/",
-        views.add_grill_reservation_option,
-        name="add_grill_reservation_option",
+        "reservations/create/contact-information-input/",
+        views.contact_information_input,
+        name="contact_information_input",
     ),
     path(
-        "reservations/create/remove-option/<int:pk>/",
-        views.remove_grill_reservation_option,
-        name="remove_grill_reservation_option",
+        "reservations/create/datetime-select/",
+        views.datetime_select,
+        name="datetime_select",
+    ),
+    path(
+        "reservations/create/option-select/", views.option_select, name="option_select"
     ),
     path("reservations/create/update-price/", views.update_price, name="update_price"),
     path(

@@ -1,20 +1,23 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-from django_htmx.http import HttpResponseClientRedirect
+from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
 
 import customer.forms as forms
 from core.utils import (
     HtmxHttpRequest,
     for_htmx,
+    htmx_form_validate,
 )
 from customer.models import Customer, make_customers, TicketNote, Ticket
 
 
+@login_required(login_url="winadmin:login_page")
 def customer_create(request: HtmxHttpRequest) -> HttpResponse:
     form = forms.CustomerCreateForm()
     context = {"form": form}
@@ -33,9 +36,13 @@ def customer_create(request: HtmxHttpRequest) -> HttpResponse:
             else:
                 messages.error(request, message=_("Customer couldn't be created!"))
                 context = {"form": form}
-    return TemplateResponse(request, "customer/customer_create.html", context)
+    return trigger_client_event(
+        TemplateResponse(request, "customer/customer_create.html", context),
+        "getMessages",
+    )
 
 
+@login_required(login_url="winadmin:login_page")
 def customer_create_bulk(request: HtmxHttpRequest) -> HttpResponse:
     customers = make_customers(int(request.POST.get("howmany", "1")))
     if request.method == "POST":
@@ -48,45 +55,42 @@ def customer_create_bulk(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, "customer/customer_create_bulk.html", {})
 
 
+@login_required(login_url="winadmin:login_page")
 @for_htmx(use_block_from_params=True)
 def customer_list(request: HtmxHttpRequest) -> HttpResponse:
     customers = Customer.objects.all()
     customer_form = forms.CustomerFilterForm()
-    context = {}
+    first_name = request.GET.get("first_name", False)
     if request.htmx:
-        first_name = request.GET.get("first_name")
         customer_form = forms.CustomerFilterForm(request.GET)
         if customers.filter(first_name__startswith=str(first_name)).exists():
             customers = customers.filter(first_name__startswith=first_name)
         else:
             customers = Customer.objects.all()
-        context = {
-            "customers": customers,
-            "form": customer_form,
-            "GET_first_name": first_name,
-        }
-        return TemplateResponse(request, "customer/customer_list.html", context)
-    context = {"customers": customers, "form": customer_form}
+    context = {"customers": customers, "form": customer_form, "first_name": first_name}
     return TemplateResponse(request, "customer/customer_list.html", context)
 
 
+@htmx_form_validate(form_class=forms.CustomerDetailForm)
+@for_htmx(use_block_from_params=True)
+@login_required(login_url="winadmin:login_page")
 def customer_detail(request: HtmxHttpRequest, customer_id: int) -> HttpResponse:
     customer = get_object_or_404(Customer, id=customer_id)
 
     if request.method == "POST":
         form = forms.CustomerDetailForm(request.POST)
 
-        if form.is_valid():
-            if "submit" in request.POST:
+        if "submit" in request.POST:
+            if form.is_valid():
                 for field in ["first_name", "last_name", "email", "phone"]:
                     setattr(customer, field, form.cleaned_data[field])
                 customer.save()
                 messages.success(request, _("Customer edited successfully!"))
 
-            if "delete" in request.POST:
-                customer.delete()
-                messages.success(request, _("Customer deleted successfully!"))
-                return HttpResponseClientRedirect(reverse("winadmin:customer_list"))
+        if "delete" in request.POST:
+            customer.delete()
+            messages.success(request, _("Customer deleted successfully!"))
+            return HttpResponseClientRedirect(reverse("winadmin:customer_list"))
 
         else:
             messages.error(request, _("Customer couldn't be edited!"))
@@ -101,9 +105,17 @@ def customer_detail(request: HtmxHttpRequest, customer_id: int) -> HttpResponse:
         form = forms.CustomerDetailForm(initial=initial)
 
     context = {"form": form, "customer": customer}
-    return TemplateResponse(request, "customer/customer_detail.html", context)
+    return trigger_client_event(
+        TemplateResponse(
+            request,
+            "customer/customer_detail.html",
+            context,
+        ),
+        "getMessages",
+    )
 
 
+@login_required(login_url="winadmin:login_page")
 def ticket_create(request: HtmxHttpRequest) -> HttpResponse:
     form = forms.TicketCreateForm()
     context = {"form": form}
@@ -134,17 +146,28 @@ def ticket_create(request: HtmxHttpRequest) -> HttpResponse:
             else:
                 messages.error(request, message=_("Ticket couldn't be created!"))
                 context = {"form": form}
-    return TemplateResponse(request, "ticket/ticket_create.html", context)
+    return trigger_client_event(
+        TemplateResponse(request, "ticket/ticket_create.html", context), "getMessages"
+    )
 
 
+@login_required(login_url="winadmin:login_page")
 def ticket_list(request: HtmxHttpRequest) -> HttpResponse:
     tickets = Ticket.objects.all()
     context = {"tickets": tickets}
     return TemplateResponse(request, "ticket/ticket_list.html", context)
 
 
+@login_required(login_url="winadmin:login_page")
+@for_htmx(use_block_from_params=True)
 def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
     ticket: Ticket = get_object_or_404(Ticket, id=ticket_id)
+    initial = {
+        "first_name": ticket.customer.first_name,
+        "last_name": ticket.customer.last_name,
+        "email": ticket.customer.email,
+        "phone": ticket.customer.phone,
+    }
     if request.method == "POST":
         if ticket.is_closed:
             form = forms.TicketReopenForm(request.POST)
@@ -173,18 +196,13 @@ def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
                 if "add-note" in request.POST:
                     ticket.add_note(user=request.user, data=form_data)
                     messages.success(request, _("Note added to ticket."))
+                    form = forms.TicketDetailForm(initial=initial)
                 if "close-ticket" in request.POST:
                     ticket.close_ticket(user=request.user, data=form_data)
                     messages.success(request, _("Note added and ticket closed"))
                     del form_data["notes"]
                     form = forms.TicketReopenForm(initial=form_data)
     else:
-        initial = {
-            "first_name": ticket.customer.first_name,
-            "last_name": ticket.customer.last_name,
-            "email": ticket.customer.email,
-            "phone": ticket.customer.phone,
-        }
         if ticket.is_closed:
             form = forms.TicketReopenForm(initial=initial)
         else:
@@ -194,4 +212,6 @@ def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
         "ticket": ticket,
         "notes": ticket.notes.all().order_by("created_at"),
     }
-    return TemplateResponse(request, "ticket/ticket_detail.html", context)
+    return trigger_client_event(
+        TemplateResponse(request, "ticket/ticket_detail.html", context), "getMessages"
+    )

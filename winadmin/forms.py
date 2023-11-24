@@ -147,8 +147,8 @@ class ReservationDetailForm(TailwindFormMixin, forms.Form):
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
-    start_datetime = forms.DateField(widget=DateInput, label=_("Start"))
-    end_datetime = forms.DateField(widget=DateInput, label=_("End"))
+    start_date = forms.DateField(widget=DateInput, label=_("Start"))
+    end_date = forms.DateField(widget=DateInput, label=_("End"))
     stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES, label=_("Stay Type"))
 
 

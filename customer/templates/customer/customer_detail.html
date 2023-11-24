@@ -5,32 +5,27 @@
 {% endblock %}
 
 {% block content %}
-  <main id="dashboard-content" class="py-10 lg:ml-72">
-    <div class="px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl">{% translate 'Customer Details' %}</h1>
-      <form action="." method="post" novalidate
-            hx-post="{% url 'winadmin:customer_detail' customer.id %}"
-            hx-target="#dashboard-content"
-            hx-swap="outerHTML"
-            class="max-w-sm">
-        {{ form.non_field_errors }}
-        <div id="messages">
-          {% include 'core/messages.html' %}
-        </div>
-        {{ form }}
-        <div class="space-y-5 grid">
-          <button type="submit" name="submit"
-                  class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
-            {% trans "Submit Modifications" %}
-          </button>
-          <button type="submit" name="delete"
-                  class="bg-red-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-red-600">
-            {% trans "Delete" %}
-          </button>
-        </div>
-      </form>
-    </div>
-  </main>
+  <div id="content-wrapper">
+    <h1 class="text-3xl">{% translate 'Customer Details' %}</h1>
+    <form action="." method="post" novalidate
+          hx-post="."
+          hx-target="#content-wrapper"
+          hx-vals='{"use_block": "content"}'
+          hx-swap="morph:outerHTML"
+          class="max-w-sm">
+      {{ form }}
+      <div class="space-y-5 grid">
+        <button type="submit" name="submit"
+                class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+          {% trans "Submit Modifications" %}
+        </button>
+        <button type="submit" name="delete" hx-confirm="You sure?"
+                class="bg-red-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-red-600">
+          {% trans "Delete" %}
+        </button>
+      </div>
+    </form>
+  </div>
 {% endblock %}
 
 {% block deleted %}

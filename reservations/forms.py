@@ -1,10 +1,10 @@
+import datetime as dt
+
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.formfields import PhoneNumberField
-from phonenumber_field.widgets import RegionalPhoneNumberWidget
 
-from core.forms import TailwindFormMixin, ReservationsContactInformationFormMixin
+from core.forms import ReservationsContactInformationFormMixin
 
 
 class GrillOptionForm(forms.Form):
@@ -19,106 +19,18 @@ class DateInput(forms.DateInput):
         super().__init__(**kwargs)
 
 
-# class Step2FormHourly(TailwindFormMixin, forms.ModelForm):
-#     date = forms.DateField(widget=forms.widgets.DateInput, label=_("Date"))
-#     start_time = forms.TimeField(
-#         widget=forms.widgets.TimeInput(format="%H:%M"), label=_("Start Time")
-#     )
-#     end_time = forms.TimeField(
-#         widget=forms.widgets.TimeInput(format="%H:%M"), label=_("End Time")
-#     )
-#
-#     class Meta:
-#         model = Stay
-#         fields = []
-#
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         date = cleaned_data.get("date")
-#         start_time = cleaned_data.get("start_time")
-#         end_time = cleaned_data.get("end_time")
-#
-#         # Check if none of the fields has been cleaned then return empty dict.
-#         if date is None or start_time is None or end_time is None:
-#             return cleaned_data
-#
-#         # Construct datetime values
-#         from datetime import datetime
-#
-#         cleaned_data["start_datetime"] = datetime.combine(date, start_time)
-#         cleaned_data["end_datetime"] = datetime.combine(date, end_time)
-#
-#         if cleaned_data["end_datetime"] <= cleaned_data["start_datetime"]:
-#             raise ValidationError(
-#                 _("End time must be after start time"),
-#             )
-#
-#         return cleaned_data
-#
-#     def save(self, commit=True):
-#         instance = super().save(commit=False)
-#         instance.start_date = self.cleaned_data.get("start_datetime")
-#         instance.end_date = self.cleaned_data.get("end_datetime")
-#
-#         if commit:
-#             instance.save()
-#         return instance
-
-
 class ContactInfoForm(ReservationsContactInformationFormMixin, forms.Form):
     first_name = forms.CharField(
-        max_length=255,
         label=_("First Name"),
-        widget=forms.TextInput(
-            attrs={
-                "hx-post": "contact-information-input/",
-                "hx-target": "#reservation-form-wrapper",
-                "hx-ext": "morph",
-                "hx-swap": "morph:innerHTML",
-                "hx-trigger": "input delay:250ms",
-                "hx-vals": '{"use_block": "contact-information-input"}',
-            }
-        ),
     )
     last_name = forms.CharField(
-        max_length=255,
-        label=_("First Name"),
-        widget=forms.EmailInput(
-            attrs={
-                "hx-post": "contact-information-input/",
-                "hx-target": "#reservation-form-wrapper",
-                "hx-ext": "morph",
-                "hx-swap": "morph:innerHTML",
-                "hx-trigger": "input delay:250ms",
-                "hx-vals": '{"use_block": "contact-information-input"}',
-            }
-        ),
+        label=_("Last Name"),
     )
     email = forms.EmailField(
         label=_("Email"),
-        widget=forms.TextInput(
-            attrs={
-                "hx-post": "contact-information-input/",
-                "hx-target": "#reservation-form-wrapper",
-                "hx-ext": "morph",
-                "hx-swap": "morph:innerHTML",
-                "hx-trigger": "input delay:250ms",
-                "hx-vals": '{"use_block": "contact-information-input"}',
-            }
-        ),
     )
     phone = PhoneNumberField(
         label=_("Phone #"),
-        widget=RegionalPhoneNumberWidget(
-            attrs={
-                "hx-post": "contact-information-input/",
-                "hx-target": "#reservation-form-wrapper",
-                "hx-ext": "morph",
-                "hx-swap": "morph:innerHTML",
-                "hx-trigger": "input delay:250ms",
-                "hx-vals": '{"use_block": "contact-information-input"}',
-            }
-        ),
     )
 
     do_htmx_validation = True
@@ -126,3 +38,21 @@ class ContactInfoForm(ReservationsContactInformationFormMixin, forms.Form):
 
 class DateForm(forms.Form):
     date = forms.DateField(widget=forms.HiddenInput)
+
+
+class TimeSelectForm(forms.Form):
+    DEFAULT_CHOICE = [("", "---")]
+    HOURS = [(dt.time(hour=h), "{:02d}:00".format(h)) for h in range(9, 23)]
+    CHOICES = DEFAULT_CHOICE + HOURS
+    start_time = forms.ChoiceField(choices=CHOICES)
+    end_time = forms.ChoiceField(choices=CHOICES)
+
+    def clean_start_time(self):
+        start_time = self.cleaned_data.get("start_time")
+        start_time = dt.datetime.strptime(start_time, "%H:%M:%S").time()
+        return start_time
+
+    def clean_end_time(self):
+        end_time = self.cleaned_data.get("end_time")
+        end_time = dt.datetime.strptime(end_time, "%H:%M:%S").time()
+        return end_time

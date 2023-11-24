@@ -6,7 +6,7 @@
         {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}
                                          hx-get="{% url 'reservations:contact_information_input' %}"
                                          hx-vals='{"_validate_field": "{{ field.name }}" }'
-                                         hx-trigger="change from:#form-row-{{ field.name }}"
+                                         hx-trigger="change delay:350ms"
                                          hx-include="#form-row-{{ field.name }}"
                                          hx-target="this"
                                          hx-ext="morph"

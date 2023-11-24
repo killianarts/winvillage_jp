@@ -6,7 +6,7 @@
         {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}
                                          hx-get="."
                                          hx-vals='{"_validate_field": "{{ field.name }}" }'
-                                         hx-trigger="focusout from:#form-row-{{ field.name }}"
+                                         hx-trigger="keyup from:#form-row-{{ field.name }} delay:350ms"
                                          hx-include="#form-row-{{ field.name }}"
                                          hx-target="this"
                                          hx-ext="morph"

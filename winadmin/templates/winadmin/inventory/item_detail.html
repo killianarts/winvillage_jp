@@ -1,25 +1,26 @@
 {% extends 'winadmin/index.html' %}
-{% load widget_tweaks widget_checks static i18n %}
+{% load i18n %}
 {% block subtitle %}
   {% translate 'Edit Inventory Item' %}
 {% endblock %}
 {% block content %}
-  <div id="form-wrapper">
+  <div id="content-wrapper">
     <h1 class="text-3xl">{% translate 'Edit Inventory Item' %}</h1>
-    <form action="." method="post" novalidate
+    <form action="." method="post"
           hx-post="."
-          hx-target="#form-wrapper"
-          hx-swap="outerHTML"
+          hx-target="#content-wrapper"
+          hx-swap="morph:outerHTML"
+          hx-vals='{"use_block": "content"}'
           class="grid max-w-xl">
       {{ form }}
-      <button type="submit" name="submit"
-              class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
-        {% trans "Edit Item" %}
-      </button>
-      <button type="submit" name="delete"
-              class="bg-red-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-red-600">
-        {% trans "Delete Item" %}
-      </button>
+      <div>
+      {% #button name="submit" type="submit" %}
+      {% trans "Edit Item" %}
+      {% /button %}
+      {% #button name="delete" type="button" class="text-red-50 bg-red-500 hover:bg-red-400"%}
+      {% trans "Delete Item" %}
+      {% /button %}
+      </div>
     </form>
-  </div>
+  </form>
 {% endblock %}

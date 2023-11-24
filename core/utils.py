@@ -107,8 +107,12 @@ class HtmxHttpRequest(HttpRequest):
 # - different ways of matching htmx requests, if needed.
 
 
-def is_htmx(request: HttpRequest):
+def is_htmx(request: HtmxHttpRequest):
     return request.headers.get("Hx-Request", False)
+
+
+def is_hx_boosted(request: HtmxHttpRequest):
+    return request.htmx.boosted
 
 
 def for_htmx(
@@ -137,6 +141,8 @@ def for_htmx(
         def _view(request, *args, **kwargs):
             resp = view(request, *args, **kwargs)
             if isinstance(resp, HttpResponseClientRedirect):
+                return resp
+            if is_hx_boosted(request):
                 return resp
             if is_htmx(request):
                 if (

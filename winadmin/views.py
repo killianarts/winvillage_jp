@@ -1,22 +1,22 @@
 import uuid
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
+from django.urls import reverse
 from django.utils.timezone import activate, deactivate
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
-from django_htmx.http import trigger_client_event
-from render_block import render_block_to_string
+from django_htmx.http import trigger_client_event, HttpResponseClientRedirect
 from sendgrid import Mail, SendGridAPIClient
 from square.client import Client
 
-from core.models import Item, Category, Transaction, ContactInfo, Customer
+from core.models import Item, Category, Transaction, Customer
 from core.utils import (
     HtmxHttpRequest,
     make_get_request,
@@ -24,7 +24,15 @@ from core.utils import (
     for_htmx,
     htmx_form_validate,
 )
-from reservations.models import Reservation, Stay, OrderItem
+from reservations import forms
+from reservations.calendar_utils import (
+    generate_calendars,
+    get_previous_month,
+    get_next_month,
+)
+from reservations.forms import DateForm
+from reservations.models import Reservation, Stay
+from reservations.tasks import send_confirmation_email
 from winadmin.forms import (
     LoginForm,
     ItemCreateForm,
@@ -39,6 +47,7 @@ from winadmin.forms import (
     SquarePaymentTokenForm,
 )
 from winvillage import settings
+from winvillage.settings import TIME_ZONE
 
 SQUARE_APPLICATION_ID = settings.SQUARE_SETTINGS["SQUARE_APPLICATION_ID"]
 SQUARE_LOCATION_ID = settings.SQUARE_SETTINGS["SQUARE_LOCATION_ID"]
@@ -83,6 +92,8 @@ def login_page(request: HtmxHttpRequest) -> HttpResponse:
             if user is not None:
                 login(request, user)
                 return redirect("winadmin:index")
+            else:
+                messages.error(request=request, message="Huh?")
     context = {"form": form}
     return TemplateResponse(request, "winadmin/login_page.html", context)
 
@@ -104,52 +115,45 @@ def item_list(request: HtmxHttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="winadmin:login_page")
-def item_create(request: HtmxHttpRequest) -> HttpResponse:
-    return _item_create(request)
-
-
 @for_htmx(use_block_from_params=True)
-def _item_create(request: HtmxHttpRequest) -> HttpResponse:
+def item_create(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = ItemCreateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.INFO, _("Item Successfully Added"))
+        if "submit" in request.POST:
+            form = ItemCreateForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, _("Item Successfully Added"))
     form = ItemCreateForm()
-    return TemplateResponse(
-        request, "winadmin/inventory/item_create.html", {"form": form}
+    return trigger_client_event(
+        TemplateResponse(
+            request, "winadmin/inventory/item_create.html", {"form": form}
+        ),
+        "getMessages",
     )
 
 
 @login_required(login_url="winadmin:login_page")
+@for_htmx(use_block_from_params=True)
 def category_create(request: HtmxHttpRequest) -> HttpResponse:
-    return _category_create(request)
-
-
-def _category_create(request: HtmxHttpRequest) -> HttpResponse:
-    form = CategoryCreateForm()
-    context = {"form": form}
     if request.method == "POST":
         form = CategoryCreateForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data["name"]
             category = Category.objects.create(name=name)
             category.save()
-            messages.add_message(
-                request, messages.INFO, _("Category Successfully Added")
-            )
-            return _category_create(make_get_request(request))
-        elif not form.is_valid():
-            if not form.cleaned_data:
-                messages.add_message(request, messages.ERROR, _("Input category title"))
-                return _category_create(make_get_request(request))
-        html = render_block_to_string(
-            "winadmin/inventory/category_create.html", "form", context
-        )
-        return HttpResponse(html)
-    return TemplateResponse(request, "winadmin/inventory/category_create.html", context)
+            messages.success(request, _("Category Successfully Added"))
+            return HttpResponseClientRedirect(reverse("winadmin:category_list"))
+        else:
+            messages.error(request, _("Input category title"))
+    form = CategoryCreateForm()
+    context = {"form": form}
+    return trigger_client_event(
+        TemplateResponse(request, "winadmin/inventory/category_create.html", context),
+        "getMessages",
+    )
 
 
+@login_required(login_url="winadmin:login_page")
 @for_htmx(use_block_from_params=True)
 def category_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     if request.method == "POST":
@@ -159,20 +163,16 @@ def category_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
             category = get_object_or_404(Category, pk=pk)
             category.name = name
             category.save()
-            messages.add_message(
-                request, messages.INFO, _("Category Successfully Edited")
-            )
-            context = {"form": form, "category": category}
-            return TemplateResponse(
-                request, "winadmin/inventory/category_detail.html", context
-            )
-        elif not form.is_valid():
-            if not form.cleaned_data:
-                messages.add_message(request, messages.ERROR, _("Input category name"))
+            messages.success(request, _("Category Successfully Edited"))
+        else:
+            messages.error(request, _("Input category name"))
     category = get_object_or_404(Category, pk=pk)
     form = CategoryDetailForm(initial={"name": category.name})
     context = {"form": form, "category": category}
-    return TemplateResponse(request, "winadmin/inventory/category_detail.html", context)
+    return trigger_client_event(
+        TemplateResponse(request, "winadmin/inventory/category_detail.html", context),
+        "getMessage",
+    )
 
 
 def category_list(request: HtmxHttpRequest) -> HttpResponse:
@@ -185,6 +185,7 @@ def category_list(request: HtmxHttpRequest) -> HttpResponse:
 
 @login_required(login_url="winadmin:login_page")
 @htmx_form_validate(form_class=ItemEditForm)
+@for_htmx(use_block_from_params=True)
 def item_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     item = get_object_or_404(Item, pk=pk)
     form = ItemEditForm(instance=item)
@@ -193,15 +194,14 @@ def item_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
         if form.is_valid():
             form.save()
             messages.success(request, _("Item Successfully Edited"))
-            context = {"form": form, "item": item}
-            return TemplateResponse(
-                request, "winadmin/inventory/item_detail.html", context
-            )
         else:
             form = ItemEditForm(request.POST, instance=item)
             messages.error(request, _("Error"))
-    return TemplateResponse(
-        request, "winadmin/inventory/item_detail.html", {"form": form, "item": item}
+    return trigger_client_event(
+        TemplateResponse(
+            request, "winadmin/inventory/item_detail.html", {"form": form, "item": item}
+        ),
+        "getMessages",
     )
 
 
@@ -278,27 +278,22 @@ def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="winadmin:login_page")
+@for_htmx(use_block_from_params=True)
 def transaction_create(request: HtmxHttpRequest) -> HttpResponse:
-    return _transaction_create(request)
-
-
-def _transaction_create(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = TransactionCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(
-                request, messages.INFO, _("Transaction Created Successfully")
-            )
-            return _transaction_create(make_get_request(request))
+            messages.success(request, _("Transaction Created Successfully"))
         elif not form.is_valid():
-            return TemplateResponse(
-                request, "winadmin/transactions/transaction_create.html", {}
-            )
+            messages.error(request, _("Transaction Couldn't Be Created"))
     form = TransactionCreateForm()
     context = {"form": form}
-    return TemplateResponse(
-        request, "winadmin/transactions/transaction_create.html", context
+    return trigger_client_event(
+        TemplateResponse(
+            request, "winadmin/transactions/transaction_create.html", context
+        ),
+        "getMessages",
     )
 
 
@@ -363,16 +358,12 @@ def _transaction_detail(request: HtmxHttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="winadmin:login_page")
-def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
-    return _reservation_list_by_period(request)
-
-
 @for_htmx(use_block_from_params=True)
-def _reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
+def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     reservations = (
-        Reservation.objects.select_related("stay", "contact_info")
+        Reservation.objects.select_related("stay")
         .exclude(stay__status="not_reserved")
-        .order_by("stay__start_datetime")
+        .order_by("stay__start_date")
     )
     form = []
     active_timezone = activate(TIMEZONE)
@@ -389,8 +380,8 @@ def _reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    reservations = reservations.filter(stay__start_datetime__year=year).filter(
-        stay__start_datetime__month=month
+    reservations = reservations.filter(stay__start_date__year=year).filter(
+        stay__start_date__month=month
     )
     context = {
         "reservations": reservations,
@@ -403,232 +394,254 @@ def _reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     )
 
 
-# @login_required(login_url="winadmin:login_page")
-# def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
-#     return _create_reservation_page(request)
-
-
-def get_grills(reservation: Reservation) -> tuple[list, QuerySet]:
-    reserved_grills_ids = reservation.order_items.filter(
-        item__category__name="grill", item__reservation_option=True
-    ).values_list("item_id", flat=True)
-    unreserved_grills_ids = (
-        Item.objects.filter(category__name="grill", reservation_option=True)
-        .exclude(id__in=reserved_grills_ids)
-        .values_list("id", flat=True)
-    )
-    all_grills_ids = list(reserved_grills_ids) + list(unreserved_grills_ids)
-    all_grills = Item.objects.filter(id__in=all_grills_ids).order_by("pk")
-    return reserved_grills_ids, all_grills
-
-
 @htmx_form_validate(form_class=ReservationCreateForm)
 @for_htmx(use_block_from_params=True)
-def reservation_create(request: HtmxHttpRequest) -> HttpResponse:
+def reservation_create_no_calendar(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     initial = {}
-    if reservation.contact_info is not None:
-        initial["first_name"] = reservation.contact_info.first_name
-        initial["last_name"] = reservation.contact_info.last_name
-        initial["email"] = reservation.contact_info.email
+    if reservation is not None:
+        initial["first_name"] = reservation.first_name
+        initial["last_name"] = reservation.last_name
+        initial["email"] = reservation.email
     if reservation.stay is not None:
         initial["stay_type"] = reservation.stay.stay_type
-        initial["start_datetime"] = reservation.stay.start_date
-        initial["end_datetime"] = reservation.stay.end_date
-    reserved_grills_ids, all_grills = get_grills(reservation)
-    context = {
-        "reservation": reservation,
-        "SQUARE_APPLICATION_ID": SQUARE_APPLICATION_ID,
-        "SQUARE_LOCATION_ID": SQUARE_LOCATION_ID,
-        "SQUARE_CURRENCY": SQUARE_CURRENCY,
-        "grills": all_grills,
-        "reserved_grill_ids": reserved_grills_ids,
-    }
+        initial["start_date"] = reservation.stay.start_date
+        initial["end_date"] = reservation.stay.end_date
+    grills = reservation.get_grills()
     if request.method == "POST":
         form = ReservationCreateForm(request.POST)
-        context["form"] = form
         if form.is_valid():
             stay_type = form.cleaned_data["stay_type"]
-            start_datetime = form.cleaned_data["start_date"]
-            end_datetime = form.cleaned_data["end_date"]
+            start_date = form.cleaned_data["start_date"]
+            end_date = form.cleaned_data["end_date"]
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             email = form.cleaned_data["email"]
             if not reservation.stay:
                 stay = Stay.objects.create(
                     stay_type=stay_type,
-                    start_datetime=start_datetime,
-                    end_datetime=end_datetime,
+                    start_date=start_date,
+                    end_date=end_date,
                 )
                 reservation.stay = stay
                 reservation.save()
             else:
                 reservation.stay.stay_type = stay_type
-                reservation.stay.start_date = start_datetime
-                reservation.stay.end_date = end_datetime
+                reservation.stay.start_date = start_date
+                reservation.stay.end_date = end_date
                 reservation.stay.save()
                 reservation.save()
-            if not reservation.contact_info:
-                contact_info, created = ContactInfo.objects.get_or_create(
-                    first_name=first_name, last_name=last_name, email=email
-                )
-                if created:
-                    contact_info.save()
-                reservation.contact_info = contact_info
-                reservation.save()
-            else:
-                reservation.contact_info.first_name = first_name
-                reservation.contact_info.last_name = last_name
-                reservation.contact_info.email = email
-                reservation.save()
-        return TemplateResponse(
-            request, "winadmin/reservations/reservation_create.html", context
-        )
     form = ReservationCreateForm(initial=initial)
     context = {
         "form": form,
         "reservation": reservation,
-        "SQUARE_APPLICATION_ID": SQUARE_APPLICATION_ID,
-        "SQUARE_LOCATION_ID": SQUARE_LOCATION_ID,
-        "SQUARE_CURRENCY": SQUARE_CURRENCY,
-        "grills": all_grills,
-        "reserved_grill_ids": reserved_grills_ids,
+        "grill": grills,
     }
     return TemplateResponse(
         request, "winadmin/reservations/reservation_create.html", context
     )
 
 
-# @for_htmx(use_block_from_params=True)
-# def create_reservation_page(request: HtmxHttpRequest) -> HttpResponse:
-#     return TemplateResponse(request, template_path, context)
-#
-#
-# @htmx_form_validate(form_class=StayForm)
-# @for_htmx(use_block_from_params=True)
-# def _stay_form(request: HtmxHttpRequest) -> HttpResponse:
-#     if request.method == "POST":
-#         if "create" in request:
-#             pass
-#     return TemplateResponse(request, template_path, context)
-#
-#
-# @htmx_form_validate(form_class=ContactInfoForm)
-# @for_htmx(use_block_from_params=True)
-# def _contact_info_form(request: HtmxHttpRequest) -> HttpResponse:
-#     return TemplateResponse(request, template_path, context)
-#
-#
-# @for_htmx(use_block_from_params=True)
-# def _options(request: HtmxHttpRequest) -> HttpResponse:
-#     return TemplateResponse(request, template_path, context)
-#
-#
-# @for_htmx(use_block_from_params=True)
-# def _payment_form(request: HtmxHttpRequest) -> HttpResponse:
-#     return TemplateResponse(request, template_path, context)
+RESERVATION_TEMPLATE = "winadmin/reservations/reservation_create.html"
 
 
-@require_POST
 @for_htmx(use_block_from_params=True)
-def add_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
+def datetime_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    if reservation:
-        order_item, created = OrderItem.objects.get_or_create(
-            user=request.user, item_id=pk
-        )
-        order_item.save()
-        reservation.order_items.add(order_item)
-        reservation.save()
-    reserved_grill_ids, all_grills = get_grills(reservation)
-    context = {"reserved_grill_ids": reserved_grill_ids, "grills": all_grills}
-    response = TemplateResponse(
-        request, "winadmin/reservations/reservation_create.html", context
-    )
-    return trigger_client_event(response, "updatePrice")
+    tz = ZoneInfo(TIME_ZONE)
+    today_date = datetime.now(tz=tz).date()
+    form = DateForm(initial={"date": today_date})
+    if reservation.start_time and reservation.end_time:
+        initial = {
+            "start_time": reservation.start_time,
+            "end_time": reservation.end_time,
+        }
+    else:
+        initial = None
+    time_form = forms.TimeSelectForm(initial=initial)
+    calendars = generate_calendars(today_date)
+    start_date = reservation.stay.start_date if reservation.stay.start_date else None
+    end_date = reservation.stay.end_date if reservation.stay.end_date else None
+    start_time = reservation.stay.start_time if reservation.stay.start_time else None
+    end_time = reservation.stay.end_time if reservation.stay.end_time else None
+    if request.method == "GET":
+        if "get_previous_month" in request.GET:
+            form = DateForm(request.GET)
+            if form.is_valid():
+                date = form.cleaned_data["date"]
+                date = get_previous_month(date)
+                form = DateForm(initial={"date": date})
+                calendars = generate_calendars(date)
+        elif "get_next_month" in request.GET:
+            form = DateForm(request.GET)
+            if form.is_valid():
+                date = form.cleaned_data["date"]
+                date = get_next_month(date)
+                form = DateForm(initial={"date": date})
+                calendars = generate_calendars(date)
+    if request.method == "POST":
+        if "select_date" in request.POST:
+            calendar_cell_form = DateForm(request.POST)
+            if calendar_cell_form.is_valid():
+                selected_date = calendar_cell_form.cleaned_data["date"]
+                start_date, end_date = reservation.set_dates(selected_date)
+        if "select_time" in request.POST:
+            time_form = forms.TimeSelectForm(request.POST)
+            if time_form.is_valid():
+                start_time = time_form.cleaned_data["start_time"]
+                end_time = time_form.cleaned_data["end_time"]
+                reservation.set_times(start_time, end_time)
+    context = {
+        "calendars": calendars,
+        "today_date": today_date,
+        "calendar_form": form,
+        "time_form": time_form,
+        "start_date": start_date,
+        "end_date": end_date,
+        "start_time": start_time,
+        "end_time": end_time,
+        "reservation": reservation,
+    }
+    response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
+    return trigger_client_event(response, "updateReservationDetails", after="settle")
 
 
-@require_POST
+@htmx_form_validate(form_class=forms.ContactInfoForm)
 @for_htmx(use_block_from_params=True)
-def remove_grill_reservation_option(request: HtmxHttpRequest, pk) -> HttpResponse:
+def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    reservation.order_items.filter(user=request.user, item_id=pk).first().delete()
-    reserved_grill_ids, all_grills = get_grills(reservation)
-    context = {"reserved_grill_ids": reserved_grill_ids, "grills": all_grills}
-    response = TemplateResponse(
-        request, "winadmin/reservations/reservation_create.html", context
+    initial = {
+        "first_name": request.session.get("first_name", ""),
+        "last_name": request.session.get("last_name", ""),
+        "email": request.session.get("email", ""),
+        "phone": request.session.get("phone", ""),
+    }
+    form = forms.ContactInfoForm(initial=initial)
+
+    contact_info = request.session.get("is_valid", False)
+    if request.method == "POST":
+        form = forms.ContactInfoForm(request.POST)
+        if "input_form_name" in request.POST:
+            print("input_form_name in POST")
+        if form.is_valid():
+            request.session["first_name"] = form.cleaned_data["first_name"]
+            request.session["last_name"] = form.cleaned_data["last_name"]
+            request.session["email"] = form.cleaned_data["email"]
+            request.session["phone"] = form.cleaned_data["phone"].as_national
+            reservation.first_name = form.cleaned_data["first_name"]
+            reservation.last_name = form.cleaned_data["last_name"]
+            reservation.email = form.cleaned_data["email"]
+            reservation.phone = form.cleaned_data["phone"]
+            reservation.save()
+            contact_info = request.session["is_valid"] = True
+        else:
+            request.session["first_name"] = request.POST.get("first_name", None)
+            request.session["last_name"] = request.POST.get("last_name", None)
+            request.session["email"] = request.POST.get("email", None)
+            request.session["phone"] = request.POST.get("phone", None)
+            contact_info = request.session["is_valid"] = False
+    context = {"contact_information_form": form, "contact_info": contact_info}
+    response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
+    return trigger_client_event(response, "updateReservationDetails")
+
+
+@for_htmx(use_block_from_params=True)
+def option_select(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    if request.method == "POST":
+        form = forms.GrillOptionForm(request.POST)
+        if form.is_valid():
+            grill_id = form.cleaned_data["grill_id"]
+            if "add_grill" in request.POST:
+                reservation.add_order_item(grill_id)
+            if "remove_grill" in request.POST:
+                reservation.remove_order_item(grill_id)
+    grills = reservation.get_grills()
+    context = {
+        "grills": grills,
+    }
+    response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
+    return trigger_client_event(response, "updateReservationDetails", after="settle")
+
+
+@htmx_form_validate(form_class=ReservationCreateForm)
+@for_htmx(use_block_from_params=True)
+def reservation_create(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    if request.method == "POST":
+        if "confirm-reservation" in request.POST:
+            response = send_confirmation_email.delay(reservation.id)
+            if response:
+                reservation.confirm()
+                customer, created = Customer.objects.get_or_create(
+                    first_name=reservation.first_name,
+                    last_name=reservation.last_name,
+                    email=reservation.email,
+                    phone=reservation.phone,
+                )
+                del request.session["first_name"]
+                del request.session["last_name"]
+                del request.session["email"]
+                del request.session["phone"]
+    return TemplateResponse(
+        request,
+        "winadmin/reservations/reservation_create.html",
+        {"reservation": reservation},
     )
-    return trigger_client_event(response, "updatePrice")
 
 
 @for_htmx(use_block_from_params=True)
 def update_price(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    context = {"reservation": reservation}
     return TemplateResponse(
-        request, "winadmin/reservations/reservation_create.html", context
+        request,
+        "winadmin/reservations/reservation_create.html",
+        {"reservation": reservation},
     )
 
 
 @login_required(login_url="winadmin:login_page")
-def reservation_detail(request: HtmxHttpRequest, pk) -> HttpResponse:
-    return _reservation_detail(request, pk)
-
-
 @for_htmx(use_block_from_params=True)
-def _reservation_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
+def reservation_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     reservation = get_object_or_404(Reservation, pk=pk)
-    stay_type = reservation.stay.stay_type
-    start_datetime = reservation.stay.start_date
-    end_datetime = reservation.stay.end_date
-    first_name = reservation.contact_info.first_name
-    last_name = reservation.contact_info.last_name
-    email = reservation.contact_info.email
-    options = reservation.order_items
-    initial = {
-        "stay_type": stay_type,
-        "start_datetime": start_datetime,
-        "end_datetime": end_datetime,
-        "first_name": first_name,
-        "last_name": last_name,
-        "email": email,
-        "options": options,
-    }
-    form = ReservationDetailForm(initial=initial)
     if request.method == "POST":
+        form = ReservationDetailForm(request.POST)
         if form.is_valid():
+            status = form.cleaned_data["status"]
             stay_type = form.cleaned_data["stay_type"]
-            start_datetime = form.cleaned_data["start_date"]
-            end_datetime = form.cleaned_data["end_date"]
+            start_date = form.cleaned_data["start_date"]
+            end_date = form.cleaned_data["end_date"]
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             email = form.cleaned_data["email"]
-            options = form.cleaned_data["options"]
+            reservation.stay.status = status
             reservation.stay.stay_type = stay_type
-            reservation.stay.start_date = start_datetime
-            reservation.stay.end_date = end_datetime
+            reservation.stay.start_date = start_date
+            reservation.stay.end_date = end_date
             reservation.stay.save()
-            contact_info, created = ContactInfo.objects.get_or_create(
-                first_name=first_name, last_name=last_name, email=email
-            )
-            reservation.contact_info.first_name = first_name
-            reservation.contact_info.last_name = last_name
-            reservation.contact_info.email = email
-            reservation.contact_info.save()
-            for option_id in options:
-                order_item, created = OrderItem.objects.get_or_create(item_id=option_id)
-                order_item.save()
-                reservation.order_items.add(order_item)
-            reservation.stay.status = Stay.STATUS.reserved
+            reservation.first_name = first_name
+            reservation.last_name = last_name
+            reservation.email = email
             reservation.save()
-            messages.add_message(
-                request, messages.INFO, _("Reservation successfully edited.")
-            )
-            return reservation_detail(make_get_request(request), pk)
-    return TemplateResponse(
-        request,
-        "winadmin/reservations/reservation_detail.html",
-        {"form": form, "reservation": reservation},
+            messages.success(request, _("Reservation successfully edited."))
+    initial = {
+        "status": reservation.stay.status,
+        "stay_type": reservation.stay.stay_type,
+        "start_date": reservation.stay.start_date,
+        "end_date": reservation.stay.end_date,
+        "first_name": reservation.first_name,
+        "last_name": reservation.last_name,
+        "email": reservation.email,
+        "options": reservation.order_items,
+    }
+    form = ReservationDetailForm(initial=initial)
+    return trigger_client_event(
+        TemplateResponse(
+            request,
+            "winadmin/reservations/reservation_detail.html",
+            {"form": form, "reservation": reservation},
+        ),
+        "getMessages",
     )
 
 
@@ -712,17 +725,3 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
 #         "noreply@winvillage.jp",
 #         [sender_email],
 #     )
-
-
-def send_confirmation_email(reservation):
-    message = Mail(
-        from_email="noreply@winvillage.jp",
-        to_emails=reservation.contact_info.email,
-        subject=f"{_('Winvillage Reservation Confirmation For')}, {reservation.contact_info.first_name}",
-        html_content="This is some placeholder text",
-    )
-    sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
-    response = sg.send(message)
-    print(response.status_code)
-    print(response.body)
-    print(response.headers)

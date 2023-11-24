@@ -1,0 +1,13 @@
+{% var date=date %}
+{% var url=url %}
+<form class="winadmin-calendar-cell-form" action="{% url 'winadmin:datetime_select' %}" method="post"
+      hx-post="{% url 'winadmin:datetime_select' %}"
+      hx-swap="outerHTML"
+      hx-target="#datetime-form-wrapper"
+      hx-vals='{"use_block": "datetime-form"}'>
+  {{ children }}
+  <button {% attrs name value %}
+          class="mx-auto flex relative z-10 h-8 w-8 items-center justify-center tabular-nums {{ class }}">
+    <time datetime="{{ date|date:"Y-m-d" }}">{{ date.day }}</time>
+  </button>
+</form>
