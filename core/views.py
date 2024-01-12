@@ -1,9 +1,7 @@
+from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_GET
-from django.contrib import messages
-from django_htmx.http import HttpResponseClientRedirect
 
 from core.utils import HtmxHttpRequest, for_htmx
 

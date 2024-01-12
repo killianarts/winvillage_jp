@@ -1,4 +1,4 @@
-<button {% attrs name type data-script %}
+<button {% attrs hx-get hx-swap hx-target hx-trigger hx-vals hx-ext hx-push-url name type data-script %}
         class="px-3.5 py-2.5 text-sm font-semibold shadow-sm transition-all duration-250 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-700 {{ class|default:'text-orange-50 bg-orange-600 hover:bg-orange-500' }}">
   {{ children }}
 </button>

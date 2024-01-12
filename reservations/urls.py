@@ -6,6 +6,7 @@ app_name = "reservations"
 urlpatterns = [
     path("", views.index, name="index"),
     path("select-options/", views.option_select, name="option_select"),
+    path("times/", views.times_view, name="times_view"),
     path(
         "contact-information-input/",
         views.contact_information_input,

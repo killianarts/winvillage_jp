@@ -9,9 +9,9 @@
     <form hx-get="."
           hx-trigger="change delay:0ms"
           hx-swap="outerHTML"
-          hx-target="#orders-table"
+          hx-target="#orders-table-wrapper"
           hx-push-url="true"
-          hx-vals='{"use_block": "orders_table"}'
+          hx-vals='{"use_block": "orders_table", "action": "filter"}'
           class="max-w-7xl">
       <div class="mb-5 max-w-fit space-y-2 divide-y">
         <p>{% translate 'Filter' %}</p>
@@ -21,59 +21,68 @@
         </div>
       </div>
     </form>
-    {% block orders_table %}
-      <table id="orders-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
-        <thead>
-        <tr class="text-left">
-          <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-            <span class="pl-6">{% translate 'Date' %}</span>
-          </th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Name' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Product' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Quantity' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Item' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Sale Amount' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Return Amount' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Purchase Amount' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Payment Amount' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Remainder' %}</th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-stone-200">
-        {% for transaction in transactions %}
-          <tr class="hover:bg-stone-50">
-            <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
-              <a hx-boost="true" class="pl-6"
-                      {#                               href="{% url 'winadmin:edit_transaction' transaction.pk %}"#}
-                 href="#"
-              >
-                {{ transaction.transaction_datetime|date:"Y-m-d" }}
-              </a>
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.get_name_display }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.item }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.quantity }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.item.price_rounded }}</td>
 
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-              {% if transaction.sale_amount %}{{ transaction.sale_amount }}{% endif %}
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-              {% if transaction.return_amount %}{{ transaction.return_amount }}{% endif %}
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-              {% if transaction.purchase_amount %}{{ transaction.purchase_amount }}{% endif %}
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-              {% if transaction.payment_amount %}{{ transaction.payment_amount }}{% endif %}
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-              ???
-            </td>
+
+    {% block orders_table %}
+      <div id="orders-table-wrapper">
+        <form action="{% url 'winadmin:transaction_export_csv_by_period' %}" method="get">
+          <input type="hidden" name="year" value="{{ form.year.value }}">
+          <input type="hidden" name="month" value="{{ form.month.value }}">
+          {% #button name="export" type="submit" %}{% blocktrans %}Export CSV{% endblocktrans %}{% /button %}
+        </form>
+        <table id="orders-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
+          <thead>
+          <tr class="text-left">
+            <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
+              <span class="pl-6">{% translate 'Date' %}</span>
+            </th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Name' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Product' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Quantity' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Item' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Sale Amount' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Return Amount' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Purchase Amount' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Payment Amount' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Remainder' %}</th>
           </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody class="divide-y divide-stone-200">
+          {% for transaction, balance in ledger %}
+            <tr class="hover:bg-stone-50">
+              <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
+                <a hx-boost="true" class="pl-6"
+                                                       href="{% url 'winadmin:transaction_detail' transaction.id %}"
+                   href="#"
+                >
+                  {{ transaction.transaction_datetime|date:"Y-m-d" }}
+                </a>
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.get_name_display }}</td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.item }}</td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.quantity }}</td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.item.price_rounded }}</td>
+
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                {% if transaction.sale_amount %}{{ transaction.sale_amount }}{% endif %}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                {% if transaction.return_amount %}{{ transaction.return_amount }}{% endif %}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                {% if transaction.purchase_amount %}{{ transaction.purchase_amount }}{% endif %}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                {% if transaction.payment_amount %}{{ transaction.payment_amount }}{% endif %}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                {{ balance }}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
     {% endblock %}
   </div>
   </main>

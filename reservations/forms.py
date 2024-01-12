@@ -56,3 +56,7 @@ class TimeSelectForm(forms.Form):
         end_time = self.cleaned_data.get("end_time")
         end_time = dt.datetime.strptime(end_time, "%H:%M:%S").time()
         return end_time
+
+
+class DateTimeForm:
+    datetime = forms.DateTimeField(widget=forms.HiddenInput)

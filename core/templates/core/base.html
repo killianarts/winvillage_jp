@@ -27,7 +27,6 @@
   {#    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>#}
   <!-- HTMX library -->
   <script src="{% static 'core/js/htmx.js' %}"></script>
-  {% django_htmx_script %}
   <!-- This is necessary to make Google (potentially) display a picture in the search result. -->
   {#    <script type="application/ld+json">#}
   {#      {#}
@@ -46,7 +45,6 @@
 </head>
 
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-{{ django_htmx_script }}
 {% block header %}
 {% endblock %}
 {% block pre_content %}{% endblock %}
@@ -62,4 +60,5 @@
 {% block footer %}
 {% endblock %}
 </body>
+{% django_htmx_script %}
 </html>

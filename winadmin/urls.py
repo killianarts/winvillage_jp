@@ -42,11 +42,21 @@ urlpatterns = [
         name="transaction_list_by_period",
     ),
     path(
+        "transactions/export",
+        views.transaction_export_csv_by_period,
+        name="transaction_export_csv_by_period",
+    ),
+    path(
         "transactions/sale/list/",
         views.sale_list_by_period,
         name="sale_list_by_period",
     ),
     path("transactions/create/", views.transaction_create, name="transaction_create"),
+    path(
+        "transactions/detail/<int:id>/",
+        views.transaction_detail,
+        name="transaction_detail",
+    ),
     path(
         "reservations/",
         views.reservation_list_by_period,
@@ -68,7 +78,7 @@ urlpatterns = [
     ),
     path("reservations/create/update-price/", views.update_price, name="update_price"),
     path(
-        "reservations/edit/<int:pk>/",
+        "reservations/detail/<int:pk>/",
         views.reservation_detail,
         name="reservation_detail",
     ),

@@ -4,7 +4,7 @@
   <div id="reservation-form-wrapper" class="mx-auto max-w-xl px-5">
     <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
       {% translate 'Winvillage Admin Login' %}</h2>
-    <form action="{% url 'winadmin:login_page' %}" method="post" class="grid" novalidate>
+    <form action="." method="post" class="grid" novalidate>
       {% csrf_token %}
       {#      <fieldset>#}
       {#        <legend class="sr-only">{% translate 'Contact Information' %}</legend>#}

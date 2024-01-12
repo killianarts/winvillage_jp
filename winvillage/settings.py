@@ -324,6 +324,10 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 if DEBUG:
     STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
+# Tailwind CLI
+# This is needed until django-tailwind-cli is updated with the latest version.
+TAILWIND_CLI_VERSION = "3.4.0"
+
 # MEDIA
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root

@@ -1,7 +1,9 @@
+import csv
 import uuid
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+import pendulum
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -13,7 +15,6 @@ from django.utils.timezone import activate, deactivate
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event, HttpResponseClientRedirect
-from sendgrid import Mail, SendGridAPIClient
 from square.client import Client
 
 from core.models import Item, Category, Transaction, Customer
@@ -79,10 +80,7 @@ def sale_management_page(request: HtmxHttpRequest) -> HttpResponse:
 
 @htmx_form_validate(form_class=LoginForm)
 def login_page(request: HtmxHttpRequest) -> HttpResponse:
-    if request.user.is_authenticated:
-        return redirect("winadmin:index")
     form = LoginForm()
-
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -93,9 +91,35 @@ def login_page(request: HtmxHttpRequest) -> HttpResponse:
                 login(request, user)
                 return redirect("winadmin:index")
             else:
-                messages.error(request=request, message="Huh?")
+                messages.error(
+                    request=request, message=_("There was an error logging in.")
+                )
     context = {"form": form}
     return TemplateResponse(request, "winadmin/login_page.html", context)
+
+
+@htmx_form_validate(form_class=LoginForm)
+def login_page(request: HtmxHttpRequest) -> HttpResponse:
+    if request.method != "POST":
+        form = LoginForm()
+        context = {"form": form}
+        return TemplateResponse(request, "winadmin/login_page.html", context)
+
+    form = LoginForm(request.POST)
+    if not form.is_valid():
+        context = {"form": form}
+        return TemplateResponse(request, "winadmin/login_page.html", context)
+
+    username = form.cleaned_data["username"]
+    password = form.cleaned_data["password"]
+    user = authenticate(request, username=username, password=password)
+    if user is None:
+        messages.error(request=request, message=_("There was an error logging in."))
+        context = {"form": form}
+        return TemplateResponse(request, "winadmin/login_page.html", context)
+
+    login(request, user)
+    return redirect("winadmin:index")
 
 
 @login_required(login_url="winadmin:login_page")
@@ -231,18 +255,19 @@ def get_current_year_and_month(request, tz=TIMEZONE):
     active_timezone = activate(tz)
     year = request.GET.get("year", datetime.now(tz=active_timezone).year)
     month = request.GET.get("month", datetime.now(tz=active_timezone).month)
+    deactivate()
     return year, month
 
 
-def get_balance_and_ledger(sales: Transaction):
+def get_balance_and_ledger(transactions: Transaction):
     balance = 0
     ledger = []
-    for sale in sales:
-        if sale.name == "sale":
-            balance += sale.total_price_rounded
-        elif sale.name == "return":
-            balance -= sale.total_price_rounded
-        ledger.append([sale, balance])
+    for transaction in transactions:
+        if transaction.name == "sale":
+            balance += transaction.total_price_rounded
+        elif transaction.name == "return" or transaction.name == "purchase":
+            balance -= transaction.total_price_rounded
+        ledger.append([transaction, balance])
     return balance, ledger
 
 
@@ -280,6 +305,8 @@ def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
 @login_required(login_url="winadmin:login_page")
 @for_htmx(use_block_from_params=True)
 def transaction_create(request: HtmxHttpRequest) -> HttpResponse:
+    if "get_item_price" in request.GET:
+        item = Item.objects.get()
     if request.method == "POST":
         form = TransactionCreateForm(request.POST)
         if form.is_valid():
@@ -303,7 +330,7 @@ def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     transactions = Transaction.objects.all()
     year, month = get_current_year_and_month(request)
     deactivate()
-    if request.htmx:
+    if request.GET.get("action") == "filter":
         form = SetLedgerPeriodForm(request.GET)
         if form.is_valid():
             year = form.cleaned_data["year"]
@@ -329,12 +356,60 @@ def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     )
 
 
+def transaction_export_csv_by_period(request) -> HttpResponse:
+    form = SetLedgerPeriodForm(request.GET)
+    if form.is_valid():
+        year = form.cleaned_data["year"]
+        month = form.cleaned_data["month"]
+        transactions = Transaction.objects.filter(
+            transaction_datetime__year=year
+        ).filter(transaction_datetime__month=month)
+        balance, ledger = get_balance_and_ledger(transactions)
+        response = HttpResponse(content_type="text/csv")
+        filename = f"transactions_{year}_{month}.csv"
+        path = f"csv/{filename}"
+        response["Content-Disposition"] = f"attachment; filename={filename}"
+
+        # TODO: Check that a file exactly matching
+        # if os.path.exists(path):
+        #     return response
+
+        with open(path, "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(
+                [
+                    _("Name"),
+                    _("Customer"),
+                    _("Date"),
+                    _("Item"),
+                    _("Quantity"),
+                    _("Total Price"),
+                    _("Balance"),
+                ]
+            )
+            for transaction, balance in ledger:
+                writer.writerow(
+                    [
+                        transaction.name,
+                        transaction.customer,
+                        transaction.transaction_datetime.date(),
+                        transaction.item.name,
+                        transaction.quantity,
+                        transaction.total_price_rounded,
+                        balance,
+                    ]
+                )
+
+        with open(path, "r") as csvfile:
+            response.write(csvfile.read())
+
+        return response
+
+
 @login_required(login_url="winadmin:login_page")
-def transaction_detail(request: HtmxHttpRequest) -> HttpResponse:
-    return _transaction_detail(request)
-
-
-def _transaction_detail(request: HtmxHttpRequest) -> HttpResponse:
+def transaction_detail(request: HtmxHttpRequest, id: int) -> HttpResponse:
+    transaction = Transaction.objects.get(id=id)
+    form = TransactionCreateForm(instance=transaction)
     if request.method == "POST":
         form = TransactionCreateForm(request.POST)
         if form.is_valid():
@@ -342,12 +417,6 @@ def _transaction_detail(request: HtmxHttpRequest) -> HttpResponse:
             messages.add_message(
                 request, messages.INFO, _("Transaction Created Successfully")
             )
-            return _transaction_create(make_get_request(request))
-        elif not form.is_valid():
-            return TemplateResponse(
-                request, "winadmin/transactions/transaction_create.html", {}
-            )
-    form = TransactionCreateForm()
     context = {"form": form}
     return TemplateResponse(
         request, "winadmin/transactions/transaction_create.html", context
@@ -483,7 +552,9 @@ def datetime_select(request: HtmxHttpRequest) -> HttpResponse:
         if "select_date" in request.POST:
             calendar_cell_form = DateForm(request.POST)
             if calendar_cell_form.is_valid():
-                selected_date = calendar_cell_form.cleaned_data["date"]
+                selected_date = pendulum.instance(
+                    calendar_cell_form.cleaned_data["date"]
+                )
                 start_date, end_date = reservation.set_dates(selected_date)
         if "select_time" in request.POST:
             time_form = forms.TimeSelectForm(request.POST)

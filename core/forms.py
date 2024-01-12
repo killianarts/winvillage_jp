@@ -6,13 +6,8 @@ class TailwindFormRenderer(TemplatesSetting):
     single_field_row_template = "core/forms/tailwind/field_row.html"
 
 
-class ReservationsContactInformationFormRenderer(TemplatesSetting):
-    form_template_name = "core/forms/tailwind/div.html"
-    single_field_row_template = "core/forms/reservations/field_row.html"
-
-
-class ReservationsContactInformationFormMixin:
-    default_renderer = ReservationsContactInformationFormRenderer()
+class TailwindFormMixin:
+    default_renderer = TailwindFormRenderer()
     do_htmx_validation = False
 
     # def __init__(self, *args, **kwargs) -> None:
@@ -26,8 +21,13 @@ class ReservationsContactInformationFormMixin:
         }
 
 
-class TailwindFormMixin:
-    default_renderer = TailwindFormRenderer()
+class ReservationsContactInformationFormRenderer(TemplatesSetting):
+    form_template_name = "core/forms/tailwind/div.html"
+    single_field_row_template = "core/forms/reservations/field_row.html"
+
+
+class ReservationsContactInformationFormMixin:
+    default_renderer = ReservationsContactInformationFormRenderer()
     do_htmx_validation = False
 
     # def __init__(self, *args, **kwargs) -> None:

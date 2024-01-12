@@ -1,3 +1,6 @@
+import datetime
+
+import pendulum
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -17,6 +20,42 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class PendulumDateTimeField(models.DateTimeField):
+    def from_db_value(self, value, expression, connection):
+        if value is None:
+            return value
+        # Convert the value to a Pendulum DateTime object
+        if isinstance(value, datetime.datetime):
+            return pendulum.instance(value)
+        return pendulum.parse(value)
+
+    def to_python(self, value):
+        if isinstance(value, pendulum.DateTime):
+            return value
+        if isinstance(value, datetime.datetime):
+            return pendulum.instance(value)
+        if value is None:
+            return value
+        # Convert the value to a Pendulum DateTime object
+        return pendulum.parse(value)
+
+    def get_prep_value(self, value):
+        if isinstance(value, pendulum.DateTime):
+            return value
+        if isinstance(value, datetime.datetime):
+            return pendulum.instance(value)
+        if value is None:
+            return value
+        # Convert the value to a string representation suitable for storage
+        return value.to_iso8601_string()
+
+    def db_type(self, connection):
+        if connection.vendor == "mysql":
+            return "datetime"
+        else:
+            return "timestamp"
 
 
 class ContactInfo(BaseModel):
@@ -88,7 +127,7 @@ class Item(models.Model):
         return round(self.price, 0)
 
     def __str__(self):
-        return f"ID: {self.pk}, Name: {self.name}"
+        return f"{self.name}"
 
     def get_absolute_url(self):
         return reverse("winadmin:item_detail", args=[str(self.pk)])
@@ -172,7 +211,7 @@ class Transaction(BaseModel):
         return self.total_price
 
     def __str__(self):
-        return f"{self.transaction_datetime.strftime('%Y-%m-%d')}, {self.item}, {self.quantity}, {self.total_price}"
+        return f"{self.name}, {self.total_price_rounded}"
 
     def get_absolute_url(self):
-        return reverse("winadmin:edit_transaction", args=[str(self.pk)])
+        return reverse("winadmin:transaction_detail", args=[str(self.pk)])

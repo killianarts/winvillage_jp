@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django import forms
+from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 
@@ -12,10 +15,29 @@ class LoginForm(TailwindFormMixin, forms.Form):
     password = forms.CharField(
         label=_("Password"), widget=forms.PasswordInput, max_length=30
     )
-    do_htmx_validation = True
 
 
-class ItemCreateForm(TailwindFormMixin, forms.ModelForm):
+class ItemCreateFormRenderer(TemplatesSetting):
+    form_template_name = "winadmin/forms/item_create/div.html"
+    single_field_row_template = "winadmin/forms/item_create/field_row.html"
+
+
+class ItemCreateFormMixin:
+    default_renderer = ItemCreateFormRenderer()
+    do_htmx_validation = False
+
+    # def __init__(self, *args, **kwargs) -> None:
+    # We don’t want ':' as a label suffix:
+    # return super().__init__(*args, label_suffix="", **kwargs)
+
+    def get_context(self, *args, **kwargs):
+        return super().get_context(*args, **kwargs) | {
+            "do_htmx_validation": self.do_htmx_validation,
+            "single_field_row_template": self.renderer.single_field_row_template,
+        }
+
+
+class ItemCreateForm(ItemCreateFormMixin, forms.ModelForm):
     class Meta:
         model = Item
         fields = [
@@ -92,8 +114,10 @@ class TransactionCreateForm(TailwindFormMixin, forms.ModelForm):
 
 
 class SetLedgerPeriodForm(forms.Form):
-    year = forms.IntegerField()
-    month = forms.IntegerField()
+    current_year = datetime.today().year
+    current_month = datetime.today().month
+    year = forms.IntegerField(max_value=current_year)
+    month = forms.IntegerField(max_value=current_month)
 
 
 class SetReservationPeriodForm(forms.Form):
@@ -107,8 +131,8 @@ class ReservationCreateForm(TailwindFormMixin, forms.Form):
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
     stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES, label=_("Stay Type"))
-    start_datetime = forms.DateField(widget=DateInput, label=_("Start Date"))
-    end_datetime = forms.DateField(widget=DateInput, label=_("End Date"))
+    start = forms.DateTimeField(widget=DateInput, label=_("Start Date"))
+    end = forms.DateTimeField(widget=DateInput, label=_("End Date"))
 
     do_htmx_validation = True
 
@@ -118,10 +142,10 @@ class StayForm(TailwindFormMixin, forms.ModelForm):
         model = Stay
         fields = [
             "stay_type",
-            "start_date",
-            "end_date",
+            "start",
+            "end",
         ]
-        widgets = {"start_date": DateInput(), "end_date": DateInput()}
+        widgets = {"start": DateInput(), "end": DateInput()}
 
     do_htmx_validation = True
 
@@ -147,8 +171,8 @@ class ReservationDetailForm(TailwindFormMixin, forms.Form):
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
-    start_date = forms.DateField(widget=DateInput, label=_("Start"))
-    end_date = forms.DateField(widget=DateInput, label=_("End"))
+    start = forms.DateTimeField(widget=DateInput, label=_("Start"))
+    end = forms.DateTimeField(widget=DateInput, label=_("End"))
     stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES, label=_("Stay Type"))
 
 

@@ -1,7 +1,9 @@
+import math
 import uuid
 from datetime import datetime, timedelta, time
 from zoneinfo import ZoneInfo
 
+import pendulum
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -10,10 +12,10 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
 from phonenumber_field.modelfields import PhoneNumberField
-from core.models import Item, ContactInfo, BaseModel
+
+from core.models import Item, ContactInfo, BaseModel, PendulumDateTimeField
 from customer.models import Customer
 from reservations.forms import GrillOptionForm
-from dateutil.relativedelta import relativedelta
 
 auth_user = get_user_model()
 
@@ -121,11 +123,42 @@ class StayManager(models.Manager):
 class SpecialDate(models.Model):
     date = models.DateField()
     name = models.CharField(max_length=255)
-    daily_price = models.DecimalField(max_digits=19, decimal_places=4)
-    hourly_price = models.DecimalField(max_digits=19, decimal_places=4)
+    price_per_night = models.DecimalField(max_digits=19, decimal_places=4)
+    price_per_hour = models.DecimalField(max_digits=19, decimal_places=4)
 
     def __str__(self):
         return self.name
+
+
+# class StayTypes(models.Model):
+#     class TypeChoices(models.TextChoices):
+#         ROOM = "room", _("Room")
+#         BATH = "bath", _("Bath")
+#
+#     name = models.CharField(max_length=4, choices=TypeChoices, default=TypeChoices.ROOM)
+#     # Price is determined both by date and type of the stay
+#
+#     def __str__(self):
+#         return self.name
+# models.py
+
+
+class DefaultPrice(models.Model):
+    weekday_price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
+    weekend_price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
+    weekday_price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
+    weekend_price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Default Prices - Nightly Weekday: {self.nightly_weekday_price}, Nightly Weekend: {self.nightly_weekend_price}, Hourly Weekday: {self.hourly_weekday_price}, Hourly Weekend: {self.hourly_weekend_price}"
+
+    def save(self, *args, **kwargs):
+        # Ensure only one instance of DefaultPrice exists in the database
+        if not self.pk and DefaultPrice.objects.exists():
+            raise ValueError(
+                "There can be only one instance of DefaultPrice in the database."
+            )
+        super().save(*args, **kwargs)
 
 
 class Stay(BaseModel):
@@ -148,58 +181,85 @@ class Stay(BaseModel):
         choices=STAY_TYPE_CHOICES,
         default=STAY_TYPE_CHOICES.hourly,
     )
-    start_date = models.DateField(verbose_name=_("Start"), null=True)
-    end_date = models.DateField(verbose_name=_("End"), null=True)
-    start_time = models.TimeField(verbose_name=_("Start"), null=True)
-    end_time = models.TimeField(verbose_name=_("End"), null=True)
+    start = PendulumDateTimeField(verbose_name=_("Start"), null=True)
+    end = PendulumDateTimeField(verbose_name=_("End"), null=True)
     status_changed = MonitorField(monitor="status")
     type_changed = MonitorField(monitor="stay_type")
-    # price = models.DecimalField(max_digits=19, decimal_places=4, default=10000.00)
 
     def get_stay_range(self):
         return (
-            self.start_date,
-            self.end_date,
+            self.start,
+            self.end,
         )
 
-    @property
-    def price_fully_rounded(self):
-        if self.days:
-            return round(self.price * self.days, 0)
-        else:
-            return 0
+    def is_hourly(self):
+        return self.end.date == self.start.date
 
-    @property
-    def price(self):
+    def is_weekend(self, date_: datetime.date) -> bool:
+        return date_.weekday() > 4
+
+    def is_special_date(self, date_: datetime.date) -> bool:
+        return SpecialDate.objects.filter(date=date_).exists()
+
+    def calculate_hourly_price(self):
         total_price = 0
-        if not self.end_date and self.start_time and self.end_time:
-            current_datetime = datetime.combine(self.start_date, self.start_time)
-            end_datetime = datetime.combine(self.start_date, self.end_time)
-            while current_datetime < end_datetime:
-                total_price += 2000
-                current_datetime += timedelta(hours=1)
-        elif self.start_date and self.end_date:
-            current_date = self.start_date
-            while current_date <= self.end_date:
-                special_dates = SpecialDate.objects.filter(date=current_date)
-                if special_dates.exists():
-                    total_price += special_dates.first().price
-                elif current_date.weekday() > 4:
-                    total_price += 15000
-                else:
-                    total_price += 10000
-                current_date += timedelta(days=1)  # increment the date by 1 day
+        current_datetime = self.start
+        end_datetime = self.end
+        while current_datetime < end_datetime:
+            if self.is_special_date(current_datetime.date):
+                total_price += SpecialDate.objects.get(
+                    date=current_datetime.date
+                ).price_per_hour
+            elif self.is_weekend(current_datetime.date):
+                total_price += DefaultPrice.objects.first().weekend_price_per_hour
+            else:
+                total_price += DefaultPrice.objects.first().weekday_price_per_hour
+            current_datetime += timedelta(hours=1)
+        return total_price
+
+    def calculate_nightly_price(self):
+        current_date = self.start.date
+        total_price = 0
+        while current_date <= self.end.date:
+            if self.is_special_date(current_date):
+                total_price += SpecialDate.objects.filter(
+                    date=current_date
+                ).price_per_night
+            elif self.is_weekend(current_date):
+                total_price += DefaultPrice.objects.first().weekend_price_per_night
+            else:
+                total_price += DefaultPrice.objects.first().weekday_price_per_night
+            current_date += timedelta(days=1)
+        return total_price
+
+    def calculate_price(self):
+        total_price = 0
+        if self.is_hourly():
+            total_price = self.calculate_hourly_price()
+        else:
+            total_price = self.calculate_nightly_price()
         return round(total_price, 0)
 
-    @property
     def days(self):
-        if self.start_date and self.end_date:
-            delta = self.end_date - self.start_date
+        if self.start.date and self.end.date:
+            delta = self.end.date - self.start.date
             return delta.days
         else:
             return None
 
-    @property
+    def time_span(self):
+        start_datetime = pendulum.instance(self.start)
+        end_datetime = pendulum.instance(self.end)
+        span = end_datetime.diff(start_datetime)
+        return span
+
+    def period_start(self):
+        return math.ceil(self.start.time().hour)
+
+    def period_end(self):
+        # round(2.5) == 2...
+        return math.ceil(self.time_span.in_minutes() / 60)
+
     def status_display(self):
         return Stay.STATUS[self.status]
 
@@ -260,22 +320,23 @@ class Reservation(BaseModel):
             grills.append([grill, form, is_reserved])
         return grills
 
-    def set_dates(self, selected_date: datetime):
-        if not self.stay.start_date or selected_date < self.stay.start_date:
-            self.stay.start_date = selected_date
-            if self.stay.end_date:
-                self.stay.end_date = None
+    def set_dates(self, selected_date: pendulum.DateTime):
+        if not self.stay.start or selected_date < self.stay.start.date():
+            # if not self.stay.start.date():
+            self.stay.start = selected_date
+            if self.stay.end:
+                self.stay.end = None
         elif (
-            self.stay.start_date
-            and not self.stay.end_date
-            and selected_date != self.stay.start_date
+            self.stay.start.date
+            and not self.stay.end.date
+            and selected_date != self.stay.start.date
         ):
-            self.stay.end_date = selected_date
-        elif self.stay.start_date and self.stay.end_date:
-            self.stay.start_date = selected_date
-            self.stay.end_date = None
+            self.stay.end.date = selected_date
+        elif self.stay.start.date and self.stay.end.date:
+            self.stay.start.date = selected_date
+            self.stay.end.date = None
         self.stay.save()
-        return self.stay.start_date, self.stay.end_date
+        return self.stay.start.date(), self.stay.end.date
 
     def check_availability(self, date_):
         tzinfo = timezone.get_current_timezone()
@@ -284,8 +345,8 @@ class Reservation(BaseModel):
         )
 
         reservations_count = self.objects.filter(
-            stay__start_date__lte=datetime_with_tz,
-            stay__end_date__gte=datetime_with_tz,
+            stay__start__lte=datetime_with_tz,
+            stay__end__gte=datetime_with_tz,
             stay__status="reserved",
         ).count()
         return reservations_count < 4
@@ -306,21 +367,14 @@ class Reservation(BaseModel):
         total += self.stay.price_fully_rounded
         return round(total, 0)
 
-    @property
-    def start(self):
-        return self.stay.start_date
-
-    @property
-    def end(self):
-        return self.stay.end_date
-
-    @property
     def start_time(self):
-        return self.stay.start_time
+        if self.stay.start:
+            return self.stay.start.time()
+        else:
+            return None
 
-    @property
     def end_time(self):
-        return self.stay.end_time
+        return self.stay.end.time()
 
     def set_times(self, start_time: time, end_time: time):
         self.stay.start_time = start_time
@@ -336,6 +390,12 @@ class Reservation(BaseModel):
 
     def __str__(self):
         return f"Reservation id: {self.id}, User: {self.user}"
+
+    def order_items_list(self):
+        items = []
+        for item in self.order_items.all():
+            items.append(item)
+        return items
 
     def get_absolute_url(self, pk):
         return reverse("winadmin:reservation_detail", kwargs={"pk": self.pk})
