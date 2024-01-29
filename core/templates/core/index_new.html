@@ -1,0 +1,114 @@
+{% extends "core/base.html" %}
+{% load static i18n %}
+{% block content_main %}
+  <main class="px-5 md:px-20">
+
+    <div class="grid grid-cols-4 gap-7 pb-5">
+      {% #four_col_grid_cell variant="wide" %}
+      <div class="grid gap-5">
+        <div class="hidden sm:block max-w-[200px]">
+          <img src="{% static 'core/img/light_logo.svg' %}" alt="">
+        </div>
+        <h1 class="font-display text-2xl lg:text-3xl xl:text-5xl uppercase">
+          Relax and<br class="hidden 2xl:inline">
+          Light a Fire.</h1>
+        <p>
+          {% blocktranslate %}
+            静かな空間、最高の風呂、美味しいバーベキュー。</br></br>
+            佐世保でのグランピング。
+          {% endblocktranslate %}
+        </p>
+        <button class="px-5 py-3 border-2 border-stone-900 rounded-md">{% translate '予約を作る' %}</button>
+      </div>
+      {% /four_col_grid_cell %}
+      {% static 'core/img/outdoors_night.jpg' as image_url %}
+      {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
+      {% #four_col_grid_cell variant="wide" %}
+      <div class="space-y-5">
+        {% translate 'family room' as subheader %}
+        {% translate '家族みんな快適に' as header %}
+        {% winvillage_header number="01" subheader=subheader header=header %}
+        <p>
+          {% blocktranslate %}
+            自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできるスペース。温泉水で一日の疲れを取る。ダラダラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーをいれて
+          {% endblocktranslate %}
+        </p>
+      </div>
+      {% /four_col_grid_cell %}
+      {% #four_col_grid_cell %}
+      {% static 'core/img/icons/lock.svg' as icon %}
+      {% translate '個人予約' as header %}
+      {% translate '露天風呂の予約であなたや家族だけの贅沢の風呂になる。' as body %}
+      {% four_col_grid_cell_content icon=icon alt="lock" header=header body=body %}
+      {% /four_col_grid_cell %}
+      {% #four_col_grid_cell %}
+      {% static 'core/img/icons/fridge.svg' as icon %}
+      {% translate '台所' as header %}
+      {% translate '冷蔵庫、シンクとIHコンロがついています。' as body %}
+      {% four_col_grid_cell_content icon=icon alt="fridge" header=header body=body %}
+      {% /four_col_grid_cell %}
+      {% static 'core/img/beds.jpg' as image_url %}
+      {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
+      {% #four_col_grid_cell %}
+      {% static 'core/img/icons/water.svg' as icon %}
+      {% translate '温泉水' as header %}
+      {% translate '露天風呂も部屋の風呂も温泉水を使います。' as body %}
+      {% four_col_grid_cell_content icon=icon alt="water" header=header body=body %}
+      {% /four_col_grid_cell %}
+      {% #four_col_grid_cell %}
+      {% static 'core/img/icons/wifi.svg' as icon %}
+      {% translate 'WIFI' as header %}
+      {% translate '無線でインターネットを無料で使えます。' as body %}
+      {% four_col_grid_cell_content icon=icon alt="water" header=header body=body font="font-display" %}
+      {% /four_col_grid_cell %}
+      {% #four_col_grid_cell %}
+      {% static 'core/img/icons/thermometer.svg' as icon %}
+      {% translate 'サウナ' as header %}
+      {% translate '温度は９０度。中の砂時計で安全にリラックス。' as body %}
+      {% four_col_grid_cell_content icon=icon alt="thermometer" header=header body=body %}
+      {% /four_col_grid_cell %}
+      {% static 'core/img/outdoor_bath.jpg' as image_url %}
+      {% four_col_image_grid_cell background_image_url=image_url class="hidden sm:block lg:hidden" %}
+      {% #four_col_grid_cell variant="wide" %}
+      <div class="space-y-5">
+        {% translate 'solitude' as subheader %}
+        {% translate '閉鎖空間と蒸気' as header %}
+        {% winvillage_header number="02" subheader=subheader header=header %}
+        <p>
+          {% blocktranslate %}
+            温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れる。
+          {% endblocktranslate %}
+        </p>
+      </div>
+      {% /four_col_grid_cell %}
+      {% #four_col_grid_cell %}
+      {% static 'core/img/icons/grill.svg' as icon %}
+      {% translate 'レンタル' as header %}
+      {% translate 'グリル、椅子やテントをレンタルできます。' as body %}
+      {% four_col_grid_cell_content icon=icon alt="grill" header=header body=body %}
+      {% /four_col_grid_cell %}
+      {% #four_col_grid_cell %}
+      {% static 'core/img/icons/meat.svg' as icon %}
+      {% translate '飲食物の販売' as header %}
+      {% translate '冷凍食品、肉や野菜を購入できます。' as body %}
+      {% four_col_grid_cell_content icon=icon alt="meat" header=header body=body %}
+      {% /four_col_grid_cell %}
+      {% static 'core/img/people.jpg' as image_url %}
+      {% four_col_image_grid_cell background_image_url=image_url %}
+      {% static 'core/img/grill.jpg' as image_url %}
+      {% four_col_image_grid_cell background_image_url=image_url class="hidden sm:block lg:hidden" %}
+      {% #four_col_grid_cell variant="wide" %}
+      <div class="space-y-5">
+        {% translate 'casual camping' as subheader %}
+        {% translate '美味しい空気、美味しい肉' as header %}
+        {% winvillage_header number="03" subheader=subheader header=header %}
+        <p>
+          {% blocktranslate %}
+            山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べる。ベテランのキャンパーでも、初心者でも楽しめる。
+          {% endblocktranslate %}
+        </p>
+      </div>
+      {% /four_col_grid_cell %}
+
+  </main>
+{% endblock %}

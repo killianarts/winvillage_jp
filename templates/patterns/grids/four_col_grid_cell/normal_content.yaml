@@ -1,0 +1,5 @@
+name: Four Column Grid Cell Content
+context:
+  icon: core/img/icons/lock.svg
+  header: 個人予約
+  body: 露天風呂の予約であなたや家族だけの贅沢の風呂になる。

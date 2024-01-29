@@ -1,0 +1,12 @@
+{% var font=font|default:"font-sans" %}
+<div class="grid place-items-center gap-3">
+  <div>
+    <img src="{{ icon }}" alt="{{ alt }}">
+  </div>
+  <h3 class="font-black {{ font }}">
+    {{ header }}
+  </h3>
+  <p>
+    {{ body }}
+  </p>
+</div>

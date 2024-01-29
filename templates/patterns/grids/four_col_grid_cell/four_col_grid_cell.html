@@ -1,0 +1,5 @@
+{% var variant=variant|default:"normal" %}
+{% var class=class %}
+<div class="border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg p-10 grid place-items-center {{ class }} {{ variant|match:"normal: col-span-4 sm:col-span-2 xl:col-span-1 , wide: col-span-4 lg:col-span-2" }}">
+  {{ children }}
+</div>

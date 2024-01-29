@@ -10,6 +10,10 @@ def index(request):
     return TemplateResponse(request, "core/index.html")
 
 
+def index_new(request):
+    return TemplateResponse(request, "core/index_new.html")
+
+
 @for_htmx(use_block="messages")
 def get_messages(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(

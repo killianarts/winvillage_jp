@@ -26,7 +26,6 @@ class PendulumDateTimeField(models.DateTimeField):
     def from_db_value(self, value, expression, connection):
         if value is None:
             return value
-        # Convert the value to a Pendulum DateTime object
         if isinstance(value, datetime.datetime):
             return pendulum.instance(value)
         return pendulum.parse(value)
@@ -38,18 +37,17 @@ class PendulumDateTimeField(models.DateTimeField):
             return pendulum.instance(value)
         if value is None:
             return value
-        # Convert the value to a Pendulum DateTime object
         return pendulum.parse(value)
 
     def get_prep_value(self, value):
         if isinstance(value, pendulum.DateTime):
-            return value
+            return value.to_iso8601_string()
         if isinstance(value, datetime.datetime):
+            return pendulum.instance(value)
+        if isinstance(value, datetime.date):
             return pendulum.instance(value)
         if value is None:
             return value
-        # Convert the value to a string representation suitable for storage
-        return value.to_iso8601_string()
 
     def db_type(self, connection):
         if connection.vendor == "mysql":

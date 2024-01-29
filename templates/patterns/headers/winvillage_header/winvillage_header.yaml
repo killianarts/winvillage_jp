@@ -1,0 +1,5 @@
+name: Winvillage Header
+context:
+  number: 01
+  subheader: subheader
+  header: こちらはヘッダーだ

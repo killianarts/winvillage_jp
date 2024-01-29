@@ -2,6 +2,7 @@ from datetime import date, datetime, time, timedelta
 from typing import List, Tuple
 from zoneinfo import ZoneInfo
 
+import pendulum
 from dateutil.relativedelta import relativedelta
 
 from reservations.models import Reservation
@@ -74,3 +75,42 @@ def generate_datetimes(
         datetimes.append(jikan)
         jikan += interval
     return datetimes
+
+
+def generate_interval(
+    date_: pendulum.DateTime = None,
+    from_hour: int = 9,
+    to_hour: int = 21,
+    time_zone: str = "UTC",
+):
+    """
+    dts = generate_datetimes(datetime.today().date())
+    for dt in dts:
+        print(dt.time())
+
+    09:00:00
+    09:30:00
+    10:00:00
+    10:30:00
+    11:00:00
+    ...
+    """
+
+    if date_:
+        the_date = date_
+    else:
+        the_date = pendulum.today(tz=time_zone)
+
+    from_dt = the_date.at(from_hour)
+    to_dt = the_date.at(to_hour)
+    interval = pendulum.interval(from_dt, to_dt)
+
+    return interval
+
+
+def generate_interval_range(
+    range_unit: str, range_amount: int, interval: pendulum.Interval = None
+):
+    if not interval:
+        interval = generate_interval()
+    return interval.range(unit=range_unit, amount=range_amount)

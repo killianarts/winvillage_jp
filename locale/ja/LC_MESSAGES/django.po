@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-11 05:43+0000\n"
+"POT-Creation-Date: 2024-01-29 02:50+0000\n"
 "PO-Revision-Date: 2023-11-08 03:59+0000\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,136 +19,136 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: core/models.py:53
+#: core/models.py:61
 msgid "Contact Info"
 msgstr "連絡情報"
 
-#: core/models.py:54
+#: core/models.py:62
 msgid "Contact Infos"
 msgstr "連絡情報"
 
-#: core/models.py:56 reservations/models.py:288
+#: core/models.py:64 reservations/models.py:296
 msgid "First name"
 msgstr "名前"
 
-#: core/models.py:67 core/models.py:87
+#: core/models.py:75 core/models.py:95
 #: winadmin/templates/winadmin/inventory/category_list.html:13
 #: winadmin/templates/winadmin/inventory/item_list.html:19
 msgid "Category"
 msgstr "カテゴリー"
 
-#: core/models.py:68 winadmin/templates/winadmin/inventory/category_list.html:9
+#: core/models.py:76 winadmin/templates/winadmin/inventory/category_list.html:9
 msgid "Categories"
 msgstr "カテゴリー"
 
-#: core/models.py:70 winadmin/forms.py:77 winadmin/forms.py:82
+#: core/models.py:78 winadmin/forms.py:77 winadmin/forms.py:82
 msgid "Category Name"
 msgstr "カテゴリー名"
 
-#: core/models.py:78 core/models.py:161 winadmin/views.py:383
+#: core/models.py:86 core/models.py:169 winadmin/views.py:384
 msgid "Item"
 msgstr "アイテム"
 
-#: core/models.py:79
+#: core/models.py:87
 msgid "Items"
 msgstr "アイテム"
 
-#: core/models.py:81 core/models.py:148
+#: core/models.py:89 core/models.py:156
 #: winadmin/templates/winadmin/inventory/item_list.html:16
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:39
-#: winadmin/views.py:380
+#: winadmin/views.py:381
 msgid "Name"
 msgstr "名前"
 
-#: core/models.py:83 reservations/templates/reservations/index.html:194
+#: core/models.py:91 reservations/templates/reservations/index.html:194
 #: winadmin/templates/winadmin/inventory/item_list.html:18
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:39
 msgid "Price"
 msgstr "値段"
 
-#: core/models.py:93
+#: core/models.py:101
 msgid "Image"
 msgstr "画像"
 
-#: core/models.py:95
+#: core/models.py:103
 msgid "Stock Quantity"
 msgstr "在庫量"
 
-#: core/models.py:96 winadmin/templates/winadmin/inventory/item_list.html:21
+#: core/models.py:104 winadmin/templates/winadmin/inventory/item_list.html:21
 msgid "In Stock?"
 msgstr "在庫あり？"
 
-#: core/models.py:97 winadmin/templates/winadmin/inventory/item_list.html:22
+#: core/models.py:105 winadmin/templates/winadmin/inventory/item_list.html:22
 msgid "Active?"
 msgstr "アクティブ？"
 
-#: core/models.py:99
+#: core/models.py:107
 msgid "Reservation Option?"
 msgstr "予約追加アイテム？"
 
-#: core/models.py:102
+#: core/models.py:110
 msgid "Long description"
 msgstr "長い説明"
 
-#: core/models.py:102
+#: core/models.py:110
 msgid "Description"
 msgstr "説明"
 
-#: core/models.py:106
+#: core/models.py:114
 msgid "Short description"
 msgstr "短い説明"
 
-#: core/models.py:107 winadmin/templates/winadmin/inventory/item_list.html:23
+#: core/models.py:115 winadmin/templates/winadmin/inventory/item_list.html:23
 msgid "Short Description"
 msgstr "短い説明"
 
-#: core/models.py:138
+#: core/models.py:146
 msgid "Transaction"
 msgstr "取引"
 
-#: core/models.py:139
+#: core/models.py:147
 msgid "Transactions"
 msgstr "取引"
 
-#: core/models.py:142
+#: core/models.py:150
 msgid "Sale"
 msgstr "売上"
 
-#: core/models.py:143
+#: core/models.py:151
 msgid "Purchase"
 msgstr "仕入れ"
 
-#: core/models.py:144
+#: core/models.py:152
 msgid "Return"
 msgstr "返品"
 
-#: core/models.py:145
+#: core/models.py:153
 msgid "Bank Deposit"
 msgstr "預金振込"
 
-#: core/models.py:155 customer/models.py:24 winadmin/views.py:381
+#: core/models.py:163 customer/models.py:24 winadmin/views.py:382
 msgid "Customer"
 msgstr "顧客"
 
-#: core/models.py:158
+#: core/models.py:166
 msgid "Transaction Datetime"
 msgstr "引取デートタイム"
 
-#: core/models.py:163
+#: core/models.py:171
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:41
-#: winadmin/views.py:384
+#: winadmin/views.py:385
 msgid "Quantity"
 msgstr "数量"
 
-#: core/models.py:165 reservations/templates/reservations/index.html:439
+#: core/models.py:173 reservations/templates/reservations/index.html:439
 #: reservations/templates/reservations/payment_page.html:393
 #: reservations/templates/reservations/reservation_form.html:208
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:503
 #: winadmin/templates/winadmin/reservations/reservation_create.html:92
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:105
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:79
-#: winadmin/views.py:385
+#: winadmin/views.py:386
 msgid "Total Price"
 msgstr "合計"
 
@@ -227,6 +227,124 @@ msgstr ""
 #: core/templates/core/index.html:241
 msgid "Corporate Information"
 msgstr "会社概要"
+
+#: core/templates/core/index_new.html:16
+msgid ""
+"\n"
+"            静かな空間、最高の風呂、美味しいバーベキュー。</br></br>\n"
+"            佐世保でのグランピング。\n"
+"          "
+msgstr ""
+
+#: core/templates/core/index_new.html:21
+msgid "予約を作る"
+msgstr ""
+
+#: core/templates/core/index_new.html:27
+msgid "family room"
+msgstr ""
+
+#: core/templates/core/index_new.html:28
+msgid "家族みんな快適に"
+msgstr ""
+
+#: core/templates/core/index_new.html:31
+msgid ""
+"\n"
+"            自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできるスペー"
+"ス。温泉水で一日の疲れを取る。ダラダラしながらパソコンや携帯でインターネット"
+"に繋げる。キッチンでコーヒーをいれて\n"
+"          "
+msgstr ""
+
+#: core/templates/core/index_new.html:39
+msgid "個人予約"
+msgstr ""
+
+#: core/templates/core/index_new.html:40
+msgid "露天風呂の予約であなたや家族だけの贅沢の風呂になる。"
+msgstr ""
+
+#: core/templates/core/index_new.html:45
+msgid "台所"
+msgstr ""
+
+#: core/templates/core/index_new.html:46
+msgid "冷蔵庫、シンクとIHコンロがついています。"
+msgstr ""
+
+#: core/templates/core/index_new.html:52
+msgid "温泉水"
+msgstr ""
+
+#: core/templates/core/index_new.html:53
+msgid "露天風呂も部屋の風呂も温泉水を使います。"
+msgstr ""
+
+#: core/templates/core/index_new.html:58
+msgid "WIFI"
+msgstr ""
+
+#: core/templates/core/index_new.html:59
+msgid "無線でインターネットを無料で使えます。"
+msgstr ""
+
+#: core/templates/core/index_new.html:64
+msgid "サウナ"
+msgstr ""
+
+#: core/templates/core/index_new.html:65
+msgid "温度は９０度。中の砂時計で安全にリラックス。"
+msgstr ""
+
+#: core/templates/core/index_new.html:71
+msgid "solitude"
+msgstr ""
+
+#: core/templates/core/index_new.html:72
+msgid "閉鎖空間と蒸気"
+msgstr ""
+
+#: core/templates/core/index_new.html:75
+msgid ""
+"\n"
+"            温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張っ"
+"たあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラッ"
+"クできる場所。個人でも、家族みんなと一緒にでも入れる。\n"
+"          "
+msgstr ""
+
+#: core/templates/core/index_new.html:83
+msgid "レンタル"
+msgstr ""
+
+#: core/templates/core/index_new.html:84
+msgid "グリル、椅子やテントをレンタルできます。"
+msgstr ""
+
+#: core/templates/core/index_new.html:89
+msgid "飲食物の販売"
+msgstr ""
+
+#: core/templates/core/index_new.html:90
+msgid "冷凍食品、肉や野菜を購入できます。"
+msgstr ""
+
+#: core/templates/core/index_new.html:97
+msgid "casual camping"
+msgstr ""
+
+#: core/templates/core/index_new.html:98
+msgid "美味しい空気、美味しい肉"
+msgstr ""
+
+#: core/templates/core/index_new.html:101
+msgid ""
+"\n"
+"            山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べる。ベ"
+"テランのキャンパーでも、初心者でも楽しめる。\n"
+"          "
+msgstr ""
 
 #: customer/forms.py:10 customer/forms.py:19 customer/forms.py:28
 #: customer/forms.py:51 customer/forms.py:61 customer/forms.py:71
@@ -403,63 +521,63 @@ msgstr "住所"
 msgid "Addresses"
 msgstr "住所"
 
-#: reservations/models.py:166
+#: reservations/models.py:171
 msgid "Stay"
 msgstr "滞在"
 
-#: reservations/models.py:167
+#: reservations/models.py:172
 msgid "Stays"
 msgstr "滞在"
 
-#: reservations/models.py:171 winadmin/forms.py:164
+#: reservations/models.py:176 winadmin/forms.py:164
 msgid "Not Reserved"
 msgstr "予約なし"
 
-#: reservations/models.py:172 winadmin/forms.py:165
+#: reservations/models.py:177 winadmin/forms.py:165
 msgid "Reserved"
 msgstr "予約あり"
 
-#: reservations/models.py:173 winadmin/forms.py:166
+#: reservations/models.py:178 winadmin/forms.py:166
 msgid "Checked In"
 msgstr "チェクインしている"
 
-#: reservations/models.py:174 winadmin/forms.py:167
+#: reservations/models.py:179 winadmin/forms.py:167
 msgid "Checked Out"
 msgstr "チェクアウトした"
 
-#: reservations/models.py:175 winadmin/forms.py:168
+#: reservations/models.py:180 winadmin/forms.py:168
 msgid "Cancelled"
 msgstr "キャンセルした"
 
-#: reservations/models.py:177 winadmin/forms.py:129 winadmin/forms.py:162
+#: reservations/models.py:182 winadmin/forms.py:129 winadmin/forms.py:162
 msgid "Hourly"
 msgstr "時間制"
 
-#: reservations/models.py:177 winadmin/forms.py:129 winadmin/forms.py:162
+#: reservations/models.py:182 winadmin/forms.py:129 winadmin/forms.py:162
 msgid "Overnight"
 msgstr "泊まる"
 
-#: reservations/models.py:184 winadmin/forms.py:174
+#: reservations/models.py:191 winadmin/forms.py:174
 msgid "Start"
 msgstr "開始日"
 
-#: reservations/models.py:185 winadmin/forms.py:175
+#: reservations/models.py:192 winadmin/forms.py:175
 msgid "End"
 msgstr "終了日"
 
-#: reservations/models.py:282
+#: reservations/models.py:290
 msgid "Reservation"
 msgstr "予約"
 
-#: reservations/models.py:283
+#: reservations/models.py:291
 msgid "Reservations"
 msgstr "予約"
 
-#: reservations/models.py:406
+#: reservations/models.py:413
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:407
+#: reservations/models.py:414
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -1141,7 +1259,7 @@ msgstr "売上帳"
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:37
-#: winadmin/views.py:382
+#: winadmin/views.py:383
 msgid "Date"
 msgstr "日付"
 
@@ -1170,7 +1288,7 @@ msgid "Return Amount"
 msgstr "返品金額"
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
-#: winadmin/views.py:386
+#: winadmin/views.py:387
 msgid "Balance"
 msgstr "残高"
 
@@ -1198,55 +1316,55 @@ msgstr "支払金額"
 msgid "Remainder"
 msgstr "残高"
 
-#: winadmin/views.py:94 winadmin/views.py:116
+#: winadmin/views.py:95 winadmin/views.py:117
 msgid "There was an error logging in."
 msgstr ""
 
-#: winadmin/views.py:148
+#: winadmin/views.py:149
 msgid "Item Successfully Added"
 msgstr "アイテムが追加できました"
 
-#: winadmin/views.py:167
+#: winadmin/views.py:168
 msgid "Category Successfully Added"
 msgstr "カテゴリーが追加できました"
 
-#: winadmin/views.py:170
+#: winadmin/views.py:171
 msgid "Input category title"
 msgstr "カテゴリーのタイトルを入力してください"
 
-#: winadmin/views.py:189
+#: winadmin/views.py:190
 msgid "Category Successfully Edited"
 msgstr "カテゴリーが変更できました"
 
-#: winadmin/views.py:191
+#: winadmin/views.py:192
 #, fuzzy
 #| msgid "Input category title"
 msgid "Input category name"
 msgstr "カテゴリーのタイトルを入力してください"
 
-#: winadmin/views.py:219
+#: winadmin/views.py:220
 msgid "Item Successfully Edited"
 msgstr "アイテムが更新できました"
 
-#: winadmin/views.py:222 winadmin/views.py:241
+#: winadmin/views.py:223 winadmin/views.py:242
 msgid "Error"
 msgstr "エラー"
 
-#: winadmin/views.py:238
+#: winadmin/views.py:239
 msgid "Item Successfully Deleted"
 msgstr "アイテムが削除できました"
 
-#: winadmin/views.py:313 winadmin/views.py:417
+#: winadmin/views.py:314 winadmin/views.py:418
 msgid "Transaction Created Successfully"
 msgstr "引取が制作できました"
 
-#: winadmin/views.py:315
+#: winadmin/views.py:316
 #, fuzzy
 #| msgid "Ticket couldn't be created!"
 msgid "Transaction Couldn't Be Created"
 msgstr "チケットを制作できませんでした！"
 
-#: winadmin/views.py:694
+#: winadmin/views.py:697
 msgid "Reservation successfully edited."
 msgstr "予約を変更できました"
 

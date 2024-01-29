@@ -1,82 +1,120 @@
 {% extends 'core/base.html' %}
 
+{#{% block content %}#}
+{#  <div class="flex w-full flex-auto">#}
+{#    <div class="w-14 flex-none bg-white ring-1 ring-red-100"></div>#}
+{#    <div class="grid flex-auto grid-cols-1 grid-rows-1">#}
+{#      <!-- Horizontal lines -->#}
+{#      <div class="col-start-1 col-end-2 row-start-1 grid divide-y divide-red-500"#}
+{#           style="#}
+{#grid-template-areas: {% for datetime in datetimes %}'_{{ datetime.time|time:"Gi" }}'{% endfor %};#}
+{#                   grid-template-rows:#}
+{#                   {% for datetime in datetimes %}{% if forloop.first %}[_{{ datetime.time|time:"Gi" }}-start] minmax(3.5rem, 1fr) [_{{ datetime.time|time:"Gi" }}-end {% elif not forloop.last %}_{{ datetime.time|time:"Gi" }}-start] minmax(3.5rem, 1fr) [_{{ datetime.time|time:"Gi" }}-end {% elif forloop.last %}_{{ datetime.time|time:"Gi" }}-start] 1.75rem [_{{ datetime.time|time:"Gi" }}-end]{% endif %}{% endfor %}"#}
+{#      >#}
+{#        <div class="row-end-1 h-7"></div>#}
+{#        {% for datetime in datetimes %}#}
+{#          <form hx-post="." class="hover:bg-orange-500">#}
+{#            <input type="hidden" value="{{ datetime.time }}">#}
+{#            <button type="submit" name="submit" class="hover:bg-orange-500/25">#}
+{#              <div class="w-14 pr-2 text-right text-xs leading-5 {% cycle "text-gray-400" "text-transparent" %}">#}
+{#                <time datetime="{{ datetime|date:"c" }}">{{ datetime.time }}</time>#}
+{#              </div>#}
+{#            </button>#}
+{#          </form>#}
+{#        {% endfor %}#}
+{#      </div>#}
+{#      <!-- Events -->#}
+{#      <ol class="hidden col-start-1 col-end-2 row-start-1 grid grid-cols-5"#}
+{#          style="#}
+{#grid-template-areas: {% for datetime in datetimes %}'_{{ datetime.time|time:"Gi" }}'{% endfor %};#}
+{#                  grid-template-rows:#}
+{#                  {% for datetime in datetimes %}{% if forloop.first %}[_{{ datetime.time|time:"Gi" }}-start] minmax(3.5rem, 1fr) [_{{ datetime.time|time:"Gi" }}-end {% elif not forloop.last %}_{{ datetime.time|time:"Gi" }}-start] minmax(3.5rem, 1fr) [_{{ datetime.time|time:"Gi" }}-end {% elif forloop.last %}_{{ datetime.time|time:"Gi" }}-start] 1.75rem [_{{ datetime.time|time:"Gi" }}-end]{% endif %}{% endfor %}">#}
+{#          <li class="relative mt-px flex" style="grid-row: 74 / span 12">#}
+{#            <a href="#"#}
+{#               class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100">#}
+{#              <p class="order-1 font-semibold text-blue-700">Breakfast</p>#}
+{#              <p class="text-blue-500 group-hover:text-blue-700">#}
+{#                <time datetime="2022-01-22T06:00">6:00 AM</time>#}
+{#              </p>#}
+{#            </a>#}
+{#          </li>#}
+{#          <li class="relative mt-px flex" style="grid-row: 92 / span 30">#}
+{#            <a href="#"#}
+{#               class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-pink-50 p-2 text-xs leading-5 hover:bg-pink-100">#}
+{#              <p class="order-1 font-semibold text-pink-700">Flight to Paris</p>#}
+{#              <p class="order-1 text-pink-500 group-hover:text-pink-700">John F. Kennedy International Airport</p>#}
+{#              <p class="text-pink-500 group-hover:text-pink-700">#}
+{#                <time datetime="2022-01-22T07:30">7:30 AM</time>#}
+{#              </p>#}
+{#            </a>#}
+{#          </li>#}
+{#        <div class="row-end-1 h-7"></div>#}
+{#        {% for datetime in datetimes %}#}
+{#          <form hx-post="." class="relative mt-px flex">#}
+{#            <input type="hidden" value="{{ datetime.time }}">#}
+{#            <button type="submit"#}
+{#                    name="submit"#}
+{#                    class="group absolute inset-1 flex overflow-x-auto rounded-lg bg-indigo-50 p-2 text-xs leading-5 hover:bg-indigo-100">#}
+{#              <div class="-ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 {% cycle "text-gray-400" "text-transparent" %}">#}
+{#                <time datetime="{{ datetime|date:"c" }}">{{ datetime.time }}</time>#}
+{#              </div>#}
+{#            </button>#}
+{#          </form>#}
+{#        {% endfor %}#}
+{##}
+{#        {% for reservation in reservation %}#}
+{#          <li class="relative mt-px flex bg-orange-50 border-orange-100 border"#}
+{#              style="grid-row: _{{ reservation.start|time:"Gi" }} / _{{ reservation.end|time:"Gi" }}">#}
+{#            <a href="#"#}
+{#               class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-indigo-50 p-2 text-xs leading-5 hover:bg-indigo-100">#}
+{#              <p class="order-1 text-indigo-500 group-hover:text-indigo-700">Room</p>#}
+{#              <div>#}
+{#                <time datetime="{{ reservation.start|time }}">{{ reservation.start|time }}</time>#}
+{#                -#}
+{#                <time datetime="{{ reservation.end|time }}">{{ reservation.end|time }}</time>#}
+{#              </div>#}
+{#            </a>#}
+{#          </li>#}
+{#        {% endfor %}#}
+{#      </ol>#}
+{#    </div>#}
+{#  </div>#}
+{#  </div>#}
+{#{% endblock %}#}
+
+
 {% block content %}
   <div class="flex w-full flex-auto">
-    <div class="w-14 flex-none bg-white ring-1 ring-red-100"></div>
+    <div class="w-14 grid bg-white ring-1 ring-red-100">
+      {% for datetime in datetimes %}
+        <div class="w-14 pr-2 text-right text-xs leading-5 {% cycle "text-gray-400" "text-transparent" %}">
+          <time datetime="{{ datetime|date:"c" }}">{{ datetime.time }}</time>
+        </div>
+      {% endfor %}
+    </div>
     <div class="grid flex-auto grid-cols-1 grid-rows-1">
       <!-- Horizontal lines -->
-      <div class="col-start-1 col-end-2 row-start-1 grid divide-y divide-red-500"
-           style="
-                   {#grid-template-areas: {% for datetime in datetimes %}'_{{ datetime.time|time:"Gi" }}'{% endfor %};#}
-                   grid-template-rows:
-                   {% for datetime in datetimes %}{% if forloop.first %}[_{{ datetime.time|time:"Gi" }}-start] minmax(3.5rem, 1fr) [_{{ datetime.time|time:"Gi" }}-end {% elif not forloop.last %}_{{ datetime.time|time:"Gi" }}-start] minmax(3.5rem, 1fr) [_{{ datetime.time|time:"Gi" }}-end {% elif forloop.last %}_{{ datetime.time|time:"Gi" }}-start] 1.75rem [_{{ datetime.time|time:"Gi" }}-end]{% endif %}{% endfor %}">
-        <div class="row-end-1 h-7"></div>
+      <div class="col-start-1 col-end-2 row-start-1">
         {% for datetime in datetimes %}
-{#          <form hx-post=".">#}
-            <input type="hidden" value="{{ datetime.time }}">
-            <button type="submit" name="submit" class="hover:bg-orange-500/25">
-              <div class="-ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 {% cycle "text-gray-400" "text-transparent" %}">
-                <time datetime="{{ datetime|date:"c" }}">{{ datetime.time }}</time>
-              </div>
-            </button>
-{#          </form>#}
+          <div class="grid grid-cols-5 border-t-2 border-red-500">
+            <div class="bg-blue-100 p-3 m-3">
+              <p>Room</p>
+            </div>
+            <div class="bg-green-100 p-3 m-3">
+              <p>Room</p>
+            </div>
+            <div class="bg-pink-100 p-3 m-3">
+              <p>Room</p>
+            </div>
+            <div class="bg-purple-100 p-3 m-3">
+              <p>Room</p>
+            </div>
+            <div class="bg-red-100 p-3 m-3">
+              <p>Bath</p>
+            </div>
+          </div>
         {% endfor %}
       </div>
-      <!-- Events -->
-      <ol class="col-start-1 col-end-2 row-start-1 grid grid-cols-5"
-          style="
-                  {#grid-template-areas: {% for datetime in datetimes %}'_{{ datetime.time|time:"Gi" }}'{% endfor %};#}
-                  grid-template-rows:
-                  {% for datetime in datetimes %}{% if forloop.first %}[_{{ datetime.time|time:"Gi" }}-start] minmax(3.5rem, 1fr) [_{{ datetime.time|time:"Gi" }}-end {% elif not forloop.last %}_{{ datetime.time|time:"Gi" }}-start] minmax(3.5rem, 1fr) [_{{ datetime.time|time:"Gi" }}-end {% elif forloop.last %}_{{ datetime.time|time:"Gi" }}-start] 1.75rem [_{{ datetime.time|time:"Gi" }}-end]{% endif %}{% endfor %}">
-        {#          <li class="relative mt-px flex" style="grid-row: 74 / span 12">#}
-        {#            <a href="#"#}
-        {#               class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100">#}
-        {#              <p class="order-1 font-semibold text-blue-700">Breakfast</p>#}
-        {#              <p class="text-blue-500 group-hover:text-blue-700">#}
-        {#                <time datetime="2022-01-22T06:00">6:00 AM</time>#}
-        {#              </p>#}
-        {#            </a>#}
-        {#          </li>#}
-        {#          <li class="relative mt-px flex" style="grid-row: 92 / span 30">#}
-        {#            <a href="#"#}
-        {#               class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-pink-50 p-2 text-xs leading-5 hover:bg-pink-100">#}
-        {#              <p class="order-1 font-semibold text-pink-700">Flight to Paris</p>#}
-        {#              <p class="order-1 text-pink-500 group-hover:text-pink-700">John F. Kennedy International Airport</p>#}
-        {#              <p class="text-pink-500 group-hover:text-pink-700">#}
-        {#                <time datetime="2022-01-22T07:30">7:30 AM</time>#}
-        {#              </p>#}
-        {#            </a>#}
-        {#          </li>#}
-        <div class="row-end-1 h-7"></div>
-        {#        {% for datetime in datetimes %}#}
-        {#          <form hx-post="." class="relative mt-px flex">#}
-        {#            <input type="hidden" value="{{ datetime.time }}">#}
-        {#            <button type="submit"#}
-        {#                    name="submit"#}
-        {#                    class="group absolute inset-1 flex overflow-x-auto rounded-lg bg-indigo-50 p-2 text-xs leading-5 hover:bg-indigo-100">#}
-        {#              <div class="-ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 {% cycle "text-gray-400" "text-transparent" %}">#}
-        {#                <time datetime="{{ datetime|date:"c" }}">{{ datetime.time }}</time>#}
-        {#              </div>#}
-        {#            </button>#}
-        {#          </form>#}
-        {#        {% endfor %}#}
-
-        {% for reservation in reservations %}
-          <li class="relative mt-px flex bg-orange-50 border-orange-100 border"
-              style="grid-row: _{{ reservation.start|time:"Gi" }} / _{{ reservation.end|time:"Gi" }}">
-            {#            <a href="#"#}
-            {#               class="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-indigo-50 p-2 text-xs leading-5 hover:bg-indigo-100">#}
-            {#              <p class="order-1 text-indigo-500 group-hover:text-indigo-700">Room</p>#}
-            {#              <div>#}
-            {#                <time datetime="{{ reservation.start|time }}">{{ reservation.start|time }}</time>#}
-            {#                -#}
-            {#                <time datetime="{{ reservation.end|time }}">{{ reservation.end|time }}</time>#}
-            {#              </div>#}
-            {#            </a>#}
-          </li>
-        {% endfor %}
-      </ol>
     </div>
-  </div>
   </div>
 {% endblock %}

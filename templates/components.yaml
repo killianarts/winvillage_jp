@@ -7,3 +7,9 @@ components:
   mobile_navigation_link: "patterns/navigations/mobile_navigation/mobile_navigation_link.html"
   sidebar_navigation_body: "patterns/navigations/sidebar_navigation/sidebar_navigation_body.html"
   sidebar_navigation_link: "patterns/navigations/sidebar_navigation/sidebar_navigation_link.html"
+
+  four_col_grid_cell: "patterns/grids/four_col_grid_cell/four_col_grid_cell.html"
+  four_col_grid_cell_content: "patterns/grids/four_col_grid_cell/normal_content.html"
+  four_col_image_grid_cell: "patterns/grids/four_col_image_grid_cell/four_col_image_grid_cell.html"
+
+  winvillage_header: "patterns/headers/winvillage_header/winvillage_header.html"

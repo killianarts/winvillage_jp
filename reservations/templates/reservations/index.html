@@ -106,12 +106,12 @@
                           {% #calendar_cell_button date=date name="select_date" type="submit" class="text-blue-500 bg-blue-200 hover:bg-blue-300" %}
                           {{ form }}
                           {% /calendar_cell_button %}
-                        {% elif start_date and start_date == date or end_date and end_date == date %}
+                        {% elif start.date and start.date == date or end.date and end.date == date %}
                           {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
                           {{ form }}
                           {% /calendar_cell_button %}
-                        {% elif start_date and end_date %}
-                          {% if date > start_date and date < end_date %}
+                        {% elif start.date and end.date %}
+                          {% if date > start.date and date < end.date %}
                             {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-blue-400" %}
                             {{ form }}
                             {% /calendar_cell_button %}
@@ -161,16 +161,16 @@
                           {% #calendar_cell_button date=date name="select_date" type="submit" class="text-blue-500 bg-blue-200 hover:bg-blue-300" %}
                           {{ form }}
                           {% /calendar_cell_button %}
-                        {% elif start_date and start_date == date %}
+                        {% elif start.date and start.date == date %}
                           {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
                           {{ form }}
                           {% /calendar_cell_button %}
-                        {% elif end_date and end_date == date %}
+                        {% elif end.date and end.date == date %}
                           {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
                           {{ form }}
                           {% /calendar_cell_button %}
-                        {% elif start_date and end_date %}
-                          {% if date > start_date and date < end_date %}
+                        {% elif start.date and end.date %}
+                          {% if date > start.date and date < end.date %}
                             {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-blue-400" %}
                             {{ form }}
                             {% /calendar_cell_button %}
@@ -193,7 +193,7 @@
             {% if price %}
               <p class="text-center text-xl">{% trans "Price" %}:￥{{ price }}</p>
             {% endif %}
-            {% if start_date and not end_date %}
+            {% if start == end %}
               <div id="time-select-wrapper">
                 <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
                   {% blocktrans %}Select Start and End Times{% endblocktrans %}</h2>
@@ -205,7 +205,7 @@
                       class="grid space-y-5 max-w-fit mx-auto">
                   <input type="hidden" name="select_time" value="set">
                   {{ time_form }}
-                  {% if not start_time or not end_time %}
+                  {% if not start.time or not end.time %}
                     <div class="mx-auto w-fit">
                       {% #button class="text-stone-300 bg-stone-100 pointer-events-none" %}
                       {% blocktrans %}Continue{% endblocktrans %}
@@ -221,7 +221,7 @@
                   {% endif %}
                 </form>
               </div>
-            {% elif start_date and end_date %}
+            {% elif start.date and end.date %}
               <a href="{% url 'reservations:option_select' %}"
                  class="mx-auto w-fit block"
                  hx-get="{% url 'reservations:option_select' %}"
@@ -399,14 +399,14 @@
           <span>{{ reservation.end }}</span>
         </div>
       {% endif %}
-      {% if reservation.start_time and reservation.end_time and not reservation.stay.end_date %}
+      {% if reservation.start.time and reservation.end.time and not reservation.stay.end.date %}
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
           <span>{% blocktrans %}Start Time:{% endblocktrans %}</span>
-          <span>{{ reservation.start_time }}</span>
+          <span>{{ reservation.start.time }}</span>
         </div>
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
           <span>{% blocktrans %}End Time:{% endblocktrans %}</span>
-          <span>{{ reservation.end_time }}</span>
+          <span>{{ reservation.end.time }}</span>
         </div>
       {% endif %}
       <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">

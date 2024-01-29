@@ -144,13 +144,13 @@ class SpecialDate(models.Model):
 
 
 class DefaultPrice(models.Model):
-    weekday_price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
-    weekend_price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
-    weekday_price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
-    weekend_price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
+    adult_price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
+    adult_price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
+    child_price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
+    child_price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"Default Prices - Nightly Weekday: {self.nightly_weekday_price}, Nightly Weekend: {self.nightly_weekend_price}, Hourly Weekday: {self.hourly_weekday_price}, Hourly Weekend: {self.hourly_weekend_price}"
+        return f"Adults: {self.adult_price_per_night}/night, {self.adult_price_per_hour}/hour. Children: {self.child_price_per_night}/night, {self.child_price_per_hour}/hour."
 
     def save(self, *args, **kwargs):
         # Ensure only one instance of DefaultPrice exists in the database
@@ -159,6 +159,11 @@ class DefaultPrice(models.Model):
                 "There can be only one instance of DefaultPrice in the database."
             )
         super().save(*args, **kwargs)
+
+
+# class Room(models.Model):
+#     name = models.CharField(max_length=50)
+#     pricing_tiers = models.ManyToManyField(PricingTier)
 
 
 class Stay(BaseModel):
@@ -181,6 +186,8 @@ class Stay(BaseModel):
         choices=STAY_TYPE_CHOICES,
         default=STAY_TYPE_CHOICES.hourly,
     )
+    # number_of_adults = models.IntegerField(default=1, choices=[1, 2, 3, 4, 5, 6])
+    # number_of_children = models.IntegerField(default=0, choices=[0, 1, 2, 3, 4, 5])
     start = PendulumDateTimeField(verbose_name=_("Start"), null=True)
     end = PendulumDateTimeField(verbose_name=_("End"), null=True)
     status_changed = MonitorField(monitor="status")
@@ -213,22 +220,23 @@ class Stay(BaseModel):
             elif self.is_weekend(current_datetime.date):
                 total_price += DefaultPrice.objects.first().weekend_price_per_hour
             else:
-                total_price += DefaultPrice.objects.first().weekday_price_per_hour
+                total_price += DefaultPrice.objects.first().price_per_hour
             current_datetime += timedelta(hours=1)
         return total_price
 
     def calculate_nightly_price(self):
         current_date = self.start.date
+        price_per_child
         total_price = 0
         while current_date <= self.end.date:
             if self.is_special_date(current_date):
                 total_price += SpecialDate.objects.filter(
                     date=current_date
                 ).price_per_night
-            elif self.is_weekend(current_date):
-                total_price += DefaultPrice.objects.first().weekend_price_per_night
+            # elif self.is_weekend(current_date):
+            #     total_price += DefaultPrice.objects.first().weekend_price_per_night
             else:
-                total_price += DefaultPrice.objects.first().weekday_price_per_night
+                total_price += DefaultPrice.objects.first().price_per_night * self.n
             current_date += timedelta(days=1)
         return total_price
 
@@ -320,23 +328,21 @@ class Reservation(BaseModel):
             grills.append([grill, form, is_reserved])
         return grills
 
-    def set_dates(self, selected_date: pendulum.DateTime):
-        if not self.stay.start or selected_date < self.stay.start.date():
-            # if not self.stay.start.date():
-            self.stay.start = selected_date
-            if self.stay.end:
-                self.stay.end = None
-        elif (
-            self.stay.start.date
-            and not self.stay.end.date
-            and selected_date != self.stay.start.date
-        ):
-            self.stay.end.date = selected_date
-        elif self.stay.start.date and self.stay.end.date:
-            self.stay.start.date = selected_date
-            self.stay.end.date = None
+    def set_dates(self, selected_datetime: pendulum.DateTime):
+        if not self.stay.start or not self.stay.end:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+
+        START_AND_END_ARE_THE_SAME = self.stay.start == self.stay.end
+        NEW_DATE_AFTER_END = selected_datetime > self.stay.end
+
+        if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
+            self.stay.end = selected_datetime
+        else:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
         self.stay.save()
-        return self.stay.start.date(), self.stay.end.date
+        return self.stay.start, self.stay.end
 
     def check_availability(self, date_):
         tzinfo = timezone.get_current_timezone()
@@ -370,11 +376,12 @@ class Reservation(BaseModel):
     def start_time(self):
         if self.stay.start:
             return self.stay.start.time()
-        else:
-            return None
+        return None
 
     def end_time(self):
-        return self.stay.end.time()
+        if self.stay.end:
+            return self.stay.end.time()
+        return None
 
     def set_times(self, start_time: time, end_time: time):
         self.stay.start_time = start_time

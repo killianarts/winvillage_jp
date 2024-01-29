@@ -37,7 +37,7 @@ class ContactInfoForm(ReservationsContactInformationFormMixin, forms.Form):
 
 
 class DateForm(forms.Form):
-    date = forms.DateField(widget=forms.HiddenInput)
+    date = forms.DateTimeField(widget=forms.HiddenInput)
 
 
 class TimeSelectForm(forms.Form):
@@ -58,5 +58,5 @@ class TimeSelectForm(forms.Form):
         return end_time
 
 
-class DateTimeForm:
+class DateTimeForm(forms.Form):
     datetime = forms.DateTimeField(widget=forms.HiddenInput)

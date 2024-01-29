@@ -35,7 +35,30 @@ const getTemplateFiles = () => {
 module.exports = {
     content: [].concat(getTemplateFiles()),
     theme: {
-        extend: {},
+        extend: {
+            dropShadow: {
+                'hard-45-2xs': '1px 1px 0 rgba(0, 0, 0, 0.2)',
+                'hard-45-xs': '3px 3px 0 rgba(0, 0, 0, 0.2)',
+                'hard-45-sm': '5px 5px 0 rgba(0, 0, 0, 0.2)',
+                'hard-45-md': '7px 7px 0 rgba(0, 0, 0, 0.2)',
+                'hard-45-lg': '10px 10px 0 rgba(0, 0, 0, 0.2)',
+                'hard-45-xl': '15px 15px 0 rgba(0, 0, 0, 0.2)',
+                'hard-45-2xl': '20px 20px 0 rgba(0, 0, 0, 0.2)',
+            }
+        },
+        borderWidth: {
+            DEFAULT: '1px',
+            '0': '0',
+            '2': '2px',
+            '3': '3px',
+            '4': '4px',
+            '6': '6px',
+            '8': '8px',
+        },
+        fontFamily: {
+            display: ['Superclarendon', '"Bookman Old Style"', '"URW Bookman"', '"URW Bookman L"', '"Georgia Pro"', 'Georgia', 'serif'],
+            sans: ['"Hiragino Sans"', "Meiryo", 'sans-serif']
+        }
     },
     plugins: [
         require("@tailwindcss/typography"),
