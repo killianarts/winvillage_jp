@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 02:50+0000\n"
+"POT-Creation-Date: 2024-01-29 04:01+0000\n"
 "PO-Revision-Date: 2023-11-08 03:59+0000\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -240,15 +240,15 @@ msgstr ""
 msgid "予約を作る"
 msgstr ""
 
-#: core/templates/core/index_new.html:27
+#: core/templates/core/index_new.html:28
 msgid "family room"
 msgstr ""
 
-#: core/templates/core/index_new.html:28
+#: core/templates/core/index_new.html:29
 msgid "家族みんな快適に"
 msgstr ""
 
-#: core/templates/core/index_new.html:31
+#: core/templates/core/index_new.html:32
 msgid ""
 "\n"
 "            自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできるスペー"
@@ -257,55 +257,55 @@ msgid ""
 "          "
 msgstr ""
 
-#: core/templates/core/index_new.html:39
+#: core/templates/core/index_new.html:40
 msgid "個人予約"
 msgstr ""
 
-#: core/templates/core/index_new.html:40
+#: core/templates/core/index_new.html:41
 msgid "露天風呂の予約であなたや家族だけの贅沢の風呂になる。"
 msgstr ""
 
-#: core/templates/core/index_new.html:45
+#: core/templates/core/index_new.html:46
 msgid "台所"
 msgstr ""
 
-#: core/templates/core/index_new.html:46
+#: core/templates/core/index_new.html:47
 msgid "冷蔵庫、シンクとIHコンロがついています。"
 msgstr ""
 
-#: core/templates/core/index_new.html:52
+#: core/templates/core/index_new.html:54
 msgid "温泉水"
 msgstr ""
 
-#: core/templates/core/index_new.html:53
+#: core/templates/core/index_new.html:55
 msgid "露天風呂も部屋の風呂も温泉水を使います。"
 msgstr ""
 
-#: core/templates/core/index_new.html:58
+#: core/templates/core/index_new.html:60
 msgid "WIFI"
 msgstr ""
 
-#: core/templates/core/index_new.html:59
+#: core/templates/core/index_new.html:61
 msgid "無線でインターネットを無料で使えます。"
 msgstr ""
 
-#: core/templates/core/index_new.html:64
+#: core/templates/core/index_new.html:66
 msgid "サウナ"
 msgstr ""
 
-#: core/templates/core/index_new.html:65
+#: core/templates/core/index_new.html:67
 msgid "温度は９０度。中の砂時計で安全にリラックス。"
 msgstr ""
 
-#: core/templates/core/index_new.html:71
+#: core/templates/core/index_new.html:74
 msgid "solitude"
 msgstr ""
 
-#: core/templates/core/index_new.html:72
+#: core/templates/core/index_new.html:75
 msgid "閉鎖空間と蒸気"
 msgstr ""
 
-#: core/templates/core/index_new.html:75
+#: core/templates/core/index_new.html:78
 msgid ""
 "\n"
 "            温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張っ"
@@ -314,31 +314,31 @@ msgid ""
 "          "
 msgstr ""
 
-#: core/templates/core/index_new.html:83
+#: core/templates/core/index_new.html:86
 msgid "レンタル"
 msgstr ""
 
-#: core/templates/core/index_new.html:84
+#: core/templates/core/index_new.html:87
 msgid "グリル、椅子やテントをレンタルできます。"
 msgstr ""
 
-#: core/templates/core/index_new.html:89
+#: core/templates/core/index_new.html:92
 msgid "飲食物の販売"
 msgstr ""
 
-#: core/templates/core/index_new.html:90
+#: core/templates/core/index_new.html:93
 msgid "冷凍食品、肉や野菜を購入できます。"
 msgstr ""
 
-#: core/templates/core/index_new.html:97
+#: core/templates/core/index_new.html:102
 msgid "casual camping"
 msgstr ""
 
-#: core/templates/core/index_new.html:98
+#: core/templates/core/index_new.html:103
 msgid "美味しい空気、美味しい肉"
 msgstr ""
 
-#: core/templates/core/index_new.html:101
+#: core/templates/core/index_new.html:106
 msgid ""
 "\n"
 "            山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べる。ベ"
