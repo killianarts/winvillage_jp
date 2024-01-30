@@ -6,8 +6,8 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 
 from core.forms import TailwindFormMixin
-from core.models import Item, Transaction
-from reservations.models import Stay, ContactInfo, PricingTier, Room
+from core.models import Item, Category, Transaction
+from reservations.models import Stay, ContactInfo
 
 
 class LoginForm(TailwindFormMixin, forms.Form):
@@ -176,55 +176,5 @@ class ReservationDetailForm(TailwindFormMixin, forms.Form):
     stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES, label=_("Stay Type"))
 
 
-class SquarePaymentTokenForm(TailwindFormMixin, forms.Form):
+class SquarePaymentTokenForm(forms.Form):
     token = forms.CharField(widget=forms.HiddenInput())
-
-
-class RoomCreateForm(TailwindFormMixin, forms.Form):
-    room_name = forms.CharField(label=_("Room Name"), max_length=255)
-    pricing_tiers = forms.MultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple, label=_("Pricing Tiers")
-    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["pricing_tiers"].choices = [
-            (choice.id, choice)
-            for choice in PricingTier.objects.all().order_by("id")
-            if PricingTier.objects.all().exists()
-        ]
-
-
-class RoomDetailForm(TailwindFormMixin, forms.ModelForm):
-    class Meta:
-        model = Room
-        fields = ["name", "pricing_tiers"]
-
-    name = forms.CharField(label=_("Room Name"), max_length=255)
-    pricing_tiers = forms.ModelMultipleChoiceField(
-        queryset=PricingTier.objects.all(), widget=forms.CheckboxSelectMultiple
-    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["pricing_tiers"].choices = [
-            (choice.id, choice)
-            for choice in PricingTier.objects.all()
-            if PricingTier.objects.all().exists()
-        ]
-
-
-class PricingTierCreateForm(TailwindFormMixin, forms.ModelForm):
-    class Meta:
-        model = PricingTier
-        fields = ["name", "price_per_night", "price_per_hour"]
-
-    name = forms.CharField(label=_("Tier Name"), max_length=255)
-
-
-class PricingTierDetailForm(TailwindFormMixin, forms.ModelForm):
-    class Meta:
-        model = PricingTier
-        fields = ["name", "price_per_night", "price_per_hour"]
-
-    name = forms.CharField(label=_("Tier Name"), max_length=255)

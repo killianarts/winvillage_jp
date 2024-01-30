@@ -1,7 +1,7 @@
 {% var variant=variant|default:"normal" %}
 {% var class=class %}
 {% var background_image_url %}
-<div class="border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg grid place-items-center bg-cover bg-center min-h-[200px] {{ class }} {{ variant|match:"normal: col-span-4 sm:col-span-2 xl:col-span-1 , wide: col-span-4 lg:col-span-2 xl:col-span-2" }}"
+<div class="border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg grid place-items-center bg-cover bg-center min-h-[200px] {{ class }} {{ variant|match:"normal: col-span-4 sm:col-span-2 xl:col-span-1 , wide: col-span-4 lg:col-span-4 xl:col-span-2" }}"
      style="background-image: url('{{ background_image_url }}')">
   {{ children }}
 </div>

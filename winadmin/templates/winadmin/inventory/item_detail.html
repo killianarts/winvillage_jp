@@ -13,13 +13,13 @@
           hx-vals='{"use_block": "content"}'
           class="grid max-w-xl">
       {{ form }}
-      <div class="space-x-5">
-        {% #outline_button name="edit" type="submit" %}
-        {% trans "Submit" %}
-        {% /outline_button %}
-        {% #outline_button name="delete" type="submit" variant="danger" %}
-        {% trans "Delete" %}
-        {% /outline_button %}
+      <div>
+      {% #button name="submit" type="submit" %}
+      {% trans "Edit Item" %}
+      {% /button %}
+      {% #button name="delete" type="button" class="text-red-50 bg-red-500 hover:bg-red-400"%}
+      {% trans "Delete Item" %}
+      {% /button %}
       </div>
     </form>
   </form>

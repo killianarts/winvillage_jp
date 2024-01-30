@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
 "POT-Creation-Date: 2024-01-30 08:46+0000\n"
-=======
-"POT-Creation-Date: 2024-02-15 05:26+0000\n"
->>>>>>> 6131f85 (wip)
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +26,7 @@ msgstr ""
 msgid "Contact Infos"
 msgstr ""
 
-#: core/models.py:64 reservations/models.py:346
+#: core/models.py:64 reservations/models.py:296
 msgid "First name"
 msgstr ""
 
@@ -48,7 +44,7 @@ msgstr ""
 msgid "Category Name"
 msgstr ""
 
-#: core/models.py:86 core/models.py:169 winadmin/views.py:400
+#: core/models.py:86 core/models.py:169 winadmin/views.py:384
 msgid "Item"
 msgstr ""
 
@@ -59,11 +55,11 @@ msgstr ""
 #: core/models.py:89 core/models.py:156
 #: winadmin/templates/winadmin/inventory/item_list.html:16
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:39
-#: winadmin/views.py:397
+#: winadmin/views.py:381
 msgid "Name"
 msgstr ""
 
-#: core/models.py:91 reservations/templates/reservations/index.html:196
+#: core/models.py:91 reservations/templates/reservations/index.html:194
 #: winadmin/templates/winadmin/inventory/item_list.html:18
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:39
 msgid "Price"
@@ -129,7 +125,7 @@ msgstr ""
 msgid "Bank Deposit"
 msgstr ""
 
-#: core/models.py:163 customer/models.py:24 winadmin/views.py:398
+#: core/models.py:163 customer/models.py:24 winadmin/views.py:382
 msgid "Customer"
 msgstr ""
 
@@ -140,18 +136,18 @@ msgstr ""
 #: core/models.py:171
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:41
-#: winadmin/views.py:401
+#: winadmin/views.py:385
 msgid "Quantity"
 msgstr ""
 
-#: core/models.py:173 reservations/templates/reservations/index.html:441
+#: core/models.py:173 reservations/templates/reservations/index.html:439
 #: reservations/templates/reservations/payment_page.html:393
 #: reservations/templates/reservations/reservation_form.html:208
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:503
 #: winadmin/templates/winadmin/reservations/reservation_create.html:92
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:105
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:79
-#: winadmin/views.py:402
+#: winadmin/views.py:386
 msgid "Total Price"
 msgstr ""
 
@@ -178,29 +174,17 @@ msgid "Win Village Logo"
 msgstr ""
 
 #: core/templates/core/base.html:65 core/templates/core/base.html:117
-<<<<<<< HEAD
 #: core/templates/core/index.html:162
-=======
-#: core/templates/core/index.html:196
->>>>>>> 6131f85 (wip)
 msgid "部屋の基本スペック"
 msgstr ""
 
 #: core/templates/core/base.html:67 core/templates/core/base.html:120
-<<<<<<< HEAD
 #: core/templates/core/index.html:578
-=======
-#: core/templates/core/index.html:760
->>>>>>> 6131f85 (wip)
 msgid "値段表"
 msgstr ""
 
 #: core/templates/core/base.html:69 core/templates/core/base.html:122
-<<<<<<< HEAD
 #: core/templates/core/index.html:647
-=======
-#: core/templates/core/index.html:842
->>>>>>> 6131f85 (wip)
 msgid "アクセス"
 msgstr ""
 
@@ -230,19 +214,14 @@ msgstr ""
 msgid "No errors"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:46
-=======
-#: core/templates/core/index.html:51
->>>>>>> 6131f85 (wip)
 msgid ""
 "\n"
-"            静かな空間、最高の風呂、美味しいバーベキュー。</br></br>\n"
-"            佐世保でのグランピング。\n"
-"          "
+"          静かな空間、最高の風呂、美味しいバーベキュー。</br></br>\n"
+"          佐世保でのグランピング。\n"
+"        "
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:51
 msgid "予約を作る"
 msgstr ""
@@ -256,28 +235,12 @@ msgid "家族みんな快適に"
 msgstr ""
 
 #: core/templates/core/index.html:62
-=======
-#: core/templates/core/index.html:56
-msgid "予約を作る"
-msgstr ""
-
-#: core/templates/core/index.html:64
-msgid "family room"
-msgstr ""
-
-#: core/templates/core/index.html:65
-msgid "家族みんな快適に"
-msgstr ""
-
-#: core/templates/core/index.html:68
->>>>>>> 6131f85 (wip)
 msgid ""
 "\n"
-"            自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いス"
+"          自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いス"
 "ペース。キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ダラダ"
 "ラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶を"
 "いれて、最高の朝を向かう。\n"
-<<<<<<< HEAD
 "        "
 msgstr ""
 
@@ -299,72 +262,31 @@ msgstr ""
 
 #: core/templates/core/index.html:82 core/templates/core/index.html:268
 #: core/templates/core/index.html:472 core/templates/core/room_details.html:109
-=======
-"          "
-msgstr ""
-
-#: core/templates/core/index.html:76
-msgid "個人予約"
-msgstr ""
-
-#: core/templates/core/index.html:77
-msgid "露天風呂の予約であなたや家族だけの贅沢の風呂になる。"
-msgstr ""
-
-#: core/templates/core/index.html:84
-msgid "台所"
-msgstr ""
-
-#: core/templates/core/index.html:85
-msgid "冷蔵庫、シンクとIHコンロがついています。"
-msgstr ""
-
-#: core/templates/core/index.html:90 core/templates/core/index.html:342
-#: core/templates/core/index.html:618 core/templates/core/room_details.html:109
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:313
 msgid "温泉水"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:83
-=======
-#: core/templates/core/index.html:91
->>>>>>> 6131f85 (wip)
 msgid ""
 "露天風呂も部屋の風呂も温泉水を使います。お風呂のアメニティもついています。"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:90
 msgid "ベッド"
 msgstr ""
 
 #: core/templates/core/index.html:91
-=======
-#: core/templates/core/index.html:100
-msgid "ベッド"
-msgstr ""
-
-#: core/templates/core/index.html:101
->>>>>>> 6131f85 (wip)
 msgid ""
 "セミダブルベッド２台の部屋とダブルベッド１台の部屋から選ぶことができます。ソ"
 "ファベッドと布団もついています。"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:98 core/templates/core/index.html:366
 #: core/templates/core/index.html:570 core/templates/core/room_details.html:207
-=======
-#: core/templates/core/index.html:108 core/templates/core/index.html:476
-#: core/templates/core/index.html:752 core/templates/core/room_details.html:207
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:411
 msgid "WIFI"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:99
 msgid "無線でインターネットを無料で使えます。"
 msgstr ""
@@ -386,38 +308,14 @@ msgid "閉鎖空間と蒸気"
 msgstr ""
 
 #: core/templates/core/index.html:116
-=======
-#: core/templates/core/index.html:109
-msgid "無線でインターネットを無料で使えます。"
-msgstr ""
-
-#: core/templates/core/index.html:114
-msgid "サウナ"
-msgstr ""
-
-#: core/templates/core/index.html:115
-msgid "９０度のサウナの中に、砂時計で安全に疲れを取ることができます。"
-msgstr ""
-
-#: core/templates/core/index.html:122
-msgid "solitude"
-msgstr ""
-
-#: core/templates/core/index.html:123
-msgid "閉鎖空間と蒸気"
-msgstr ""
-
-#: core/templates/core/index.html:126
->>>>>>> 6131f85 (wip)
 msgid ""
 "\n"
-"            温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張っ"
-"たあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラッ"
-"クできる場所。個人でも、家族みんなと一緒にでも入れます。\n"
-"          "
+"          温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張った"
+"あなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラック"
+"できる場所。個人でも、家族みんなと一緒にでも入れます。\n"
+"        "
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:124
 msgid "レンタル"
 msgstr ""
@@ -443,41 +341,13 @@ msgid "美味しい空気と肉"
 msgstr ""
 
 #: core/templates/core/index.html:144
-=======
-#: core/templates/core/index.html:134
-msgid "レンタル"
-msgstr ""
-
-#: core/templates/core/index.html:135
-msgid "グリル、椅子やテントをレンタルできます。"
-msgstr ""
-
-#: core/templates/core/index.html:140
-msgid "飲食物の販売"
-msgstr ""
-
-#: core/templates/core/index.html:141
-msgid "グリルで焼く冷凍食品、肉や野菜を購入できます。"
-msgstr ""
-
-#: core/templates/core/index.html:150
-msgid "casual camping"
-msgstr ""
-
-#: core/templates/core/index.html:151
-msgid "美味しい空気と肉"
-msgstr ""
-
-#: core/templates/core/index.html:154
->>>>>>> 6131f85 (wip)
 msgid ""
 "\n"
-"            山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。"
-"ベテランのキャンパーでも、初心者でも楽しめます。\n"
-"          "
+"          山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。ベ"
+"テランのキャンパーでも、初心者でも楽しめます。\n"
+"        "
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:152
 msgid "軽食と朝食"
 msgstr ""
@@ -503,145 +373,55 @@ msgid "最小人数２人"
 msgstr ""
 
 #: core/templates/core/index.html:193 core/templates/core/index.html:397
-=======
-#: core/templates/core/index.html:162
-msgid "軽食と朝食"
-msgstr ""
-
-#: core/templates/core/index.html:163
-msgid "夜にハンバーグや唐揚げの軽食を注文できます。朝食もついています。"
-msgstr ""
-
-#: core/templates/core/index.html:170
-msgid "family fun"
-msgstr ""
-
-#: core/templates/core/index.html:171
-msgid "自然で楽しむ"
-msgstr ""
-
-#: core/templates/core/index.html:174
-msgid ""
-"\n"
-"          おもちゃをレンタルして、子供達が安全で広いスペースの中に自然を楽し"
-"みながら遊びます。ママとパパはバルコニーでゆっくりご飯を作ったり飲み物を飲み"
-"ます。\n"
-"          "
-msgstr ""
-
-#: core/templates/core/index.html:186
-msgid "おもちゃ"
-msgstr ""
-
-#: core/templates/core/index.html:187
-msgid ""
-"シャボン玉、ポップアップテント、色々なリモコンかーやレゴをレンタルできます。"
-msgstr ""
-
-#: core/templates/core/index.html:195
-msgid "room specifications"
-msgstr ""
-
-#: core/templates/core/index.html:205 core/templates/core/room_details.html:8
-msgid "００・０１号室"
-msgstr ""
-
-#: core/templates/core/index.html:206 core/templates/core/room_details.html:9
-msgid "より広いスペースの中にセミダブルベッド２台あります。"
-msgstr ""
-
-#: core/templates/core/index.html:218 core/templates/core/room_details.html:18
-msgid "セミダブル、２台"
-msgstr ""
-
-#: core/templates/core/index.html:229
-msgid "最小人数２人"
-msgstr ""
-
-#: core/templates/core/index.html:240 core/templates/core/index.html:516
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:34
 #: core/templates/core/room_details.html:238
 msgid "ソファベッド（ダブル）、１台"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:210 core/templates/core/index.html:414
-=======
-#: core/templates/core/index.html:263 core/templates/core/index.html:539
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:51
 #: core/templates/core/room_details.html:255
 msgid "IHコンロ"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:218 core/templates/core/index.html:422
-=======
-#: core/templates/core/index.html:274 core/templates/core/index.html:550
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:59
 #: core/templates/core/room_details.html:263
 msgid "電子レンジ"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:226 core/templates/core/index.html:430
-=======
-#: core/templates/core/index.html:285 core/templates/core/index.html:561
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:67
 #: core/templates/core/room_details.html:271
 msgid "トースター"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:234 core/templates/core/index.html:438
-=======
-#: core/templates/core/index.html:296 core/templates/core/index.html:572
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:75
 #: core/templates/core/room_details.html:279
 msgid "冷蔵庫"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:242 core/templates/core/index.html:446
-=======
-#: core/templates/core/index.html:307 core/templates/core/index.html:583
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:83
 #: core/templates/core/room_details.html:287
 msgid "ケトル"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:250 core/templates/core/index.html:454
-=======
-#: core/templates/core/index.html:318 core/templates/core/index.html:594
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:91
 #: core/templates/core/room_details.html:295
 msgid "調理器具"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:258 core/templates/core/index.html:462
-=======
-#: core/templates/core/index.html:329 core/templates/core/index.html:605
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:99
 #: core/templates/core/room_details.html:303
 msgid "食器"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:260 core/templates/core/index.html:326
 #: core/templates/core/index.html:464 core/templates/core/index.html:530
-=======
-#: core/templates/core/index.html:331 core/templates/core/index.html:421
-#: core/templates/core/index.html:607 core/templates/core/index.html:697
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:101
 #: core/templates/core/room_details.html:167
 #: core/templates/core/room_details.html:305
@@ -649,127 +429,78 @@ msgstr ""
 msgid "・・・などなど"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:276 core/templates/core/index.html:480
-=======
-#: core/templates/core/index.html:353 core/templates/core/index.html:629
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:117
 #: core/templates/core/room_details.html:321
 msgid "バスタオル"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:284 core/templates/core/index.html:488
-=======
-#: core/templates/core/index.html:364 core/templates/core/index.html:640
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:125
 #: core/templates/core/room_details.html:329
 msgid "フェイスタオル"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:292 core/templates/core/index.html:496
-=======
-#: core/templates/core/index.html:375 core/templates/core/index.html:651
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:133
 #: core/templates/core/room_details.html:337
 msgid "シャンプー"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:300 core/templates/core/index.html:504
-=======
-#: core/templates/core/index.html:386 core/templates/core/index.html:662
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:141
 #: core/templates/core/room_details.html:345
 msgid "コンディショナー"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:308 core/templates/core/index.html:512
-=======
-#: core/templates/core/index.html:397 core/templates/core/index.html:673
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:149
 #: core/templates/core/room_details.html:353
 msgid "ボディソープ"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:316 core/templates/core/index.html:520
-=======
-#: core/templates/core/index.html:408 core/templates/core/index.html:684
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:157
 #: core/templates/core/room_details.html:361
 msgid "ボディタオル"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:324 core/templates/core/index.html:528
-=======
-#: core/templates/core/index.html:419 core/templates/core/index.html:695
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:165
 #: core/templates/core/room_details.html:369
 msgid "コットン・綿棒"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:327 core/templates/core/index.html:531
-=======
-#: core/templates/core/index.html:422 core/templates/core/index.html:698
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:168
 #: core/templates/core/room_details.html:372
 msgid "その他"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:334 core/templates/core/index.html:538
-=======
-#: core/templates/core/index.html:432 core/templates/core/index.html:708
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:175
 #: core/templates/core/room_details.html:379
 msgid "トイレ"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:342 core/templates/core/index.html:546
-=======
-#: core/templates/core/index.html:443 core/templates/core/index.html:719
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:183
 #: core/templates/core/room_details.html:387
 msgid "冷暖房"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:350 core/templates/core/index.html:554
-=======
-#: core/templates/core/index.html:454 core/templates/core/index.html:730
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:191
 #: core/templates/core/room_details.html:395
 msgid "５０型テレビ"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:358 core/templates/core/index.html:562
-=======
-#: core/templates/core/index.html:465 core/templates/core/index.html:741
->>>>>>> 6131f85 (wip)
 #: core/templates/core/room_details.html:199
 #: core/templates/core/room_details.html:403
 msgid "VOD"
 msgstr ""
 
-<<<<<<< HEAD
 #: core/templates/core/index.html:371 core/templates/core/room_details.html:212
 msgid "０２・０３号室"
 msgstr ""
@@ -814,68 +545,6 @@ msgstr ""
 msgid "６名"
 msgstr ""
 
-=======
-#: core/templates/core/index.html:481 core/templates/core/room_details.html:212
-msgid "０２・０３号室"
-msgstr ""
-
-#: core/templates/core/index.html:482 core/templates/core/room_details.html:213
-msgid "００・０１号室と違ってダブルベッドが１台あります。"
-msgstr ""
-
-#: core/templates/core/index.html:494 core/templates/core/room_details.html:222
-msgid "ダブル、１台"
-msgstr ""
-
-#: core/templates/core/index.html:505
-msgid "最大人数４名"
-msgstr ""
-
-#: core/templates/core/index.html:759
-msgid "pricing"
-msgstr ""
-
-#: core/templates/core/index.html:767
-msgid "00・01号室"
-msgstr ""
-
-#: core/templates/core/index.html:778
-msgid "02・03号室"
-msgstr ""
-
-#: core/templates/core/index.html:795
-msgid "号室"
-msgstr ""
-
-#: core/templates/core/index.html:797
-msgid "１名"
-msgstr ""
-
-#: core/templates/core/index.html:799
-msgid "２名"
-msgstr ""
-
-#: core/templates/core/index.html:801
-msgid "３名"
-msgstr ""
-
-#: core/templates/core/index.html:803
-msgid "４名"
-msgstr ""
-
-#: core/templates/core/index.html:805
-msgid "５名"
-msgstr ""
-
-#: core/templates/core/index.html:807
-msgid "６名"
-msgstr ""
-
-#: core/templates/core/index.html:841
-msgid "access"
-msgstr ""
-
->>>>>>> 6131f85 (wip)
 #: core/templates/core/index_old.html:37 core/templates/core/index_old.html:88
 #: core/templates/core/index_old.html:231
 msgid "About Win Village"
@@ -990,9 +659,6 @@ msgid "Submit Modifications"
 msgstr ""
 
 #: customer/templates/customer/customer_detail.html:24
-#: templates/winadmin/pricing_tier_detail.html:20
-#: templates/winadmin/room_detail.html:20
-#: winadmin/templates/winadmin/inventory/item_detail.html:21
 msgid "Delete"
 msgstr ""
 
@@ -1007,8 +673,6 @@ msgstr ""
 
 #: customer/templates/customer/customer_list.html:10
 #: templates/ticket/ticket_list.html:12
-#: templates/winadmin/pricing_tier_list.html:10
-#: templates/winadmin/room_list.html:10
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:17
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:17
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:17
@@ -1094,63 +758,63 @@ msgstr ""
 msgid "Addresses"
 msgstr ""
 
-#: reservations/models.py:207
+#: reservations/models.py:171
 msgid "Stay"
 msgstr ""
 
-#: reservations/models.py:208
+#: reservations/models.py:172
 msgid "Stays"
 msgstr ""
 
-#: reservations/models.py:212 winadmin/forms.py:164
+#: reservations/models.py:176 winadmin/forms.py:164
 msgid "Not Reserved"
 msgstr ""
 
-#: reservations/models.py:213 winadmin/forms.py:165
+#: reservations/models.py:177 winadmin/forms.py:165
 msgid "Reserved"
 msgstr ""
 
-#: reservations/models.py:214 winadmin/forms.py:166
+#: reservations/models.py:178 winadmin/forms.py:166
 msgid "Checked In"
 msgstr ""
 
-#: reservations/models.py:215 winadmin/forms.py:167
+#: reservations/models.py:179 winadmin/forms.py:167
 msgid "Checked Out"
 msgstr ""
 
-#: reservations/models.py:216 winadmin/forms.py:168
+#: reservations/models.py:180 winadmin/forms.py:168
 msgid "Cancelled"
 msgstr ""
 
-#: reservations/models.py:218 winadmin/forms.py:129 winadmin/forms.py:162
+#: reservations/models.py:182 winadmin/forms.py:129 winadmin/forms.py:162
 msgid "Hourly"
 msgstr ""
 
-#: reservations/models.py:218 winadmin/forms.py:129 winadmin/forms.py:162
+#: reservations/models.py:182 winadmin/forms.py:129 winadmin/forms.py:162
 msgid "Overnight"
 msgstr ""
 
-#: reservations/models.py:246 winadmin/forms.py:174
+#: reservations/models.py:191 winadmin/forms.py:174
 msgid "Start"
 msgstr ""
 
-#: reservations/models.py:247 winadmin/forms.py:175
+#: reservations/models.py:192 winadmin/forms.py:175
 msgid "End"
 msgstr ""
 
-#: reservations/models.py:340
+#: reservations/models.py:290
 msgid "Reservation"
 msgstr ""
 
-#: reservations/models.py:341
+#: reservations/models.py:291
 msgid "Reservations"
 msgstr ""
 
-#: reservations/models.py:463
+#: reservations/models.py:413
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:464
+#: reservations/models.py:414
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -1190,40 +854,40 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:29
+#: reservations/templates/reservations/index.html:27
 #: reservations/templates/reservations/index_old.html:26
 #: reservations/templates/reservations/option_selection.html:25
 msgid "Go Back Home"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:39
+#: reservations/templates/reservations/index.html:37
 #: winadmin/templates/winadmin/reservations/reservation_create.html:145
 msgid "Choose the date"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:201
-#: reservations/templates/reservations/index.html:261
+#: reservations/templates/reservations/index.html:199
+#: reservations/templates/reservations/index.html:259
 #: winadmin/templates/winadmin/reservations/reservation_create.html:304
 msgid "Select Start and End Times"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:213
-#: reservations/templates/reservations/index.html:239
-#: reservations/templates/reservations/index.html:332
-#: reservations/templates/reservations/index.html:373
-#: reservations/templates/reservations/index.html:381
+#: reservations/templates/reservations/index.html:211
+#: reservations/templates/reservations/index.html:237
+#: reservations/templates/reservations/index.html:330
+#: reservations/templates/reservations/index.html:371
+#: reservations/templates/reservations/index.html:379
 msgid "Continue"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:233
+#: reservations/templates/reservations/index.html:231
 msgid "Continue, Choose Options"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:248
+#: reservations/templates/reservations/index.html:246
 msgid "Delete Session"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:276
+#: reservations/templates/reservations/index.html:274
 #: reservations/templates/reservations/option_selection.html:5
 #: reservations/templates/reservations/option_selection.html:36
 #: reservations/templates/reservations/reservation_form.html:45
@@ -1234,7 +898,7 @@ msgstr ""
 msgid "Choose Options"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:285
+#: reservations/templates/reservations/index.html:283
 #: reservations/templates/reservations/option_selection.html:45
 #: reservations/templates/reservations/reservation_form.html:52
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:433
@@ -1244,7 +908,7 @@ msgstr ""
 msgid "Option Types"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:291
+#: reservations/templates/reservations/index.html:289
 #: reservations/templates/reservations/option_selection.html:51
 #: reservations/templates/reservations/reservation_form.html:59
 #: winadmin/templates/winadmin/reservations/reservation_create.html:337
@@ -1252,7 +916,7 @@ msgstr ""
 msgid "Price:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:301
+#: reservations/templates/reservations/index.html:299
 #: reservations/templates/reservations/option_selection.html:61
 #: reservations/templates/reservations/reservation_form.html:72
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:456
@@ -1261,7 +925,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:307
+#: reservations/templates/reservations/index.html:305
 #: reservations/templates/reservations/option_selection.html:67
 #: reservations/templates/reservations/reservation_form.html:81
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:469
@@ -1270,14 +934,14 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:324
-#: reservations/templates/reservations/index.html:368
-#: reservations/templates/reservations/index.html:452
+#: reservations/templates/reservations/index.html:322
+#: reservations/templates/reservations/index.html:366
+#: reservations/templates/reservations/index.html:450
 msgid "Go Back"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:340
-#: reservations/templates/reservations/index.html:349
+#: reservations/templates/reservations/index.html:338
+#: reservations/templates/reservations/index.html:347
 #: reservations/templates/reservations/reservation_form.html:100
 #: reservations/templates/reservations/reservation_form.html:106
 #: winadmin/templates/winadmin/reservations/reservation_create.html:116
@@ -1285,70 +949,70 @@ msgstr ""
 msgid "Contact Information"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:391
+#: reservations/templates/reservations/index.html:389
 #: reservations/templates/reservations/reservation_form.html:155
 #: winadmin/templates/winadmin/reservations/reservation_create.html:42
 msgid "Confirm Details"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:395
+#: reservations/templates/reservations/index.html:393
 #: winadmin/templates/winadmin/reservations/reservation_create.html:46
 msgid "Start Date:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:400
+#: reservations/templates/reservations/index.html:398
 #: winadmin/templates/winadmin/reservations/reservation_create.html:51
 msgid "End Date:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:406
+#: reservations/templates/reservations/index.html:404
 #: winadmin/templates/winadmin/reservations/reservation_create.html:57
 msgid "Start Time:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:410
+#: reservations/templates/reservations/index.html:408
 #: winadmin/templates/winadmin/reservations/reservation_create.html:61
 msgid "End Time:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:415
+#: reservations/templates/reservations/index.html:413
 #: winadmin/templates/winadmin/reservations/reservation_create.html:66
 msgid "First Name:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:419
+#: reservations/templates/reservations/index.html:417
 #: winadmin/templates/winadmin/reservations/reservation_create.html:70
 msgid "Last Name:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:423
+#: reservations/templates/reservations/index.html:421
 #: winadmin/templates/winadmin/reservations/reservation_create.html:74
 msgid "Email:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:427
+#: reservations/templates/reservations/index.html:425
 #: winadmin/templates/winadmin/reservations/reservation_create.html:78
 msgid "Phone:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:437
+#: reservations/templates/reservations/index.html:435
 #: winadmin/templates/winadmin/reservations/reservation_create.html:88
 msgid "Stay Price"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:460
+#: reservations/templates/reservations/index.html:458
 msgid ""
 "\n"
 "          Make Reservation\n"
 "        "
 msgstr ""
 
-#: reservations/templates/reservations/index.html:471
+#: reservations/templates/reservations/index.html:469
 #: winadmin/templates/winadmin/reservations/reservation_create.html:368
 msgid "Reservation Confirmed!"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:472
+#: reservations/templates/reservations/index.html:470
 msgid ""
 "An email has been sent to you with the details of your\n"
 "                                         reservation."
@@ -1426,14 +1090,10 @@ msgid ""
 "          "
 msgstr ""
 
-#: templates/custom_form.html:64 templates/winadmin/pricing_tier_create.html:14
-#: templates/winadmin/room_create.html:51
-#: templates/winadmin/room_create.html:79
-#: templates/winadmin/room_detail.html:17
+#: templates/custom_form.html:64
 #: winadmin/templates/winadmin/inventory/category_create.html:16
 #: winadmin/templates/winadmin/inventory/category_detail.html:19
 #: winadmin/templates/winadmin/inventory/item_create.html:16
-#: winadmin/templates/winadmin/inventory/item_detail.html:18
 #: winadmin/templates/winadmin/reservations/reservation_detail.html:21
 #: winadmin/templates/winadmin/transactions/transaction_create.html:16
 msgid "Submit"
@@ -1451,7 +1111,7 @@ msgstr ""
 msgid "Make some!"
 msgstr ""
 
-#: templates/patterns/navigations/sidebar_navigation/sidebar_navigation_body.html:17
+#: templates/patterns/navigations/sidebar_navigation/sidebar_navigation_body.html:19
 msgid "Log Out"
 msgstr ""
 
@@ -1485,68 +1145,6 @@ msgstr ""
 
 #: templates/ticket/ticket_list.html:37
 msgid "Closed?"
-msgstr ""
-
-#: templates/winadmin/pricing_tier_create.html:5
-#: templates/winadmin/room_create.html:19
-#: templates/winadmin/room_create.html:23
-msgid "Create Room"
-msgstr ""
-
-#: templates/winadmin/pricing_tier_detail.html:4
-#: templates/winadmin/pricing_tier_detail.html:8
-msgid "Edit Pricing Tier"
-msgstr ""
-
-#: templates/winadmin/pricing_tier_detail.html:17
-msgid "Edit"
-msgstr ""
-
-#: templates/winadmin/pricing_tier_list.html:4
-msgid "Pricing Tier List View"
-msgstr ""
-
-#: templates/winadmin/pricing_tier_list.html:8
-msgid "Pricing Tier Chart"
-msgstr ""
-
-#: templates/winadmin/pricing_tier_list.html:32 winadmin/forms.py:222
-#: winadmin/forms.py:230
-msgid "Tier Name"
-msgstr ""
-
-#: templates/winadmin/pricing_tier_list.html:34
-msgid "Price Per Night"
-msgstr ""
-
-#: templates/winadmin/pricing_tier_list.html:35
-#: templates/winadmin/room_list.html:35
-msgid "Price Per Hour"
-msgstr ""
-
-#: templates/winadmin/room_create.html:44
-msgid "Add Tier"
-msgstr ""
-
-#: templates/winadmin/room_detail.html:4 templates/winadmin/room_detail.html:8
-msgid "Edit Room"
-msgstr ""
-
-#: templates/winadmin/room_list.html:4
-msgid "Room List View"
-msgstr ""
-
-#: templates/winadmin/room_list.html:8
-msgid "Room List"
-msgstr ""
-
-#: templates/winadmin/room_list.html:32 winadmin/forms.py:184
-#: winadmin/forms.py:203
-msgid "Room Name"
-msgstr ""
-
-#: templates/winadmin/room_list.html:34 winadmin/forms.py:186
-msgid "Pricing Tiers"
 msgstr ""
 
 #: users/apps.py:7
@@ -1717,6 +1315,14 @@ msgstr ""
 msgid "Edit Inventory Item"
 msgstr ""
 
+#: winadmin/templates/winadmin/inventory/item_detail.html:18
+msgid "Edit Item"
+msgstr ""
+
+#: winadmin/templates/winadmin/inventory/item_detail.html:21
+msgid "Delete Item"
+msgstr ""
+
 #: winadmin/templates/winadmin/inventory/item_list.html:4
 #: winadmin/templates/winadmin/inventory/item_list.html:8
 msgid "Inventory Item List View"
@@ -1740,7 +1346,7 @@ msgstr ""
 msgid "Winvillage Admin Login"
 msgstr ""
 
-#: winadmin/templates/winadmin/login_page.html:30
+#: winadmin/templates/winadmin/login_page.html:33
 msgid "Login"
 msgstr ""
 
@@ -1832,7 +1438,7 @@ msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:37
-#: winadmin/views.py:399
+#: winadmin/views.py:383
 msgid "Date"
 msgstr ""
 
@@ -1861,7 +1467,7 @@ msgid "Return Amount"
 msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
-#: winadmin/views.py:403
+#: winadmin/views.py:387
 msgid "Balance"
 msgstr ""
 
@@ -1889,51 +1495,51 @@ msgstr ""
 msgid "Remainder"
 msgstr ""
 
-#: winadmin/views.py:101 winadmin/views.py:123
+#: winadmin/views.py:95 winadmin/views.py:117
 msgid "There was an error logging in."
 msgstr ""
 
-#: winadmin/views.py:155
+#: winadmin/views.py:149
 msgid "Item Successfully Added"
 msgstr ""
 
-#: winadmin/views.py:174
+#: winadmin/views.py:168
 msgid "Category Successfully Added"
 msgstr ""
 
-#: winadmin/views.py:177
+#: winadmin/views.py:171
 msgid "Input category title"
 msgstr ""
 
-#: winadmin/views.py:196
+#: winadmin/views.py:190
 msgid "Category Successfully Edited"
 msgstr ""
 
-#: winadmin/views.py:198
+#: winadmin/views.py:192
 msgid "Input category name"
 msgstr ""
 
-#: winadmin/views.py:228 winadmin/views.py:234
+#: winadmin/views.py:220
 msgid "Item Successfully Edited"
 msgstr ""
 
-#: winadmin/views.py:230 winadmin/views.py:236 winadmin/views.py:256
+#: winadmin/views.py:223 winadmin/views.py:242
 msgid "Error"
 msgstr ""
 
-#: winadmin/views.py:253
+#: winadmin/views.py:239
 msgid "Item Successfully Deleted"
 msgstr ""
 
-#: winadmin/views.py:329 winadmin/views.py:434
+#: winadmin/views.py:314 winadmin/views.py:418
 msgid "Transaction Created Successfully"
 msgstr ""
 
-#: winadmin/views.py:331
+#: winadmin/views.py:316
 msgid "Transaction Couldn't Be Created"
 msgstr ""
 
-#: winadmin/views.py:715
+#: winadmin/views.py:697
 msgid "Reservation successfully edited."
 msgstr ""
 

@@ -161,45 +161,9 @@ class DefaultPrice(models.Model):
         super().save(*args, **kwargs)
 
 
-class PricingTier(models.Model):
-    class PricingTierManager(models.Manager):
-        def order_by_name(self):
-            return self.order_by("price_per_night").all()
-
-    objects = PricingTierManager()
-    name = models.CharField(max_length=50)
-
-    class NumberOfAdultChoices(models.IntegerChoices):
-        ONE = 1
-        TWO = 2
-        THREE = 3
-        FOUR = 4
-        FIVE = 5
-        SIX = 6
-
-    number_of_adults = models.IntegerField(default=1, choices=NumberOfAdultChoices)
-    price_per_night = models.DecimalField(max_digits=19, decimal_places=4)
-    price_per_hour = models.DecimalField(max_digits=19, decimal_places=4)
-
-    def __str__(self):
-        return f"{self.name} {self.price_per_night}/night, {self.price_per_hour}/hour"
-
-    def get_price_per_night(self):
-        return round(self.price_per_night, 2)
-
-    def get_price_per_hour(self):
-        return round(self.price_per_hour, 2)
-
-    def get_absolute_url(self):
-        return reverse("winadmin:pricing_tier_detail", kwargs={"pk": self.pk})
-
-
-class Room(models.Model):
-    name = models.CharField(max_length=50)
-    pricing_tiers = models.ManyToManyField(PricingTier)
-
-    def __str__(self):
-        return f"Room: {self.name}"
+# class Room(models.Model):
+#     name = models.CharField(max_length=50)
+#     pricing_tiers = models.ManyToManyField(PricingTier)
 
 
 class Stay(BaseModel):
@@ -222,27 +186,8 @@ class Stay(BaseModel):
         choices=STAY_TYPE_CHOICES,
         default=STAY_TYPE_CHOICES.hourly,
     )
-
-    class NumberOfAdultChoices(models.IntegerChoices):
-        ONE = 1
-        TWO = 2
-        THREE = 3
-        FOUR = 4
-        FIVE = 5
-        SIX = 6
-
-    class NumberOfChildChoices(models.IntegerChoices):
-        ZERO = 0
-        ONE = 1
-        TWO = 2
-        THREE = 3
-        FOUR = 4
-        FIVE = 5
-        SIX = 6
-
-    number_of_adults = models.IntegerField(default=1, choices=NumberOfAdultChoices)
-    number_of_children = models.IntegerField(default=0, choices=NumberOfChildChoices)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=True)
+    # number_of_adults = models.IntegerField(default=1, choices=[1, 2, 3, 4, 5, 6])
+    # number_of_children = models.IntegerField(default=0, choices=[0, 1, 2, 3, 4, 5])
     start = PendulumDateTimeField(verbose_name=_("Start"), null=True)
     end = PendulumDateTimeField(verbose_name=_("End"), null=True)
     status_changed = MonitorField(monitor="status")
@@ -280,14 +225,19 @@ class Stay(BaseModel):
         return total_price
 
     def calculate_nightly_price(self):
-        current_dt = self.start
-        pricing_tier = self.room.pricing_tiers.filter(
-            number_of_adults=self.number_of_adults
-        )
+        current_date = self.start.date
+        price_per_child
         total_price = 0
-        while current_dt.day <= self.end.day:
-            total_price += pricing_tier.price_per_night
-            current_dt.add(days=1)
+        while current_date <= self.end.date:
+            if self.is_special_date(current_date):
+                total_price += SpecialDate.objects.filter(
+                    date=current_date
+                ).price_per_night
+            # elif self.is_weekend(current_date):
+            #     total_price += DefaultPrice.objects.first().weekend_price_per_night
+            else:
+                total_price += DefaultPrice.objects.first().price_per_night * self.n
+            current_date += timedelta(days=1)
         return total_price
 
     def calculate_price(self):

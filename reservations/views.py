@@ -35,7 +35,8 @@ RESERVATION_TEMPLATE = "reservations/index.html"
 @for_htmx(use_block_from_params=True)
 def index(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    today_date = pendulum.today().date()
+    tz = ZoneInfo(TIME_ZONE)
+    today_date = datetime.now(tz=tz).date()
     form = DateForm(initial={"date": today_date})
     if reservation.start_time() and reservation.end_time():
         initial = {

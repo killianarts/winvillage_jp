@@ -32,7 +32,7 @@ from reservations.calendar_utils import (
     get_next_month,
 )
 from reservations.forms import DateForm
-from reservations.models import Reservation, Stay, Room, PricingTier
+from reservations.models import Reservation, Stay
 from reservations.tasks import send_confirmation_email
 from winadmin.forms import (
     LoginForm,
@@ -46,10 +46,6 @@ from winadmin.forms import (
     ReservationCreateForm,
     ReservationDetailForm,
     SquarePaymentTokenForm,
-    RoomDetailForm,
-    RoomCreateForm,
-    PricingTierDetailForm,
-    PricingTierCreateForm,
 )
 from winvillage import settings
 from winvillage.settings import TIME_ZONE
@@ -70,14 +66,12 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, "winadmin/index.html", {"greeting": greeting})
 
 
-@login_required(login_url="winadmin:login_page")
 def inventory_management_page(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(
         request, "winadmin/index.html", {"greeting": "Hello from inventory."}
     )
 
 
-@login_required(login_url="winadmin:login_page")
 def sale_management_page(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(
         request, "winadmin/index.html", {"greeting": "Hello from sales."}
@@ -158,7 +152,7 @@ def item_create(request: HtmxHttpRequest) -> HttpResponse:
         TemplateResponse(
             request, "winadmin/inventory/item_create.html", {"form": form}
         ),
-        "load",
+        "getMessages",
     )
 
 
@@ -205,7 +199,6 @@ def category_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     )
 
 
-@login_required(login_url="winadmin:login_page")
 def category_list(request: HtmxHttpRequest) -> HttpResponse:
     categories = Category.objects.all()
     context = {
@@ -222,19 +215,12 @@ def item_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     form = ItemEditForm(instance=item)
     if request.method == "POST":
         form = ItemEditForm(request.POST, instance=item)
-        if "edit" in request.POST:
-            if form.is_valid():
-                form.save()
-                messages.success(request, _("Item Successfully Edited"))
-            else:
-                messages.error(request, _("Error"))
-        if "delete" in request.POST:
-            if form.is_valid():
-                item.delete()
-                messages.success(request, _("Item Successfully Edited"))
-            else:
-                messages.error(request, _("Error"))
-
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Item Successfully Edited"))
+        else:
+            form = ItemEditForm(request.POST, instance=item)
+            messages.error(request, _("Error"))
     return trigger_client_event(
         TemplateResponse(
             request, "winadmin/inventory/item_detail.html", {"form": form, "item": item}
@@ -285,7 +271,6 @@ def get_balance_and_ledger(transactions: Transaction):
     return balance, ledger
 
 
-@login_required(login_url="winadmin:login_page")
 @for_htmx(use_block_from_params=True)
 def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     sales = Transaction.sales.all()
@@ -371,7 +356,6 @@ def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     )
 
 
-@login_required(login_url="winadmin:login_page")
 def transaction_export_csv_by_period(request) -> HttpResponse:
     form = SetLedgerPeriodForm(request.GET)
     if form.is_valid():
@@ -479,7 +463,6 @@ def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
     )
 
 
-@login_required(login_url="winadmin:login_page")
 @htmx_form_validate(form_class=ReservationCreateForm)
 @for_htmx(use_block_from_params=True)
 def reservation_create_no_calendar(request: HtmxHttpRequest) -> HttpResponse:
@@ -652,7 +635,6 @@ def option_select(request: HtmxHttpRequest) -> HttpResponse:
     return trigger_client_event(response, "updateReservationDetails", after="settle")
 
 
-@login_required(login_url="winadmin:login_page")
 @htmx_form_validate(form_class=ReservationCreateForm)
 @for_htmx(use_block_from_params=True)
 def reservation_create(request: HtmxHttpRequest) -> HttpResponse:
@@ -750,7 +732,6 @@ def get_or_create_customer(reservation):
     return customer, created
 
 
-@login_required(login_url="winadmin:login_page")
 @for_htmx(use_block_from_params=True)
 def make_payment(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
@@ -815,125 +796,3 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
 #         "noreply@winvillage.jp",
 #         [sender_email],
 #     )
-
-
-@login_required(login_url="winadmin:login_page")
-@for_htmx(use_block_from_params=True)
-def room_create(request: HtmxHttpRequest) -> HttpResponse:
-    room_create_form = RoomCreateForm()
-    tier_add_form = PricingTierCreateForm()
-    if request.method == "POST":
-        if "add-tier" in request.POST:
-            form = PricingTierCreateForm(request.POST)
-            if form.is_valid():
-                form.save()
-                # TODO: Figure out how to use sessions to save state of RoomCreateForm
-                room_create_form = RoomCreateForm(request.POST)
-                tier_name = form.cleaned_data["name"]
-                messages.success(request, f"{tier_name} Created Successfully!")
-            else:
-                messages.error(request, "Error!")
-        if "create-room" in request.POST:
-            room_create_form = RoomCreateForm(request.POST)
-            if room_create_form.is_valid():
-                room_name = room_create_form.cleaned_data["room_name"]
-                room = Room.objects.create(name=room_name)
-                pricing_tiers = room_create_form.cleaned_data["pricing_tiers"]
-                for tier in pricing_tiers:
-                    room.pricing_tiers.add(tier)
-                room.save()
-                messages.success(request, "Success!")
-                room_create_form = RoomCreateForm()
-            else:
-                messages.error(request, "Error!")
-    context = {"room_create_form": room_create_form, "tier_add_form": tier_add_form}
-    response = TemplateResponse(request, "winadmin/room_create.html", context)
-    return trigger_client_event(response, "getMessages")
-
-
-@login_required(login_url="winadmin:login_page")
-@for_htmx(use_block_from_params=True)
-def room_list(request: HtmxHttpRequest) -> HttpResponse:
-    rooms = Room.objects.all()
-    if "filter" in request.GET:
-        filters = request.GET.getlist("filter", default=None)
-        # for filter in filters:
-        # Insert Filters Here
-        # rooms = Room.objects.filter()
-    context = {"rooms": rooms}
-    return TemplateResponse(request, "winadmin/room_list.html", context)
-
-
-@login_required(login_url="winadmin:login_page")
-@for_htmx(use_block_from_params=True)
-def room_detail(request: HtmxHttpRequest, room_id: int) -> HttpResponse:
-    room = get_object_or_404(Room, id=room_id)
-    form = RoomDetailForm(instance=room)
-    if request.method == "POST":
-        form = RoomDetailForm(request.POST, instance=room)
-        if "edit" in request.POST:
-            if form.is_valid():
-                instance = form.save()
-                messages.success(request, "Success!")
-            else:
-                messages.error(request, "Error!")
-        if "delete" in request.POST:
-            room.delete()
-            messages.success(request, "Room deleted")
-            return HttpResponseClientRedirect(reverse("winadmin:room_list"))
-    context = {"form": form}
-    response = TemplateResponse(request, "winadmin/room_detail.html", context)
-    return trigger_client_event(response, "getMessages")
-
-
-@login_required(login_url="winadmin:login_page")
-@for_htmx(use_block_from_params=True)
-def pricing_tier_create(request: HtmxHttpRequest) -> HttpResponse:
-    form = PricingTierCreateForm()
-    if request.method == "POST":
-        form = PricingTierCreateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            tier_name = form.cleaned_data["name"]
-            messages.success(request, f"{tier_name} Created Successfully!")
-        else:
-            messages.error(request, "Error!")
-    context = {"form": form}
-    response = TemplateResponse(request, "winadmin/pricing_tier_create.html", context)
-    return trigger_client_event(response, "getMessages")
-
-
-@login_required(login_url="winadmin:login_page")
-@for_htmx(use_block_from_params=True)
-def pricing_tier_list(request: HtmxHttpRequest) -> HttpResponse:
-    pricing_tiers = PricingTier.objects.all()
-    if "filter" in request.GET:
-        filters = request.GET.getlist("filter", default=None)
-        # for filter in filters:
-        # Insert Filters Here
-        # pricing_tiers = PricingTier.objects.filter()
-    context = {"pricing_tiers": pricing_tiers}
-    return TemplateResponse(request, "winadmin/pricing_tier_list.html", context)
-
-
-@login_required(login_url="winadmin:login_page")
-@for_htmx(use_block_from_params=True)
-def pricing_tier_detail(request: HtmxHttpRequest, pricing_tier_id: int) -> HttpResponse:
-    pricing_tier = get_object_or_404(PricingTier, id=pricing_tier_id)
-    form = PricingTierDetailForm(instance=pricing_tier)
-    if request.method == "POST":
-        form = PricingTierDetailForm(request.POST, instance=pricing_tier)
-        if "edit" in request.POST:
-            if form.is_valid():
-                instance = form.save()
-                messages.success(request, f"{instance.name} edited successfully.")
-            else:
-                messages.error(request, "Error!")
-        if "delete" in request.POST:
-            if form.is_valid():
-                pricing_tier.delete()
-                messages.success(request, "Success!")
-                return HttpResponseClientRedirect(reverse("winadmin:pricing_tier_list"))
-    context = {"form": form}
-    response = TemplateResponse(request, "winadmin/pricing_tier_detail.html", context)
-    return trigger_client_event(response, "getMessages")

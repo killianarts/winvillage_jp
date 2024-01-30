@@ -5,8 +5,6 @@ from reservations.models import (
     OrderItem,
     Order,
     SpecialDate,
-    Room,
-    PricingTier,
 )
 
 
@@ -41,5 +39,3 @@ admin.site.register(Stay, StayAdmin)
 admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(SpecialDate)
-admin.site.register(Room)
-admin.site.register(PricingTier)

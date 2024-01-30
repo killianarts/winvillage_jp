@@ -44,11 +44,6 @@ module.exports = {
                 'hard-45-lg': '10px 10px 0 rgba(0, 0, 0, 0.2)',
                 'hard-45-xl': '15px 15px 0 rgba(0, 0, 0, 0.2)',
                 'hard-45-2xl': '20px 20px 0 rgba(0, 0, 0, 0.2)',
-            },
-            fontFamily: {
-                handwritten: ['"Segoe Print"', '"Bradley Hand"', "Chilanka", "TSCu_Comic", "casual", "cursive"],
-                code: ["ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"],
-                industrial: ["Bahnschrift", 'DIN Alternate', 'Franklin Gothic Medium', 'Nimbus Sans Narrow', "sans-serif-condensed", "sans-serif"],
             }
         },
         borderWidth: {
@@ -62,7 +57,7 @@ module.exports = {
         },
         fontFamily: {
             display: ['Superclarendon', '"Bookman Old Style"', '"URW Bookman"', '"URW Bookman L"', '"Georgia Pro"', 'Georgia', 'serif'],
-            sans: ['"Hiragino Sans"', "Meiryo", 'sans-serif'],
+            sans: ['"Hiragino Sans"', "Meiryo", 'sans-serif']
         }
     },
     plugins: [
