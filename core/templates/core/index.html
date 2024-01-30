@@ -33,8 +33,9 @@
 {% endblock %}
 {% block content_main %}
   <div class="grid grid-cols-4 gap-7 mx-5 md:mx-20">
+  {% static 'core/img/outdoors_night.jpg' as image_url %}
     {% #four_col_grid_cell variant="wide" %}
-    <div class="grid gap-5">
+    <div class="grid gap-5 relative">
       <div class="hidden sm:block max-w-[200px]">
         <img src="{% static 'core/img/light_logo.svg' %}" alt="">
       </div>
@@ -50,7 +51,7 @@
       {% #outline_button %}{% translate '予約を作る' %}{% /outline_button %}
     </div>
     {% /four_col_grid_cell %}
-    {% static 'core/img/outdoors_night.jpg' as image_url %}
+    
     {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
     {% #four_col_grid_cell variant="wide" %}
     <div class="space-y-5">

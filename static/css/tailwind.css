@@ -854,6 +854,26 @@ select {
   top: 0px;
 }
 
+.-right-10 {
+  right: -2.5rem;
+}
+
+.-right-20 {
+  right: -5rem;
+}
+
+.-right-2 {
+  right: -0.5rem;
+}
+
+.-right-\[200px\] {
+  right: -200px;
+}
+
+.-right-\[400px\] {
+  right: -400px;
+}
+
 .isolate {
   isolation: isolate;
 }
@@ -1555,6 +1575,15 @@ select {
 
 .rounded-sm {
   border-radius: 0.125rem;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.rounded-l {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
 }
 
 .border {
@@ -2919,6 +2948,10 @@ select {
 
   .xl\:mt-10 {
     margin-top: 2.5rem;
+  }
+
+  .xl\:hidden {
+    display: none;
   }
 
   .xl\:p-10 {
