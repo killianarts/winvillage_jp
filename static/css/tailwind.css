@@ -854,26 +854,6 @@ select {
   top: 0px;
 }
 
-.-right-10 {
-  right: -2.5rem;
-}
-
-.-right-20 {
-  right: -5rem;
-}
-
-.-right-2 {
-  right: -0.5rem;
-}
-
-.-right-\[200px\] {
-  right: -200px;
-}
-
-.-right-\[400px\] {
-  right: -400px;
-}
-
 .isolate {
   isolation: isolate;
 }
@@ -1237,13 +1217,13 @@ select {
   max-width: 50px;
 }
 
-.max-w-\[80dvw\] {
-  max-width: 80dvw;
-}
-
 .max-w-fit {
   max-width: -moz-fit-content;
   max-width: fit-content;
+}
+
+.max-w-full {
+  max-width: 100%;
 }
 
 .max-w-lg {
@@ -1266,20 +1246,20 @@ select {
   max-width: 20rem;
 }
 
-.max-w-\[70dvw\] {
-  max-width: 70dvw;
+.max-w-\[px\] {
+  max-width: px;
 }
 
-.max-w-\[50dvw\] {
-  max-width: 50dvw;
+.max-w-\[190px\] {
+  max-width: 190px;
 }
 
-.max-w-\[10dvw\] {
-  max-width: 10dvw;
+.max-w-\[180px\] {
+  max-width: 180px;
 }
 
-.max-w-full {
-  max-width: 100%;
+.max-w-\[170px\] {
+  max-width: 170px;
 }
 
 .flex-1 {
@@ -1529,6 +1509,21 @@ select {
   border-color: rgb(28 25 23 / var(--tw-divide-opacity));
 }
 
+.divide-stone-500 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(120 113 108 / var(--tw-divide-opacity));
+}
+
+.divide-stone-400 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(168 162 158 / var(--tw-divide-opacity));
+}
+
+.divide-stone-600 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(87 83 78 / var(--tw-divide-opacity));
+}
+
 .justify-self-end {
   justify-self: end;
 }
@@ -1575,15 +1570,6 @@ select {
 
 .rounded-sm {
   border-radius: 0.125rem;
-}
-
-.rounded {
-  border-radius: 0.25rem;
-}
-
-.rounded-l {
-  border-top-left-radius: 0.25rem;
-  border-bottom-left-radius: 0.25rem;
 }
 
 .border {
@@ -1808,6 +1794,16 @@ select {
   background-color: rgb(254 249 195 / var(--tw-bg-opacity));
 }
 
+.bg-stone-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(231 229 228 / var(--tw-bg-opacity));
+}
+
+.bg-orange-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity));
+}
+
 .bg-cover {
   background-size: cover;
 }
@@ -2017,6 +2013,10 @@ select {
 
 .pt-6 {
   padding-top: 1.5rem;
+}
+
+.pt-3 {
+  padding-top: 0.75rem;
 }
 
 .text-left {
@@ -2948,10 +2948,6 @@ select {
 
   .xl\:mt-10 {
     margin-top: 2.5rem;
-  }
-
-  .xl\:hidden {
-    display: none;
   }
 
   .xl\:p-10 {

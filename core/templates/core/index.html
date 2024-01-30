@@ -580,8 +580,30 @@
     <div class="mt-8">
       <div class="overflow-x-auto sm:-mx-6 lg:-mx-7 drop-shadow-hard-45-md">
         <div class="inline-block py-2 align-middle sm:px-6 lg:px-8 max-w-full min-w-full">
-          <div class="overflow-y-hidden scrollbar shadow border-3 border-b-0 sm:border-3 border-stone-900 rounded-lg bg-stone-100">
-            <table class="min-w-full divide-y divide-stone-900">
+          <div class="grid grid-cols-2"><div class="sm:hidden max-w-[180px] mx-auto p-5 border-3 border-stone-900 drop-shadow-hard-45-md rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
+            <h3 class="font-black text-xl text-center pb-2">{% translate '00・01号室' %}</h3>
+            <ul class="divide-y divide-stone-400 pt-3">
+              <li class="flex w-full justify-between"><span class="font-black">１名</span><span>---</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">２名</span><span>￥35,000</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">３名</span><span>￥45,000</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">４名</span><span>￥52,000</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">５名</span><span>￥55,000</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">６名</span><span>￥66,000</span></li>
+            </ul>
+          </div>
+          <div class="sm:hidden max-w-[180px] mx-auto p-5 border-3 border-stone-900 drop-shadow-hard-45-md rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
+            <h3 class="font-black text-xl text-center pb-2">{% translate '02・03号室' %}</h3>
+            <ul class="divide-y divide-stone-400 pt-3">
+              <li class="flex w-full justify-between"><span class="font-black">１名</span><span>￥20,000</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">２名</span><span>￥26,000</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">３名</span><span>￥33,000</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">４名</span><span>￥40,000</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">５名</span><span>---</span></li>
+              <li class="flex w-full justify-between"><span class="font-black">６名</span><span>---</span></li>
+            </ul>
+          </div></div>
+          <div class="hidden sm:block overflow-y-hidden scrollbar shadow border-3 border-b-0 sm:border-3 border-stone-900 rounded-lg bg-stone-100">
+            <table class="min-w-full divide-y divide-stone-400">
               <thead class="bg-stone-100">
               <tr>
                 <th id="spacer"
@@ -601,7 +623,7 @@
                     class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '６名' %}</th>
               </tr>
               </thead>
-              <tbody class="divide-y divide-stone-700">
+              <tbody class="divide-y divide-stone-400">
               <tr>
                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
                   00<span class="hidden lg:inline">・</span><br class="lg:hidden">01
