@@ -33,7 +33,7 @@
 {% endblock %}
 {% block content_main %}
   <div class="grid grid-cols-4 gap-7 mx-5 md:mx-20">
-  {% static 'core/img/outdoors_night.jpg' as image_url %}
+    {% static 'core/img/outdoors_night.jpg' as image_url %}
     {% #four_col_grid_cell variant="wide" %}
     <div class="grid gap-5 relative">
       <div class="hidden sm:block max-w-[200px]">
@@ -51,7 +51,7 @@
       {% #outline_button %}{% translate '予約を作る' %}{% /outline_button %}
     </div>
     {% /four_col_grid_cell %}
-    
+
     {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
     {% #four_col_grid_cell variant="wide" %}
     <div class="space-y-5">
@@ -157,7 +157,7 @@
     {% four_col_image_grid_cell background_image_url=image_url class="hidden sm:block lg:hidden" %}
   </div>
   <div class="mt-7 mb-5 mx-5 md:mx-20 space-y-7">
-    <div class="text-center leading-10">
+    <div id="specs" class="text-center leading-10">
       <span class="uppercase font-display tracking-widest">room specifications</span>
       <h2 class="text-5xl font-black ">{% translate '部屋の基本スペック' %}</h2>
     </div>
@@ -573,6 +573,10 @@
         </div>
       </div>
     </div>
+    <div id="pricing" class="text-center leading-10">
+      <span class="uppercase font-display tracking-widest">pricing</span>
+      <h2 class="text-5xl font-black ">{% translate '値段表' %}</h2>
+    </div>
     <div class="mt-8">
       <div class="overflow-x-auto sm:-mx-6 lg:-mx-7 drop-shadow-hard-45-md">
         <div class="inline-block py-2 align-middle sm:px-6 lg:px-8 max-w-full min-w-full">
@@ -627,7 +631,7 @@
         </div>
       </div>
     </div>
-    <div class="text-center leading-10">
+    <div id="access" class="text-center leading-10">
       <span class="uppercase font-display tracking-widest">access</span>
       <h2 class="text-5xl font-black ">{% translate 'アクセス' %}</h2>
     </div>
