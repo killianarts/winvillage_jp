@@ -39,15 +39,115 @@
 
 <body class="bg-stone-50" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 {% block header %}
+  <header class="absolute inset-x-0 top-0 z-50">
+    <nav class="flex items-center justify-between p-5 md:px-20">
+      <div class="flex lg:flex-1">
+        <a href="#" class="-m-1.5 p-1.5">
+          <span class="sr-only">{% translate 'Win Village' %}</span>
+          <img src="{% static 'core/img/light_logo.svg' %}" class="max-w-[50px]"
+               alt={% trans 'Win Village Logo' %}>
+        </a>
+      </div>
+      <div class="flex lg:hidden">
+        <button type="button"
+                _="on click toggle .hidden .animation-slide-left on #mobile-menu"
+                class="inline-flex items-center justify-center text-stone-900 -m-2.5 p-2.5">
+          <span class="sr-only">Open main menu</span>
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+          </svg>
+        </button>
+      </div>
+      <div class="hidden lg:flex">
+        <a href="#"
+           class="block px-6 py-2 text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:text-orange-950 hover:bg-stone-50">
+          {% translate 'About Win Village' %}</a>
+        <a href="#"
+           class="block px-6 py-2 text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:text-orange-950 hover:bg-stone-50">{% translate 'Rooms' %}</a>
+        <a href="#"
+           class="block px-6 py-2 text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:text-orange-950 hover:bg-stone-50">{% translate 'Gourmet' %}</a>
+        <a href="#"
+           class="block px-6 py-2 text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:text-orange-950 hover:bg-stone-50">{% translate 'Grills' %}</a>
+      </div>
+      <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-2">
+        <div class="grid gap-2">
+          <div class="flex justify-end gap-2 text-lg text-stone-900">
+            <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+              <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
+                    class="stroke-stone-900 stroke-[3]"/>
+            </svg>
+            <a href="tel:0956-30-8411">0956-30-8411</a>
+          </div>
+          {% #outline_button %}
+          <a href="{% url 'reservations:index' %}">
+            {% translate 'Make a Reservation' %}
+          </a>
+          {% /outline_button %}
+        </div>
+      </div>
+    </nav>
+    <!-- Mobile menu, show/hide based on menu open state. -->
+    <div id="mobile-menu"
+         class="hidden transition-all animation-slide-left duration-250"
+         role="dialog"
+         aria-modal="true">
+      <!-- Background backdrop, show/hide based on slide-over state. -->
+      <div class="fixed inset-0 z-50"></div>
+      <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-stone-100 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-orange-50/10">
+        <div class="flex items-center justify-between">
+          <a href="{% url 'core:index' %}" class="-m-1.5 p-1.5">
+            <span class="sr-only">{% translate 'Winvillage' %}</span>
+            <img src="{% static 'core/img/light_logo.svg' %}" class="max-w-[50px]"
+                 alt={% trans 'Winvillage Logo' %}>
+          </a>
+          <button type="button"
+                  _="on click toggle .hidden .animation-slide-right on #mobile-menu"
+                  class="text-stone-900 -m-2.5 p-2.5">
+            <span class="sr-only">{% translate 'Close menu' %}</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="mt-6 flow-root">
+          <div class="-my-6 divide-y divide-stone-500/25">
+            <div class="py-6 space-y-2">
+              <a href="#"
+                 class="-mx-3 block px-3 py-2 rounded-md text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:bg-orange-500 hover:text-stone-100">
+                {% translate 'About Win Village' %}
+              </a>
+              <a href="#"
+                 class="-mx-3 block px-3 py-2 rounded-md text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:bg-orange-500 hover:text-stone-100">{% translate 'Rooms' %}</a>
+              <a href="#"
+                 class="-mx-3 block px-3 py-2 rounded-md text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:bg-orange-500 hover:text-stone-100">{% translate 'Gourmet' %}</a>
+              <a href="#"
+                 class="-mx-3 block px-3 py-2 rounded-md text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:bg-orange-500 hover:text-stone-100">{% translate 'Grills' %}</a>
+            </div>
+            <div class="py-6">
+              {% #outline_button %}
+              <a href="{% url 'reservations:index' %}">
+                {% translate 'Make a Reservation' %}
+              </a>
+              {% /outline_button %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 {% endblock %}
 {% block pre_content %}{% endblock %}
 {% block content %}
-  {% block content_top %}
-  {% endblock %}
-  {% block content_main %}
-  {% endblock %}
-  {% block content_bottom %}
-  {% endblock %}
+  <main class="pt-28 lg:pt-36">
+    {% block content_top %}
+    {% endblock %}
+    {% block content_main %}
+    {% endblock %}
+    {% block content_bottom %}
+    {% endblock %}
+  </main>
 {% endblock %}
 {% block post_content %}{% endblock %}
 {% block footer %}

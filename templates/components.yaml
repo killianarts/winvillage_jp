@@ -1,5 +1,6 @@
 components:
   button: "patterns/buttons/button/button.html"
+  outline_button: "patterns/buttons/outline_button/outline_button.html"
   calendar_cell_button: "patterns/buttons/calendar_cell_button/calendar_cell_button.html"
   winadmin_calendar_cell_button: "patterns/buttons/winadmin_calendar_cell_button/winadmin_calendar_cell_button.html"
   sidebar_button: "patterns/buttons/button/sidebar_button.html"

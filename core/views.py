@@ -10,8 +10,8 @@ def index(request):
     return TemplateResponse(request, "core/index.html")
 
 
-def index_new(request):
-    return TemplateResponse(request, "core/index_new.html")
+def room_details(request: HtmxHttpRequest) -> HttpResponse:
+    return TemplateResponse(request, "core/room_details.html")
 
 
 @for_htmx(use_block="messages")
