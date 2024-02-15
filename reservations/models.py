@@ -177,7 +177,9 @@ class PricingTier(models.Model):
         FIVE = 5
         SIX = 6
 
-    number_of_adults = models.IntegerField(default=1, choices=NumberOfAdultChoices)
+    number_of_adults = models.IntegerField(
+        default=NumberOfAdultChoices.ONE, choices=NumberOfAdultChoices
+    )
     price_per_night = models.DecimalField(max_digits=19, decimal_places=4)
     price_per_hour = models.DecimalField(max_digits=19, decimal_places=4)
 
@@ -240,8 +242,12 @@ class Stay(BaseModel):
         FIVE = 5
         SIX = 6
 
-    number_of_adults = models.IntegerField(default=1, choices=NumberOfAdultChoices)
-    number_of_children = models.IntegerField(default=0, choices=NumberOfChildChoices)
+    number_of_adults = models.IntegerField(
+        default=NumberOfAdultChoices.ONE, choices=NumberOfAdultChoices
+    )
+    number_of_children = models.IntegerField(
+        default=NumberOfChildChoices.ZERO, choices=NumberOfChildChoices
+    )
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=True)
     start = PendulumDateTimeField(verbose_name=_("Start"), null=True)
     end = PendulumDateTimeField(verbose_name=_("End"), null=True)
