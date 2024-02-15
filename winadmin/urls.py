@@ -107,6 +107,20 @@ urlpatterns = [
         customer.ticket_detail,
         name="ticket_detail",
     ),
+    path("room/create/", views.room_create, name="room_create"),
+    path("room/list/", views.room_list, name="room_list"),
+    path(
+        "room/detail/<int:room_id>/",
+        views.room_detail,
+        name="room_detail",
+    ),
+    path("pricing_tier/create/", views.pricing_tier_create, name="pricing_tier_create"),
+    path("pricing_tier/list/", views.pricing_tier_list, name="pricing_tier_list"),
+    path(
+        "pricing_tier/detail/<int:pricing_tier_id>/",
+        views.pricing_tier_detail,
+        name="pricing_tier_detail",
+    ),
 ]
 
 urlpatterns += [

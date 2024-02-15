@@ -84,6 +84,13 @@
                hx-target="this"
                hx-swap="morph:outerHTML"
                hx-trigger="getMessages from:body">{% include 'core/messages.html' %}</div>
+          {#          {% if messages %}#}
+          {#            <div id="messages" class="fixed bottom-10 right-10"#}
+          {#                 hx-get="{% url 'core:get_messages' %}"#}
+          {#                 hx-target="this"#}
+          {#                 hx-swap="morph:outerHTML"#}
+          {#                 hx-trigger="load from:body">{% include 'core/messages.html' %}</div>#}
+          {#          {% endif %}#}
         {% endblock %}
         {% block main %}
           {% block top_content %}

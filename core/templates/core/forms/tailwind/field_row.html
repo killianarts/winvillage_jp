@@ -18,7 +18,7 @@
     </div>
   {% endif %}
   <div class="field-body">
-    {% with error_class=errors|yesno:"is-danger,," %}
+    {% with error_class=errors|yesno:"is-danger,yes|no," %}
       <div class="field">
         <div class="grid control">
           {% if field|widget_type == "select" %}
@@ -27,7 +27,7 @@
             </div>
           {% else %}
             {#            This is the field you want to edit #}
-            {% render_field field class="shadow-sm rounded-sm" %}
+            {% render_field field class="shadow-sm rounded-sm transition-all duration-250" %}
           {% endif %}
         </div>
         {% if field.help_text %}

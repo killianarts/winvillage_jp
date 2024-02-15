@@ -1,17 +1,16 @@
 {% extends 'winadmin/index.html' %}
-{% load i18n %}
+{% load static i18n %}
 {% block subtitle %}
-  {% translate 'Edit Inventory Item' %}
+  {% blocktrans %}Edit Room{% endblocktrans %}
 {% endblock %}
 {% block content %}
   <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Edit Inventory Item' %}</h1>
-    <form action="." method="post"
+    <h1 class="text-3xl">{% translate 'Edit Room' %}</h1>
+    <form class="grid max-w-xl" action="."
           hx-post="."
           hx-target="#content-wrapper"
           hx-swap="morph:outerHTML"
-          hx-vals='{"use_block": "content"}'
-          class="grid max-w-xl">
+          hx-vals='{"use_block": "content"}'>
       {{ form }}
       <div class="space-x-5">
         {% #outline_button name="edit" type="submit" %}
@@ -22,5 +21,5 @@
         {% /outline_button %}
       </div>
     </form>
-  </form>
+  </div>
 {% endblock %}
