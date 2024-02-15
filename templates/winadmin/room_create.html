@@ -1,0 +1,86 @@
+{% extends 'winadmin/index.html' %}
+{% load static i18n %}
+{% block extra_styles %}
+  <style>
+    {#::backdrop {#}
+    {#    background-image: linear-gradient(#}
+    {#            45deg,#}
+    {#            magenta,#}
+    {#            rebeccapurple,#}
+    {#            dodgerblue,#}
+    {#            green#}
+    {#    );#}
+    {#    opacity: 0.75;#}
+    {
+    #}#}
+  </style>
+{% endblock %}
+{% block subtitle %}
+  {% blocktrans %}Create Room{% endblocktrans %}
+{% endblock %}
+{% block content %}
+  <div id="content-wrapper">
+    <h1 class="text-3xl">{% translate 'Create Room' %}</h1>
+    {% block form %}
+      <form id="room-create-form" class="max-w-xl grid" action="." 
+            hx-post="."
+            hx-target="#content-wrapper"
+            hx-swap="outerHTML"
+            hx-vals='{"use_block": "content"}'>
+        <div _="on htmx:afterSettle from #content-wrapper set input to the last <input/> in me then add @checked to the input">
+          {{ room_create_form }}
+        </div>
+        <div class="mb-5">
+          <button id="tier-dialog-toggle" type="button"
+                  _="on click set dialog to the next <dialog/>
+                      if dialog does not match @open
+                        call dialog.showModal()
+                      end"
+                  class="px-5 py-2.5 text-sm font-semibold drop-shadow-hard-45-xs rounded-md ring-2
+                      transition-all duration-250 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                      text-stone-900 hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none
+                      hover:ring-transparent
+                      bg-stone-100 ring-stone-900 hover:bg-orange-500 hover:text-orange-100 focus-visible:outline-orange-700">
+            {% translate 'Add Tier' %}
+          </button>
+
+          {#        TODO: modify view to make form for dialog, update ,ain view via event#}
+        </div>
+        <div>
+          {% #outline_button id="submit-button" name="create-room" value="create-room" type="submit" %}
+          {% trans "Submit" %}
+          {% /outline_button %}
+        </div>
+        <dialog class="relative backdrop:bg-stone-900/50 backdrop:backdrop-blur-sm p-10 border-3 border-stone-900 rounded-md drop-shadow-hard-45-md"
+                _="on click
+                     measure me
+                       set is_in_me to result.top        <= event.clientY      and
+                                       event.clientY <= result.top + result.height and
+                                       result.left       <= event.clientX      and
+                                       event.clientX <=  result.left + result.width
+                       if is_in_me == false call me.close()">
+          <div class="absolute top-0 right-0 flex w-16 justify-center p-5">
+            <button type="button"
+                    class="-m-2.5 p-2.5"
+                    _="on click set dialog to the closest <dialog/> if the dialog matches @open call dialog.close() end">
+              <span class="sr-only">Close sidebar</span>
+              <svg class="h-6 w-6 text-stone-900"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke-width="1.5"
+                   stroke="currentColor"
+                   aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          {{ tier_add_form }}
+          {% #outline_button name="add-tier" id="dialog-button" type="submit" data-script="on click set dialog to the closest <dialog/> if the dialog is @open call dialog.close() end" %}
+          {% trans "Submit" %}
+          {% /outline_button %}
+        </dialog>
+      </form>
+    {% endblock %}
+
+  </div>
+{% endblock %}

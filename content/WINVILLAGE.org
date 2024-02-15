@@ -1,0 +1,22 @@
+* TODO Complete Winvillage.jp
+DEADLINE: <2024-03-01 Fri>
+
+* TODO Add Homepage :homepage:
+** TODO Add images :images:
+*** TODO Add food images
+*** TODO Add daytime images
+*** TODO Add front images 
+** TODO Add business information?
+* TODO Add Admin :admin:
+** TODO Add Sales Management
+** TODO Add Room Management
+** TODO Add Reservation System
+*** TODO Configure
+** TODO Add alternative rendering for tables and filtering on those tables
+*** TODO transaction_list_by_period
+*** TODO sale_list_by_period
+*** TODO customer_list
+*** TODO reservation_list_by_period
+*** TODO item_list
+*** TODO pricing_tier_list
+*** TODO room_list
