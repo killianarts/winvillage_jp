@@ -8,139 +8,136 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-30 08:46+0000\n"
-"POT-Creation-Date: 2024-02-15 05:26+0000\n"
-"PO-Revision-Date: 2023-11-08 03:59+0000\n"
-"Last-Translator: None None <micah@killianarts.online>\n"
+"POT-Creation-Date: 2024-02-16 02:13+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Translated-Using: django-rosetta 0.9.9\n"
-
 #: core/models.py:61
 msgid "Contact Info"
-msgstr "連絡情報"
+msgstr ""
 
 #: core/models.py:62
 msgid "Contact Infos"
-msgstr "連絡情報"
+msgstr ""
 
-#: core/models.py:64 reservations/models.py:346
+#: core/models.py:64 reservations/models.py:352
 msgid "First name"
-msgstr "名前"
+msgstr ""
 
 #: core/models.py:75 core/models.py:95
 #: winadmin/templates/winadmin/inventory/category_list.html:13
 #: winadmin/templates/winadmin/inventory/item_list.html:19
 msgid "Category"
-msgstr "カテゴリー"
+msgstr ""
 
 #: core/models.py:76 winadmin/templates/winadmin/inventory/category_list.html:9
 msgid "Categories"
-msgstr "カテゴリー"
+msgstr ""
 
 #: core/models.py:78 winadmin/forms.py:77 winadmin/forms.py:82
 msgid "Category Name"
-msgstr "カテゴリー名"
+msgstr ""
 
 #: core/models.py:86 core/models.py:169 winadmin/views.py:400
 msgid "Item"
-msgstr "アイテム"
+msgstr ""
 
 #: core/models.py:87
 msgid "Items"
-msgstr "アイテム"
+msgstr ""
 
 #: core/models.py:89 core/models.py:156
 #: winadmin/templates/winadmin/inventory/item_list.html:16
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:39
 #: winadmin/views.py:397
 msgid "Name"
-msgstr "名前"
+msgstr ""
 
 #: core/models.py:91 reservations/templates/reservations/index.html:196
 #: winadmin/templates/winadmin/inventory/item_list.html:18
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:39
 msgid "Price"
-msgstr "値段"
+msgstr ""
 
 #: core/models.py:101
 msgid "Image"
-msgstr "画像"
+msgstr ""
 
 #: core/models.py:103
 msgid "Stock Quantity"
-msgstr "在庫量"
+msgstr ""
 
 #: core/models.py:104 winadmin/templates/winadmin/inventory/item_list.html:21
 msgid "In Stock?"
-msgstr "在庫あり？"
+msgstr ""
 
 #: core/models.py:105 winadmin/templates/winadmin/inventory/item_list.html:22
 msgid "Active?"
-msgstr "アクティブ？"
+msgstr ""
 
 #: core/models.py:107
 msgid "Reservation Option?"
-msgstr "予約追加アイテム？"
+msgstr ""
 
 #: core/models.py:110
 msgid "Long description"
-msgstr "長い説明"
+msgstr ""
 
 #: core/models.py:110
 msgid "Description"
-msgstr "説明"
+msgstr ""
 
 #: core/models.py:114
 msgid "Short description"
-msgstr "短い説明"
+msgstr ""
 
 #: core/models.py:115 winadmin/templates/winadmin/inventory/item_list.html:23
 msgid "Short Description"
-msgstr "短い説明"
+msgstr ""
 
 #: core/models.py:146
 msgid "Transaction"
-msgstr "取引"
+msgstr ""
 
 #: core/models.py:147
 msgid "Transactions"
-msgstr "取引"
+msgstr ""
 
 #: core/models.py:150
 msgid "Sale"
-msgstr "売上"
+msgstr ""
 
 #: core/models.py:151
 msgid "Purchase"
-msgstr "仕入れ"
+msgstr ""
 
 #: core/models.py:152
 msgid "Return"
-msgstr "返品"
+msgstr ""
 
 #: core/models.py:153
 msgid "Bank Deposit"
-msgstr "預金振込"
+msgstr ""
 
 #: core/models.py:163 customer/models.py:24 winadmin/views.py:398
 msgid "Customer"
-msgstr "顧客"
+msgstr ""
 
 #: core/models.py:166
 msgid "Transaction Datetime"
-msgstr "引取デートタイム"
+msgstr ""
 
 #: core/models.py:171
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:41
 #: winadmin/views.py:401
 msgid "Quantity"
-msgstr "数量"
+msgstr ""
 
 #: core/models.py:173 reservations/templates/reservations/index.html:441
 #: reservations/templates/reservations/payment_page.html:393
@@ -151,7 +148,7 @@ msgstr "数量"
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:79
 #: winadmin/views.py:402
 msgid "Total Price"
-msgstr "合計"
+msgstr ""
 
 #: core/templates/core/base.html:9 core/templates/core/index_old.html:5
 #: core/templates/core/index_old.html:120
@@ -176,20 +173,17 @@ msgid "Win Village Logo"
 msgstr ""
 
 #: core/templates/core/base.html:65 core/templates/core/base.html:117
-#: core/templates/core/index.html:162
-#: core/templates/core/index.html:196
+#: core/templates/core/index.html:272
 msgid "部屋の基本スペック"
 msgstr ""
 
 #: core/templates/core/base.html:67 core/templates/core/base.html:120
-#: core/templates/core/index.html:578
-#: core/templates/core/index.html:760
+#: core/templates/core/index.html:195 core/templates/core/index.html:836
 msgid "値段表"
 msgstr ""
 
 #: core/templates/core/base.html:69 core/templates/core/base.html:122
-#: core/templates/core/index.html:647
-#: core/templates/core/index.html:842
+#: core/templates/core/index.html:918
 msgid "アクセス"
 msgstr ""
 
@@ -202,26 +196,23 @@ msgstr ""
 #: winadmin/templates/winadmin/index.html:99
 #: winadmin/templates/winadmin/index.html:197
 msgid "Make a Reservation"
-msgstr "予約を制作する"
+msgstr ""
 
 #: core/templates/core/base.html:100
-#, fuzzy
-#| msgid "Winvillage Admin Login"
 msgid "Winvillage Logo"
-msgstr "ウインビレッジ・管理・ログイン"
+msgstr ""
 
 #: core/templates/core/base.html:105 core/templates/core/index_old.html:76
 msgid "Close menu"
-msgstr "メニューを閉じる"
+msgstr ""
 
 #: core/templates/core/forms/reservations/field_row.html:49
 #: core/templates/core/forms/tailwind/field_row.html:42
 #: customer/templates/ticket/forms/tailwind/field_row.html:37
 #: winadmin/templates/winadmin/forms/item_create/field_row.html:42
 msgid "No errors"
-msgstr "エラー無し"
+msgstr ""
 
-#: core/templates/core/index.html:46
 #: core/templates/core/index.html:51
 msgid ""
 "\n"
@@ -230,19 +221,6 @@ msgid ""
 "          "
 msgstr ""
 
-#: core/templates/core/index.html:51
-msgid "予約を作る"
-msgstr ""
-
-#: core/templates/core/index.html:58
-msgid "family room"
-msgstr ""
-
-#: core/templates/core/index.html:59
-msgid "家族みんな快適に"
-msgstr ""
-
-#: core/templates/core/index.html:62
 #: core/templates/core/index.html:56
 msgid "予約を作る"
 msgstr ""
@@ -262,27 +240,6 @@ msgid ""
 "ペース。キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ダラダ"
 "ラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶を"
 "いれて、最高の朝を向かう。\n"
-"        "
-msgstr ""
-
-#: core/templates/core/index.html:70
-msgid "個人予約"
-msgstr ""
-
-#: core/templates/core/index.html:71
-msgid "露天風呂の予約であなたや家族だけの贅沢の風呂になる。"
-msgstr ""
-
-#: core/templates/core/index.html:76
-msgid "台所"
-msgstr ""
-
-#: core/templates/core/index.html:77
-msgid "冷蔵庫、シンクとIHコンロがついています。"
-msgstr ""
-
-#: core/templates/core/index.html:82 core/templates/core/index.html:268
-#: core/templates/core/index.html:472 core/templates/core/room_details.html:109
 "          "
 msgstr ""
 
@@ -302,23 +259,17 @@ msgstr ""
 msgid "冷蔵庫、シンクとIHコンロがついています。"
 msgstr ""
 
-#: core/templates/core/index.html:90 core/templates/core/index.html:342
-#: core/templates/core/index.html:618 core/templates/core/room_details.html:109
+#: core/templates/core/index.html:90 core/templates/core/index.html:418
+#: core/templates/core/index.html:694 core/templates/core/room_details.html:109
 #: core/templates/core/room_details.html:313
 msgid "温泉水"
 msgstr ""
 
-#: core/templates/core/index.html:83
 #: core/templates/core/index.html:91
 msgid ""
 "露天風呂も部屋の風呂も温泉水を使います。お風呂のアメニティもついています。"
 msgstr ""
 
-#: core/templates/core/index.html:90
-msgid "ベッド"
-msgstr ""
-
-#: core/templates/core/index.html:91
 #: core/templates/core/index.html:100
 msgid "ベッド"
 msgstr ""
@@ -329,35 +280,12 @@ msgid ""
 "ファベッドと布団もついています。"
 msgstr ""
 
-#: core/templates/core/index.html:98 core/templates/core/index.html:366
-#: core/templates/core/index.html:570 core/templates/core/room_details.html:207
-#: core/templates/core/index.html:108 core/templates/core/index.html:476
-#: core/templates/core/index.html:752 core/templates/core/room_details.html:207
+#: core/templates/core/index.html:108 core/templates/core/index.html:552
+#: core/templates/core/index.html:828 core/templates/core/room_details.html:207
 #: core/templates/core/room_details.html:411
 msgid "WIFI"
 msgstr ""
 
-#: core/templates/core/index.html:99
-msgid "無線でインターネットを無料で使えます。"
-msgstr ""
-
-#: core/templates/core/index.html:104
-msgid "サウナ"
-msgstr ""
-
-#: core/templates/core/index.html:105
-msgid "９０度のサウナの中に、砂時計で安全に疲れを取ることができます。"
-msgstr ""
-
-#: core/templates/core/index.html:112
-msgid "solitude"
-msgstr ""
-
-#: core/templates/core/index.html:113
-msgid "閉鎖空間と蒸気"
-msgstr ""
-
-#: core/templates/core/index.html:116
 #: core/templates/core/index.html:109
 msgid "無線でインターネットを無料で使えます。"
 msgstr ""
@@ -387,31 +315,6 @@ msgid ""
 "          "
 msgstr ""
 
-#: core/templates/core/index.html:124
-msgid "レンタル"
-msgstr ""
-
-#: core/templates/core/index.html:125
-msgid "グリル、椅子やテントをレンタルできます。"
-msgstr ""
-
-#: core/templates/core/index.html:130
-msgid "飲食物の販売"
-msgstr ""
-
-#: core/templates/core/index.html:131
-msgid "グリルで焼く冷凍食品、肉や野菜を購入できます。"
-msgstr ""
-
-#: core/templates/core/index.html:140
-msgid "casual camping"
-msgstr ""
-
-#: core/templates/core/index.html:141
-msgid "美味しい空気と肉"
-msgstr ""
-
-#: core/templates/core/index.html:144
 #: core/templates/core/index.html:134
 msgid "レンタル"
 msgstr ""
@@ -444,31 +347,6 @@ msgid ""
 "          "
 msgstr ""
 
-#: core/templates/core/index.html:152
-msgid "軽食と朝食"
-msgstr ""
-
-#: core/templates/core/index.html:153
-msgid "夜にハンバーグや唐揚げの軽食を注文できます。朝食もついています。"
-msgstr ""
-
-#: core/templates/core/index.html:167 core/templates/core/room_details.html:8
-msgid "００・０１号室"
-msgstr ""
-
-#: core/templates/core/index.html:168 core/templates/core/room_details.html:9
-msgid "より広いスペースの中にセミダブルベッド２台あります。"
-msgstr ""
-
-#: core/templates/core/index.html:177 core/templates/core/room_details.html:18
-msgid "セミダブル、２台"
-msgstr ""
-
-#: core/templates/core/index.html:185
-msgid "最小人数２人"
-msgstr ""
-
-#: core/templates/core/index.html:193 core/templates/core/index.html:397
 #: core/templates/core/index.html:162
 msgid "軽食と朝食"
 msgstr ""
@@ -503,87 +381,112 @@ msgid ""
 "シャボン玉、ポップアップテント、色々なリモコンかーやレゴをレンタルできます。"
 msgstr ""
 
-#: core/templates/core/index.html:195
-#, fuzzy
-#| msgid "Submit Modifications"
-msgid "room specifications"
-msgstr "変更を投稿する"
+#: core/templates/core/index.html:201 core/templates/core/index.html:843
+msgid "00・01号室"
+msgstr ""
 
-#: core/templates/core/index.html:205 core/templates/core/room_details.html:8
+#: core/templates/core/index.html:212 core/templates/core/index.html:854
+msgid "02・03号室"
+msgstr ""
+
+#: core/templates/core/index.html:228 core/templates/core/index.html:871
+msgid "号室"
+msgstr ""
+
+#: core/templates/core/index.html:230 core/templates/core/index.html:873
+msgid "１名"
+msgstr ""
+
+#: core/templates/core/index.html:232 core/templates/core/index.html:875
+msgid "２名"
+msgstr ""
+
+#: core/templates/core/index.html:234 core/templates/core/index.html:877
+msgid "３名"
+msgstr ""
+
+#: core/templates/core/index.html:236 core/templates/core/index.html:879
+msgid "４名"
+msgstr ""
+
+#: core/templates/core/index.html:238 core/templates/core/index.html:881
+msgid "５名"
+msgstr ""
+
+#: core/templates/core/index.html:240 core/templates/core/index.html:883
+msgid "６名"
+msgstr ""
+
+#: core/templates/core/index.html:271
+msgid "room specifications"
+msgstr ""
+
+#: core/templates/core/index.html:281 core/templates/core/room_details.html:8
 msgid "００・０１号室"
 msgstr ""
 
-#: core/templates/core/index.html:206 core/templates/core/room_details.html:9
+#: core/templates/core/index.html:282 core/templates/core/room_details.html:9
 msgid "より広いスペースの中にセミダブルベッド２台あります。"
 msgstr ""
 
-#: core/templates/core/index.html:218 core/templates/core/room_details.html:18
+#: core/templates/core/index.html:294 core/templates/core/room_details.html:18
 msgid "セミダブル、２台"
 msgstr ""
 
-#: core/templates/core/index.html:229
+#: core/templates/core/index.html:305
 msgid "最小人数２人"
 msgstr ""
 
-#: core/templates/core/index.html:240 core/templates/core/index.html:516
+#: core/templates/core/index.html:316 core/templates/core/index.html:592
 #: core/templates/core/room_details.html:34
 #: core/templates/core/room_details.html:238
 msgid "ソファベッド（ダブル）、１台"
 msgstr ""
 
-#: core/templates/core/index.html:210 core/templates/core/index.html:414
-#: core/templates/core/index.html:263 core/templates/core/index.html:539
+#: core/templates/core/index.html:339 core/templates/core/index.html:615
 #: core/templates/core/room_details.html:51
 #: core/templates/core/room_details.html:255
 msgid "IHコンロ"
 msgstr ""
 
-#: core/templates/core/index.html:218 core/templates/core/index.html:422
-#: core/templates/core/index.html:274 core/templates/core/index.html:550
+#: core/templates/core/index.html:350 core/templates/core/index.html:626
 #: core/templates/core/room_details.html:59
 #: core/templates/core/room_details.html:263
 msgid "電子レンジ"
 msgstr ""
 
-#: core/templates/core/index.html:226 core/templates/core/index.html:430
-#: core/templates/core/index.html:285 core/templates/core/index.html:561
+#: core/templates/core/index.html:361 core/templates/core/index.html:637
 #: core/templates/core/room_details.html:67
 #: core/templates/core/room_details.html:271
 msgid "トースター"
 msgstr ""
 
-#: core/templates/core/index.html:234 core/templates/core/index.html:438
-#: core/templates/core/index.html:296 core/templates/core/index.html:572
+#: core/templates/core/index.html:372 core/templates/core/index.html:648
 #: core/templates/core/room_details.html:75
 #: core/templates/core/room_details.html:279
 msgid "冷蔵庫"
 msgstr ""
 
-#: core/templates/core/index.html:242 core/templates/core/index.html:446
-#: core/templates/core/index.html:307 core/templates/core/index.html:583
+#: core/templates/core/index.html:383 core/templates/core/index.html:659
 #: core/templates/core/room_details.html:83
 #: core/templates/core/room_details.html:287
 msgid "ケトル"
 msgstr ""
 
-#: core/templates/core/index.html:250 core/templates/core/index.html:454
-#: core/templates/core/index.html:318 core/templates/core/index.html:594
+#: core/templates/core/index.html:394 core/templates/core/index.html:670
 #: core/templates/core/room_details.html:91
 #: core/templates/core/room_details.html:295
 msgid "調理器具"
 msgstr ""
 
-#: core/templates/core/index.html:258 core/templates/core/index.html:462
-#: core/templates/core/index.html:329 core/templates/core/index.html:605
+#: core/templates/core/index.html:405 core/templates/core/index.html:681
 #: core/templates/core/room_details.html:99
 #: core/templates/core/room_details.html:303
 msgid "食器"
 msgstr ""
 
-#: core/templates/core/index.html:260 core/templates/core/index.html:326
-#: core/templates/core/index.html:464 core/templates/core/index.html:530
-#: core/templates/core/index.html:331 core/templates/core/index.html:421
-#: core/templates/core/index.html:607 core/templates/core/index.html:697
+#: core/templates/core/index.html:407 core/templates/core/index.html:497
+#: core/templates/core/index.html:683 core/templates/core/index.html:773
 #: core/templates/core/room_details.html:101
 #: core/templates/core/room_details.html:167
 #: core/templates/core/room_details.html:305
@@ -591,193 +494,99 @@ msgstr ""
 msgid "・・・などなど"
 msgstr ""
 
-#: core/templates/core/index.html:276 core/templates/core/index.html:480
-#: core/templates/core/index.html:353 core/templates/core/index.html:629
+#: core/templates/core/index.html:429 core/templates/core/index.html:705
 #: core/templates/core/room_details.html:117
 #: core/templates/core/room_details.html:321
 msgid "バスタオル"
 msgstr ""
 
-#: core/templates/core/index.html:284 core/templates/core/index.html:488
-#: core/templates/core/index.html:364 core/templates/core/index.html:640
+#: core/templates/core/index.html:440 core/templates/core/index.html:716
 #: core/templates/core/room_details.html:125
 #: core/templates/core/room_details.html:329
 msgid "フェイスタオル"
 msgstr ""
 
-#: core/templates/core/index.html:292 core/templates/core/index.html:496
-#: core/templates/core/index.html:375 core/templates/core/index.html:651
+#: core/templates/core/index.html:451 core/templates/core/index.html:727
 #: core/templates/core/room_details.html:133
 #: core/templates/core/room_details.html:337
 msgid "シャンプー"
 msgstr ""
 
-#: core/templates/core/index.html:300 core/templates/core/index.html:504
-#: core/templates/core/index.html:386 core/templates/core/index.html:662
+#: core/templates/core/index.html:462 core/templates/core/index.html:738
 #: core/templates/core/room_details.html:141
 #: core/templates/core/room_details.html:345
 msgid "コンディショナー"
 msgstr ""
 
-#: core/templates/core/index.html:308 core/templates/core/index.html:512
-#: core/templates/core/index.html:397 core/templates/core/index.html:673
+#: core/templates/core/index.html:473 core/templates/core/index.html:749
 #: core/templates/core/room_details.html:149
 #: core/templates/core/room_details.html:353
 msgid "ボディソープ"
 msgstr ""
 
-#: core/templates/core/index.html:316 core/templates/core/index.html:520
-#: core/templates/core/index.html:408 core/templates/core/index.html:684
+#: core/templates/core/index.html:484 core/templates/core/index.html:760
 #: core/templates/core/room_details.html:157
 #: core/templates/core/room_details.html:361
 msgid "ボディタオル"
 msgstr ""
 
-#: core/templates/core/index.html:324 core/templates/core/index.html:528
-#: core/templates/core/index.html:419 core/templates/core/index.html:695
+#: core/templates/core/index.html:495 core/templates/core/index.html:771
 #: core/templates/core/room_details.html:165
 #: core/templates/core/room_details.html:369
 msgid "コットン・綿棒"
 msgstr ""
 
-#: core/templates/core/index.html:327 core/templates/core/index.html:531
-#: core/templates/core/index.html:422 core/templates/core/index.html:698
+#: core/templates/core/index.html:498 core/templates/core/index.html:774
 #: core/templates/core/room_details.html:168
 #: core/templates/core/room_details.html:372
 msgid "その他"
 msgstr ""
 
-#: core/templates/core/index.html:334 core/templates/core/index.html:538
-#: core/templates/core/index.html:432 core/templates/core/index.html:708
+#: core/templates/core/index.html:508 core/templates/core/index.html:784
 #: core/templates/core/room_details.html:175
 #: core/templates/core/room_details.html:379
 msgid "トイレ"
 msgstr ""
 
-#: core/templates/core/index.html:342 core/templates/core/index.html:546
-#: core/templates/core/index.html:443 core/templates/core/index.html:719
+#: core/templates/core/index.html:519 core/templates/core/index.html:795
 #: core/templates/core/room_details.html:183
 #: core/templates/core/room_details.html:387
 msgid "冷暖房"
 msgstr ""
 
-#: core/templates/core/index.html:350 core/templates/core/index.html:554
-#: core/templates/core/index.html:454 core/templates/core/index.html:730
+#: core/templates/core/index.html:530 core/templates/core/index.html:806
 #: core/templates/core/room_details.html:191
 #: core/templates/core/room_details.html:395
 msgid "５０型テレビ"
 msgstr ""
 
-#: core/templates/core/index.html:358 core/templates/core/index.html:562
-#: core/templates/core/index.html:465 core/templates/core/index.html:741
+#: core/templates/core/index.html:541 core/templates/core/index.html:817
 #: core/templates/core/room_details.html:199
 #: core/templates/core/room_details.html:403
 msgid "VOD"
 msgstr ""
 
-#: core/templates/core/index.html:371 core/templates/core/room_details.html:212
+#: core/templates/core/index.html:557 core/templates/core/room_details.html:212
 msgid "０２・０３号室"
 msgstr ""
 
-#: core/templates/core/index.html:372 core/templates/core/room_details.html:213
+#: core/templates/core/index.html:558 core/templates/core/room_details.html:213
 msgid "００・０１号室と違ってダブルベッドが１台あります。"
 msgstr ""
 
-#: core/templates/core/index.html:381 core/templates/core/room_details.html:222
+#: core/templates/core/index.html:570 core/templates/core/room_details.html:222
 msgid "ダブル、１台"
 msgstr ""
 
-#: core/templates/core/index.html:389
+#: core/templates/core/index.html:581
 msgid "最大人数４名"
 msgstr ""
 
-#: core/templates/core/index.html:600
-msgid "号室"
-msgstr ""
-
-#: core/templates/core/index.html:602
-msgid "１名"
-msgstr ""
-
-#: core/templates/core/index.html:604
-msgid "２名"
-msgstr ""
-
-#: core/templates/core/index.html:606
-msgid "３名"
-msgstr ""
-
-#: core/templates/core/index.html:608
-msgid "４名"
-msgstr ""
-
-#: core/templates/core/index.html:610
-msgid "５名"
-msgstr ""
-
-#: core/templates/core/index.html:612
-msgid "６名"
-msgstr ""
-
-#: core/templates/core/index.html:481 core/templates/core/room_details.html:212
-msgid "０２・０３号室"
-msgstr ""
-
-#: core/templates/core/index.html:482 core/templates/core/room_details.html:213
-msgid "００・０１号室と違ってダブルベッドが１台あります。"
-msgstr ""
-
-#: core/templates/core/index.html:494 core/templates/core/room_details.html:222
-msgid "ダブル、１台"
-msgstr ""
-
-#: core/templates/core/index.html:505
-msgid "最大人数４名"
-msgstr ""
-
-#: core/templates/core/index.html:759
-#, fuzzy
-#| msgid "Create Order"
+#: core/templates/core/index.html:835
 msgid "pricing"
-msgstr "仕入を制作する"
-
-#: core/templates/core/index.html:767
-msgid "00・01号室"
 msgstr ""
 
-#: core/templates/core/index.html:778
-msgid "02・03号室"
-msgstr ""
-
-#: core/templates/core/index.html:795
-msgid "号室"
-msgstr ""
-
-#: core/templates/core/index.html:797
-msgid "１名"
-msgstr ""
-
-#: core/templates/core/index.html:799
-msgid "２名"
-msgstr ""
-
-#: core/templates/core/index.html:801
-msgid "３名"
-msgstr ""
-
-#: core/templates/core/index.html:803
-msgid "４名"
-msgstr ""
-
-#: core/templates/core/index.html:805
-msgid "５名"
-msgstr ""
-
-#: core/templates/core/index.html:807
-msgid "６名"
-msgstr ""
-
-#: core/templates/core/index.html:841
+#: core/templates/core/index.html:917
 msgid "access"
 msgstr ""
 
@@ -790,7 +599,7 @@ msgstr ""
 #: core/templates/core/index_old.html:181
 #: core/templates/core/index_old.html:233
 msgid "Rooms"
-msgstr "部屋"
+msgstr ""
 
 #: core/templates/core/index_old.html:41 core/templates/core/index_old.html:93
 #: core/templates/core/index_old.html:235
@@ -815,7 +624,7 @@ msgstr ""
 
 #: core/templates/core/index_old.html:241
 msgid "Corporate Information"
-msgstr "会社概要"
+msgstr ""
 
 #: core/templates/core/room_details.html:26
 msgid "最低人数２人"
@@ -827,7 +636,7 @@ msgstr ""
 #: winadmin/forms.py:130 winadmin/forms.py:171
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:37
 msgid "First Name"
-msgstr "名前"
+msgstr ""
 
 #: customer/forms.py:11 customer/forms.py:20 customer/forms.py:29
 #: customer/forms.py:52 customer/forms.py:62 customer/forms.py:72
@@ -835,7 +644,7 @@ msgstr "名前"
 #: winadmin/forms.py:131 winadmin/forms.py:172
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:36
 msgid "Last Name"
-msgstr "姓"
+msgstr ""
 
 #: customer/forms.py:12 customer/forms.py:21 customer/forms.py:30
 #: customer/forms.py:53 customer/forms.py:63 customer/forms.py:73
@@ -843,72 +652,72 @@ msgstr "姓"
 #: winadmin/forms.py:132 winadmin/forms.py:173
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:38
 msgid "Email"
-msgstr "メール"
+msgstr ""
 
 #: customer/forms.py:13 customer/forms.py:22 customer/forms.py:31
 #: customer/forms.py:54 customer/forms.py:64 customer/forms.py:74
 #: customer/templates/customer/customer_list.html:36 reservations/forms.py:33
 msgid "Phone #"
-msgstr "電話番号"
+msgstr ""
 
 #: customer/forms.py:55 customer/forms.py:65
 msgid "Notes"
-msgstr "メモ"
+msgstr ""
 
 #: customer/models.py:25
 msgid "Customers"
-msgstr "顧客"
+msgstr ""
 
 #: customer/models.py:76
 msgid "Ticket Note"
-msgstr "チケットのメモ"
+msgstr ""
 
 #: customer/models.py:77
 msgid "Ticket Notes"
-msgstr "チケットのメモ"
+msgstr ""
 
 #: customer/models.py:88
 msgid "Ticket"
-msgstr "チケット"
+msgstr ""
 
 #: customer/models.py:89 templates/ticket/ticket_list.html:8
 msgid "Tickets"
-msgstr "チケット"
+msgstr ""
 
 #: customer/templates/customer/customer_create.html:4
 msgid "Create a customer"
-msgstr "顧客を制作する"
+msgstr ""
 
 #: customer/templates/customer/customer_create.html:10
 #: customer/templates/customer/customer_create.html:15
 #: templates/customer/customer_create_bulk.html:10
 msgid "Create Customer"
-msgstr "顧客を制作する"
+msgstr ""
 
 #: customer/templates/customer/customer_detail.html:4
 #: customer/templates/customer/customer_detail.html:9
 msgid "Customer Details"
-msgstr "顧客の詳細"
+msgstr ""
 
 #: customer/templates/customer/customer_detail.html:20
 msgid "Submit Modifications"
-msgstr "変更を投稿する"
+msgstr ""
 
 #: customer/templates/customer/customer_detail.html:24
 #: templates/winadmin/pricing_tier_detail.html:20
 #: templates/winadmin/room_detail.html:20
 #: winadmin/templates/winadmin/inventory/item_detail.html:21
 msgid "Delete"
-msgstr "削除"
+msgstr ""
 
 #: customer/templates/customer/customer_list.html:4
 #: templates/ticket/ticket_list.html:4
 msgid "Customer List View"
-msgstr "顧客リストビュー"
+msgstr ""
 
 #: customer/templates/customer/customer_list.html:8
 msgid "Customer Chart"
-msgstr "顧客表"
+msgstr ""
 
 #: customer/templates/customer/customer_list.html:10
 #: templates/ticket/ticket_list.html:12
@@ -918,154 +727,150 @@ msgstr "顧客表"
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:17
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:17
 msgid "Filter"
-msgstr "フィルター"
+msgstr ""
 
 #: customer/templates/ticket/ticket_create.html:4
 msgid "Create a ticket"
-msgstr "チケットを制作する"
+msgstr ""
 
 #: customer/templates/ticket/ticket_create.html:8
 #: customer/templates/ticket/ticket_create.html:18
 #: winadmin/templates/winadmin/index.html:57
 #: winadmin/templates/winadmin/index.html:155
 msgid "Create Ticket"
-msgstr "チケットを制作する"
+msgstr ""
 
 #: customer/views.py:32
-#, fuzzy
-#| msgid "Transaction Created Successfully"
 msgid "Customer named { customer.full_name } created successfully!"
-msgstr "引取が制作できました"
+msgstr ""
 
 #: customer/views.py:37
 msgid "Customer couldn't be created!"
-msgstr "顧客を作れなかった！"
+msgstr ""
 
 #: customer/views.py:88
 msgid "Customer edited successfully!"
-msgstr "顧客が変更できました！"
+msgstr ""
 
 #: customer/views.py:92
 msgid "Customer deleted successfully!"
-msgstr "顧客が削除できました！"
+msgstr ""
 
 #: customer/views.py:96
 msgid "Customer couldn't be edited!"
-msgstr "顧客が変更できませんでした！"
+msgstr ""
 
 #: customer/views.py:143
 msgid "Ticket created successfully!"
-msgstr "チケットを制作できました！"
+msgstr ""
 
 #: customer/views.py:147
 msgid "Ticket couldn't be created!"
-msgstr "チケットを制作できませんでした！"
+msgstr ""
 
 #: customer/views.py:180
 msgid "Ticket reopened."
-msgstr "チケットを再開しました。"
+msgstr ""
 
 #: customer/views.py:183
 msgid "Ticket reopened"
-msgstr "チケットを再開しました"
+msgstr ""
 
 #: customer/views.py:198
 msgid "Note added to ticket."
-msgstr "メモはチケットに追加しました。"
+msgstr ""
 
 #: customer/views.py:202
 msgid "Note added and ticket closed"
-msgstr "メモはチケットに追加し、チケットは閉じました"
+msgstr ""
 
 #: reservations/models.py:25
 msgid "Order Item"
-msgstr "注文のアイテム"
+msgstr ""
 
 #: reservations/models.py:26
 msgid "Order Items"
-msgstr "注文のアイテム"
+msgstr ""
 
 #: reservations/models.py:38
 msgid "Order"
-msgstr "注文"
+msgstr ""
 
 #: reservations/models.py:39
 msgid "Orders"
-msgstr "注文"
+msgstr ""
 
 #: reservations/models.py:66
 msgid "Address"
-msgstr "住所"
+msgstr ""
 
 #: reservations/models.py:67
 msgid "Addresses"
-msgstr "住所"
+msgstr ""
 
-#: reservations/models.py:207
+#: reservations/models.py:209
 msgid "Stay"
-msgstr "滞在"
+msgstr ""
 
-#: reservations/models.py:208
+#: reservations/models.py:210
 msgid "Stays"
-msgstr "滞在"
+msgstr ""
 
-#: reservations/models.py:212 winadmin/forms.py:164
+#: reservations/models.py:214 winadmin/forms.py:164
 msgid "Not Reserved"
-msgstr "予約なし"
+msgstr ""
 
-#: reservations/models.py:213 winadmin/forms.py:165
+#: reservations/models.py:215 winadmin/forms.py:165
 msgid "Reserved"
-msgstr "予約あり"
+msgstr ""
 
-#: reservations/models.py:214 winadmin/forms.py:166
+#: reservations/models.py:216 winadmin/forms.py:166
 msgid "Checked In"
-msgstr "チェクインしている"
+msgstr ""
 
-#: reservations/models.py:215 winadmin/forms.py:167
+#: reservations/models.py:217 winadmin/forms.py:167
 msgid "Checked Out"
-msgstr "チェクアウトした"
+msgstr ""
 
-#: reservations/models.py:216 winadmin/forms.py:168
+#: reservations/models.py:218 winadmin/forms.py:168
 msgid "Cancelled"
-msgstr "キャンセルした"
+msgstr ""
 
-#: reservations/models.py:218 winadmin/forms.py:129 winadmin/forms.py:162
+#: reservations/models.py:220 winadmin/forms.py:129 winadmin/forms.py:162
 msgid "Hourly"
-msgstr "時間制"
+msgstr ""
 
-#: reservations/models.py:218 winadmin/forms.py:129 winadmin/forms.py:162
+#: reservations/models.py:220 winadmin/forms.py:129 winadmin/forms.py:162
 msgid "Overnight"
-msgstr "泊まる"
+msgstr ""
 
-#: reservations/models.py:246 winadmin/forms.py:174
+#: reservations/models.py:252 winadmin/forms.py:174
 msgid "Start"
-msgstr "開始日"
+msgstr ""
 
-#: reservations/models.py:247 winadmin/forms.py:175
+#: reservations/models.py:253 winadmin/forms.py:175
 msgid "End"
-msgstr "終了日"
+msgstr ""
 
-#: reservations/models.py:340
+#: reservations/models.py:346
 msgid "Reservation"
-msgstr "予約"
+msgstr ""
 
-#: reservations/models.py:341
+#: reservations/models.py:347
 msgid "Reservations"
-msgstr "予約"
+msgstr ""
 
-#: reservations/models.py:463
+#: reservations/models.py:469
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:464
+#: reservations/models.py:470
 msgid "Reservation Tokens"
 msgstr ""
 
 #: reservations/tasks.py:11
-#, fuzzy
-#| msgid "Winvillage Administration"
 msgid "Winvillage Reservation Confirmation For"
-msgstr "ウィンビレッジ管理"
+msgstr ""
 
 #: reservations/templates/reservations/_buttons.html:8
 #, python-format
@@ -1080,7 +885,7 @@ msgstr ""
 #: reservations/templates/reservations/reservation_form.html:145
 #: reservations/templates/reservations/reservation_form.html:231
 msgid "Back"
-msgstr "戻る"
+msgstr ""
 
 #: reservations/templates/reservations/components/primary_button.html:8
 #: reservations/templates/reservations/components/secondary_button.html:8
@@ -1093,17 +898,17 @@ msgstr ""
 
 #: reservations/templates/reservations/confirmation_step.html:6
 msgid "Confirm Reservation?"
-msgstr "予約を確認しますか？"
+msgstr ""
 
 #: reservations/templates/reservations/confirmation_step.html:39
 msgid "Confirm"
-msgstr "確認する"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:29
 #: reservations/templates/reservations/index_old.html:26
 #: reservations/templates/reservations/option_selection.html:25
 msgid "Go Back Home"
-msgstr "ホームに戻る"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:39
 #: winadmin/templates/winadmin/reservations/reservation_create.html:145
@@ -1125,16 +930,12 @@ msgid "Continue"
 msgstr ""
 
 #: reservations/templates/reservations/index.html:233
-#, fuzzy
-#| msgid "Choose Options"
 msgid "Continue, Choose Options"
-msgstr "オプションを選んでください"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:248
-#, fuzzy
-#| msgid "Delete Item"
 msgid "Delete Session"
-msgstr "アイテムを削除する"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:276
 #: reservations/templates/reservations/option_selection.html:5
@@ -1145,7 +946,7 @@ msgstr "アイテムを削除する"
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:25
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:34
 msgid "Choose Options"
-msgstr "オプションを選んでください"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:285
 #: reservations/templates/reservations/option_selection.html:45
@@ -1155,7 +956,7 @@ msgstr "オプションを選んでください"
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:36
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:46
 msgid "Option Types"
-msgstr "オプションのタイプ"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:291
 #: reservations/templates/reservations/option_selection.html:51
@@ -1172,7 +973,7 @@ msgstr ""
 #: winadmin/templates/winadmin/reservations/reservation_create.html:347
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:62
 msgid "Remove"
-msgstr "消す"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:307
 #: reservations/templates/reservations/option_selection.html:67
@@ -1181,15 +982,13 @@ msgstr "消す"
 #: winadmin/templates/winadmin/reservations/reservation_create.html:353
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:68
 msgid "Add"
-msgstr "追加"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:324
 #: reservations/templates/reservations/index.html:368
 #: reservations/templates/reservations/index.html:452
-#, fuzzy
-#| msgid "Go Back Home"
 msgid "Go Back"
-msgstr "ホームに戻る"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:340
 #: reservations/templates/reservations/index.html:349
@@ -1198,13 +997,13 @@ msgstr "ホームに戻る"
 #: winadmin/templates/winadmin/reservations/reservation_create.html:116
 #: winadmin/templates/winadmin/reservations/reservation_create.html:125
 msgid "Contact Information"
-msgstr "連絡情報"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:391
 #: reservations/templates/reservations/reservation_form.html:155
 #: winadmin/templates/winadmin/reservations/reservation_create.html:42
 msgid "Confirm Details"
-msgstr "詳細を確認する"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:395
 #: winadmin/templates/winadmin/reservations/reservation_create.html:46
@@ -1213,80 +1012,55 @@ msgstr ""
 
 #: reservations/templates/reservations/index.html:400
 #: winadmin/templates/winadmin/reservations/reservation_create.html:51
-#, fuzzy
-#| msgid "End Date"
 msgid "End Date:"
-msgstr "終了日"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:406
 #: winadmin/templates/winadmin/reservations/reservation_create.html:57
-#, fuzzy
-#| msgid "Start Date"
 msgid "Start Time:"
-msgstr "開始日"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:410
 #: winadmin/templates/winadmin/reservations/reservation_create.html:61
-#, fuzzy
-#| msgid "End Date"
 msgid "End Time:"
-msgstr "終了日"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:415
 #: winadmin/templates/winadmin/reservations/reservation_create.html:66
-#, fuzzy
-#| msgid "First Name"
 msgid "First Name:"
-msgstr "名前"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:419
 #: winadmin/templates/winadmin/reservations/reservation_create.html:70
-#, fuzzy
-#| msgid "Last Name"
 msgid "Last Name:"
-msgstr "姓"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:423
 #: winadmin/templates/winadmin/reservations/reservation_create.html:74
-#, fuzzy
-#| msgid "Email"
 msgid "Email:"
-msgstr "メール"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:427
 #: winadmin/templates/winadmin/reservations/reservation_create.html:78
-#, fuzzy
-#| msgid "Phone #"
 msgid "Phone:"
-msgstr "電話番号"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:437
 #: winadmin/templates/winadmin/reservations/reservation_create.html:88
-#, fuzzy
-#| msgid "Total Price"
 msgid "Stay Price"
-msgstr "合計"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:460
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "            Next\n"
-#| "          "
 msgid ""
 "\n"
 "          Make Reservation\n"
 "        "
 msgstr ""
-"\n"
-"次へ"
 
 #: reservations/templates/reservations/index.html:471
 #: winadmin/templates/winadmin/reservations/reservation_create.html:368
-#, fuzzy
-#| msgid "Reservations Chart"
 msgid "Reservation Confirmed!"
-msgstr "予約チャート"
+msgstr ""
 
 #: reservations/templates/reservations/index.html:472
 msgid ""
@@ -1296,22 +1070,22 @@ msgstr ""
 
 #: reservations/templates/reservations/index_old.html:11
 msgid "Create a Reservation"
-msgstr "予約を制作する"
+msgstr ""
 
 #: reservations/templates/reservations/option_selection.html:77
 #: reservations/templates/reservations/reservation_form.html:15
 #: reservations/templates/reservations/reservation_form.html:36
 #: reservations/templates/reservations/reservation_form.html:91
 msgid "Next"
-msgstr "次へ"
+msgstr ""
 
 #: reservations/templates/reservations/payment_page.html:364
 msgid "Payment details"
-msgstr "注文詳細"
+msgstr ""
 
 #: reservations/templates/reservations/payment_page.html:386
 msgid "Price Per Day"
-msgstr "１日の値段"
+msgstr ""
 
 #: reservations/templates/reservations/payment_page.html:389
 msgid ""
@@ -1319,26 +1093,24 @@ msgid ""
 "          Total Days\n"
 "        "
 msgstr ""
-"\n"
-"合計の日にち"
 
 #: reservations/templates/reservations/payment_page.html:404
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:136
 msgid "Pay"
-msgstr "支払う"
+msgstr ""
 
 #: reservations/templates/reservations/reservation_form.html:5
 msgid "Choose your reservation type"
-msgstr "予約のタイプを選んでください"
+msgstr ""
 
 #: reservations/templates/reservations/reservation_form.html:12
 #: reservations/templates/reservations/reservation_form.html:30
 msgid "Reservation Types"
-msgstr "予約のタイプ"
+msgstr ""
 
 #: reservations/templates/reservations/reservation_form.html:23
 msgid "Choose Date of Stay"
-msgstr "滞在の日付を選ぶ"
+msgstr ""
 
 #: reservations/templates/reservations/reservation_form.html:130
 msgid ""
@@ -1346,8 +1118,6 @@ msgid ""
 "            Next\n"
 "          "
 msgstr ""
-"\n"
-"次へ"
 
 #: reservations/templates/reservations/reservation_form.html:195
 msgid ""
@@ -1355,8 +1125,6 @@ msgid ""
 "              Price Per Day\n"
 "            "
 msgstr ""
-"\n"
-"１日の値段"
 
 #: reservations/templates/reservations/reservation_form.html:202
 msgid ""
@@ -1364,22 +1132,13 @@ msgid ""
 "              Total Days\n"
 "            "
 msgstr ""
-"\n"
-"合計の日々"
 
 #: reservations/templates/reservations/reservation_form.html:216
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "            Next\n"
-#| "          "
 msgid ""
 "\n"
 "            Make Reservation\n"
 "          "
 msgstr ""
-"\n"
-"次へ"
 
 #: templates/custom_form.html:64 templates/winadmin/pricing_tier_create.html:14
 #: templates/winadmin/room_create.html:51
@@ -1392,13 +1151,11 @@ msgstr ""
 #: winadmin/templates/winadmin/reservations/reservation_detail.html:21
 #: winadmin/templates/winadmin/transactions/transaction_create.html:16
 msgid "Submit"
-msgstr "投稿する"
+msgstr ""
 
 #: templates/customer/customer_create_bulk.html:4
-#, fuzzy
-#| msgid "Create Category"
 msgid "Create Many Random Customers"
-msgstr "カテゴリーを制作する"
+msgstr ""
 
 #: templates/customer/customer_create_bulk.html:13
 msgid "How many:"
@@ -1410,7 +1167,7 @@ msgstr ""
 
 #: templates/patterns/navigations/sidebar_navigation/sidebar_navigation_body.html:17
 msgid "Log Out"
-msgstr "ログアウト"
+msgstr ""
 
 #: templates/reservations/calendar.html:5
 msgid "Calendar"
@@ -1418,316 +1175,288 @@ msgstr ""
 
 #: templates/ticket/ticket_detail.html:4 templates/ticket/ticket_detail.html:9
 msgid "Ticket Details"
-msgstr "チケットの詳細"
+msgstr ""
 
 #: templates/ticket/ticket_detail.html:25
 msgid "Reopen Ticket"
-msgstr "チケットを再開する"
+msgstr ""
 
 #: templates/ticket/ticket_detail.html:32
 msgid "Add Note"
-msgstr "メモを追加する"
+msgstr ""
 
 #: templates/ticket/ticket_detail.html:36
 msgid "Close Ticket"
-msgstr "チケットを閉じる"
+msgstr ""
 
 #: templates/ticket/ticket_list.html:34
 msgid "Ticket Number"
-msgstr "チケット番号"
+msgstr ""
 
 #: templates/ticket/ticket_list.html:36
 msgid "Customer Name"
-msgstr "顧客名"
+msgstr ""
 
 #: templates/ticket/ticket_list.html:37
 msgid "Closed?"
-msgstr "閉じた？"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_create.html:5
 #: templates/winadmin/room_create.html:19
 #: templates/winadmin/room_create.html:23
-#, fuzzy
-#| msgid "Create Item"
 msgid "Create Room"
-msgstr "アイテムを制作する"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_detail.html:4
 #: templates/winadmin/pricing_tier_detail.html:8
-#, fuzzy
-#| msgid "Create Order"
 msgid "Edit Pricing Tier"
-msgstr "仕入を制作する"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_detail.html:17
-#, fuzzy
-#| msgid "Edit Inventory Item"
 msgid "Edit"
-msgstr "在庫のアイテムを編集する"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_list.html:4
-#, fuzzy
-#| msgid "Transaction List View"
 msgid "Pricing Tier List View"
-msgstr "引取のリストビュー"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_list.html:8
-#, fuzzy
-#| msgid "Create Order"
 msgid "Pricing Tier Chart"
-msgstr "仕入を制作する"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_list.html:32 winadmin/forms.py:222
 #: winadmin/forms.py:230
-#, fuzzy
-#| msgid "First Name"
 msgid "Tier Name"
-msgstr "名前"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_list.html:34
-#, fuzzy
-#| msgid "Price Per Item"
 msgid "Price Per Night"
-msgstr "単価"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_list.html:35
 #: templates/winadmin/room_list.html:35
-#, fuzzy
-#| msgid "Price Per Day"
 msgid "Price Per Hour"
-msgstr "１日の値段"
+msgstr ""
 
 #: templates/winadmin/room_create.html:44
-#, fuzzy
-#| msgid "Add Note"
 msgid "Add Tier"
-msgstr "メモを追加する"
+msgstr ""
 
 #: templates/winadmin/room_detail.html:4 templates/winadmin/room_detail.html:8
-#, fuzzy
-#| msgid "Edit Inventory Item"
 msgid "Edit Room"
-msgstr "在庫のアイテムを編集する"
+msgstr ""
 
 #: templates/winadmin/room_list.html:4
-#, fuzzy
-#| msgid "Customer List View"
 msgid "Room List View"
-msgstr "顧客リストビュー"
+msgstr ""
 
 #: templates/winadmin/room_list.html:8
-#, fuzzy
-#| msgid "Rooms"
 msgid "Room List"
-msgstr "部屋"
+msgstr ""
 
 #: templates/winadmin/room_list.html:32 winadmin/forms.py:184
 #: winadmin/forms.py:203
-#, fuzzy
-#| msgid "Customer Name"
 msgid "Room Name"
-msgstr "顧客名"
+msgstr ""
 
 #: templates/winadmin/room_list.html:34 winadmin/forms.py:186
-#, fuzzy
-#| msgid "Create Order"
 msgid "Pricing Tiers"
-msgstr "仕入を制作する"
+msgstr ""
 
 #: users/apps.py:7
 msgid "Users"
-msgstr "ユーザー"
+msgstr ""
 
 #: users/forms.py:29
 msgid "This email has already been taken."
-msgstr "このメールはすでに存在しています"
+msgstr ""
 
 #: users/models.py:51
 msgid "Name of User"
-msgstr "ユーザーの名前"
+msgstr ""
 
 #: users/models.py:54
 msgid "email address"
-msgstr "メール"
+msgstr ""
 
 #: users/tests/test_forms.py:36
 msgid "This username has already been taken."
-msgstr "このユーザー名はすでに存在しています"
+msgstr ""
 
 #: users/tests/test_views.py:71 users/views.py:23
 msgid "Information successfully updated"
-msgstr "情報の変更が成功しました。"
+msgstr ""
 
 #: winadmin/forms.py:14
 msgid "Username"
-msgstr "ユーザー名"
+msgstr ""
 
 #: winadmin/forms.py:16
 msgid "Password"
-msgstr "パスワード"
+msgstr ""
 
 #: winadmin/forms.py:133 winadmin/forms.py:176
 msgid "Stay Type"
-msgstr "滞在制"
+msgstr ""
 
 #: winadmin/forms.py:134
 msgid "Start Date"
-msgstr "開始日"
+msgstr ""
 
 #: winadmin/forms.py:135
 msgid "End Date"
-msgstr "終了日"
+msgstr ""
 
 #: winadmin/templates/winadmin/base.html:25
 msgid "Winvillage Administration Dashboard"
-msgstr "ウィンビレッジ管理のダッシュボード"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:19
 msgid "Dashboard"
-msgstr "ダッシュボード"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:23
 #: winadmin/templates/winadmin/index.html:247
 msgid "Winvillage Admin"
-msgstr "ウインビレージの管理パネル"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:51
 #: winadmin/templates/winadmin/index.html:149
 msgid "Customer Management"
-msgstr "顧客管理"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:55
 #: winadmin/templates/winadmin/index.html:153
 msgid "Search Customers"
-msgstr "顧客検索"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:59
 #: winadmin/templates/winadmin/index.html:157
 msgid "View Tickets"
-msgstr "チケットを見る"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:69
 #: winadmin/templates/winadmin/index.html:167
 msgid "Inventory Management"
-msgstr "在庫管理"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:73
 #: winadmin/templates/winadmin/index.html:171
 msgid "View Inventory"
-msgstr "在庫を見る"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:75
 #: winadmin/templates/winadmin/index.html:173
 #: winadmin/templates/winadmin/inventory/item_create.html:8
 msgid "Add Inventory Item"
-msgstr "在庫のアイテムを追加する"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:77
 #: winadmin/templates/winadmin/index.html:175
 msgid "View Categories"
-msgstr "カテゴリーを見る"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:79
 #: winadmin/templates/winadmin/index.html:177
 msgid "Add Category"
-msgstr "カテゴリーを追加する"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:93
 #: winadmin/templates/winadmin/index.html:191
 msgid "Sales Management"
-msgstr "売上管理"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:97
 #: winadmin/templates/winadmin/index.html:195
 msgid "View Sales"
-msgstr "売上帳を見る"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:101
 #: winadmin/templates/winadmin/index.html:199
 msgid "View Reservations"
-msgstr "予約を見る"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:123
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:8
 msgid "Business Order Management"
-msgstr "仕入管理"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:127
 msgid "View Business Orders"
-msgstr "仕入を見る"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:129
 msgid "Create Business Order"
-msgstr "仕入を制作する"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:221
 msgid "Order Management"
-msgstr "仕入管理"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:225
 msgid "View Orders"
-msgstr "仕入を見る"
+msgstr ""
 
 #: winadmin/templates/winadmin/index.html:227
 #: winadmin/templates/winadmin/transactions/transaction_create.html:8
 msgid "Create Order"
-msgstr "仕入を制作する"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_create.html:4
 msgid "Create Category"
-msgstr "カテゴリーを制作する"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_create.html:8
 msgid "Category Create View"
-msgstr "カテゴリーの制作ビュー"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_detail.html:4
 msgid "Edit Category"
-msgstr "カテゴリーを編集する"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_detail.html:7
 msgid "Category Edit View"
-msgstr "カテゴリーの編集ビュー"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_list.html:4
 msgid "Category List View"
-msgstr "カテゴリーのリストビュー"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/item_create.html:4
 msgid "Create Item"
-msgstr "アイテムを制作する"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/item_detail.html:4
 #: winadmin/templates/winadmin/inventory/item_detail.html:8
 msgid "Edit Inventory Item"
-msgstr "在庫のアイテムを編集する"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/item_list.html:4
 #: winadmin/templates/winadmin/inventory/item_list.html:8
 msgid "Inventory Item List View"
-msgstr "在庫アイテムのリストビュー"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/item_list.html:20
 msgid "Stock"
-msgstr "在庫"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/item_list.html:39
 #: winadmin/templates/winadmin/inventory/item_list.html:42
 msgid "True"
-msgstr "O"
+msgstr ""
 
 #: winadmin/templates/winadmin/inventory/item_list.html:39
 #: winadmin/templates/winadmin/inventory/item_list.html:42
 msgid "False"
-msgstr "X"
+msgstr ""
 
 #: winadmin/templates/winadmin/login_page.html:6
 msgid "Winvillage Admin Login"
-msgstr "ウインビレッジ・管理・ログイン"
+msgstr ""
 
 #: winadmin/templates/winadmin/login_page.html:30
 msgid "Login"
-msgstr "ログイン"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:407
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:411
@@ -1737,7 +1466,7 @@ msgstr "ログイン"
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:8
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:12
 msgid "Create Reservation"
-msgstr "予約を制作する"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:495
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:97
@@ -1746,8 +1475,6 @@ msgid ""
 "        Price Per Day\n"
 "      "
 msgstr ""
-"\n"
-"各日の単価"
 
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:499
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:101
@@ -1756,8 +1483,6 @@ msgid ""
 "        Total Days\n"
 "      "
 msgstr ""
-"\n"
-"合計の日にち"
 
 #: winadmin/templates/winadmin/reservations/reservation_create.html:369
 msgid ""
@@ -1767,102 +1492,100 @@ msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:149
 msgid "Payment Failed! Error: "
-msgstr "支払いができませんでした！エラー："
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:157
 msgid "Payment Complete!"
-msgstr "支払いができました！"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_create_backup.html:159
-#, fuzzy
-#| msgid "Create a Reservation"
 msgid "Create a New Reservation"
-msgstr "予約を制作する"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_detail.html:4
 #: winadmin/templates/winadmin/reservations/reservation_detail.html:8
 msgid "Edit Reservation"
-msgstr "予約を変更する"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:4
 msgid "Reservations List View"
-msgstr "予約のリストビュー"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:8
 msgid "Reservations Chart"
-msgstr "予約チャート"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:19
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:19
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:19
 msgid "Year"
-msgstr "年"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:20
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:20
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:20
 msgid "Month"
-msgstr "月"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:32
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:34
 msgid "Stay Start"
-msgstr "滞在の始まり"
+msgstr ""
 
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:35
 msgid "Status"
-msgstr "状態"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:4
 msgid "Sale List View"
-msgstr "売上のリストビュー"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:8
 msgid "Sales Chart"
-msgstr "売上帳"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:37
 #: winadmin/views.py:399
 msgid "Date"
-msgstr "日付"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:33
 msgid "Transaction Name"
-msgstr "引取名"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:34
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:40
 msgid "Product"
-msgstr "商品"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:36
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:42
 msgid "Price Per Item"
-msgstr "単価"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:37
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:43
 msgid "Sale Amount"
-msgstr "売上金額"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:38
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:44
 msgid "Return Amount"
-msgstr "返品金額"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
 #: winadmin/views.py:403
 msgid "Balance"
-msgstr "残高"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_create.html:4
 msgid "Create Transaction"
-msgstr "取引を作成する"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:4
 msgid "Transaction List View"
-msgstr "引取のリストビュー"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:31
 msgid "Export CSV"
@@ -1870,15 +1593,15 @@ msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:45
 msgid "Purchase Amount"
-msgstr "仕入れ金額"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:46
 msgid "Payment Amount"
-msgstr "支払金額"
+msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:47
 msgid "Remainder"
-msgstr "残高"
+msgstr ""
 
 #: winadmin/views.py:101 winadmin/views.py:123
 msgid "There was an error logging in."
@@ -1886,148 +1609,52 @@ msgstr ""
 
 #: winadmin/views.py:155
 msgid "Item Successfully Added"
-msgstr "アイテムが追加できました"
+msgstr ""
 
 #: winadmin/views.py:174
 msgid "Category Successfully Added"
-msgstr "カテゴリーが追加できました"
+msgstr ""
 
 #: winadmin/views.py:177
 msgid "Input category title"
-msgstr "カテゴリーのタイトルを入力してください"
+msgstr ""
 
 #: winadmin/views.py:196
 msgid "Category Successfully Edited"
-msgstr "カテゴリーが変更できました"
+msgstr ""
 
 #: winadmin/views.py:198
-#, fuzzy
-#| msgid "Input category title"
 msgid "Input category name"
-msgstr "カテゴリーのタイトルを入力してください"
+msgstr ""
 
 #: winadmin/views.py:228 winadmin/views.py:234
 msgid "Item Successfully Edited"
-msgstr "アイテムが更新できました"
+msgstr ""
 
 #: winadmin/views.py:230 winadmin/views.py:236 winadmin/views.py:256
 msgid "Error"
-msgstr "エラー"
+msgstr ""
 
 #: winadmin/views.py:253
 msgid "Item Successfully Deleted"
-msgstr "アイテムが削除できました"
+msgstr ""
 
 #: winadmin/views.py:329 winadmin/views.py:434
 msgid "Transaction Created Successfully"
-msgstr "引取が制作できました"
+msgstr ""
 
 #: winadmin/views.py:331
-#, fuzzy
-#| msgid "Ticket couldn't be created!"
 msgid "Transaction Couldn't Be Created"
-msgstr "チケットを制作できませんでした！"
+msgstr ""
 
 #: winadmin/views.py:715
 msgid "Reservation successfully edited."
-msgstr "予約を変更できました"
+msgstr ""
 
 #: winvillage/settings.py:272
 msgid "English"
-msgstr "英語"
+msgstr ""
 
 #: winvillage/settings.py:273
 msgid "Japanese"
-msgstr "日本語"
-
-#, fuzzy
-#~| msgid "Edit Inventory Item"
-#~ msgid "Edit Item"
-#~ msgstr "在庫のアイテムを編集する"
-
-#~ msgid "Delete Item"
-#~ msgstr "アイテムを削除する"
-
-#, fuzzy
-#~| msgid "Create Order"
-#~ msgid "Create Pricing Tier"
-#~ msgstr "仕入を制作する"
-
-#~ msgid "Room"
-#~ msgstr "部屋"
-
-#, fuzzy
-#~| msgid ""
-#~| "\n"
-#~| "              Price Per Day\n"
-#~| "            "
-#~ msgid ""
-#~ "\n"
-#~ "              Price Per Hour\n"
-#~ "            "
-#~ msgstr ""
-#~ "\n"
-#~ "１日の値段"
-
-#~ msgid "Purchase Management"
-#~ msgstr "仕入管理"
-
-#~ msgid "View Transactions"
-#~ msgstr "取引を見る"
-
-#~ msgid "View Purchases"
-#~ msgstr "仕入帳を見る"
-
-#, fuzzy
-#~ msgid "Make an Item"
-#~ msgstr "アイテムを制作する"
-
-#~ msgid "From"
-#~ msgstr "から"
-
-#~ msgid "Until"
-#~ msgstr "まで"
-
-#~ msgid ""
-#~ "\n"
-#~ "            Confirm and Go to Checkout\n"
-#~ "          "
-#~ msgstr ""
-#~ "\n"
-#~ "確認して、チェックアウトに行く"
-
-#~ msgid "Open Ticket"
-#~ msgstr "チケットを作る"
-
-#, fuzzy
-#~ msgid "Resolve Ticket"
-#~ msgstr "チケットを作る"
-
-#, fuzzy
-#~ msgid "Phone Number"
-#~ msgstr "電話番号"
-
-#, fuzzy
-#~ msgid "Create"
-#~ msgstr "アイテムを制作する"
-
-#~ msgid "Important dates"
-#~ msgstr "大事な日付"
-
-#~ msgid "Update Reservation"
-#~ msgstr "予約を更新する"
-
-#~ msgid "Inventory"
-#~ msgstr "在庫"
-
-#~ msgid "Reports"
-#~ msgstr "レポート"
-
-#~ msgid "Purchase Reports"
-#~ msgstr "仕入れのレポート"
-
-#~ msgid "Received Amount"
-#~ msgstr "受入金額"
-
-#~ msgid "Amount Received"
-#~ msgstr "受入金額"
+msgstr ""
