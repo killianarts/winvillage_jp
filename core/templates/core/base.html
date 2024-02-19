@@ -77,11 +77,11 @@
             </svg>
             <a href="tel:0956-30-8411">0956-30-8411</a>
           </div>
-          {% #outline_button %}
           <a href="{% url 'reservations:index' %}">
+            {% #outline_button %}
             {% translate 'Make a Reservation' %}
+            {% /outline_button %}
           </a>
-          {% /outline_button %}
         </div>
       </div>
     </nav>
@@ -162,11 +162,11 @@
         </svg>
         <a href="tel:0956-30-8411">0956-30-8411</a>
       </div>
-      {% #outline_button class="w-full" %}
       <a href="{% url 'reservations:index' %}">
+        {% #outline_button class="w-full" %}
         {% translate 'Make a Reservation' %}
+        {% /outline_button %}
       </a>
-      {% /outline_button %}
     </div>
   </footer>
 {% endblock %}
