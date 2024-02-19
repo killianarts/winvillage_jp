@@ -2,37 +2,37 @@
 {% load static i18n %}
 {% block extra_styles %}
   <style>
-      /* width */
-      .scrollbar {
-          --border-radius: 4px;
-      }
+   /* width */
+   .scrollbar {
+     --border-radius: 4px;
+   }
 
-      .scrollbar::-webkit-scrollbar {
-          width: 1rem;
-          height: 1rem;
-      }
+   .scrollbar::-webkit-scrollbar {
+     width: 1rem;
+     height: 1rem;
+   }
 
-      /* Track */
-      .scrollbar::-webkit-scrollbar-track {
-          background-color: rgba(28, 25, 23, 1);
-          border-radius: var(--border-radius);
-      }
+   /* Track */
+   .scrollbar::-webkit-scrollbar-track {
+     background-color: rgba(28, 25, 23, 1);
+     border-radius: var(--border-radius);
+   }
 
-      /* Handle */
-      .scrollbar::-webkit-scrollbar-thumb {
-          background-color: rgba(245, 245, 244, .5);
-          border-radius: var(--border-radius);
-      }
+   /* Handle */
+   .scrollbar::-webkit-scrollbar-thumb {
+     background-color: rgba(245, 245, 244, .5);
+     border-radius: var(--border-radius);
+   }
 
-      /* Handle on hover */
-      .scrollbar::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(249, 115, 22, 1);
-          border-radius: var(--border-radius);
-      }
+   /* Handle on hover */
+   .scrollbar::-webkit-scrollbar-thumb:hover {
+     background-color: rgba(249, 115, 22, 1);
+     border-radius: var(--border-radius);
+   }
   </style>
 {% endblock %}
 {% block content_main %}
-  <main class="pt-28 lg:pt-36">
+  <main class="pt-28 lg:pt-36 max-w-screen-2xl mx-auto">
     <div class="grid grid-cols-4 gap-7 mx-5 md:mx-20">
       {% static 'core/img/winvillage.jpg' as image_url %}
       {#% four_col_image_grid_cell variant="wide" background_image_url=image_url %#}
@@ -47,11 +47,9 @@
         <h1 class="font-industrial text-2xl lg:text-3xl xl:text-5xl uppercase">
           Relax and<br class="hidden 2xl:inline">
           Light a Fire.</h1>
-        <p>
-          {% blocktranslate %}
-            静かな空間、最高の風呂、美味しいバーベキュー。</br></br>
-            佐世保でのグランピング。
-          {% endblocktranslate %}
+        <p class="font-sans">
+          {% translate '静かな空間、最高の風呂、美味しいバーベキュー。' %}
+          {% translate '佐世保でのグランピング。' %}
         </p>
         {% #outline_button %}{% translate '予約を作る' %}{% /outline_button %}
       </div>
@@ -66,7 +64,7 @@
         {% winvillage_header number="00" subheader=subheader header=header %}
         <p>
           {% blocktranslate %}
-            自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いスペース。キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ダラダラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれて、最高の朝を向かう。
+          自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いスペース。キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ダラダラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれて、最高の朝を向かう。
           {% endblocktranslate %}
         </p>
       </div>
@@ -124,7 +122,7 @@
         {% winvillage_header number="01" subheader=subheader header=header %}
         <p>
           {% blocktranslate %}
-            温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。
+          温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。
           {% endblocktranslate %}
         </p>
       </div>
@@ -152,7 +150,7 @@
         {% winvillage_header number="02" subheader=subheader header=header %}
         <p>
           {% blocktranslate %}
-            山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。ベテランのキャンパーでも、初心者でも楽しめます。
+          山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。ベテランのキャンパーでも、初心者でも楽しめます。
           {% endblocktranslate %}
         </p>
       </div>
@@ -165,7 +163,7 @@
       {% /four_col_grid_cell %}
       {% static 'core/img/outside3.jpg' as image_url %}
       {% four_col_image_grid_cell background_image_url=image_url %}
-            {% #four_col_grid_cell variant="wide" %}
+      {% #four_col_grid_cell variant="wide" %}
       <div class="space-y-5">
         {% translate 'family fun' as subheader %}
         {% translate '自然で楽しむ' as header %}
@@ -178,9 +176,9 @@
       </div>
       {% /four_col_grid_cell %}
       {% static 'core/img/kart.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url  %}
+      {% four_col_image_grid_cell background_image_url=image_url %}
       {% static 'core/img/outside2.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url  %}
+      {% four_col_image_grid_cell background_image_url=image_url %}
       {% #four_col_grid_cell %}
       {% static 'core/img/icons/toy-brick.svg' as icon %}
       {% translate 'おもちゃ' as header %}
@@ -190,93 +188,19 @@
       {% static 'core/img/plates.jpg' as image_url %}
       {% four_col_image_grid_cell background_image_url=image_url %}
     </div>
-    <div id="pricing" class="text-center leading-10">
-      <span class="uppercase font-display tracking-widest">pricing</span>
-      <h2 class="text-5xl font-black ">{% translate '値段表' %}</h2>
-    </div>
-    <div class="mt-8">
-      <div class="overflow-x-auto sm:-mx-6 lg:-mx-7 drop-shadow-hard-45-md">
-        <div class="inline-block py-2 align-middle sm:px-6 lg:px-8 max-w-full min-w-full">
-          <div class="grid grid-cols-2"><div class="sm:hidden max-w-[180px] mx-auto p-5 border-3 border-stone-900 drop-shadow-hard-45-md rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
-            <h3 class="font-black text-xl text-center pb-2">{% translate '00・01号室' %}</h3>
-            <ul class="divide-y divide-stone-400 pt-3">
-              <li class="flex w-full justify-between"><span class="font-black">１名</span><span>---</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">２名</span><span>￥35,000</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">３名</span><span>￥45,000</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">４名</span><span>￥52,000</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">５名</span><span>￥55,000</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">６名</span><span>￥66,000</span></li>
-            </ul>
-          </div>
-          <div class="sm:hidden max-w-[180px] mx-auto p-5 border-3 border-stone-900 drop-shadow-hard-45-md rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
-            <h3 class="font-black text-xl text-center pb-2">{% translate '02・03号室' %}</h3>
-            <ul class="divide-y divide-stone-400 pt-3">
-              <li class="flex w-full justify-between"><span class="font-black">１名</span><span>￥20,000</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">２名</span><span>￥26,000</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">３名</span><span>￥33,000</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">４名</span><span>￥40,000</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">５名</span><span>---</span></li>
-              <li class="flex w-full justify-between"><span class="font-black">６名</span><span>---</span></li>
-            </ul>
-          </div></div>
-          <div class="hidden sm:block overflow-y-hidden scrollbar shadow border-3 border-b-0 sm:border-3 border-stone-900 rounded-lg bg-stone-100">
-            <table class="min-w-full divide-y divide-stone-400">
-              <thead class="bg-stone-100">
-              <tr>
-                <th id="spacer"
-                    scope="col"
-                    class="py-3.5 pl-4 pr-3 text-left text-sm font-black text-stone-900 sm:pl-6">{% translate '号室' %}</th>
-                <th scope="col"
-                    class="py-3.5 pl-4 pr-3 text-left text-sm font-black text-stone-900">{% translate '１名' %}</th>
-                <th scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '２名' %}</th>
-                <th scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '３名' %}</th>
-                <th scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '４名' %}</th>
-                <th scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '５名' %}</th>
-                <th scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '６名' %}</th>
-              </tr>
-              </thead>
-              <tbody class="divide-y divide-stone-400">
-              <tr>
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
-                  00<span class="hidden lg:inline">・</span><br class="lg:hidden">01
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥35,000</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥45,000</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥52,000</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥55,000</td>
-                <td class="whitespace-nowrap abbreviate px-3 py-4 text-sm text-stone-900">￥66,000</td>
-              </tr>
-              <tr>
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
-                  02<span class="hidden lg:inline">・</span><br class="lg:hidden">03
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥20,000</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥26,000</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥33,000</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥40,000</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-              </tr>
-              <!-- More people... -->
-              </tbody>
-            </table>
-    <div class="mt-7 mb-5 mx-5 md:mx-20 space-y-7">
-      <div id="specs" class="text-center leading-10">
-        <span class="uppercase font-industrial tracking-widest">+{% translate 'room specifications' %}+</span>
-        <h2 class="text-5xl font-black ">{% translate '部屋の基本スペック' %}</h2>
-      </div>
-      <div class="">
-        <div class="aspect-h-1 aspect-w-2 ">
+    <div class="mt-8 mx-5 md:mx-20">
+      <div class="space-y-7">
+        <div id="specs" class="text-center space-y-2">
+          <p class="uppercase font-industrial tracking-widest">
+            <span class="align-text-bottom">+</span>{% translate 'room specifications' %}<span class="align-text-bottom">+</span>
+          </p>
+          <h2 class="text-5xl font-black ">{% translate '部屋の基本スペック' %}</h2>
+        </div>
+        <div class="aspect-h-1 aspect-w-2">
           {% static 'core/img/outside1.jpg' as image_url %}
           {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
         </div>
-        <div class="isolate mx-auto mt-10 flex flex-wrap justify-center gap-8 lg:mx-0 sm:grid-cols-2">
+        <div class="mx-auto flex flex-wrap sm:flex-nowrap justify-center gap-8 lg:mx-0 sm:grid-cols-2">
           <div class="rounded-lg border-3 border-stone-900 bg-stone-100 drop-shadow-hard-45-md p-8 xl:p-10">
             <h3 id="tier-00" class="text-lg font-semibold leading-8 text-gray-900">{% translate '００・０１号室' %}</h3>
             <p class="mt-4 text-sm leading-6 text-gray-600">{% translate 'より広いスペースの中にセミダブルベッド２台あります。' %}</p>
@@ -830,16 +754,16 @@
             </ul>
           </div>
         </div>
-      </div>
-      <div id="pricing" class="text-center leading-10">
-        <span class="uppercase font-industrial tracking-widest flex justify-center items-center">+{% translate 'pricing' %}+</span>
-          <h2 class="text-5xl font-black ">{% translate '値段表' %}</h2>
-      </div>
-      <div class="mt-8">
-        <div class="overflow-x-auto sm:-mx-6 lg:-mx-7 drop-shadow-hard-45-md">
-          <div class="inline-block py-2 align-middle sm:px-6 lg:px-8 ">
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              <div class="sm:hidden max-w-[180px] mx-auto p-5 border-3 border-stone-900 rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
+        <div id="pricing" class="text-center space-y-2">
+          <p class="uppercase font-industrial tracking-widest">
+            <span class="align-text-bottom">+</span>{% translate 'pricing' %}<span class="align-text-bottom">+</span>
+          </p>
+          <h2 class="text-5xl font-black">{% translate '値段表' %}</h2>
+        </div>
+        <div class="mx-auto mt-8">
+          <div class="drop-shadow-hard-45-md">
+            <div class="grid sm:grid-cols-2 gap-7 text-xs">
+              <div class="lg:hidden p-5 border-3 border-stone-900 rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
                 <h3 class="font-black text-lg text-center pb-2">{% translate '00・01号室' %}</h3>
                 <ul class="divide-y divide-stone-400 pt-3">
                   <li class="flex justify-between"><span class="font-black">１名</span><span>---</span></li>
@@ -850,7 +774,7 @@
                   <li class="flex justify-between"><span class="font-black">６名</span><span>￥66,000</span></li>
                 </ul>
               </div>
-              <div class="sm:hidden max-w-[180px] mx-auto p-5 border-3 border-stone-900 rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
+              <div class="lg:hidden p-5 border-3 border-stone-900 rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
                 <h3 class="font-black text-lg text-center pb-2">{% translate '02・03号室' %}</h3>
                 <ul class="divide-y divide-stone-400 pt-3">
                   <li class="flex justify-between"><span class="font-black">１名</span><span>￥20,000</span></li>
@@ -862,68 +786,77 @@
                 </ul>
               </div>
             </div>
-            <div class="hidden sm:block overflow-y-hidden scrollbar shadow border-3 border-b-0 sm:border-3 border-stone-900 rounded-lg bg-stone-100">
-              <table class="min-w-full divide-y divide-stone-400">
+            <div class="max-w-fit mx-auto hidden lg:block shadow border-3 border-b-0 sm:border-3 border-stone-900 rounded-lg bg-stone-100">
+              <table class="divide-y divide-stone-400">
                 <thead class="bg-stone-100">
-                <tr>
-                  <th id="spacer"
-                      scope="col"
-                      class="py-3.5 pl-4 pr-3 text-left text-sm font-black text-stone-900 sm:pl-6">{% translate '号室' %}</th>
-                  <th scope="col"
-                      class="py-3.5 pl-4 pr-3 text-left text-sm font-black text-stone-900">{% translate '１名' %}</th>
-                  <th scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '２名' %}</th>
-                  <th scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '３名' %}</th>
-                  <th scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '４名' %}</th>
-                  <th scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '５名' %}</th>
-                  <th scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '６名' %}</th>
-                </tr>
+                  <tr>
+                    <th id="spacer"
+                        scope="col"
+                        class="py-3.5 pl-4 pr-3 text-left text-sm font-black text-stone-900 sm:pl-6">{% translate '号室' %}</th>
+                    <th scope="col"
+                        class="py-3.5 pl-4 pr-3 text-left text-sm font-black text-stone-900">{% translate '１名' %}</th>
+                    <th scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '２名' %}</th>
+                    <th scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '３名' %}</th>
+                    <th scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '４名' %}</th>
+                    <th scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '５名' %}</th>
+                    <th scope="col"
+                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '６名' %}</th>
+                  </tr>
                 </thead>
                 <tbody class="divide-y divide-stone-400">
-                <tr>
-                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
-                    00<span class="hidden lg:inline">・</span><br class="lg:hidden">01
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥35,000</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥45,000</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥52,000</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥55,000</td>
-                  <td class="whitespace-nowrap abbreviate px-3 py-4 text-sm text-stone-900">￥66,000</td>
-                </tr>
-                <tr>
-                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
-                    02<span class="hidden lg:inline">・</span><br class="lg:hidden">03
-                  </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥20,000</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥26,000</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥33,000</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥40,000</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-                </tr>
-                <!-- More people... -->
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
+                      00<span class="hidden lg:inline">・</span><br class="lg:hidden">01
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥35,000</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥45,000</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥52,000</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥55,000</td>
+                    <td class="whitespace-nowrap abbreviate px-3 py-4 text-sm text-stone-900">￥66,000</td>
+                  </tr>
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
+                      02<span class="hidden lg:inline">・</span><br class="lg:hidden">03
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥20,000</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥26,000</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥33,000</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥40,000</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
+                  </tr>
+                  <!-- More people... -->
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-      </div>
-      <div id="access" class="text-center leading-10">
-        <span class="uppercase font-industrial tracking-widest">+{% translate 'access' %}+</span>
-        <h2 class="text-5xl font-black ">{% translate 'アクセス' %}</h2>
-      </div>
-      <div class="border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.211075605069!2d129.84148486176878!3d33.17147614231288!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356a9b308ae1c447%3A0x6dcfddfc856475e1!2sWin%20village!5e0!3m2!1sen!2sjp!4v1706585173902!5m2!1sen!2sjp"
-                class="w-full min-h-[30dvh] rounded-md"
-                style="border:0;"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div id="access" class="text-center space-y-2">
+          <p class="uppercase font-industrial tracking-widest">
+            <span class="align-text-bottom">+</span>{% translate 'access' %}<span class="align-text-bottom">+</span></p>
+          <h2 class="text-5xl font-black ">{% translate 'アクセス' %}</h2>
+        </div>
+        <div class="grid grid-col-2 gap-7">
+          <div class="sm:col-span-2 border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.211075605069!2d129.84148486176878!3d33.17147614231288!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356a9b308ae1c447%3A0x6dcfddfc856475e1!2sWin%20village!5e0!3m2!1sen!2sjp!4v1706585173902!5m2!1sen!2sjp"
+                    class="w-full min-h-[30dvh] rounded-md"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          {% static 'core/img/front.jpg' as image_url %}
+          <div style="background-image: url({{ image_url }});" class="bg-cover bg-center min-h-[30dvh] border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
+          </div>
+          {% static 'core/img/front_logo.jpg' as image_url %}
+          <div style="background-image: url({{ image_url }});" class="bg-cover bg-center min-h-[30dvh] border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
+          </div>
+        </div>
       </div>
     </div>
   </main>

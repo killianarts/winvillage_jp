@@ -45,6 +45,12 @@ module.exports = {
                 'hard-45-xl': '15px 15px 0 rgba(0, 0, 0, 0.2)',
                 'hard-45-2xl': '20px 20px 0 rgba(0, 0, 0, 0.2)',
             },
+            spacing: {
+                "128": '32rem',
+            },
+            maxWidth: {
+                "screen-2xl": '1500px',
+            },
             fontFamily: {
                 handwritten: ['"Segoe Print"', '"Bradley Hand"', "Chilanka", "TSCu_Comic", "casual", "cursive"],
                 code: ["ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"],

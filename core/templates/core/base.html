@@ -39,7 +39,7 @@
 
 <body class="bg-stone-50" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 {% block header %}
-  <header class="absolute inset-x-0 top-0 z-50">
+  <header class="absolute inset-x-0 top-0 z-50 max-w-7xl mx-auto">
     <nav class="flex items-center justify-between p-5 md:px-20">
       <div class="flex lg:flex-1">
         <a href="#" class="-m-1.5 p-1.5">
@@ -136,16 +136,39 @@
 {% endblock %}
 {% block pre_content %}{% endblock %}
 {% block content %}
-  
-    {% block content_top %}
-    {% endblock %}
-    {% block content_main %}
-    {% endblock %}
-    {% block content_bottom %}
-    {% endblock %}
+
+  {% block content_top %}
+  {% endblock %}
+  {% block content_main %}
+  {% endblock %}
+  {% block content_bottom %}
+  {% endblock %}
 {% endblock %}
 {% block post_content %}{% endblock %}
 {% block footer %}
+  <footer class="mx-auto max-w-fit min-h-screen grid place-items-center">
+    <div class="mx-5 md:mx-20 my-7 space-y-5 text-center">
+      <div class="mx-auto w-fit"><img src="{% static 'core/img/light_logo.svg' %}" alt="logo"/></div>
+      <h1 class="font-industrial text-2xl lg:text-3xl xl:text-5xl uppercase">
+        {% translate 'Relaxation Awaits' %}
+      </h1>
+      <p class="text-balance">
+        {% translate '最高のグランピングが佐世保で待っています。' %}
+      </p>
+      <div class="flex justify-center gap-2 text-lg text-stone-900">
+        <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+          <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
+                class="stroke-stone-900 stroke-[3]"/>
+        </svg>
+        <a href="tel:0956-30-8411">0956-30-8411</a>
+      </div>
+      {% #outline_button class="w-full" %}
+      <a href="{% url 'reservations:index' %}">
+        {% translate 'Make a Reservation' %}
+      </a>
+      {% /outline_button %}
+    </div>
+  </footer>
 {% endblock %}
 </body>
 {% django_htmx_script %}
