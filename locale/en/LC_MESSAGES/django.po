@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-19 05:49+0000\n"
+"POT-Creation-Date: 2024-02-19 06:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,7 +59,8 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: core/models.py:91 reservations/templates/reservations/index.html:199
+#: core/models.py:91 reservations/templates/reservations/index.html:198
+#: reservations/templates/reservations/index.html:436
 #: winadmin/templates/winadmin/inventory/item_list.html:18
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:39
 msgid "Price"
@@ -140,7 +141,7 @@ msgstr ""
 msgid "Quantity"
 msgstr ""
 
-#: core/models.py:173 reservations/templates/reservations/index.html:454
+#: core/models.py:173 reservations/templates/reservations/index.html:670
 #: reservations/templates/reservations/payment_page.html:393
 #: reservations/templates/reservations/reservation_form.html:208
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:503
@@ -921,37 +922,41 @@ msgid "Go Back Home"
 msgstr ""
 
 #: reservations/templates/reservations/index.html:42
+#: reservations/templates/reservations/index.html:279
 #: winadmin/templates/winadmin/reservations/reservation_create.html:145
 msgid "Choose the date"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:204
-#: reservations/templates/reservations/index.html:282
+#: reservations/templates/reservations/index.html:240
+#: reservations/templates/reservations/index.html:473
+msgid "Continue, Choose Options"
+msgstr ""
+
+#: reservations/templates/reservations/index.html:245
+#: reservations/templates/reservations/index.html:453
+#: reservations/templates/reservations/index.html:479
+#: reservations/templates/reservations/index.html:561
+#: reservations/templates/reservations/index.html:602
+#: reservations/templates/reservations/index.html:610
+msgid "Continue"
+msgstr ""
+
+#: reservations/templates/reservations/index.html:253
+#: reservations/templates/reservations/index.html:488
+msgid "Delete Session"
+msgstr ""
+
+#: reservations/templates/reservations/index.html:265
+msgid "Select Room"
+msgstr ""
+
+#: reservations/templates/reservations/index.html:441
+#: reservations/templates/reservations/index.html:498
 #: winadmin/templates/winadmin/reservations/reservation_create.html:304
 msgid "Select Start and End Times"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:216
-#: reservations/templates/reservations/index.html:242
-#: reservations/templates/reservations/index.html:345
-#: reservations/templates/reservations/index.html:386
-#: reservations/templates/reservations/index.html:394
-msgid "Continue"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:236
-msgid "Continue, Choose Options"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:251
-msgid "Delete Session"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:264
-msgid "Select Room"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:297
+#: reservations/templates/reservations/index.html:513
 #: reservations/templates/reservations/option_selection.html:5
 #: reservations/templates/reservations/option_selection.html:36
 #: reservations/templates/reservations/reservation_form.html:45
@@ -962,7 +967,7 @@ msgstr ""
 msgid "Choose Options"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:306
+#: reservations/templates/reservations/index.html:522
 #: reservations/templates/reservations/option_selection.html:45
 #: reservations/templates/reservations/reservation_form.html:52
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:433
@@ -972,7 +977,7 @@ msgstr ""
 msgid "Option Types"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:312
+#: reservations/templates/reservations/index.html:528
 #: reservations/templates/reservations/option_selection.html:51
 #: reservations/templates/reservations/reservation_form.html:59
 #: winadmin/templates/winadmin/reservations/reservation_create.html:337
@@ -980,7 +985,7 @@ msgstr ""
 msgid "Price:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:319
+#: reservations/templates/reservations/index.html:535
 #: reservations/templates/reservations/option_selection.html:61
 #: reservations/templates/reservations/reservation_form.html:72
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:456
@@ -989,7 +994,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:321
+#: reservations/templates/reservations/index.html:537
 #: reservations/templates/reservations/option_selection.html:67
 #: reservations/templates/reservations/reservation_form.html:81
 #: winadmin/templates/winadmin/reservations/create_reservation_page.html:469
@@ -998,14 +1003,14 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:337
-#: reservations/templates/reservations/index.html:381
-#: reservations/templates/reservations/index.html:465
+#: reservations/templates/reservations/index.html:553
+#: reservations/templates/reservations/index.html:597
+#: reservations/templates/reservations/index.html:681
 msgid "Go Back"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:353
-#: reservations/templates/reservations/index.html:362
+#: reservations/templates/reservations/index.html:569
+#: reservations/templates/reservations/index.html:578
 #: reservations/templates/reservations/reservation_form.html:100
 #: reservations/templates/reservations/reservation_form.html:106
 #: winadmin/templates/winadmin/reservations/reservation_create.html:116
@@ -1013,70 +1018,70 @@ msgstr ""
 msgid "Contact Information"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:404
+#: reservations/templates/reservations/index.html:620
 #: reservations/templates/reservations/reservation_form.html:155
 #: winadmin/templates/winadmin/reservations/reservation_create.html:42
 msgid "Confirm Details"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:408
+#: reservations/templates/reservations/index.html:624
 #: winadmin/templates/winadmin/reservations/reservation_create.html:46
 msgid "Start Date:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:413
+#: reservations/templates/reservations/index.html:629
 #: winadmin/templates/winadmin/reservations/reservation_create.html:51
 msgid "End Date:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:419
+#: reservations/templates/reservations/index.html:635
 #: winadmin/templates/winadmin/reservations/reservation_create.html:57
 msgid "Start Time:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:423
+#: reservations/templates/reservations/index.html:639
 #: winadmin/templates/winadmin/reservations/reservation_create.html:61
 msgid "End Time:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:428
+#: reservations/templates/reservations/index.html:644
 #: winadmin/templates/winadmin/reservations/reservation_create.html:66
 msgid "First Name:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:432
+#: reservations/templates/reservations/index.html:648
 #: winadmin/templates/winadmin/reservations/reservation_create.html:70
 msgid "Last Name:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:436
+#: reservations/templates/reservations/index.html:652
 #: winadmin/templates/winadmin/reservations/reservation_create.html:74
 msgid "Email:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:440
+#: reservations/templates/reservations/index.html:656
 #: winadmin/templates/winadmin/reservations/reservation_create.html:78
 msgid "Phone:"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:450
+#: reservations/templates/reservations/index.html:666
 #: winadmin/templates/winadmin/reservations/reservation_create.html:88
 msgid "Stay Price"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:473
+#: reservations/templates/reservations/index.html:689
 msgid ""
 "\n"
 "          Make Reservation\n"
 "        "
 msgstr ""
 
-#: reservations/templates/reservations/index.html:484
+#: reservations/templates/reservations/index.html:700
 #: winadmin/templates/winadmin/reservations/reservation_create.html:368
 msgid "Reservation Confirmed!"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:485
+#: reservations/templates/reservations/index.html:701
 msgid ""
 "An email has been sent to you with the details of your\n"
 "                                         reservation."

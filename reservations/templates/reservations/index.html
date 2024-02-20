@@ -199,7 +199,7 @@
           {% endif %}
           {% comment %}
         	TODO: Make more useful interface for time selection.
-        
+
           {% if start == end %}
             <div id="time-select-wrapper">
               <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
@@ -241,19 +241,21 @@
             </a>
           {% else %}
             <div class="mx-auto w-fit">
-              {% #outline_button name="confirm-date" type="submit" class="text-stone-300 bg-stone-100 pointer-events-none" %}
-              {% blocktrans %}Continue{% endblocktrans %}
+              {% #outline_button variant="disabled" %}
+              {% blocktrans %}Select a Date{% endblocktrans %}
               {% /outline_button %}
             </div>
           {% endif %}
-          {#          <div class="mx-auto w-fit"#}
-          {#               hx-post="{% url 'core:flush_session' %}"#}
-          {#               hx-target="this"#}
-          {#               hx-swap="innerHTML">#}
-          {#            {% #outline_button name="delete_session" type="submit" %}#}
-          {#            {% blocktrans %}Delete Session{% endblocktrans %}#}
-          {#            {% /outline_button %}#}
-          {#          </div>#}
+        {% if DEBUG %}
+          <div class="mx-auto w-fit"
+               hx-post="{% url 'core:flush_session' %}"
+               hx-target="this"
+               hx-swap="innerHTML">
+            {% #outline_button name="delete_session" type="submit" %}
+            {% blocktrans %}Delete Session{% endblocktrans %}
+            {% /outline_button %}
+          </div>
+        {% endif %}
         </div>
       {% endblock %}
     </div>
