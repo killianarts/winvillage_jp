@@ -182,6 +182,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.debug",
             ],
             "loaders": default_loaders if DEBUG else cached_loaders,
             "builtins": [

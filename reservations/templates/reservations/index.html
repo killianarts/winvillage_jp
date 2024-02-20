@@ -247,14 +247,15 @@
             </div>
           {% endif %}
         {% if DEBUG %}
-          <div class="mx-auto w-fit"
+          <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg"
                hx-post="{% url 'core:flush_session' %}"
                hx-target="this"
                hx-swap="innerHTML">
+          <legend class="bg-red-100 border-red-200 border-2 border-dotted rounded-lg px-2 py-1 text-red-700">DEBUG</legend>
             {% #outline_button name="delete_session" type="submit" %}
             {% blocktrans %}Delete Session{% endblocktrans %}
             {% /outline_button %}
-          </div>
+          </fieldset>
         {% endif %}
         </div>
       {% endblock %}
