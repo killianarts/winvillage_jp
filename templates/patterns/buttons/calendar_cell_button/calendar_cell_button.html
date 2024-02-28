@@ -1,10 +1,10 @@
 {% var date=date %}
 {% var url=url %}
-<form action="." method="post"
-      hx-post="."
+<form action="{% url 'reservations:date_select' %}" method="post"
+      hx-post="{% url 'reservations:date_select' %}"
       hx-swap="outerHTML"
       hx-target="#reservation-form-wrapper"
-      hx-vals='{"use_block": "reservation-form"}'>
+      hx-vals='{"use_block": "date-select"}'>
   {{ children }}
   <button {% attrs name value %}
           class="mx-auto flex relative z-10 h-8 w-8 items-center justify-center tabular-nums {{ class }}">

@@ -4,7 +4,8 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.formfields import PhoneNumberField
 
-from core.forms import ReservationsContactInformationFormMixin
+from core.forms import ReservationsContactInformationFormMixin, TailwindFormMixin
+from reservations.models import Stay, Room
 
 
 class GrillOptionForm(forms.Form):
@@ -60,3 +61,37 @@ class TimeSelectForm(forms.Form):
 
 class DateTimeForm(forms.Form):
     datetime = forms.DateTimeField(widget=forms.HiddenInput)
+
+
+class TravelerForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = Stay
+        fields = ("number_of_adults", "number_of_children")
+
+    do_htmx_validation = True
+
+    def clean_number_of_adults(self):
+        number_of_adults = self.cleaned_data.get("number_of_adults")
+        if number_of_adults == "---":
+            raise forms.ValidationError(_("Please choose the number of adults."))
+        return number_of_adults
+
+
+# By default, the label for each choice in ModelChoiceField is generated from the model's __str__ method.
+# I'm specifying it here explicitly because I rely on that currently for correct template rendering.
+# In the template, accessing the label for each choice in the below "rooms" field looks like this:
+# {% for radio in form.rooms %}
+#  {{ radio.choice_label }}
+class RoomChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.name
+
+
+class RoomChoiceForm(forms.Form):
+    rooms = RoomChoiceField(queryset=None, widget=forms.RadioSelect)
+
+    # form = RoomChoiceForm(queryset=queryset)
+    def __init__(self, *args, **kwargs):
+        queryset = kwargs.pop("queryset", None)
+        super(RoomChoiceForm, self).__init__(*args, **kwargs)
+        self.fields["rooms"].queryset = queryset

@@ -191,8 +191,10 @@
     <div class="mt-8 mx-5 md:mx-20">
       <div class="space-y-7">
         <div id="specs" class="text-center space-y-2">
-          <p class="uppercase font-industrial tracking-widest">
-            <span class="align-text-bottom">+</span>{% translate 'room specifications' %}<span class="align-text-bottom">+</span>
+          <p class="uppercase font-industrial w-fit mx-auto tracking-widest relative
+          before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
+          after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">
+            {% translate 'room specifications' %}
           </p>
           <h2 class="text-5xl font-black ">{% translate '部屋の基本スペック' %}</h2>
         </div>

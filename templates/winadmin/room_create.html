@@ -22,7 +22,7 @@
   <div id="content-wrapper">
     <h1 class="text-3xl">{% translate 'Create Room' %}</h1>
     {% block form %}
-      <form id="room-create-form" class="max-w-xl grid" action="." 
+      <form id="room-create-form" class="max-w-xl grid" action="." novalidate
             hx-post="."
             hx-target="#content-wrapper"
             hx-swap="outerHTML"

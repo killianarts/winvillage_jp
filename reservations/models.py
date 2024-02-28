@@ -15,7 +15,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 from core.models import Item, ContactInfo, BaseModel, PendulumDateTimeField
 from customer.models import Customer
-from reservations.forms import GrillOptionForm
+
+# from reservations.forms import GrillOptionForm
 
 auth_user = get_user_model()
 
@@ -169,17 +170,9 @@ class PricingTier(models.Model):
     objects = PricingTierManager()
     name = models.CharField(max_length=50)
 
-    class NumberOfAdultChoices(models.IntegerChoices):
-        ONE = 1
-        TWO = 2
-        THREE = 3
-        FOUR = 4
-        FIVE = 5
-        SIX = 6
+    ADULT_CHOICES = ((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"), (6, "6"))
 
-    number_of_adults = models.IntegerField(
-        default=NumberOfAdultChoices.ONE, choices=NumberOfAdultChoices
-    )
+    number_of_adults = models.IntegerField(default=1, choices=ADULT_CHOICES)
     price_per_night = models.DecimalField(max_digits=19, decimal_places=4)
     price_per_hour = models.DecimalField(max_digits=19, decimal_places=4)
 
@@ -201,7 +194,30 @@ class Room(models.Model):
     pricing_tiers = models.ManyToManyField(PricingTier)
 
     def __str__(self):
-        return f"Room: {self.name}"
+        return f"{self.name}"
+
+    def get_price_per_night(self, number_of_adults):
+        try:
+            tier = self.pricing_tiers.get(number_of_adults=number_of_adults)
+            return round(tier.price_per_night, 2)
+        except PricingTier.DoesNotExist:
+            return None
+
+    def get_price_per_hour(self, number_of_adults):
+        tier = self.pricing_tiers.get(number_of_adults=number_of_adults)
+        return round(tier.price_per_hour, 2)
+
+
+ADULT_CHOICES = ((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"), (6, "6"))
+CHILDREN_CHOICES = (
+    (0, "0"),
+    (1, "1"),
+    (2, "2"),
+    (3, "3"),
+    (4, "4"),
+    (5, "5"),
+    (6, "6"),
+)
 
 
 class Stay(BaseModel):
@@ -217,42 +233,16 @@ class Stay(BaseModel):
         ("checked_out", _("Checked Out")),
         ("cancelled", _("Cancelled")),
     )
-    STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     status = StatusField()
-    stay_type = models.CharField(
-        max_length=255,
-        choices=STAY_TYPE_CHOICES,
-        default=STAY_TYPE_CHOICES.hourly,
-    )
 
-    class NumberOfAdultChoices(models.IntegerChoices):
-        ONE = 1
-        TWO = 2
-        THREE = 3
-        FOUR = 4
-        FIVE = 5
-        SIX = 6
-
-    class NumberOfChildChoices(models.IntegerChoices):
-        ZERO = 0
-        ONE = 1
-        TWO = 2
-        THREE = 3
-        FOUR = 4
-        FIVE = 5
-        SIX = 6
-
-    number_of_adults = models.IntegerField(
-        default=NumberOfAdultChoices.ONE, choices=NumberOfAdultChoices
-    )
+    number_of_adults = models.IntegerField(choices=ADULT_CHOICES, default=1, null=True)
     number_of_children = models.IntegerField(
-        default=NumberOfChildChoices.ZERO, choices=NumberOfChildChoices
+        choices=CHILDREN_CHOICES, default=0, null=True
     )
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=True)
-    start = PendulumDateTimeField(verbose_name=_("Start"), null=True)
-    end = PendulumDateTimeField(verbose_name=_("End"), null=True)
+    start = PendulumDateTimeField(verbose_name=_("Start"), null=True, blank=True)
+    end = PendulumDateTimeField(verbose_name=_("End"), null=True, blank=True)
     status_changed = MonitorField(monitor="status")
-    type_changed = MonitorField(monitor="stay_type")
 
     def get_stay_range(self):
         return (
@@ -268,41 +258,6 @@ class Stay(BaseModel):
 
     def is_special_date(self, date_: datetime.date) -> bool:
         return SpecialDate.objects.filter(date=date_).exists()
-
-    def calculate_hourly_price(self):
-        total_price = 0
-        current_datetime = self.start
-        end_datetime = self.end
-        while current_datetime < end_datetime:
-            if self.is_special_date(current_datetime.date):
-                total_price += SpecialDate.objects.get(
-                    date=current_datetime.date
-                ).price_per_hour
-            elif self.is_weekend(current_datetime.date):
-                total_price += DefaultPrice.objects.first().weekend_price_per_hour
-            else:
-                total_price += DefaultPrice.objects.first().price_per_hour
-            current_datetime += timedelta(hours=1)
-        return total_price
-
-    def calculate_nightly_price(self):
-        current_dt = self.start
-        pricing_tier = self.room.pricing_tiers.filter(
-            number_of_adults=self.number_of_adults
-        )
-        total_price = 0
-        while current_dt.day <= self.end.day:
-            total_price += pricing_tier.price_per_night
-            current_dt.add(days=1)
-        return total_price
-
-    def calculate_price(self):
-        total_price = 0
-        if self.is_hourly():
-            total_price = self.calculate_hourly_price()
-        else:
-            total_price = self.calculate_nightly_price()
-        return round(total_price, 0)
 
     def days(self):
         if self.start.date and self.end.date:
@@ -329,7 +284,7 @@ class Stay(BaseModel):
 
     def __str__(self):
         start, end = self.get_stay_range()
-        return f"ID: {self.id}, {_('Start')}: {start} {_('End')}: {end}"
+        return f"Stay ID: {self.id}, {_('Start')}: {start} {_('End')}: {end}"
 
     def set_status(self, status_choice):
         new_status = getattr(self.STATUS, status_choice, None)
@@ -355,6 +310,64 @@ class Reservation(BaseModel):
     email = models.EmailField(max_length=254, null=True)
     phone = PhoneNumberField(max_length=254, null=True)
     order_items = models.ManyToManyField(OrderItem)
+
+    def set_number_of_visitors(self, form):
+        self.stay.number_of_adults = form.cleaned_data["number_of_adults"]
+        self.stay.number_of_children = form.cleaned_data["number_of_children"]
+        self.stay.save()
+        self.save()
+
+    def set_room(self, form):
+        self.stay.room = form.cleaned_data["rooms"]
+        self.stay.save()
+        self.save()
+
+    def get_room_name(self):
+        return self.stay.room.name
+
+    def get_number_of_adults(self):
+        return self.stay.number_of_adults
+
+    def get_number_of_children(self):
+        return self.stay.number_of_children
+
+    def get_start_date(self):
+        return self.stay.start
+
+    def get_end_date(self):
+        return self.stay.end
+
+    def get_stay_period(self):
+        start = self.get_start_date()
+        end = self.get_end_date()
+        difference = start.diff(end)
+        return difference
+
+    def get_stay_period_in_days(self):
+        return self.get_stay_period().in_days()
+
+    def get_stay_period_in_nights(self):
+        return self.get_stay_period_in_days()
+
+    def get_stay_period_in_hours(self):
+        return self.get_stay_period().in_hours()
+
+    def get_price_per_night(self):
+        number_of_adults = self.get_number_of_adults()
+        price_per_night = self.stay.room.get_price_per_night(number_of_adults)
+        return price_per_night
+
+    def get_price_per_hour(self):
+        number_of_adults = self.get_number_of_adults()
+        price_per_hour = self.stay.room.get_price_per_hour(number_of_adults)
+        return price_per_hour
+
+    def get_price(self):
+        if self.get_stay_period_in_nights() > 0:
+            price = self.get_price_per_night()
+        else:
+            price = self.get_price_per_hour()
+        return round(price, 2)
 
     def add_order_item(self, item_id):
         item = Item.objects.get(id=item_id)
@@ -405,7 +418,6 @@ class Reservation(BaseModel):
         datetime_with_tz = timezone.make_aware(
             datetime.combine(date_, time.min), tzinfo
         )
-
         reservations_count = self.objects.filter(
             stay__start__lte=datetime_with_tz,
             stay__end__gte=datetime_with_tz,

@@ -35,8 +35,50 @@
         </div>
       </div>
     </nav>
-    <div class="mx-auto sm:grid sm:place-items-center">
-      {% block reservation-form %}
+    {% block reservation-form %}
+      <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto grid place-items-center">
+        <div>
+          <h2 class="mb-2 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+            {% blocktrans %}Number of travelers?{% endblocktrans %}</h2>
+          <div id="travelers"
+               class="p-5 border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
+            <form action="." method="post" id="traveler-form" class=""
+                  hx-post="."
+                  hx-target="#reservation-form-wrapper"
+                  hx-swap="outerHTML"
+                  hx-vals='{"use_block": "reservation-form"}'
+                  hx-trigger="change from:#traveler-form">
+              {{ form }}
+              <a href="{% url 'reservations:date_select' %}"
+                 hx-get="{% url 'reservations:date_select' %}"
+                 hx-swap="outerHTML"
+                 hx-target="#reservation-form-wrapper"
+                 hx-vals='{"use_block": "date-select"}'>
+                {% #outline_button name="continue" type="submit" %}
+                {% translate 'Continue' %}
+                {% /outline_button %}
+              </a>
+              {% if DEBUG %}
+                <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg cursor-pointer"
+                          hx-post="{% url 'core:flush_session' %}"
+                          hx-target="this"
+                          hx-swap="innerHTML">
+                  <legend class="bg-red-100 border-red-200 border-2 border-dotted rounded-lg px-2 py-1 text-red-700">
+                    DEBUG
+                  </legend>
+                  {% #outline_button name="delete_session" type="submit" %}
+                  {% blocktrans %}Delete Session{% endblocktrans %}
+                  {% /outline_button %}
+                </fieldset>
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+
+    <div class="hidden mx-auto sm:place-items-center">
+      {% block reservation-form-old %}
         <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5">
           <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
             {% blocktrans %}Choose the date{% endblocktrans %}</h2>
@@ -194,9 +236,6 @@
               </div>
             </div>
           </div>
-          {% if price %}
-            <p class="text-center text-xl">{% trans "Price" %}:￥{{ price }}</p>
-          {% endif %}
           {% comment %}
         	TODO: Make more useful interface for time selection.
 
@@ -246,253 +285,319 @@
               {% /outline_button %}
             </div>
           {% endif %}
-        {% if DEBUG %}
-          <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg"
-               hx-post="{% url 'core:flush_session' %}"
-               hx-target="this"
-               hx-swap="innerHTML">
-          <legend class="bg-red-100 border-red-200 border-2 border-dotted rounded-lg px-2 py-1 text-red-700">DEBUG</legend>
-            {% #outline_button name="delete_session" type="submit" %}
-            {% blocktrans %}Delete Session{% endblocktrans %}
-            {% /outline_button %}
-          </fieldset>
-        {% endif %}
+          {% if DEBUG %}
+            <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg"
+                      hx-post="{% url 'core:flush_session' %}"
+                      hx-target="this"
+                      hx-swap="innerHTML">
+              <legend class="bg-red-100 border-red-200 border-2 border-dotted rounded-lg px-2 py-1 text-red-700">DEBUG
+              </legend>
+              {% #outline_button name="delete_session" type="submit" %}
+              {% blocktrans %}Delete Session{% endblocktrans %}
+              {% /outline_button %}
+            </fieldset>
+          {% endif %}
         </div>
       {% endblock %}
     </div>
   </div>
 {% endblock %}
 
-{% block room_select %}
-  <div id="room-select-wrapper" class="p-5 sm:px-20 space-y-5">
-    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-      {% blocktrans %}Select Room{% endblocktrans %}</h2>
-    <form action="{% url 'reservations:room_select' %}"
-          hx-get="{% url 'reservations:room_select' %}"
-          hx-target="#reservation-form-wrapper"
-          hx-vals='{"use_block": "option-select"}'>
-      {{ form }}
-      {% #outline_button %}Select Room and Continue{% /outline_button %}
-    </form>
-  </div>
-{% endblock %}
-
-{% block date_select %}
-  <div id="data-select-form-wrapper" class="p-5 sm:px-20 space-y-5">
+{% block date-select %}
+  <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto grid place-items-center">
     <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
       {% blocktrans %}Choose the date{% endblocktrans %}</h2>
-    {% block calendars %}
-      <div id="calendars" class="p-5 shadow-sm border border-stone-100">
-        <div id="month-switcher" class="flex items-center">
-          <form action="." method="get" class="grid grid-cols-2 w-full"
-                hx-get="."
-                hx-target="#reservation-form-wrapper"
-                hx-swap="outerHTML"
-                hx-vals='{"use_block": "reservation-form"}'>
-            {{ form }}
-            {# No reservations in the past. #}
-            {# First Load: date == today. Users can only increment date. #}
-            {# If date incremented: date > today #}
-            <button name="get_previous_month" type="submit"
-                    class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
-              <span class="sr-only">Previous month</span>
+    <div id="calendars" class="p-5 shadow-sm border border-stone-100">
+      <div id="month-switcher" class="flex items-center">
+        <form action="." method="get" class="grid grid-cols-2 w-full"
+              hx-get="."
+              hx-target="#reservation-form-wrapper"
+              hx-swap="outerHTML"
+              hx-vals='{"use_block": "date-select"}'>
+          {{ form }}
+          {# No reservations in the past. #}
+          {# First Load: date == today. Users can only increment date. #}
+          {# If date incremented: date > today #}
+          <button name="get_previous_month" type="submit"
+                  class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
+            <span class="sr-only">Previous month</span>
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd"
+                    d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                    clip-rule="evenodd"/>
+            </svg>
+            </outline_button>
+            <button name="get_next_month" type="submit"
+                    class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
+              <span class="sr-only">Next month</span>
               <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd"
-                      d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
                       clip-rule="evenodd"/>
               </svg>
               </outline_button>
-              <button name="get_next_month" type="submit"
-                      class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
-                <span class="sr-only">Next month</span>
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                        clip-rule="evenodd"/>
-                </svg>
-                </outline_button>
-          </form>
-        </div>
-        <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:flex-1 gap-10">
-          <div id="selected-month">
-            <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.selected_month.date|date:"Y-m" }}</h2>
-            <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
-              {% for day in calendars.weekdays %}
-                <div class="p-2">
-                  <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
-                </div>
-              {% endfor %}
-            </div>
-            <div id="selected-month-body" class="mt-2 grid grid-cols-7 text-sm">
-              <!--
-                Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
-                Is selected, include: "text-white"
-                Is not selected and is today, include: "text-orange-600"
-                Is not selected and is not today and is current month, include: "text-stone-900"
-                Is not selected and is not today and is not current month, include: "text-stone-400"
-                Is selected and is today, include: "bg-orange-600"
-                Is selected and is not today, include: "bg-stone-900"
-                Is not selected, include: "hover:bg-stone-200"
-                Is selected or is today, include: "font-semibold"
-              -->
-              {% for date, form, is_available in calendars.selected_month.dates %}
-                <div class="p-2">
-                  {% if date.month != calendars.selected_month.date.month %}
-                    {# Don't show any dates that aren't in this month. #}
-                  {% elif date < today_date %}
-                    {# Don't make any dates before today selectable. #}
-                    <span class="mx-auto flex relative z-10 h-8 w-8 items-center justify-center rounded-full tabular-nums text-stone-200 pointer-events-none">
+        </form>
+      </div>
+      <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:flex-1 gap-10">
+        <div id="selected-month">
+          <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.selected_month.date|date:"Y-m" }}</h2>
+          <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
+            {% for day in calendars.weekdays %}
+              <div class="p-2">
+                <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
+              </div>
+            {% endfor %}
+          </div>
+          <div id="selected-month-body" class="mt-2 grid grid-cols-7 text-sm">
+            <!--
+              Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+              Is selected, include: "text-white"
+              Is not selected and is today, include: "text-orange-600"
+              Is not selected and is not today and is current month, include: "text-stone-900"
+              Is not selected and is not today and is not current month, include: "text-stone-400"
+              Is selected and is today, include: "bg-orange-600"
+              Is selected and is not today, include: "bg-stone-900"
+              Is not selected, include: "hover:bg-stone-200"
+              Is selected or is today, include: "font-semibold"
+            -->
+            {% for date, form, is_available in calendars.selected_month.dates %}
+              <div class="p-2">
+                {% if date.month != calendars.selected_month.date.month %}
+                  {# Don't show any dates that aren't in this month. #}
+                {% elif date < today_date %}
+                  {# Don't make any dates before today selectable. #}
+                  <span class="mx-auto flex relative z-10 h-8 w-8 items-center justify-center rounded-full tabular-nums text-stone-200 pointer-events-none">
                             <time datetime="{{ date|date:"Y-m-d" }}">{{ date.day }}</time>
                           </span>
-                  {% elif not is_available %}
-                    <span class="mx-auto flex h-8 w-8 items-center justify-center rounded-full tabular-nums text-red-200 pointer-events-none">
+                {% elif not is_available %}
+                  <span class="mx-auto flex h-8 w-8 items-center justify-center rounded-full tabular-nums text-red-200 pointer-events-none">
                             X
                           </span>
-                  {% elif date == today_date %}
-                    {% #calendar_cell_button date=date name="select_date" type="submit" class="text-blue-500 bg-blue-200 hover:bg-blue-300" %}
+                {% elif date == today_date %}
+                  {% #calendar_cell_button date=date name="select_date" type="submit" class="text-blue-500 bg-blue-200 hover:bg-blue-300" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                {% elif start.date and start.date == date or end.date and end.date == date %}
+                  {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                {% elif start.date and end.date %}
+                  {% if date > start.date and date < end.date %}
+                    {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-blue-400" %}
                     {{ form }}
                     {% /calendar_cell_button %}
-                  {% elif start.date and start.date == date or end.date and end.date == date %}
-                    {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
-                    {{ form }}
-                    {% /calendar_cell_button %}
-                  {% elif start.date and end.date %}
-                    {% if date > start.date and date < end.date %}
-                      {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-blue-400" %}
-                      {{ form }}
-                      {% /calendar_cell_button %}
-                    {% else %}
-                      {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 hover:bg-stone-400" %}
-                      {{ form }}
-                      {% /calendar_cell_button %}
-                    {% endif %}
                   {% else %}
                     {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 hover:bg-stone-400" %}
                     {{ form }}
                     {% /calendar_cell_button %}
                   {% endif %}
-                </div>
-              {% endfor %}
-            </div>
+                {% else %}
+                  {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 hover:bg-stone-400" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                {% endif %}
+              </div>
+            {% endfor %}
           </div>
-          <div id="next-month">
-            <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.next_month.date|date:"Y-m" }}</h2>
-            <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
-              {% for day in calendars.weekdays %}
-                <div class="p-2">
-                  <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
-                </div>
-              {% endfor %}
-            </div>
-            <div id="next-month-body" class="mt-2 grid grid-cols-7 text-sm">
-              <!--
-                Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
-                Is selected, include: "text-white"
-                Is not selected and is today, include: "text-orange-600"
-                Is not selected and is not today and is current month, include: "text-stone-900"
-                Is not selected and is not today and is not current month, include: "text-stone-400"
-                Is selected and is today, include: "bg-orange-600"
-                Is selected and is not today, include: "bg-stone-900"
-                Is not selected, include: "hover:bg-stone-200"
-                Is selected or is today, include: "font-semibold"
-              -->
-              {% for date, form, is_available in calendars.next_month.dates %}
-                <div class="p-2">
-                  {% if date.month != calendars.next_month.date.month %}
-                  {% elif not is_available %}
-                    <span class="mx-auto flex h-8 w-8 items-center justify-center rounded-full tabular-nums text-red-200 pointer-events-none">
+        </div>
+        <div id="next-month">
+          <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.next_month.date|date:"Y-m" }}</h2>
+          <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
+            {% for day in calendars.weekdays %}
+              <div class="p-2">
+                <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
+              </div>
+            {% endfor %}
+          </div>
+          <div id="next-month-body" class="mt-2 grid grid-cols-7 text-sm">
+            <!--
+              Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+              Is selected, include: "text-white"
+              Is not selected and is today, include: "text-orange-600"
+              Is not selected and is not today and is current month, include: "text-stone-900"
+              Is not selected and is not today and is not current month, include: "text-stone-400"
+              Is selected and is today, include: "bg-orange-600"
+              Is selected and is not today, include: "bg-stone-900"
+              Is not selected, include: "hover:bg-stone-200"
+              Is selected or is today, include: "font-semibold"
+            -->
+            {% for date, form, is_available in calendars.next_month.dates %}
+              <div class="p-2">
+                {% if date.month != calendars.next_month.date.month %}
+                {% elif not is_available %}
+                  <span class="mx-auto flex h-8 w-8 items-center justify-center rounded-full tabular-nums text-red-200 pointer-events-none">
                       X
                     </span>
-                  {% elif date == today_date %}
-                    {% #calendar_cell_button date=date name="select_date" type="submit" class="text-blue-500 bg-blue-200 hover:bg-blue-300" %}
+                {% elif date == today_date %}
+                  {% #calendar_cell_button date=date name="select_date" type="submit" class="text-blue-500 bg-blue-200 hover:bg-blue-300" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                {% elif start.date and start.date == date %}
+                  {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                {% elif end.date and end.date == date %}
+                  {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                {% elif start.date and end.date %}
+                  {% if date > start.date and date < end.date %}
+                    {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-blue-400" %}
                     {{ form }}
                     {% /calendar_cell_button %}
-                  {% elif start.date and start.date == date %}
-                    {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
-                    {{ form }}
-                    {% /calendar_cell_button %}
-                  {% elif end.date and end.date == date %}
-                    {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-orange-400" %}
-                    {{ form }}
-                    {% /calendar_cell_button %}
-                  {% elif start.date and end.date %}
-                    {% if date > start.date and date < end.date %}
-                      {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 bg-blue-400" %}
-                      {{ form }}
-                      {% /calendar_cell_button %}
-                    {% else %}
-                      {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 hover:bg-stone-400" %}
-                      {{ form }}
-                      {% /calendar_cell_button %}
-                    {% endif %}
                   {% else %}
                     {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 hover:bg-stone-400" %}
                     {{ form }}
                     {% /calendar_cell_button %}
                   {% endif %}
-                </div>
-              {% endfor %}
-            </div>
+                {% else %}
+                  {% #calendar_cell_button date=date name="select_date" type="submit" class="text-stone-900 hover:bg-stone-400" %}
+                  {{ form }}
+                  {% /calendar_cell_button %}
+                {% endif %}
+              </div>
+            {% endfor %}
           </div>
         </div>
       </div>
-      {% if price %}
-        <p class="text-center text-xl">{% trans "Price" %}:￥{{ price }}</p>
-      {% endif %}
-      {% if start == end %}
-        <div id="time-select-wrapper">
-          <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-            {% blocktrans %}Select Start and End Times{% endblocktrans %}</h2>
-          <form action="{% url 'reservations:index' %}" method="post"
-                hx-post="{% url 'reservations:index' %}"
-                hx-target="#reservation-form-wrapper"
-                hx-vals='{"use_block": "reservation-form"}'
-                hx-trigger="change from:select"
-                class="grid space-y-5 max-w-fit mx-auto">
-            <input type="hidden" name="select_time" value="set">
-            {{ time_form }}
-            {% if not start.time or not end.time %}
-              <div class="mx-auto w-fit">
-                {% #outline_button class="text-stone-300 bg-stone-100 pointer-events-none" %}
-                {% blocktrans %}Continue{% endblocktrans %}
-                {% /outline_button %}
-              </div>
-            {% else %}
-              <a href="{% url 'reservations:option_select' %}"
-                 hx-get="{% url 'reservations:option_select' %}"
-                 hx-target="#reservation-form-wrapper"
-                 hx-vals='{"use_block": "option-select"}'>
-                {% #outline_button %}Continue, choose options{% /outline_button %}
-              </a>
-            {% endif %}
-          </form>
-        </div>
-      {% elif start.date and end.date %}
-        <a href="{% url 'reservations:option_select' %}"
+    </div>
+    {% comment %}
+        	TODO: Make more useful interface for time selection.
+
+          {% if start == end %}
+            <div id="time-select-wrapper">
+              <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+                {% blocktrans %}Select Start and End Times{% endblocktrans %}</h2>
+              <form action="{% url 'reservations:index' %}" method="post"
+                    hx-post="{% url 'reservations:index' %}"
+                    hx-target="#reservation-form-wrapper"
+                    hx-vals='{"use_block": "reservation-form"}'
+                    hx-trigger="change from:select"
+                    class="grid space-y-5 max-w-fit mx-auto">
+                <input type="hidden" name="select_time" value="set">
+                {{ time_form }}
+                {% if not start.time or not end.time %}
+                  <div class="mx-auto w-fit">
+                    {% #outline_button class="text-stone-300 bg-stone-100 pointer-events-none" %}
+                    {% blocktrans %}Continue{% endblocktrans %}
+                    {% /outline_button %}
+                  </div>
+                {% else %}
+                  <a href="{% url 'reservations:option_select' %}"
+                     hx-get="{% url 'reservations:option_select' %}"
+                     hx-target="#reservation-form-wrapper"
+                     hx-vals='{"use_block": "option-select"}'>
+                    {% #outline_button %}Continue, choose options{% /outline_button %}
+                  </a>
+                {% endif %}
+              </form>
+            </div>
+            {% endcomment %}
+    <div class="flex gap-7">
+      <a href="{% url 'reservations:index' %}"
+         class="mx-auto w-fit block"
+         hx-get="{% url 'reservations:index' %}"
+         hx-target="#reservation-form-wrapper"
+         hx-swap="outerHTML"
+         hx-vals='{"use_block": "reservation-form"}'>
+        {% #outline_button %}
+        {% blocktrans %}Go Back{% endblocktrans %}
+        {% /outline_button %}
+      </a>
+      {% if start.date and end.date and start.date != end.date %}
+        <a href="{% url 'reservations:room_select' %}"
            class="mx-auto w-fit block"
-           hx-get="{% url 'reservations:option_select' %}"
+           hx-get="{% url 'reservations:room_select' %}"
            hx-target="#reservation-form-wrapper"
-           hx-vals='{"use_block": "option-select"}'>
+           hx-swap="outerHTML"
+           hx-vals='{"use_block": "room-select"}'>
           {% #outline_button %}
-          {% blocktrans %}Continue, Choose Options{% endblocktrans %}
+          {% blocktrans %}Continue, Choose Room{% endblocktrans %}
           {% /outline_button %}
         </a>
       {% else %}
         <div class="mx-auto w-fit">
-          {% #outline_button name="confirm-date" type="submit" class="text-stone-300 bg-stone-100 pointer-events-none" %}
-          {% blocktrans %}Continue{% endblocktrans %}
+          {% #outline_button variant="disabled" %}
+          {% blocktrans %}Select a Date{% endblocktrans %}
           {% /outline_button %}
         </div>
       {% endif %}
-      <div class="mx-auto w-fit"
-           hx-post="{% url 'core:flush_session' %}"
-           hx-target="this"
-           hx-swap="innerHTML">
+    </div>
+    {% if DEBUG %}
+      <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg"
+                hx-post="{% url 'core:flush_session' %}"
+                hx-target="this"
+                hx-swap="innerHTML">
+        <legend class="bg-red-100 border-red-200 border-2 border-dotted rounded-lg px-2 py-1 text-red-700">DEBUG
+        </legend>
         {% #outline_button name="delete_session" type="submit" %}
         {% blocktrans %}Delete Session{% endblocktrans %}
         {% /outline_button %}
+      </fieldset>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block room-select %}
+  <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto grid place-items-center">
+    <div>
+      <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+        {% blocktrans %}Select Room{% endblocktrans %}</h2>
+      <div>
+        <form
+                hx-post="{% url 'reservations:room_select' %}"
+                hx-swap="outerHTML"
+                hx-target="#reservation-form-wrapper"
+                hx-trigger="change from:input[type='radio']"
+                hx-vals='{"use_block": "room-select"}'
+                action="{% url 'reservations:room_select' %}" method="post" novalidate
+                class="space-y-5">
+          <div class="grid grid-cols-2 gap-7">
+            {% for room in rooms_data %}
+              {% for radio in form.rooms %}
+                {% if room.name == radio.choice_label %}
+                  <label tabindex="0" class="block p-5 border-3 border-stone-900 bg-stone-100 text-stone-900 hover:bg-orange-500 hover:text-orange-100 focus-visible:border-orange-700 hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none
+        hover:border-transparent drop-shadow-hard-45-md rounded-lg has-[:checked]:bg-orange-500 has-[:checked]:active:bg-orange-600 active:bg-orange-600 has-[:checked]:border-transparent has-[:checked]:text-stone-100 transition-all duration-300 cursor-pointer">
+                    <h3>{{ room.name }}</h3>
+                    {% if reservation.get_stay_period.in_days >= 1 %}
+                      <p>{% translate 'Price per Night' %}:￥{{ room.price_per_night }}</p>
+                      <p>{% translate 'Number of Nights' %}: {{ reservation.get_stay_period_in_nights }}</p>
+                    {% else %}
+                      <p>{% translate 'Price per Hour' %}:￥{{ room.price_per_hour }}</p>
+                    {% endif %}
+                    <p>{% translate 'Total Price' %}:￥{{ room.total_price }}</p>
+                    <div class="hidden">{{ radio.tag }}</div>
+                  </label>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+            <div class="col-span-2 flex justify-center gap-7">
+              <a href="{% url 'reservations:date_select' %}"
+                 class="mx-auto w-fit block"
+                 hx-get="{% url 'reservations:date_select' %}"
+                 hx-target="#reservation-form-wrapper"
+                 hx-swap="outerHTML"
+                 hx-vals='{"use_block": "date-select"}'>
+                {% #outline_button %}
+                {% blocktrans %}Go Back{% endblocktrans %}
+                {% /outline_button %}
+              </a>
+              {% if reservation.stay.room %}
+                <a href="{% url 'reservations:contact_information_input' %}"
+                   hx-get="{% url 'reservations:contact_information_input' %}"
+                   hx-target="#reservation-form-wrapper"
+                   hx-swap="outerHTML"
+                   hx-vals='{"use_block": "contact-information-input"}'>
+                  {% #outline_button name="submit" type="submit" %}{% translate 'Continue' %}{% /outline_button %}
+                </a>
+              {% else %}
+                {% #outline_button name="submit" type="submit" variant="disabled" %}{% translate 'Select a Room' %}{% /outline_button %}
+              {% endif %}
+            </div>
+          </div>
+        </form>
       </div>
-    {% endblock %}
+    </div>
   </div>
 {% endblock %}
 
@@ -547,7 +652,7 @@
       </fieldset>
     </form>
   {% endfor %}
-  <div class="flex justify-center space-x-5">
+  <div class="flex gap-7">
     <a href="{% url 'reservations:index' %}"
        hx-get="{% url 'reservations:index' %}"
        hx-target="#reservation-form-wrapper"
@@ -569,19 +674,21 @@
 {% endblock %}
 
 {% block contact-information-input %}
-  <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-    {% translate 'Contact Information' %}</h2>
-  <form id="contact-information-form"
-        class="space-y-5"
-        hx-post="{% url 'reservations:contact_information_input' %}"
-        hx-target="#reservation-form-wrapper"
-        hx-vals='{"use_block": "contact-information-input"}'
-        hx-trigger="validateInput"
-  >
-    <fieldset>
-      <legend class="sr-only">{% translate 'Contact Information' %}</legend>
-      <div id="validateInput-sender" class="grid grid-cols-1"
-           _="on keyup from <input/> in me debounced at 750ms
+  <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto grid place-items-center">
+    <div>
+      <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+        {% translate 'Contact Information' %}</h2>
+      <form id="contact-information-form"
+            class="space-y-5"
+            hx-post="{% url 'reservations:contact_information_input' %}"
+            hx-target="#reservation-form-wrapper"
+            hx-vals='{"use_block": "contact-information-input"}'
+            hx-trigger="validateInput"
+      >
+        <fieldset>
+          <legend class="sr-only">{% translate 'Contact Information' %}</legend>
+          <div id="validateInput-sender" class="grid grid-cols-1"
+               _="on keyup from <input/> in me debounced at 750ms
                 set :inputs to value of <input/> in me then
                 if :inputs does not include '' and :inputs does not include null
                   trigger validateInput end end
@@ -589,119 +696,148 @@
                 set :inputs to value of <input/> in me then
                 if :inputs does not include '' and :inputs does not include null
                   trigger validateInput end end">
-        {{ form }}
-      </div>
-    </fieldset>
-    <div class="flex justify-center space-x-5">
-      <a href="{% url 'reservations:option_select' %}"
-         hx-get="{% url 'reservations:option_select' %}"
-         hx-target="#reservation-form-wrapper"
-         hx-vals='{"use_block": "option-select"}'>
-        {% #outline_button class="text-orange-50 bg-orange-300 hover:bg-orange-400" %}
-        {% blocktrans %}Go Back{% endblocktrans %}
-        {% /outline_button %}
-      </a>
-      {% if not contact_info %}
-        {% #outline_button class="text-stone-300 bg-stone-100 pointer-events-none" %}
-        {% blocktrans %}Continue{% endblocktrans %}
-        {% /outline_button %}
-      {% else %}
-        <a href="{% url 'reservations:reservation_details_review' %}"
-           hx-get="{% url 'reservations:reservation_details_review' %}"
-           hx-target="#reservation-form-wrapper"
-           hx-vals='{"use_block": "confirmation-form"}'>
-          {% #outline_button %}
-          {% blocktrans %}Continue{% endblocktrans %}
-          {% /outline_button %}
-        </a>
-      {% endif %}
+            {{ form }}
+          </div>
+        </fieldset>
+        <div class="flex justify-center gap-7">
+          <a href="{% url 'reservations:room_select' %}"
+             hx-get="{% url 'reservations:room_select' %}"
+             hx-target="#reservation-form-wrapper"
+             hx-vals='{"use_block": "room-select"}'>
+            {% #outline_button class="text-orange-50 bg-orange-300 hover:bg-orange-400" %}
+            {% blocktrans %}Go Back{% endblocktrans %}
+            {% /outline_button %}
+          </a>
+          {% if not contact_info %}
+            {% #outline_button class="text-stone-300 bg-stone-100 pointer-events-none" %}
+            {% blocktrans %}Continue{% endblocktrans %}
+            {% /outline_button %}
+          {% else %}
+            <a href="{% url 'reservations:reservation_details_review' %}"
+               hx-get="{% url 'reservations:reservation_details_review' %}"
+               hx-target="#reservation-form-wrapper"
+               hx-vals='{"use_block": "confirmation-form"}'>
+              {% #outline_button %}
+              {% blocktrans %}Continue{% endblocktrans %}
+              {% /outline_button %}
+            </a>
+          {% endif %}
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 {% endblock %}
 
 {% block confirmation-form %}
-  <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-    {% translate 'Confirm Details' %}</h2>
-  <div class="space-y-5">
-    <div class="grid grid-cols-1 divide-y-2 divide-stone-50">
-      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-        <span>{% blocktrans %}Start Date:{% endblocktrans %}</span>
-        <span>{{ reservation.start }}</span>
-      </div>
-      {% if reservation.end %}
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}End Date:{% endblocktrans %}</span>
-          <span>{{ reservation.end }}</span>
+  <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto grid place-items-center">
+    <div>
+      <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+        {% translate 'Confirm Details' %}</h2>
+      <div class="space-y-5">
+        <div class="grid grid-cols-1 divide-y-2 divide-stone-50">
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% translate 'Number of Adults' %}:</span>
+            <span>{{ reservation.get_number_of_adults }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% translate 'Number of Children' %}:</span>
+            <span>{{ reservation.get_number_of_children }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% translate 'Length of Stay' %}</span>
+            {% if reservation.get_stay_period.in_days > 1 %}
+              <span>{{ reservation.get_stay_period.in_days }} {% translate 'nights' %}</span>
+            {% elif reservation.get_stay_period.in_days == 1 %}
+              <span>{{ reservation.get_stay_period.in_days }} {% translate 'night' %}</span>
+            {% elif reservation.get_stay_period.in_hours > 1 %}
+              <span>{{ reservation.get_stay_period.in_hours }} {% translate 'hours' %}</span>
+            {% elif reservation.get_stay_period.in_hours == 1 %}
+              <span>{{ reservation.get_stay_period.in_hours }} {% translate 'hour' %}</span>
+            {% endif %}
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Start Date{% endblocktrans %}:</span>
+            <span>{{ reservation.stay.start|date:"Y-m-d" }}</span>
+          </div>
+          {% if reservation.stay.end %}
+            <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+              <span>{% blocktrans %}End Date:{% endblocktrans %}</span>
+              <span>{{ reservation.stay.end|date:"Y-m-d" }}</span>
+            </div>
+          {% endif %}
+          {% if reservation.stay.start.time and reservation.stay.end.time and not reservation.stay.end.date %}
+            <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+              <span>{% blocktrans %}Start Time:{% endblocktrans %}</span>
+              <span>{{ reservation.start.time }}</span>
+            </div>
+            <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+              <span>{% blocktrans %}End Time:{% endblocktrans %}</span>
+              <span>{{ reservation.end.time }}</span>
+            </div>
+          {% endif %}
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}First Name:{% endblocktrans %}</span>
+            <span>{{ reservation.first_name }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Last Name:{% endblocktrans %}</span>
+            <span>{{ reservation.last_name }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Email:{% endblocktrans %}</span>
+            <span>{{ reservation.email }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Phone:{% endblocktrans %}</span>
+            <span>{{ reservation.phone.as_national }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Room:{% endblocktrans %}</span>
+            <span>{{ reservation.stay.room.name }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% translate 'Price' %}:</span>
+            <span>￥{{ reservation.get_price }}</span>
+          </div>
+          {#      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">#}
+          {#        <span>{% translate 'Total Price' %}:</span>#}
+          {#        <span>￥{{ reservation.price }}</span>#}
+          {#      </div>#}
         </div>
-      {% endif %}
-      {% if reservation.start.time and reservation.end.time and not reservation.stay.end.date %}
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Start Time:{% endblocktrans %}</span>
-          <span>{{ reservation.start.time }}</span>
-        </div>
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}End Time:{% endblocktrans %}</span>
-          <span>{{ reservation.end.time }}</span>
-        </div>
-      {% endif %}
-      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-        <span>{% blocktrans %}First Name:{% endblocktrans %}</span>
-        <span>{{ reservation.first_name }}</span>
-      </div>
-      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-        <span>{% blocktrans %}Last Name:{% endblocktrans %}</span>
-        <span>{{ reservation.last_name }}</span>
-      </div>
-      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-        <span>{% blocktrans %}Email:{% endblocktrans %}</span>
-        <span>{{ reservation.email }}</span>
-      </div>
-      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-        <span>{% blocktrans %}Phone:{% endblocktrans %}</span>
-        <span>{{ reservation.phone.as_national }}</span>
-      </div>
-      {% for order_item in reservation.order_items.all %}
-        <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{{ order_item.item.name }}</span>
-          <span>￥{{ order_item.item.price_fully_rounded }}</span>
-        </div>
-      {% endfor %}
-      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-        <span>{% translate 'Stay Price' %}:</span>
-        <span>￥{{ reservation.stay.price }}</span>
-      </div>
-      <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-        <span>{% translate 'Total Price' %}:</span>
-        <span>￥{{ reservation.price }}</span>
-      </div>
-    </div>
 
-    <div class="flex justify-center space-x-5">
-      <a href="{% url 'reservations:contact_information_input' %}"
-         hx-get="{% url 'reservations:contact_information_input' %}"
-         hx-target="#reservation-form-wrapper"
-         hx-vals='{"use_block": "contact-information-input"}'>
-        {% #outline_button class="text-orange-50 bg-orange-300 hover:bg-orange-400" %}
-        {% blocktrans %}Go Back{% endblocktrans %}
-        {% /outline_button %}
-      </a>
-      <a href="{% url 'reservations:reservation_confirm' %}"
-         hx-get="{% url 'reservations:reservation_confirm' %}"
-         hx-target="#reservation-form-wrapper"
-         hx-vals='{"use_block": "reservation-confirm"}'>
-        {% #outline_button %}
-        {% blocktranslate %}
-          Make Reservation
-        {% endblocktranslate %}
-        {% /outline_button %}
-      </a>
+        <div class="flex justify-center space-x-5">
+          <a href="{% url 'reservations:contact_information_input' %}"
+             hx-get="{% url 'reservations:contact_information_input' %}"
+             hx-target="#reservation-form-wrapper"
+             hx-vals='{"use_block": "contact-information-input"}'>
+            {% #outline_button class="text-orange-50 bg-orange-300 hover:bg-orange-400" %}
+            {% blocktrans %}Go Back{% endblocktrans %}
+            {% /outline_button %}
+          </a>
+          <a href="{% url 'reservations:reservation_confirm' %}"
+             hx-get="{% url 'reservations:reservation_confirm' %}"
+             hx-target="#reservation-form-wrapper"
+             hx-vals='{"use_block": "reservation-confirm"}'>
+            {% #outline_button %}
+            {% blocktranslate %}
+              Make Reservation
+            {% endblocktranslate %}
+            {% /outline_button %}
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}
 
 {% block reservation-confirm %}
-  <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-    {% translate 'Reservation Confirmed!' %}</h2>
-  <p class="text-center">{% blocktrans %}An email has been sent to you with the details of your
-                                         reservation.{% endblocktrans %}</p>
+  <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto grid place-items-center">
+    <div>
+      <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
+        {% translate 'Reservation Confirmed!' %}</h2>
+      <p class="text-center">
+        {% blocktrans %}An email has been sent to you with the details of your reservation.{% endblocktrans %}
+      </p>
+    </div>
+  </div>
 {% endblock %}

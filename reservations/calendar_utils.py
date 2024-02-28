@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.translation import get_language
 
 from reservations.forms import DateForm
-from reservations.models import Reservation
+from reservations.models import Reservation, Room
 from winvillage.settings import TIME_ZONE
 
 
@@ -45,23 +45,6 @@ def get_localized_day_names(firstweekday, locale="en"):
     return [format_date(d, "EEE", locale=locale) for d in week_dates]
 
 
-def check_availability(date_):
-    # attach timezone information to date object
-    tzinfo = timezone.get_current_timezone()
-    datetime_with_tz = timezone.make_aware(datetime.combine(date_, time.min), tzinfo)
-
-    reservations_count = (
-        Reservation.objects.filter(
-            stay__start__date__lte=datetime_with_tz,
-            stay__end__date__gte=datetime_with_tz,
-            stay__status="reserved",
-        )
-        .select_related("stay")
-        .count()
-    )
-    return reservations_count < 4
-
-
 def create_date_form(date_):
     form = DateForm(initial={"date": date_})
     return form
@@ -73,7 +56,8 @@ def compile_dates_information(
     dates = []
     for date_ in dates_:
         form = create_date_form(date_)
-        is_available = check_availability(date_)
+        available_rooms = check_availability(date_)
+        is_available = True if available_rooms else False
         dates.append((date_, form, is_available))
     return dates
 

@@ -33,6 +33,8 @@ if DEBUG:
 else:
     ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["winvillage.jp"])
 
+INTERNAL_IPS = ["127.0.0.1"]
+
 if not DEBUG:
     CSRF_TRUSTED_ORIGINS = ["https://*.winvillage.jp", "https://winvillage.jp"]
     CSRF_COOKIE_DOMAIN = ".winvillage.jp"
@@ -79,7 +81,7 @@ THIRD_PARTY_APPS = [
 ]
 
 if DEBUG:
-    THIRD_PARTY_APPS += ["django_browser_reload", "pattern_library"]
+    THIRD_PARTY_APPS += ["django_browser_reload", "pattern_library", "debug_toolbar"]
 
 LOCAL_APPS = [
     "users",
@@ -88,6 +90,7 @@ LOCAL_APPS = [
     "winadmin",
     "customer",
 ]
+
 
 # MENU_SELECT_PARENTS = True
 # MENU_HIDE_EMPTY = True
@@ -130,28 +133,29 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-
+DJANGO_USE_DEBUG_TOOLBAR = env.bool("DJANGO_USE_DEBUG_TOOLBAR", True)
 # MIDDLEWARE
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_htmx.middleware.HtmxMiddleware",
-    "django.contrib.sites.middleware.CurrentSiteMiddleware",
+_MIDDLEWARE = [
+    (True, "django.middleware.security.SecurityMiddleware"),
+    (True, "whitenoise.middleware.WhiteNoiseMiddleware"),
+    (
+        DJANGO_USE_DEBUG_TOOLBAR and DEBUG,
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ),
+    (True, "django.contrib.sessions.middleware.SessionMiddleware"),
+    (True, "django.middleware.locale.LocaleMiddleware"),
+    (True, "django.middleware.common.CommonMiddleware"),
+    (True, "django.middleware.csrf.CsrfViewMiddleware"),
+    (True, "django.contrib.auth.middleware.AuthenticationMiddleware"),
+    (True, "django.contrib.messages.middleware.MessageMiddleware"),
+    (True, "django.middleware.clickjacking.XFrameOptionsMiddleware"),
+    (True, "django_htmx.middleware.HtmxMiddleware"),
+    (True, "django.contrib.sites.middleware.CurrentSiteMiddleware"),
+    (DEBUG, "django_browser_reload.middleware.BrowserReloadMiddleware"),
 ]
-
-if DEBUG:
-    MIDDLEWARE += [
-        "django_browser_reload.middleware.BrowserReloadMiddleware",
-    ]
+MIDDLEWARE = tuple(val for (test, val) in _MIDDLEWARE if test)
 
 ROOT_URLCONF = "winvillage.urls"
 

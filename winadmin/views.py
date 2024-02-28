@@ -490,14 +490,12 @@ def reservation_create_no_calendar(request: HtmxHttpRequest) -> HttpResponse:
         initial["last_name"] = reservation.last_name
         initial["email"] = reservation.email
     if reservation.stay is not None:
-        initial["stay_type"] = reservation.stay.stay_type
         initial["start_date"] = reservation.stay.start_date
         initial["end_date"] = reservation.stay.end_date
     grills = reservation.get_grills()
     if request.method == "POST":
         form = ReservationCreateForm(request.POST)
         if form.is_valid():
-            stay_type = form.cleaned_data["stay_type"]
             start_date = form.cleaned_data["start_date"]
             end_date = form.cleaned_data["end_date"]
             first_name = form.cleaned_data["first_name"]
@@ -505,14 +503,12 @@ def reservation_create_no_calendar(request: HtmxHttpRequest) -> HttpResponse:
             email = form.cleaned_data["email"]
             if not reservation.stay:
                 stay = Stay.objects.create(
-                    stay_type=stay_type,
                     start_date=start_date,
                     end_date=end_date,
                 )
                 reservation.stay = stay
                 reservation.save()
             else:
-                reservation.stay.stay_type = stay_type
                 reservation.stay.start_date = start_date
                 reservation.stay.end_date = end_date
                 reservation.stay.save()
@@ -697,14 +693,12 @@ def reservation_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
         form = ReservationDetailForm(request.POST)
         if form.is_valid():
             status = form.cleaned_data["status"]
-            stay_type = form.cleaned_data["stay_type"]
             start_date = form.cleaned_data["start_date"]
             end_date = form.cleaned_data["end_date"]
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             email = form.cleaned_data["email"]
             reservation.stay.status = status
-            reservation.stay.stay_type = stay_type
             reservation.stay.start_date = start_date
             reservation.stay.end_date = end_date
             reservation.stay.save()
@@ -715,7 +709,6 @@ def reservation_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
             messages.success(request, _("Reservation successfully edited."))
     initial = {
         "status": reservation.stay.status,
-        "stay_type": reservation.stay.stay_type,
         "start_date": reservation.stay.start_date,
         "end_date": reservation.stay.end_date,
         "first_name": reservation.first_name,

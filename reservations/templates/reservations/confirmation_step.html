@@ -10,9 +10,7 @@
       {% for field in form %}
         <label class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl" for="{{ field.id_for_label }}">
           <span>{{ field.label }}</span>
-          {% if field.name == "stay_type" %}
-            <span class="text-5xl">{{ field.value }}</span>
-          {% elif field.name == "stay_date_start" %}
+          {% if field.name == "stay_date_start" %}
             <span>{{ field.value|date:"Y-M-d" }}</span>
           {% elif field.name == "stay_date_end" %}
             <span>{{ field.value|date:"Y-M-d" }}</span>

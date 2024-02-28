@@ -1,7 +1,3 @@
-import math
-from datetime import datetime
-from zoneinfo import ZoneInfo
-
 import pendulum
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
@@ -14,27 +10,48 @@ from core.utils import (
     htmx_form_validate,
 )
 from customer.models import Customer
-from reservations.calendar_utils import (
+from reservations.utils import (
     get_previous_month,
     get_next_month,
     generate_calendars,
 )
-from reservations.forms import DateForm, DateTimeForm
+from reservations.forms import DateForm, TravelerForm
 from reservations.models import (
     Item,
-    Stay,
     Reservation,
+    Room,
 )
 from reservations.tasks import send_confirmation_email
-from winvillage.settings import TIME_ZONE
+from . import utils
 from .time_utils import generate_datetimes, generate_interval_range
 
 RESERVATION_TEMPLATE = "reservations/index.html"
 
 
+@htmx_form_validate(form_class=TravelerForm)
 @for_htmx(use_block_from_params=True)
 def index(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
+    initial = {
+        "number_of_adults": reservation.stay.number_of_adults,
+        "number_of_children": reservation.stay.number_of_children,
+    }
+    form = TravelerForm(initial=initial)
+    if request.method == "POST":
+        form = TravelerForm(request.POST)
+        if form.is_valid():
+            reservation.set_number_of_visitors(form)
+    context = {"form": form, "reservation": reservation}
+    return TemplateResponse(request, RESERVATION_TEMPLATE, context)
+
+
+@for_htmx(use_block_from_params=True)
+def date_select(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    number_of_adults = reservation.get_number_of_adults()
+    rooms_queryset = Room.objects.filter(
+        pricing_tiers__number_of_adults=number_of_adults
+    ).order_by("name")
     today_date = pendulum.today().date()
     form = DateForm(initial={"date": today_date})
     if reservation.start_time() and reservation.end_time():
@@ -45,7 +62,7 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     else:
         initial = None
     time_form = forms.TimeSelectForm(initial=initial)
-    calendars = generate_calendars(today_date)
+    calendars = generate_calendars(reservation, today_date)
     start = reservation.stay.start if reservation.stay.start else None
     end = reservation.stay.end if reservation.stay.end else None
     if request.method == "GET":
@@ -90,6 +107,18 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
+@for_htmx(use_block_from_params=True)
+def room_select(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    form, rooms_data = utils.get_form_and_rooms_data(reservation)
+    if request.method == "POST":
+        form = utils.get_form_with_POST_data(reservation, request)
+        if form.is_valid():
+            reservation.set_room(form)
+    context = {"form": form, "rooms_data": rooms_data, "reservation": reservation}
+    return TemplateResponse(request, RESERVATION_TEMPLATE, context)
+
+
 def times_view(request):
     datetimes = generate_interval_range(range_unit="minutes", range_amount=30)
     reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(
@@ -118,37 +147,6 @@ def times_view(request):
             "reservations": reservations,
         },
     )
-
-
-@for_htmx(use_block_from_params=True)
-def option_select_with_normal_session(request: HtmxHttpRequest) -> HttpResponse:
-    all_grills = (
-        Item.objects.filter(category__name="grill")
-        .filter(reservation_option=True)
-        .order_by("pk")
-    )
-    grills = [
-        [grill, forms.GrillOptionForm(initial={"grill_id": grill.id})]
-        for grill in all_grills
-    ]
-    if request.method == "POST":
-        form = forms.GrillOptionForm(request.POST)
-        if form.is_valid():
-            grill_id = form.cleaned_data["grill_id"]
-            if "reservation_options" in request.session:
-                if grill_id in request.session["reservation_options"]:
-                    request.session["reservation_options"].remove(grill_id)
-                else:
-                    request.session["reservation_options"].append(grill_id)
-                request.session.modified = True
-            else:
-                request.session["reservation_options"] = [grill_id]
-    selected_grill_ids = request.session.get("reservation_options", False)
-    context = {
-        "grills": grills,
-        "selected_grill_ids": selected_grill_ids,
-    }
-    return TemplateResponse(request, "reservations/index.html", context)
 
 
 @for_htmx(use_block_from_params=True)

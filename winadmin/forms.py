@@ -52,6 +52,18 @@ class ItemCreateForm(ItemCreateFormMixin, forms.ModelForm):
             "description",
             "short_description",
         ]
+        labels = {
+            "name": _("Name"),
+            "price": _("Price"),
+            "category": _("Category"),
+            "image": _("Image"),
+            "stock_quantity": _("Stock Quantity"),
+            "in_stock": _("In Stock"),
+            "active": _("Active"),
+            "reservation_option": _("Reservation Option"),
+            "description": _("Description"),
+            "short_description": _("Short Description"),
+        }
 
 
 class ItemEditForm(TailwindFormMixin, forms.ModelForm):
@@ -69,6 +81,18 @@ class ItemEditForm(TailwindFormMixin, forms.ModelForm):
             "description",
             "short_description",
         ]
+        labels = {
+            "name": _("Name"),
+            "price": _("Price"),
+            "category": _("Category"),
+            "image": _("Image"),
+            "stock_quantity": _("Stock Quantity"),
+            "in_stock": _("In Stock"),
+            "active": _("Active"),
+            "reservation_option": _("Reservation Option"),
+            "description": _("Description"),
+            "short_description": _("Short Description"),
+        }
 
     do_htmx_validation = True
 
@@ -111,6 +135,14 @@ class TransactionCreateForm(TailwindFormMixin, forms.ModelForm):
             "total_price",
         ]
         widgets = {"transaction_datetime": DateInput()}
+        labels = {
+            "name": _("Name"),
+            "customer": _("Customer"),
+            "transaction_datetime": _("Transaction Datetime"),
+            "item": _("Item"),
+            "quantity": _("Quantity"),
+            "total_price": _("Total Price"),
+        }
 
 
 class SetLedgerPeriodForm(forms.Form):
@@ -126,11 +158,9 @@ class SetReservationPeriodForm(forms.Form):
 
 
 class ReservationCreateForm(TailwindFormMixin, forms.Form):
-    STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
-    stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES, label=_("Stay Type"))
     start = forms.DateTimeField(widget=DateInput, label=_("Start Date"))
     end = forms.DateTimeField(widget=DateInput, label=_("End Date"))
 
@@ -141,7 +171,6 @@ class StayForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Stay
         fields = [
-            "stay_type",
             "start",
             "end",
         ]
@@ -154,12 +183,16 @@ class ContactInfoForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = ContactInfo
         fields = ["first_name", "last_name", "email"]
+        labels = {
+            "first_name": _("First Name"),
+            "last_name": _("Last Name"),
+            "email": _("Email"),
+        }
 
     do_htmx_validation = True
 
 
 class ReservationDetailForm(TailwindFormMixin, forms.Form):
-    STAY_TYPE_CHOICES = Choices(("hourly", _("Hourly")), ("overnight", _("Overnight")))
     STATUS_CHOICES = Choices(
         ("not_reserved", _("Not Reserved")),
         ("reserved", _("Reserved")),
@@ -173,7 +206,6 @@ class ReservationDetailForm(TailwindFormMixin, forms.Form):
     email = forms.EmailField(label=_("Email"))
     start = forms.DateTimeField(widget=DateInput, label=_("Start"))
     end = forms.DateTimeField(widget=DateInput, label=_("End"))
-    stay_type = forms.ChoiceField(choices=STAY_TYPE_CHOICES, label=_("Stay Type"))
 
 
 class SquarePaymentTokenForm(TailwindFormMixin, forms.Form):
@@ -183,7 +215,8 @@ class SquarePaymentTokenForm(TailwindFormMixin, forms.Form):
 class RoomCreateForm(TailwindFormMixin, forms.Form):
     room_name = forms.CharField(label=_("Room Name"), max_length=255)
     pricing_tiers = forms.MultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple, label=_("Pricing Tiers")
+        label=_("Pricing Tiers"),
+        widget=forms.CheckboxSelectMultiple,
     )
 
     def __init__(self, *args, **kwargs):
@@ -202,7 +235,9 @@ class RoomDetailForm(TailwindFormMixin, forms.ModelForm):
 
     name = forms.CharField(label=_("Room Name"), max_length=255)
     pricing_tiers = forms.ModelMultipleChoiceField(
-        queryset=PricingTier.objects.all(), widget=forms.CheckboxSelectMultiple
+        label=_("Pricing Tiers"),
+        queryset=PricingTier.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
     )
 
     def __init__(self, *args, **kwargs):
@@ -217,14 +252,22 @@ class RoomDetailForm(TailwindFormMixin, forms.ModelForm):
 class PricingTierCreateForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = PricingTier
-        fields = ["name", "price_per_night", "price_per_hour"]
-
-    name = forms.CharField(label=_("Tier Name"), max_length=255)
+        fields = ["name", "number_of_adults", "price_per_night", "price_per_hour"]
+        labels = {
+            "name": _("Name"),
+            "number_of_adults": _("Number of Adults"),
+            "price_per_night": _("Price per Night"),
+            "price_per_hour": _("Price per Hour"),
+        }
 
 
 class PricingTierDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = PricingTier
-        fields = ["name", "price_per_night", "price_per_hour"]
-
-    name = forms.CharField(label=_("Tier Name"), max_length=255)
+        fields = ["name", "number_of_adults", "price_per_night", "price_per_hour"]
+        labels = {
+            "name": _("Name"),
+            "number_of_adults": _("Number of Adults"),
+            "price_per_night": _("Price per Night"),
+            "price_per_hour": _("Price per Hour"),
+        }

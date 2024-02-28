@@ -22,7 +22,10 @@ from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = i18n_patterns(
+urlpatterns = [
+    path("__debug__/", include("debug_toolbar.urls")),
+]
+urlpatterns += i18n_patterns(
     path("__reload__/", include("django_browser_reload.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
     path("", include("core.urls")),

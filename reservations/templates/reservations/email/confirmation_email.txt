@@ -1,0 +1,13 @@
+{% load i18n %}
+{% translate 'Reservation Confirmed!' %}
+{% translate 'Here are the details of your reservation.' %}
+
+{% translate 'First Name' %}: {{ reservation.first_name }}
+{% translate 'Last Name' %}: {{ reservation.last_name }}
+{% translate 'Room' %}: {{ reservation.get_room_name }}
+{% translate 'Price' %}: {{ reservation.get_price }}
+
+{% translate 'Start' %}: {{ reservation.stay.start|date }}
+{% translate 'End' %}: {{ reservation.stay.end|date }}
+
+{% blocktrans %}Check-in start at 12:00pm and checkout is at 10:00am {% endblocktrans %}

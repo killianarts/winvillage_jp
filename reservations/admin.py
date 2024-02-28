@@ -27,10 +27,10 @@ class StayAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "status",
+        "room",
         "start",
         "end",
         "status_changed",
-        "type_changed",
         "created_at",
         "updated_at",
     )
