@@ -14,16 +14,16 @@ from reservations import forms as reservation_forms
 TZ = ZoneInfo(TIME_ZONE)
 
 
-def check_available_options(datetime_):
-    reservations_count = (
-        Reservation.objects.filter(
-            stay__start_date__lte=datetime_,
-            stay__end_date__gte=datetime_,
-            stay__status="reserved",
-        )
-        .select_related("stay")
-        .count()
-    )
+# def check_available_options(datetime_):
+#     reservations_count = (
+#         Reservation.objects.filter(
+#             stay__start_date__lte=datetime_,
+#             stay__end_date__gte=datetime_,
+#             stay__status="reserved",
+#         )
+#         .select_related("stay")
+#         .count()
+#     )
 
 
 def create_datetime_form(datetime_):

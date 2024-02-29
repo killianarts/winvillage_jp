@@ -54,6 +54,7 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
     ).order_by("name")
     today_date = pendulum.today().date()
     form = DateForm(initial={"date": today_date})
+    utils.check_availability_during_period(reservation)
     if reservation.start_time() and reservation.end_time():
         initial = {
             "start_time": reservation.start_time(),

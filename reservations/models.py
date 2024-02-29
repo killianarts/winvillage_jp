@@ -311,19 +311,25 @@ class Reservation(BaseModel):
     phone = PhoneNumberField(max_length=254, null=True)
     order_items = models.ManyToManyField(OrderItem)
 
+    def get_possible_rooms_queryset(self):
+        number_of_adults = self.get_number_of_adults()
+        rooms_queryset = Room.objects.filter(
+            pricing_tiers__number_of_adults=number_of_adults
+        ).order_by("name")
+        return rooms_queryset
+
     def set_number_of_visitors(self, form):
         self.stay.number_of_adults = form.cleaned_data["number_of_adults"]
         self.stay.number_of_children = form.cleaned_data["number_of_children"]
         self.stay.save()
-        self.save()
 
     def set_room(self, form):
         self.stay.room = form.cleaned_data["rooms"]
         self.stay.save()
-        self.save()
 
     def get_room_name(self):
-        return self.stay.room.name
+        if self.stay.room:
+            return self.stay.room.name
 
     def get_number_of_adults(self):
         return self.stay.number_of_adults
@@ -340,8 +346,18 @@ class Reservation(BaseModel):
     def get_stay_period(self):
         start = self.get_start_date()
         end = self.get_end_date()
-        difference = start.diff(end)
+        difference = None
+        if start and end:
+            difference = start.diff(end)
         return difference
+
+    def get_stay_period_datetimes(self):
+        period = self.get_stay_period()
+        if period:
+            datetimes = []
+            for dt in period.range("days"):
+                datetimes.append(dt)
+            return datetimes
 
     def get_stay_period_in_days(self):
         return self.get_stay_period().in_days()
@@ -413,17 +429,14 @@ class Reservation(BaseModel):
         self.stay.save()
         return self.stay.start, self.stay.end
 
-    def check_availability(self, date_):
-        tzinfo = timezone.get_current_timezone()
-        datetime_with_tz = timezone.make_aware(
-            datetime.combine(date_, time.min), tzinfo
-        )
-        reservations_count = self.objects.filter(
-            stay__start__lte=datetime_with_tz,
-            stay__end__gte=datetime_with_tz,
-            stay__status="reserved",
-        ).count()
-        return reservations_count < 4
+    def reset_dates(self):
+        self.stay.start = None
+        self.stay.end = None
+        self.stay.save()
+
+    def reset_rooms(self):
+        self.stay.room = None
+        self.stay.save()
 
     @property
     def price(self):

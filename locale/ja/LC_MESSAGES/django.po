@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-28 06:30+0000\n"
+"POT-Creation-Date: 2024-02-28 22:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Contact Infos"
 msgstr ""
 
-#: core/models.py:64 reservations/models.py:307
+#: core/models.py:64 reservations/models.py:318
 msgid "First name"
 msgstr ""
 
@@ -185,17 +185,17 @@ msgid "Win Village Logo"
 msgstr ""
 
 #: core/templates/core/base.html:65 core/templates/core/base.html:117
-#: core/templates/core/index.html:197
+#: core/templates/core/index.html:199
 msgid "部屋の基本スペック"
 msgstr ""
 
 #: core/templates/core/base.html:67 core/templates/core/base.html:120
-#: core/templates/core/index.html:761
+#: core/templates/core/index.html:763
 msgid "値段表"
 msgstr ""
 
 #: core/templates/core/base.html:69 core/templates/core/base.html:122
-#: core/templates/core/index.html:842
+#: core/templates/core/index.html:844
 msgid "アクセス"
 msgstr ""
 
@@ -280,8 +280,8 @@ msgstr ""
 msgid "冷蔵庫、シンクとIHコンロがついています。"
 msgstr ""
 
-#: core/templates/core/index.html:88 core/templates/core/index.html:342
-#: core/templates/core/index.html:618 core/templates/core/room_details.html:109
+#: core/templates/core/index.html:88 core/templates/core/index.html:344
+#: core/templates/core/index.html:620 core/templates/core/room_details.html:109
 #: core/templates/core/room_details.html:313
 msgid "温泉水"
 msgstr ""
@@ -301,8 +301,8 @@ msgid ""
 "ファベッドと布団もついています。"
 msgstr ""
 
-#: core/templates/core/index.html:106 core/templates/core/index.html:476
-#: core/templates/core/index.html:752 core/templates/core/room_details.html:207
+#: core/templates/core/index.html:106 core/templates/core/index.html:478
+#: core/templates/core/index.html:754 core/templates/core/room_details.html:207
 #: core/templates/core/room_details.html:411
 msgid "WIFI"
 msgstr ""
@@ -402,76 +402,76 @@ msgid ""
 "シャボン玉、ポップアップテント、色々なリモコンかーやレゴをレンタルできます。"
 msgstr ""
 
-#: core/templates/core/index.html:195
+#: core/templates/core/index.html:197
 msgid "room specifications"
 msgstr ""
 
-#: core/templates/core/index.html:205 core/templates/core/room_details.html:8
+#: core/templates/core/index.html:207 core/templates/core/room_details.html:8
 msgid "００・０１号室"
 msgstr ""
 
-#: core/templates/core/index.html:206 core/templates/core/room_details.html:9
+#: core/templates/core/index.html:208 core/templates/core/room_details.html:9
 msgid "より広いスペースの中にセミダブルベッド２台あります。"
 msgstr ""
 
-#: core/templates/core/index.html:218 core/templates/core/room_details.html:18
+#: core/templates/core/index.html:220 core/templates/core/room_details.html:18
 msgid "セミダブル、２台"
 msgstr ""
 
-#: core/templates/core/index.html:229
+#: core/templates/core/index.html:231
 msgid "最小人数２人"
 msgstr ""
 
-#: core/templates/core/index.html:240 core/templates/core/index.html:516
+#: core/templates/core/index.html:242 core/templates/core/index.html:518
 #: core/templates/core/room_details.html:34
 #: core/templates/core/room_details.html:238
 msgid "ソファベッド（ダブル）、１台"
 msgstr ""
 
-#: core/templates/core/index.html:263 core/templates/core/index.html:539
+#: core/templates/core/index.html:265 core/templates/core/index.html:541
 #: core/templates/core/room_details.html:51
 #: core/templates/core/room_details.html:255
 msgid "IHコンロ"
 msgstr ""
 
-#: core/templates/core/index.html:274 core/templates/core/index.html:550
+#: core/templates/core/index.html:276 core/templates/core/index.html:552
 #: core/templates/core/room_details.html:59
 #: core/templates/core/room_details.html:263
 msgid "電子レンジ"
 msgstr ""
 
-#: core/templates/core/index.html:285 core/templates/core/index.html:561
+#: core/templates/core/index.html:287 core/templates/core/index.html:563
 #: core/templates/core/room_details.html:67
 #: core/templates/core/room_details.html:271
 msgid "トースター"
 msgstr ""
 
-#: core/templates/core/index.html:296 core/templates/core/index.html:572
+#: core/templates/core/index.html:298 core/templates/core/index.html:574
 #: core/templates/core/room_details.html:75
 #: core/templates/core/room_details.html:279
 msgid "冷蔵庫"
 msgstr ""
 
-#: core/templates/core/index.html:307 core/templates/core/index.html:583
+#: core/templates/core/index.html:309 core/templates/core/index.html:585
 #: core/templates/core/room_details.html:83
 #: core/templates/core/room_details.html:287
 msgid "ケトル"
 msgstr ""
 
-#: core/templates/core/index.html:318 core/templates/core/index.html:594
+#: core/templates/core/index.html:320 core/templates/core/index.html:596
 #: core/templates/core/room_details.html:91
 #: core/templates/core/room_details.html:295
 msgid "調理器具"
 msgstr ""
 
-#: core/templates/core/index.html:329 core/templates/core/index.html:605
+#: core/templates/core/index.html:331 core/templates/core/index.html:607
 #: core/templates/core/room_details.html:99
 #: core/templates/core/room_details.html:303
 msgid "食器"
 msgstr ""
 
-#: core/templates/core/index.html:331 core/templates/core/index.html:421
-#: core/templates/core/index.html:607 core/templates/core/index.html:697
+#: core/templates/core/index.html:333 core/templates/core/index.html:423
+#: core/templates/core/index.html:609 core/templates/core/index.html:699
 #: core/templates/core/room_details.html:101
 #: core/templates/core/room_details.html:167
 #: core/templates/core/room_details.html:305
@@ -479,135 +479,135 @@ msgstr ""
 msgid "・・・などなど"
 msgstr ""
 
-#: core/templates/core/index.html:353 core/templates/core/index.html:629
+#: core/templates/core/index.html:355 core/templates/core/index.html:631
 #: core/templates/core/room_details.html:117
 #: core/templates/core/room_details.html:321
 msgid "バスタオル"
 msgstr ""
 
-#: core/templates/core/index.html:364 core/templates/core/index.html:640
+#: core/templates/core/index.html:366 core/templates/core/index.html:642
 #: core/templates/core/room_details.html:125
 #: core/templates/core/room_details.html:329
 msgid "フェイスタオル"
 msgstr ""
 
-#: core/templates/core/index.html:375 core/templates/core/index.html:651
+#: core/templates/core/index.html:377 core/templates/core/index.html:653
 #: core/templates/core/room_details.html:133
 #: core/templates/core/room_details.html:337
 msgid "シャンプー"
 msgstr ""
 
-#: core/templates/core/index.html:386 core/templates/core/index.html:662
+#: core/templates/core/index.html:388 core/templates/core/index.html:664
 #: core/templates/core/room_details.html:141
 #: core/templates/core/room_details.html:345
 msgid "コンディショナー"
 msgstr ""
 
-#: core/templates/core/index.html:397 core/templates/core/index.html:673
+#: core/templates/core/index.html:399 core/templates/core/index.html:675
 #: core/templates/core/room_details.html:149
 #: core/templates/core/room_details.html:353
 msgid "ボディソープ"
 msgstr ""
 
-#: core/templates/core/index.html:408 core/templates/core/index.html:684
+#: core/templates/core/index.html:410 core/templates/core/index.html:686
 #: core/templates/core/room_details.html:157
 #: core/templates/core/room_details.html:361
 msgid "ボディタオル"
 msgstr ""
 
-#: core/templates/core/index.html:419 core/templates/core/index.html:695
+#: core/templates/core/index.html:421 core/templates/core/index.html:697
 #: core/templates/core/room_details.html:165
 #: core/templates/core/room_details.html:369
 msgid "コットン・綿棒"
 msgstr ""
 
-#: core/templates/core/index.html:422 core/templates/core/index.html:698
+#: core/templates/core/index.html:424 core/templates/core/index.html:700
 #: core/templates/core/room_details.html:168
 #: core/templates/core/room_details.html:372
 msgid "その他"
 msgstr ""
 
-#: core/templates/core/index.html:432 core/templates/core/index.html:708
+#: core/templates/core/index.html:434 core/templates/core/index.html:710
 #: core/templates/core/room_details.html:175
 #: core/templates/core/room_details.html:379
 msgid "トイレ"
 msgstr ""
 
-#: core/templates/core/index.html:443 core/templates/core/index.html:719
+#: core/templates/core/index.html:445 core/templates/core/index.html:721
 #: core/templates/core/room_details.html:183
 #: core/templates/core/room_details.html:387
 msgid "冷暖房"
 msgstr ""
 
-#: core/templates/core/index.html:454 core/templates/core/index.html:730
+#: core/templates/core/index.html:456 core/templates/core/index.html:732
 #: core/templates/core/room_details.html:191
 #: core/templates/core/room_details.html:395
 msgid "５０型テレビ"
 msgstr ""
 
-#: core/templates/core/index.html:465 core/templates/core/index.html:741
+#: core/templates/core/index.html:467 core/templates/core/index.html:743
 #: core/templates/core/room_details.html:199
 #: core/templates/core/room_details.html:403
 msgid "VOD"
 msgstr ""
 
-#: core/templates/core/index.html:481 core/templates/core/room_details.html:212
+#: core/templates/core/index.html:483 core/templates/core/room_details.html:212
 msgid "０２・０３号室"
 msgstr ""
 
-#: core/templates/core/index.html:482 core/templates/core/room_details.html:213
+#: core/templates/core/index.html:484 core/templates/core/room_details.html:213
 msgid "００・０１号室と違ってダブルベッドが１台あります。"
 msgstr ""
 
-#: core/templates/core/index.html:494 core/templates/core/room_details.html:222
+#: core/templates/core/index.html:496 core/templates/core/room_details.html:222
 msgid "ダブル、１台"
 msgstr ""
 
-#: core/templates/core/index.html:505
+#: core/templates/core/index.html:507
 msgid "最大人数４名"
 msgstr ""
 
-#: core/templates/core/index.html:759
+#: core/templates/core/index.html:761
 msgid "pricing"
 msgstr ""
 
-#: core/templates/core/index.html:767
+#: core/templates/core/index.html:769
 msgid "00・01号室"
 msgstr ""
 
-#: core/templates/core/index.html:778
+#: core/templates/core/index.html:780
 msgid "02・03号室"
 msgstr ""
 
-#: core/templates/core/index.html:795
+#: core/templates/core/index.html:797
 msgid "号室"
 msgstr ""
 
-#: core/templates/core/index.html:797
+#: core/templates/core/index.html:799
 msgid "１名"
 msgstr ""
 
-#: core/templates/core/index.html:799
+#: core/templates/core/index.html:801
 msgid "２名"
 msgstr ""
 
-#: core/templates/core/index.html:801
+#: core/templates/core/index.html:803
 msgid "３名"
 msgstr ""
 
-#: core/templates/core/index.html:803
+#: core/templates/core/index.html:805
 msgid "４名"
 msgstr ""
 
-#: core/templates/core/index.html:805
+#: core/templates/core/index.html:807
 msgid "５名"
 msgstr ""
 
-#: core/templates/core/index.html:807
+#: core/templates/core/index.html:809
 msgid "６名"
 msgstr ""
 
-#: core/templates/core/index.html:841
+#: core/templates/core/index.html:843
 msgid "access"
 msgstr ""
 
@@ -875,19 +875,19 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: reservations/models.py:301
+#: reservations/models.py:312
 msgid "Reservation"
 msgstr ""
 
-#: reservations/models.py:302
+#: reservations/models.py:313
 msgid "Reservations"
 msgstr ""
 
-#: reservations/models.py:481
+#: reservations/models.py:486
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:482
+#: reservations/models.py:487
 msgid "Reservation Tokens"
 msgstr ""
 

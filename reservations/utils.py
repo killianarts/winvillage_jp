@@ -15,37 +15,6 @@ from reservations.models import Reservation, Room
 from winvillage.settings import TIME_ZONE
 
 
-def get_reservations(_date):
-    return Reservation.objects.filter(
-        stay__status="reserved",
-        stay__start__lte=_date,
-        stay__end__gte=_date,
-    )
-
-
-def get_rooms(reservations: QuerySet):
-    rooms = reservations.values_list("stay__room", flat=True)
-
-
-def date_check_is_available(_date):
-    reservation_count = Reservation.objects.filter(
-        stay__status="reserved",
-        stay__start__lte=_date,
-        stay__end__gte=_date,
-    ).count()
-    return reservation_count < 4
-
-
-def room_check_is_available(room_name, _date):
-    is_reserved = Reservation.objects.filter(
-        stay__room__name=room_name,
-        stay__status="reserved",
-        stay__start__lte=_date,
-        stay__end__gte=_date,
-    ).exists()
-    return is_reserved
-
-
 def check_availability(*, queryset, _date):
     reservations = queryset.filter(
         stay__status="reserved",
@@ -61,44 +30,53 @@ def check_availability(*, queryset, _date):
     return available_rooms
 
 
+def check_availability_during_period(reservation):
+    rooms_queryset = reservation.get_possible_rooms_queryset()
+    datetimes = reservation.get_stay_period_datetimes()
+    if datetimes:
+        for dt in datetimes:
+            available_rooms = check_availability(queryset=rooms_queryset, _date=dt)
+            if not available_rooms:
+                reservation.reset_dates()
+
+
 def get_form_and_rooms_data(reservation):
-    date_ = reservation.get_start_date()
+    _date = reservation.get_start_date()
     number_of_adults = reservation.get_number_of_adults()
     rooms_queryset = Room.objects.filter(
         pricing_tiers__number_of_adults=number_of_adults
     ).order_by("name")
-
-    available_rooms = check_availability(rooms_queryset, date_)
-
-    rooms_data = []
-    for room in available_rooms:
-        price_per_night = room.get_price_per_night(number_of_adults)
-        price_per_hour = room.get_price_per_hour(number_of_adults)
-        if reservation.get_stay_period().in_days() >= 1:
-            total_price = price_per_night * reservation.get_stay_period().in_days()
+    available_rooms = check_availability(queryset=rooms_queryset, _date=_date)
+    if available_rooms:
+        rooms_data = []
+        for room in available_rooms:
+            price_per_night = room.get_price_per_night(number_of_adults)
+            price_per_hour = room.get_price_per_hour(number_of_adults)
+            if reservation.get_stay_period().in_days() >= 1:
+                total_price = price_per_night * reservation.get_stay_period().in_days()
+            else:
+                total_price = price_per_hour * reservation.get_stay_period().in_hours()
+            rooms_data.append(
+                {
+                    "name": room.name,
+                    "price_per_night": price_per_night,
+                    "price_per_hour": price_per_hour,
+                    "total_price": total_price,
+                }
+            )
+    room_name = reservation.get_room_name()
+    initial = {}
+    if room_name:
+        if reservation.get_possible_rooms_queryset().filter(name=room_name).exists():
+            initial = {"rooms": reservation.stay.room}
         else:
-            total_price = price_per_hour * reservation.get_stay_period().in_hours()
-        rooms_data.append(
-            {
-                "name": room.name,
-                "price_per_night": price_per_night,
-                "price_per_hour": price_per_hour,
-                "total_price": total_price,
-            }
-        )
-    if reservation.stay.room:
-        initial = {"rooms": reservation.stay.room}
-    else:
-        initial = {}
+            reservation.reset_rooms()
     form = RoomChoiceForm(queryset=rooms_queryset, initial=initial)
     return form, rooms_data
 
 
 def get_form_with_POST_data(reservation, request):
-    number_of_adults = reservation.get_number_of_adults()
-    rooms_queryset = Room.objects.filter(
-        pricing_tiers__number_of_adults=number_of_adults
-    ).order_by("name")
+    rooms_queryset = reservation.get_possible_rooms_queryset()
     form = RoomChoiceForm(request.POST, queryset=rooms_queryset)
     return form
 
@@ -152,6 +130,12 @@ def compile_dates_information(
         form = create_date_form(_date)
         available_rooms = check_availability(queryset=rooms_queryset, _date=_date)
         is_available = True if available_rooms else False
+        if (
+            not available_rooms
+            and reservation.get_start_date() == _date
+            or reservation.get_end_date() == _date
+        ):
+            reservation.reset_dates()
         dates.append((_date, form, is_available))
     return dates
 
