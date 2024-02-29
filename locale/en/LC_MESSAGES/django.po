@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-28 22:07+0000\n"
+"POT-Creation-Date: 2024-02-29 06:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: core/models.py:61
 msgid "Contact Info"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Contact Infos"
 msgstr ""
 
-#: core/models.py:64 reservations/models.py:318
+#: core/models.py:64 reservations/models.py:302
 msgid "First name"
 msgstr ""
 
@@ -54,9 +54,9 @@ msgstr ""
 msgid "Items"
 msgstr ""
 
-#: core/models.py:89 core/models.py:156 winadmin/forms.py:56
-#: winadmin/forms.py:85 winadmin/forms.py:139 winadmin/forms.py:257
-#: winadmin/forms.py:269
+#: core/models.py:89 core/models.py:156 reservations/models.py:136
+#: reservations/models.py:168 winadmin/forms.py:56 winadmin/forms.py:85
+#: winadmin/forms.py:139 winadmin/forms.py:257 winadmin/forms.py:269
 #: winadmin/templates/winadmin/inventory/item_list.html:16
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:39
 #: winadmin/views.py:397
@@ -141,7 +141,7 @@ msgstr ""
 msgid "Transaction Datetime"
 msgstr ""
 
-#: core/models.py:171 winadmin/forms.py:143
+#: core/models.py:171 reservations/models.py:33 winadmin/forms.py:143
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:41
 #: winadmin/views.py:401
@@ -162,8 +162,7 @@ msgstr ""
 msgid "Total Price"
 msgstr ""
 
-#: core/templates/core/base.html:9 core/templates/core/index_old.html:5
-#: core/templates/core/index_old.html:120
+#: core/templates/core/base.html:9
 msgid "Glamping in Imari"
 msgstr ""
 
@@ -174,13 +173,11 @@ msgstr ""
 msgid "Winvillage"
 msgstr ""
 
-#: core/templates/core/base.html:46 core/templates/core/index_old.html:8
-#: core/templates/core/index_old.html:17 core/templates/core/index_old.html:69
+#: core/templates/core/base.html:46
 msgid "Win Village"
 msgstr ""
 
-#: core/templates/core/base.html:48 core/templates/core/index_old.html:19
-#: core/templates/core/index_old.html:71
+#: core/templates/core/base.html:48
 msgid "Win Village Logo"
 msgstr ""
 
@@ -200,11 +197,7 @@ msgid "アクセス"
 msgstr ""
 
 #: core/templates/core/base.html:82 core/templates/core/base.html:127
-#: core/templates/core/base.html:167 core/templates/core/index_old.html:54
-#: core/templates/core/index_old.html:102
-#: core/templates/core/index_old.html:133
-#: core/templates/core/index_old.html:222
-#: core/templates/core/index_old.html:255
+#: core/templates/core/base.html:167
 #: reservations/templates/reservations/index.html:7
 #: winadmin/templates/winadmin/index.html:99
 #: winadmin/templates/winadmin/index.html:197
@@ -215,7 +208,7 @@ msgstr ""
 msgid "Winvillage Logo"
 msgstr ""
 
-#: core/templates/core/base.html:105 core/templates/core/index_old.html:76
+#: core/templates/core/base.html:105
 msgid "Close menu"
 msgstr ""
 
@@ -611,42 +604,6 @@ msgstr ""
 msgid "access"
 msgstr ""
 
-#: core/templates/core/index_old.html:37 core/templates/core/index_old.html:88
-#: core/templates/core/index_old.html:231
-msgid "About Win Village"
-msgstr ""
-
-#: core/templates/core/index_old.html:39 core/templates/core/index_old.html:91
-#: core/templates/core/index_old.html:181
-#: core/templates/core/index_old.html:233
-msgid "Rooms"
-msgstr ""
-
-#: core/templates/core/index_old.html:41 core/templates/core/index_old.html:93
-#: core/templates/core/index_old.html:235
-msgid "Gourmet"
-msgstr ""
-
-#: core/templates/core/index_old.html:43 core/templates/core/index_old.html:95
-#: core/templates/core/index_old.html:238
-msgid "Grills"
-msgstr ""
-
-#: core/templates/core/index_old.html:125
-msgid ""
-"\n"
-"              peace and quiet in the outdoors\n"
-"            "
-msgstr ""
-
-#: core/templates/core/index_old.html:129
-msgid "Fresh air, delicious food, comfortable beds"
-msgstr ""
-
-#: core/templates/core/index_old.html:241
-msgid "Corporate Information"
-msgstr ""
-
 #: core/templates/core/room_details.html:26
 msgid "最低人数２人"
 msgstr ""
@@ -655,7 +612,8 @@ msgstr ""
 #: customer/forms.py:51 customer/forms.py:61 customer/forms.py:71
 #: customer/templates/customer/customer_list.html:34 reservations/forms.py:25
 #: reservations/templates/reservations/email/confirmation_email.txt:5
-#: winadmin/forms.py:161 winadmin/forms.py:187 winadmin/forms.py:204
+#: reservations/templates/reservations/index.html:781 winadmin/forms.py:161
+#: winadmin/forms.py:187 winadmin/forms.py:204
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:37
 msgid "First Name"
 msgstr ""
@@ -664,7 +622,8 @@ msgstr ""
 #: customer/forms.py:52 customer/forms.py:62 customer/forms.py:72
 #: customer/templates/customer/customer_list.html:32 reservations/forms.py:28
 #: reservations/templates/reservations/email/confirmation_email.txt:6
-#: winadmin/forms.py:162 winadmin/forms.py:188 winadmin/forms.py:205
+#: reservations/templates/reservations/index.html:785 winadmin/forms.py:162
+#: winadmin/forms.py:188 winadmin/forms.py:205
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:36
 msgid "Last Name"
 msgstr ""
@@ -672,7 +631,9 @@ msgstr ""
 #: customer/forms.py:12 customer/forms.py:21 customer/forms.py:30
 #: customer/forms.py:53 customer/forms.py:63 customer/forms.py:73
 #: customer/templates/customer/customer_list.html:35 reservations/forms.py:31
-#: winadmin/forms.py:163 winadmin/forms.py:189 winadmin/forms.py:206
+#: reservations/models.py:305
+#: reservations/templates/reservations/index.html:789 winadmin/forms.py:163
+#: winadmin/forms.py:189 winadmin/forms.py:206
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:38
 msgid "Email"
 msgstr ""
@@ -764,46 +725,47 @@ msgid "Create Ticket"
 msgstr ""
 
 #: customer/views.py:32
-msgid "Customer named { customer.full_name } created successfully!"
+#, python-format
+msgid "Customer named %(customer_full_name)s created successfully!"
 msgstr ""
 
-#: customer/views.py:37
+#: customer/views.py:38
 msgid "Customer couldn't be created!"
 msgstr ""
 
-#: customer/views.py:88
+#: customer/views.py:89
 msgid "Customer edited successfully!"
 msgstr ""
 
-#: customer/views.py:92
+#: customer/views.py:93
 msgid "Customer deleted successfully!"
 msgstr ""
 
-#: customer/views.py:96
+#: customer/views.py:97
 msgid "Customer couldn't be edited!"
 msgstr ""
 
-#: customer/views.py:143
+#: customer/views.py:144
 msgid "Ticket created successfully!"
 msgstr ""
 
-#: customer/views.py:147
+#: customer/views.py:148
 msgid "Ticket couldn't be created!"
 msgstr ""
 
-#: customer/views.py:180
+#: customer/views.py:181
 msgid "Ticket reopened."
 msgstr ""
 
-#: customer/views.py:183
+#: customer/views.py:184
 msgid "Ticket reopened"
 msgstr ""
 
-#: customer/views.py:198
+#: customer/views.py:199
 msgid "Note added to ticket."
 msgstr ""
 
-#: customer/views.py:202
+#: customer/views.py:203
 msgid "Note added and ticket closed"
 msgstr ""
 
@@ -819,80 +781,140 @@ msgstr ""
 msgid "Order Items"
 msgstr ""
 
-#: reservations/models.py:39
+#: reservations/models.py:30 reservations/models.py:45
+msgid "User"
+msgstr ""
+
+#: reservations/models.py:41
 msgid "Order"
 msgstr ""
 
-#: reservations/models.py:40
+#: reservations/models.py:42
 msgid "Orders"
 msgstr ""
 
-#: reservations/models.py:67
-msgid "Address"
+#: reservations/models.py:49
+msgid "Ordered?"
 msgstr ""
 
-#: reservations/models.py:68
-msgid "Addresses"
+#: reservations/models.py:51
+msgid "Ordered Date"
 msgstr ""
 
-#: reservations/models.py:225
+#: reservations/models.py:128
+msgid "Pricing tier"
+msgstr ""
+
+#: reservations/models.py:129
+msgid "Pricing tiers"
+msgstr ""
+
+#: reservations/models.py:141 reservations/models.py:229
+#: reservations/templates/reservations/index.html:741
+#: templates/winadmin/pricing_tier_list.html:34 winadmin/forms.py:258
+#: winadmin/forms.py:270
+msgid "Number of Adults"
+msgstr ""
+
+#: reservations/models.py:144
+#: reservations/templates/reservations/index.html:565 winadmin/forms.py:259
+#: winadmin/forms.py:271
+msgid "Price per Night"
+msgstr ""
+
+#: reservations/models.py:147
+#: reservations/templates/reservations/index.html:568 winadmin/forms.py:260
+#: winadmin/forms.py:272
+msgid "Price per Hour"
+msgstr ""
+
+#: reservations/models.py:165
+#: reservations/templates/reservations/email/confirmation_email.txt:7
+#: reservations/templates/reservations/index.html:797
+msgid "Room"
+msgstr ""
+
+#: reservations/models.py:166
+msgid "Rooms"
+msgstr ""
+
+#: reservations/models.py:215
 msgid "Stay"
 msgstr ""
 
-#: reservations/models.py:226
+#: reservations/models.py:216
 msgid "Stays"
 msgstr ""
 
-#: reservations/models.py:230 winadmin/forms.py:197
+#: reservations/models.py:220 winadmin/forms.py:197
 msgid "Not Reserved"
 msgstr ""
 
-#: reservations/models.py:231 winadmin/forms.py:198
+#: reservations/models.py:221 winadmin/forms.py:198
 msgid "Reserved"
 msgstr ""
 
-#: reservations/models.py:232 winadmin/forms.py:199
+#: reservations/models.py:222 winadmin/forms.py:199
 msgid "Checked In"
 msgstr ""
 
-#: reservations/models.py:233 winadmin/forms.py:200
+#: reservations/models.py:223 winadmin/forms.py:200
 msgid "Checked Out"
 msgstr ""
 
-#: reservations/models.py:234 winadmin/forms.py:201
+#: reservations/models.py:224 winadmin/forms.py:201
 msgid "Cancelled"
 msgstr ""
 
-#: reservations/models.py:243
+#: reservations/models.py:235
+#: reservations/templates/reservations/index.html:745
+msgid "Number of Children"
+msgstr ""
+
+#: reservations/models.py:238
 #: reservations/templates/reservations/email/confirmation_email.txt:10
 #: winadmin/forms.py:207
 msgid "Start"
 msgstr ""
 
-#: reservations/models.py:244
+#: reservations/models.py:239
 #: reservations/templates/reservations/email/confirmation_email.txt:11
 #: winadmin/forms.py:208
 msgid "End"
 msgstr ""
 
-#: reservations/models.py:312
+#: reservations/models.py:296
 msgid "Reservation"
 msgstr ""
 
-#: reservations/models.py:313
+#: reservations/models.py:297
 msgid "Reservations"
 msgstr ""
 
-#: reservations/models.py:486
+#: reservations/models.py:304
+msgid "Last name"
+msgstr ""
+
+#: reservations/models.py:306
+#: reservations/templates/reservations/index.html:793
+msgid "Phone"
+msgstr ""
+
+#: reservations/models.py:476
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:487
+#: reservations/models.py:477
 msgid "Reservation Tokens"
 msgstr ""
 
 #: reservations/tasks.py:12
 msgid "Winvillage Reservation Confirmation For"
+msgstr ""
+
+#: reservations/tasks.py:20
+#, python-format
+msgid "Winvillage Reservation Confirmation For %(full_name)s"
 msgstr ""
 
 #: reservations/templates/reservations/_buttons.html:8
@@ -939,10 +961,6 @@ msgstr ""
 
 #: reservations/templates/reservations/email/confirmation_email.txt:3
 msgid "Here are the details of your reservation."
-msgstr ""
-
-#: reservations/templates/reservations/email/confirmation_email.txt:7
-msgid "Room"
 msgstr ""
 
 #: reservations/templates/reservations/email/confirmation_email.txt:13
@@ -1004,18 +1022,8 @@ msgstr ""
 msgid "Select Room"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:565 winadmin/forms.py:259
-#: winadmin/forms.py:271
-msgid "Price per Night"
-msgstr ""
-
 #: reservations/templates/reservations/index.html:566
 msgid "Number of Nights"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:568 winadmin/forms.py:260
-#: winadmin/forms.py:272
-msgid "Price per Hour"
 msgstr ""
 
 #: reservations/templates/reservations/index.html:596
@@ -1089,16 +1097,6 @@ msgstr ""
 msgid "Confirm Details"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:741
-#: templates/winadmin/pricing_tier_list.html:34 winadmin/forms.py:258
-#: winadmin/forms.py:270
-msgid "Number of Adults"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:745
-msgid "Number of Children"
-msgstr ""
-
 #: reservations/templates/reservations/index.html:749
 msgid "Length of Stay"
 msgstr ""
@@ -1123,43 +1121,16 @@ msgstr ""
 msgid "Start Date"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:766
-#: winadmin/templates/winadmin/reservations/reservation_create.html:51
-msgid "End Date:"
+#: reservations/templates/reservations/index.html:766 winadmin/forms.py:165
+msgid "End Date"
 msgstr ""
 
 #: reservations/templates/reservations/index.html:772
-#: winadmin/templates/winadmin/reservations/reservation_create.html:57
-msgid "Start Time:"
+msgid "Start Time"
 msgstr ""
 
 #: reservations/templates/reservations/index.html:776
-#: winadmin/templates/winadmin/reservations/reservation_create.html:61
-msgid "End Time:"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:781
-#: winadmin/templates/winadmin/reservations/reservation_create.html:66
-msgid "First Name:"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:785
-#: winadmin/templates/winadmin/reservations/reservation_create.html:70
-msgid "Last Name:"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:789
-#: winadmin/templates/winadmin/reservations/reservation_create.html:74
-msgid "Email:"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:793
-#: winadmin/templates/winadmin/reservations/reservation_create.html:78
-msgid "Phone:"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:797
-msgid "Room:"
+msgid "End Time"
 msgstr ""
 
 #: reservations/templates/reservations/index.html:824
@@ -1412,10 +1383,6 @@ msgstr ""
 msgid "Reservation Option"
 msgstr ""
 
-#: winadmin/forms.py:165
-msgid "End Date"
-msgstr ""
-
 #: winadmin/templates/winadmin/base.html:25
 msgid "Winvillage Administration Dashboard"
 msgstr ""
@@ -1597,6 +1564,34 @@ msgstr ""
 msgid "Start Date:"
 msgstr ""
 
+#: winadmin/templates/winadmin/reservations/reservation_create.html:51
+msgid "End Date:"
+msgstr ""
+
+#: winadmin/templates/winadmin/reservations/reservation_create.html:57
+msgid "Start Time:"
+msgstr ""
+
+#: winadmin/templates/winadmin/reservations/reservation_create.html:61
+msgid "End Time:"
+msgstr ""
+
+#: winadmin/templates/winadmin/reservations/reservation_create.html:66
+msgid "First Name:"
+msgstr ""
+
+#: winadmin/templates/winadmin/reservations/reservation_create.html:70
+msgid "Last Name:"
+msgstr ""
+
+#: winadmin/templates/winadmin/reservations/reservation_create.html:74
+msgid "Email:"
+msgstr ""
+
+#: winadmin/templates/winadmin/reservations/reservation_create.html:78
+msgid "Phone:"
+msgstr ""
+
 #: winadmin/templates/winadmin/reservations/reservation_create.html:88
 msgid "Stay Price"
 msgstr ""
@@ -1768,10 +1763,10 @@ msgstr ""
 msgid "Reservation successfully edited."
 msgstr ""
 
-#: winvillage/settings.py:277
+#: winvillage/settings.py:278
 msgid "English"
 msgstr ""
 
-#: winvillage/settings.py:278
+#: winvillage/settings.py:279
 msgid "Japanese"
 msgstr ""

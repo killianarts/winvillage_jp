@@ -17,7 +17,8 @@ def send_confirmation_email(reservation_id):
     message = Mail(
         from_email="noreply@winvillage.jp",
         to_emails=reservation.email,
-        subject=f"{subject_text}, {reservation.last_name} {reservation.first_name}",
+        subject=_("Winvillage Reservation Confirmation For %(full_name)s")
+        % {"full_name": reservation.get_full_name()},
         plain_text_content=plain_text_content,
     )
     sg = SendGridAPIClient(settings.SENDGRID_API_KEY)

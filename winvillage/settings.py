@@ -139,6 +139,7 @@ DJANGO_USE_DEBUG_TOOLBAR = env.bool("DJANGO_USE_DEBUG_TOOLBAR", True)
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 _MIDDLEWARE = [
     (True, "django.middleware.security.SecurityMiddleware"),
+    (True, "django.middleware.gzip.GZipMiddleware"),
     (True, "whitenoise.middleware.WhiteNoiseMiddleware"),
     (
         DJANGO_USE_DEBUG_TOOLBAR and DEBUG,

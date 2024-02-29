@@ -26,9 +26,11 @@ class OrderItem(BaseModel):
         verbose_name = _("Order Item")
         verbose_name_plural = _("Order Items")
 
-    user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(
+        auth_user, on_delete=models.CASCADE, null=True, verbose_name=_("User")
+    )
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=1, verbose_name=_("Quantity"))
 
     def __str__(self):
         return f"OrderItem_ID: {self.id}, Item_name: {self.item.name}"
@@ -39,11 +41,15 @@ class Order(models.Model):
         verbose_name = _("Order")
         verbose_name_plural = _("Orders")
 
-    user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(
+        auth_user, on_delete=models.CASCADE, null=True, verbose_name=_("User")
+    )
     # customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     items = models.ManyToManyField(OrderItem)
-    ordered = models.BooleanField(default=False)
-    ordered_date = models.DateTimeField(blank=True, null=True)
+    ordered = models.BooleanField(default=False, verbose_name=_("Ordered?"))
+    ordered_date = models.DateTimeField(
+        blank=True, null=True, verbose_name=_("Ordered Date")
+    )
 
     def __str__(self):
         return f"User: {self.user}, Items: {self.get_quantity()}"
@@ -62,63 +68,49 @@ class Order(models.Model):
         return int(total)
 
 
-class Address(BaseModel):
-    class Meta:
-        verbose_name = _("Address")
-        verbose_name_plural = _("Addresses")
-
-    user = models.ForeignKey(auth_user, on_delete=models.CASCADE)
-    state = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    street_address = models.CharField(max_length=50)
-    secondary_address = models.CharField(max_length=100, blank=True)
-    postal_code = models.IntegerField()
-    is_primary = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.street_address}"
-
-    @property
-    def full_address(self):
-        address_parts = [self.street_address]
-
-        if self.secondary_address:
-            address_parts.append(self.secondary_address)
-
-        address_parts.append(f"{self.city}, {self.state} {self.postal_code}")
-
-        return "\n".join(address_parts)
-
-    def save(self, *args, **kwargs):
-        # If this is a new address and is_primary is True, make sure no other addresses
-        # for this account have is_primary set to True
-        if self.pk is None and self.is_primary:
-            Address.objects.filter(user=self.user, is_primary=True).update(
-                is_primary=False
-            )
-
-        # If this is an existing address and is_primary is being set to True,
-        # make sure no other addresses for this account have is_primary set to True
-        elif self.pk is not None and self.is_primary:
-            Address.objects.filter(user=self.user).exclude(pk=self.pk).update(
-                is_primary=False
-            )
-
-        super(Address, self).save(*args, **kwargs)
-
-
-class StayManager(models.Manager):
-    def get_stays_for_date(self, date):
-        time_zone = ZoneInfo("Asia/Tokyo")
-        target_date = datetime.strptime(date, "%Y-%m-%d").astimezone(time_zone).date()
-        next_date = target_date + timedelta(days=1)
-
-        # ex: Stay.objects.get_stays_for_date("2023-09-13")
-        # returns all Stays that include the date within the range of their
-        # start_datetime and end_datetime.
-        return self.filter(
-            start_datetime__date__lt=next_date, end_datetime__date__gte=target_date
-        )
+# class Address(BaseModel):
+#     class Meta:
+#         verbose_name = _("Address")
+#         verbose_name_plural = _("Addresses")
+#
+#     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, verbose_name=_("User"), null=True)
+#     state = models.CharField(max_length=50)
+#     city = models.CharField(max_length=50)
+#     street_address = models.CharField(max_length=50)
+#     secondary_address = models.CharField(max_length=100, blank=True)
+#     postal_code = models.IntegerField()
+#     is_primary = models.BooleanField(default=False)
+#
+#     def __str__(self):
+#         return f"{self.street_address}"
+#
+#     @property
+#     def full_address(self):
+#         address_parts = [self.street_address]
+#
+#         if self.secondary_address:
+#             address_parts.append(self.secondary_address)
+#
+#         address_parts.append(f"{self.city}, {self.state} {self.postal_code}")
+#
+#         return "\n".join(address_parts)
+#
+#     def save(self, *args, **kwargs):
+#         # If this is a new address and is_primary is True, make sure no other addresses
+#         # for this account have is_primary set to True
+#         if self.pk is None and self.is_primary:
+#             Address.objects.filter(user=self.user, is_primary=True).update(
+#                 is_primary=False
+#             )
+#
+#         # If this is an existing address and is_primary is being set to True,
+#         # make sure no other addresses for this account have is_primary set to True
+#         elif self.pk is not None and self.is_primary:
+#             Address.objects.filter(user=self.user).exclude(pk=self.pk).update(
+#                 is_primary=False
+#             )
+#
+#         super(Address, self).save(*args, **kwargs)
 
 
 class SpecialDate(models.Model):
@@ -131,50 +123,29 @@ class SpecialDate(models.Model):
         return self.name
 
 
-# class StayTypes(models.Model):
-#     class TypeChoices(models.TextChoices):
-#         ROOM = "room", _("Room")
-#         BATH = "bath", _("Bath")
-#
-#     name = models.CharField(max_length=4, choices=TypeChoices, default=TypeChoices.ROOM)
-#     # Price is determined both by date and type of the stay
-#
-#     def __str__(self):
-#         return self.name
-# models.py
-
-
-class DefaultPrice(models.Model):
-    adult_price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
-    adult_price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
-    child_price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
-    child_price_per_hour = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return f"Adults: {self.adult_price_per_night}/night, {self.adult_price_per_hour}/hour. Children: {self.child_price_per_night}/night, {self.child_price_per_hour}/hour."
-
-    def save(self, *args, **kwargs):
-        # Ensure only one instance of DefaultPrice exists in the database
-        if not self.pk and DefaultPrice.objects.exists():
-            raise ValueError(
-                "There can be only one instance of DefaultPrice in the database."
-            )
-        super().save(*args, **kwargs)
-
-
 class PricingTier(models.Model):
+    class Meta:
+        verbose_name = _("Pricing tier")
+        verbose_name_plural = _("Pricing tiers")
+
     class PricingTierManager(models.Manager):
         def order_by_name(self):
             return self.order_by("price_per_night").all()
 
     objects = PricingTierManager()
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name=_("Name"))
 
     ADULT_CHOICES = ((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"), (6, "6"))
 
-    number_of_adults = models.IntegerField(default=1, choices=ADULT_CHOICES)
-    price_per_night = models.DecimalField(max_digits=19, decimal_places=4)
-    price_per_hour = models.DecimalField(max_digits=19, decimal_places=4)
+    number_of_adults = models.IntegerField(
+        default=1, choices=ADULT_CHOICES, verbose_name=_("Number of Adults")
+    )
+    price_per_night = models.DecimalField(
+        max_digits=19, decimal_places=4, verbose_name=_("Price per Night")
+    )
+    price_per_hour = models.DecimalField(
+        max_digits=19, decimal_places=4, verbose_name=_("Price per Hour")
+    )
 
     def __str__(self):
         return f"{self.name} {self.price_per_night}/night, {self.price_per_hour}/hour"
@@ -190,7 +161,11 @@ class PricingTier(models.Model):
 
 
 class Room(models.Model):
-    name = models.CharField(max_length=50)
+    class Meta:
+        verbose_name = _("Room")
+        verbose_name_plural = _("Rooms")
+
+    name = models.CharField(max_length=50, verbose_name=_("Name"))
     pricing_tiers = models.ManyToManyField(PricingTier)
 
     def __str__(self):
@@ -221,6 +196,21 @@ CHILDREN_CHOICES = (
 
 
 class Stay(BaseModel):
+    class StayManager(models.Manager):
+        def get_stays_for_date(self, date):
+            time_zone = ZoneInfo("Asia/Tokyo")
+            target_date = (
+                datetime.strptime(date, "%Y-%m-%d").astimezone(time_zone).date()
+            )
+            next_date = target_date + timedelta(days=1)
+
+            # ex: Stay.objects.get_stays_for_date("2023-09-13")
+            # returns all Stays that include the date within the range of their
+            # start_datetime and end_datetime.
+            return self.filter(
+                start_datetime__date__lt=next_date, end_datetime__date__gte=target_date
+            )
+
     class Meta:
         verbose_name = _("Stay")
         verbose_name_plural = _("Stays")
@@ -235,9 +225,14 @@ class Stay(BaseModel):
     )
     status = StatusField()
 
-    number_of_adults = models.IntegerField(choices=ADULT_CHOICES, default=1, null=True)
+    number_of_adults = models.IntegerField(
+        choices=ADULT_CHOICES, default=1, null=True, verbose_name=_("Number of Adults")
+    )
     number_of_children = models.IntegerField(
-        choices=CHILDREN_CHOICES, default=0, null=True
+        choices=CHILDREN_CHOICES,
+        default=0,
+        null=True,
+        verbose_name=_("Number of Children"),
     )
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=True)
     start = PendulumDateTimeField(verbose_name=_("Start"), null=True, blank=True)
@@ -306,9 +301,9 @@ class Reservation(BaseModel):
     first_name = models.CharField(
         max_length=50, verbose_name=_("First name"), null=True
     )
-    last_name = models.CharField(max_length=50, null=True)
-    email = models.EmailField(max_length=254, null=True)
-    phone = PhoneNumberField(max_length=254, null=True)
+    last_name = models.CharField(max_length=50, verbose_name=_("Last name"), null=True)
+    email = models.EmailField(max_length=254, verbose_name=_("Email"), null=True)
+    phone = PhoneNumberField(max_length=254, verbose_name=_("Phone"), null=True)
     order_items = models.ManyToManyField(OrderItem)
 
     def get_possible_rooms_queryset(self):
@@ -438,22 +433,6 @@ class Reservation(BaseModel):
         self.stay.room = None
         self.stay.save()
 
-    @property
-    def price(self):
-        total = 0
-        for order_item in self.order_items.all():
-            total += order_item.item.price
-        total += self.stay.price
-        return round(total, 0)
-
-    @property
-    def price_fully_rounded(self):
-        total = 0
-        for order_item in self.order_items.all():
-            total += order_item.item.price_rounded
-        total += self.stay.price_fully_rounded
-        return round(total, 0)
-
     def start_time(self):
         if self.stay.start:
             return self.stay.start.time()
@@ -484,6 +463,9 @@ class Reservation(BaseModel):
         for item in self.order_items.all():
             items.append(item)
         return items
+
+    def get_full_name(self) -> str:
+        return f"{self.last_name}{self.first_name}"
 
     def get_absolute_url(self, pk):
         return reverse("winadmin:reservation_detail", kwargs={"pk": self.pk})

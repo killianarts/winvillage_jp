@@ -22,8 +22,7 @@ def check_availability(*, queryset, _date):
         stay__end__gte=_date,
     )
     reserved_rooms_ids = []
-    if reservations.exists():
-        reserved_rooms_ids = reservations.values_list("stay__room__id", flat=True)
+    reserved_rooms_ids = reservations.values_list("stay__room__id", flat=True)
 
     available_rooms = queryset.exclude(id__in=reserved_rooms_ids)
 
@@ -129,6 +128,8 @@ def compile_dates_information(
     for _date in _dates:
         form = create_date_form(_date)
         available_rooms = check_availability(queryset=rooms_queryset, _date=_date)
+        # TODO: Figure out how to speed this up.
+        #  The calls to `available_rooms` are causing about 74 queries.
         is_available = True if available_rooms else False
         if (
             not available_rooms
@@ -136,7 +137,7 @@ def compile_dates_information(
             or reservation.get_end_date() == _date
         ):
             reservation.reset_dates()
-        dates.append((_date, form, is_available))
+        dates.append((_date, form, available_rooms))
     return dates
 
 

@@ -29,8 +29,9 @@ def customer_create(request: HtmxHttpRequest) -> HttpResponse:
                 messages.success(
                     request,
                     message=_(
-                        f"Customer named { customer.full_name } created successfully!"
-                    ),
+                        "Customer named %(customer_full_name)s created successfully!"
+                    )
+                    % {"customer_full_name": customer.full_name},
                 )
                 return HttpResponseClientRedirect(reverse("winadmin:customer_list"))
             else:
