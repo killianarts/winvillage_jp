@@ -14,6 +14,7 @@ from reservations.utils import (
     get_previous_month,
     get_next_month,
     generate_calendars,
+    make_pen,
 )
 from reservations.forms import DateForm, TravelerForm
 from reservations.models import (
@@ -48,21 +49,16 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def date_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    number_of_adults = reservation.get_number_of_adults()
-    rooms_queryset = Room.objects.filter(
-        pricing_tiers__number_of_adults=number_of_adults
-    ).order_by("name")
-    today_date = pendulum.today().date()
-    form = DateForm(initial={"date": today_date})
-    utils.check_availability_during_period(reservation)
-    if reservation.start_time() and reservation.end_time():
-        initial = {
-            "start_time": reservation.start_time(),
-            "end_time": reservation.end_time(),
-        }
-    else:
-        initial = None
-    time_form = forms.TimeSelectForm(initial=initial)
+    today_date = pendulum.today()
+    form = forms.DateTimeForm(initial={"date": today_date})
+    # if reservation.start_time() and reservation.end_time():
+    #     initial = {
+    #         "start_time": reservation.start_time(),
+    #         "end_time": reservation.end_time(),
+    #     }
+    # else:
+    #     initial = None
+    # time_form = forms.TimeSelectForm(initial=initial)
     calendars = generate_calendars(reservation, today_date)
     start = reservation.stay.start if reservation.stay.start else None
     end = reservation.stay.end if reservation.stay.end else None
@@ -70,40 +66,38 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
         if "get_previous_month" in request.GET:
             form = DateForm(request.GET)
             if form.is_valid():
-                date = form.cleaned_data["date"]
+                date = make_pen(form.cleaned_data["date"])
                 date = get_previous_month(date)
-                form = DateForm(initial={"date": date})
-                calendars = generate_calendars(date)
+                form = forms.DateForm(initial={"date": date})
+                calendars = generate_calendars(reservation, date)
         elif "get_next_month" in request.GET:
             form = DateForm(request.GET)
             if form.is_valid():
-                date = form.cleaned_data["date"]
+                date = make_pen(form.cleaned_data["date"])
                 date = get_next_month(date)
-                form = DateForm(initial={"date": date})
-                calendars = generate_calendars(date)
+                form = forms.DateForm(initial={"date": date})
+                calendars = generate_calendars(reservation, date)
     if request.method == "POST":
         if "select_date" in request.POST:
-            calendar_cell_form = DateForm(request.POST)
+            calendar_cell_form = forms.DateTimeForm(request.POST)
             if calendar_cell_form.is_valid():
-                selected_date = pendulum.instance(
-                    calendar_cell_form.cleaned_data["date"]
+                selected_datetime = pendulum.instance(
+                    calendar_cell_form.cleaned_data["datetime"]
                 )
-                start, end = reservation.set_dates(selected_date)
-        if "select_time" in request.POST:
-            time_form = forms.TimeSelectForm(request.POST)
-            if time_form.is_valid():
-                start_time = time_form.cleaned_data["start_time"]
-                end_time = time_form.cleaned_data["end_time"]
-                reservation.set_times(start_time, end_time)
-    # price = reservation.stay.price
+                start, end = reservation.set_dates(selected_datetime)
+        # if "select_time" in request.POST:
+        #     time_form = forms.TimeSelectForm(request.POST)
+        #     if time_form.is_valid():
+        #         start_time = time_form.cleaned_data["start_time"]
+        #         end_time = time_form.cleaned_data["end_time"]
+        #         reservation.set_times(start_time, end_time)
     context = {
         "calendars": calendars,
         "today_date": today_date,
         "form": form,
-        "time_form": time_form,
+        # "time_form": time_form,
         "start": start,
         "end": end,
-        # "price": price,
     }
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 

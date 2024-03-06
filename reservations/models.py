@@ -7,7 +7,6 @@ import pendulum
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
@@ -148,7 +147,7 @@ class PricingTier(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} {self.price_per_night}/night, {self.price_per_hour}/hour"
+        return f"{self.name} ￥{self.get_price_per_night()}/night, ￥{self.get_price_per_hour()}/hour"
 
     def get_price_per_night(self):
         return round(self.price_per_night, 2)
@@ -306,6 +305,18 @@ class Reservation(BaseModel):
     phone = PhoneNumberField(max_length=254, verbose_name=_("Phone"), null=True)
     order_items = models.ManyToManyField(OrderItem)
 
+    def check_availability(self, *, start_date, end_date):
+        reservations = Reservation.objects.filter(
+            stay__status="reserved",
+            stay__start__lte=end_date,
+            stay__end__gt=start_date,
+        )
+        reserved_rooms_ids = reservations.values_list("stay__room__id", flat=True)
+        available_rooms = self.get_possible_rooms_queryset().exclude(
+            id__in=reserved_rooms_ids
+        )
+        return available_rooms
+
     def get_possible_rooms_queryset(self):
         number_of_adults = self.get_number_of_adults()
         rooms_queryset = Room.objects.filter(
@@ -408,6 +419,22 @@ class Reservation(BaseModel):
             grills.append([grill, form, is_reserved])
         return grills
 
+    # def set_dates(self, selected_datetime: pendulum.DateTime):
+    #     if not self.stay.start or not self.stay.end:
+    #         self.stay.start = selected_datetime
+    #         self.stay.end = selected_datetime
+    #
+    #     START_AND_END_ARE_THE_SAME = self.stay.start == self.stay.end
+    #     NEW_DATE_AFTER_END = selected_datetime > self.stay.end
+    #
+    #     if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
+    #         self.stay.end = selected_datetime
+    #     else:
+    #         self.stay.start = selected_datetime
+    #         self.stay.end = selected_datetime
+    #     self.stay.save()
+    #     return self.stay.start, self.stay.end
+
     def set_dates(self, selected_datetime: pendulum.DateTime):
         if not self.stay.start or not self.stay.end:
             self.stay.start = selected_datetime
@@ -419,6 +446,11 @@ class Reservation(BaseModel):
         if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
             self.stay.end = selected_datetime
         else:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        if not self.check_availability(
+            start_date=self.stay.start, end_date=self.stay.end
+        ).exists():
             self.stay.start = selected_datetime
             self.stay.end = selected_datetime
         self.stay.save()

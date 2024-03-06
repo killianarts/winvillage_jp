@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-29 06:55+0000\n"
+"POT-Creation-Date: 2024-03-04 05:23+0000\n"
 "PO-Revision-Date: 2024-02-29 06:32+0000\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr "連絡情報"
 msgid "Contact Infos"
 msgstr "連絡情報"
 
-#: core/models.py:64 reservations/models.py:302
+#: core/models.py:64 reservations/models.py:304
 msgid "First name"
 msgstr "名字"
 
@@ -201,7 +201,7 @@ msgstr ""
 #: core/templates/core/base.html:167
 #: reservations/templates/reservations/index.html:7
 #: winadmin/templates/winadmin/index.html:99
-#: winadmin/templates/winadmin/index.html:197
+#: winadmin/templates/winadmin/index.html:206
 msgid "Make a Reservation"
 msgstr "予約を作る"
 
@@ -632,7 +632,7 @@ msgstr "名字"
 #: customer/forms.py:12 customer/forms.py:21 customer/forms.py:30
 #: customer/forms.py:53 customer/forms.py:63 customer/forms.py:73
 #: customer/templates/customer/customer_list.html:35 reservations/forms.py:31
-#: reservations/models.py:305
+#: reservations/models.py:307
 #: reservations/templates/reservations/index.html:789 winadmin/forms.py:163
 #: winadmin/forms.py:189 winadmin/forms.py:206
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:38
@@ -721,7 +721,7 @@ msgstr "チケットを作る"
 #: customer/templates/ticket/ticket_create.html:8
 #: customer/templates/ticket/ticket_create.html:18
 #: winadmin/templates/winadmin/index.html:57
-#: winadmin/templates/winadmin/index.html:155
+#: winadmin/templates/winadmin/index.html:164
 msgid "Create Ticket"
 msgstr "チケットを作る"
 
@@ -884,28 +884,28 @@ msgstr "開始日"
 msgid "End"
 msgstr "終了日"
 
-#: reservations/models.py:296
+#: reservations/models.py:298
 msgid "Reservation"
 msgstr "予約"
 
-#: reservations/models.py:297
+#: reservations/models.py:299
 msgid "Reservations"
 msgstr "予約"
 
-#: reservations/models.py:304
+#: reservations/models.py:306
 msgid "Last name"
 msgstr "名字"
 
-#: reservations/models.py:306
+#: reservations/models.py:308
 #: reservations/templates/reservations/index.html:793
 msgid "Phone"
 msgstr "電話番号"
 
-#: reservations/models.py:476
+#: reservations/models.py:478
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:477
+#: reservations/models.py:479
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -1285,6 +1285,8 @@ msgstr "閉じている？"
 #: templates/winadmin/pricing_tier_create.html:5
 #: templates/winadmin/room_create.html:19
 #: templates/winadmin/room_create.html:23
+#: winadmin/templates/winadmin/index.html:122
+#: winadmin/templates/winadmin/index.html:230
 msgid "Create Room"
 msgstr "部屋を作る"
 
@@ -1397,88 +1399,102 @@ msgid "Dashboard"
 msgstr "ダッシュボード"
 
 #: winadmin/templates/winadmin/index.html:23
-#: winadmin/templates/winadmin/index.html:247
+#: winadmin/templates/winadmin/index.html:266
 msgid "Winvillage Admin"
 msgstr "ウィン・ヴィレッジ管理"
 
 #: winadmin/templates/winadmin/index.html:51
-#: winadmin/templates/winadmin/index.html:149
+#: winadmin/templates/winadmin/index.html:158
 msgid "Customer Management"
 msgstr "顧客管理"
 
 #: winadmin/templates/winadmin/index.html:55
-#: winadmin/templates/winadmin/index.html:153
+#: winadmin/templates/winadmin/index.html:162
 msgid "Search Customers"
 msgstr "顧客を検索する"
 
 #: winadmin/templates/winadmin/index.html:59
-#: winadmin/templates/winadmin/index.html:157
+#: winadmin/templates/winadmin/index.html:166
 msgid "View Tickets"
 msgstr "チケットを見る"
 
 #: winadmin/templates/winadmin/index.html:69
-#: winadmin/templates/winadmin/index.html:167
+#: winadmin/templates/winadmin/index.html:176
 msgid "Inventory Management"
 msgstr "在庫管理"
 
 #: winadmin/templates/winadmin/index.html:73
-#: winadmin/templates/winadmin/index.html:171
+#: winadmin/templates/winadmin/index.html:180
 msgid "View Inventory"
 msgstr "在庫を見る"
 
 #: winadmin/templates/winadmin/index.html:75
-#: winadmin/templates/winadmin/index.html:173
+#: winadmin/templates/winadmin/index.html:182
 #: winadmin/templates/winadmin/inventory/item_create.html:8
 msgid "Add Inventory Item"
 msgstr "在庫アイテムを追加する"
 
 #: winadmin/templates/winadmin/index.html:77
-#: winadmin/templates/winadmin/index.html:175
+#: winadmin/templates/winadmin/index.html:184
 msgid "View Categories"
 msgstr "カテゴリーを見る"
 
 #: winadmin/templates/winadmin/index.html:79
-#: winadmin/templates/winadmin/index.html:177
+#: winadmin/templates/winadmin/index.html:186
 msgid "Add Category"
 msgstr "カテゴリーを追加する"
 
 #: winadmin/templates/winadmin/index.html:93
-#: winadmin/templates/winadmin/index.html:191
+#: winadmin/templates/winadmin/index.html:200
 msgid "Sales Management"
 msgstr "売上管理"
 
 #: winadmin/templates/winadmin/index.html:97
-#: winadmin/templates/winadmin/index.html:195
+#: winadmin/templates/winadmin/index.html:204
 msgid "View Sales"
 msgstr "売上を見る"
 
 #: winadmin/templates/winadmin/index.html:101
-#: winadmin/templates/winadmin/index.html:199
+#: winadmin/templates/winadmin/index.html:208
 msgid "View Reservations"
 msgstr "予約を見る"
 
-#: winadmin/templates/winadmin/index.html:123
+#: winadmin/templates/winadmin/index.html:116
+#: winadmin/templates/winadmin/index.html:224
+#, fuzzy
+#| msgid "Customer Management"
+msgid "Room Management"
+msgstr "顧客管理"
+
+#: winadmin/templates/winadmin/index.html:120
+#: winadmin/templates/winadmin/index.html:228
+#, fuzzy
+#| msgid "Rooms"
+msgid "View Rooms"
+msgstr "部屋"
+
+#: winadmin/templates/winadmin/index.html:132
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:8
 msgid "Business Order Management"
 msgstr "仕入管理"
 
-#: winadmin/templates/winadmin/index.html:127
+#: winadmin/templates/winadmin/index.html:136
 msgid "View Business Orders"
 msgstr "仕入を見る"
 
-#: winadmin/templates/winadmin/index.html:129
+#: winadmin/templates/winadmin/index.html:138
 msgid "Create Business Order"
 msgstr "仕入を作る"
 
-#: winadmin/templates/winadmin/index.html:221
+#: winadmin/templates/winadmin/index.html:240
 msgid "Order Management"
 msgstr "注文管理"
 
-#: winadmin/templates/winadmin/index.html:225
+#: winadmin/templates/winadmin/index.html:244
 msgid "View Orders"
 msgstr "注文を見る"
 
-#: winadmin/templates/winadmin/index.html:227
+#: winadmin/templates/winadmin/index.html:246
 #: winadmin/templates/winadmin/transactions/transaction_create.html:8
 msgid "Create Order"
 msgstr "注文を作る"

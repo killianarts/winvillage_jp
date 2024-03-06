@@ -1,51 +1,38 @@
 import calendar
 from datetime import datetime, date, timedelta
-from typing import List, Iterable, Tuple
-from zoneinfo import ZoneInfo
+from typing import List, Iterable
 
+import pendulum
 from babel.dates import format_date
-from dateutil.relativedelta import relativedelta
-from django import forms
-from django.db.models import QuerySet
 from django.utils.translation import get_language
 
-from reservations.forms import DateForm
+from reservations.forms import DateForm, DateTimeForm
 from reservations.forms import RoomChoiceForm
-from reservations.models import Reservation, Room
-from winvillage.settings import TIME_ZONE
+from reservations.models import Reservation, Stay
 
 
-def check_availability(*, queryset, _date):
-    reservations = queryset.filter(
-        stay__status="reserved",
-        stay__start__lte=_date,
-        stay__end__gte=_date,
-    )
-    reserved_rooms_ids = []
-    reserved_rooms_ids = reservations.values_list("stay__room__id", flat=True)
-
-    available_rooms = queryset.exclude(id__in=reserved_rooms_ids)
-
-    return available_rooms
+def make_pen(dt: datetime | date) -> pendulum.DateTime:
+    return pendulum.local(dt.year, dt.month, dt.day)
 
 
-def check_availability_during_period(reservation):
-    rooms_queryset = reservation.get_possible_rooms_queryset()
-    datetimes = reservation.get_stay_period_datetimes()
-    if datetimes:
-        for dt in datetimes:
-            available_rooms = check_availability(queryset=rooms_queryset, _date=dt)
-            if not available_rooms:
-                reservation.reset_dates()
+# def make_pens(dates: Iterable[date]) -> Generator[pendulum.DateTime]:
+#     for date_ in dates:
+#         yield pendulum.local(date_.year, date_.month, date_.day)
+
+
+def make_pens(dates: Iterable[date]) -> List[pendulum.DateTime]:
+    pens = []
+    for date_ in dates:
+        pens.append(make_pen(date_))
+    return pens
 
 
 def get_form_and_rooms_data(reservation):
-    _date = reservation.get_start_date()
+    start = reservation.get_start_date()
+    end = reservation.get_end_date()
     number_of_adults = reservation.get_number_of_adults()
-    rooms_queryset = Room.objects.filter(
-        pricing_tiers__number_of_adults=number_of_adults
-    ).order_by("name")
-    available_rooms = check_availability(queryset=rooms_queryset, _date=_date)
+    rooms_queryset = reservation.get_possible_rooms_queryset()
+    available_rooms = reservation.check_availability(start_date=start, end_date=end)
     if available_rooms:
         rooms_data = []
         for room in available_rooms:
@@ -80,18 +67,13 @@ def get_form_with_POST_data(reservation, request):
     return form
 
 
-def get_day_names(calendar_obj: calendar.Calendar) -> List[str]:
-    """Utility function to generate day names"""
-    return [calendar.day_abbr[day] for day in calendar_obj.iterweekdays()]
-
-
 def get_previous_month(date_):
-    previous_month_date = date_ - relativedelta(months=1)
+    previous_month_date = date_.subtract(months=1)
     return previous_month_date
 
 
 def get_next_month(date_):
-    next_month_date = date_ + relativedelta(months=1)
+    next_month_date = date_.add(months=1)
     return next_month_date
 
 
@@ -111,64 +93,104 @@ def get_localized_day_names(firstweekday, locale="en"):
     return [format_date(d, "EEE", locale=locale) for d in week_dates]
 
 
-def create_date_form(date_):
-    form = DateForm(initial={"date": date_})
-    return form
+# def compile_dates_information(
+#     reservation: Reservation,
+#     _dates: Iterable[datetime],
+# ) -> List[Tuple[datetime, forms.Form, QuerySet]]:
+#     dates = []
+#     number_of_adults = reservation.get_number_of_adults()
+#     rooms_queryset = Room.objects.filter(
+#         pricing_tiers__number_of_adults=number_of_adults
+#     ).order_by("name")
+#     for _date in _dates:
+#         form = DateForm(initial={"date": _date})
+#         available_rooms = check_availability(
+#             number_of_adults=number_of_adults, queryset=rooms_queryset, _date=_date
+#         )
+#         # TODO: Figure out how to speed this up.
+#         #  The calls to `available_rooms` are causing about 74 queries.
+#         is_available = True if available_rooms else False
+#         if (
+#             not is_available
+#             and reservation.get_start_date() == _date
+#             or reservation.get_end_date() == _date
+#         ):
+#             reservation.reset_dates()
+#         dates.append((_date, form, is_available))
+#     return dates
 
 
 def compile_dates_information(
-    reservation: Reservation,
-    _dates: Iterable[datetime],
-) -> List[Tuple[datetime, forms.Form, bool]]:
-    dates = []
-    number_of_adults = reservation.get_number_of_adults()
-    rooms_queryset = Room.objects.filter(
-        pricing_tiers__number_of_adults=number_of_adults
-    ).order_by("name")
-    for _date in _dates:
-        form = create_date_form(_date)
-        available_rooms = check_availability(queryset=rooms_queryset, _date=_date)
-        # TODO: Figure out how to speed this up.
-        #  The calls to `available_rooms` are causing about 74 queries.
-        is_available = True if available_rooms else False
-        if (
-            not available_rooms
-            and reservation.get_start_date() == _date
-            or reservation.get_end_date() == _date
-        ):
-            reservation.reset_dates()
-        dates.append((_date, form, available_rooms))
-    return dates
+    reservation: Reservation, datetimes_iter: Iterable[pendulum.DateTime]
+):
+    rooms_reserved = []
+    for dt in datetimes_iter:
+        rooms_reserved.append({"datetime": dt, "room_ids": set()})
+
+    possible_rooms = reservation.get_possible_rooms_queryset()
+    possible_rooms_ids = {
+        room_id for room_id in possible_rooms.values_list("id", flat=True)
+    }
+    stays_query = Stay.objects.filter(
+        room__in=possible_rooms,
+        start__lte=max(datetimes_iter),
+        end__gte=min(datetimes_iter),
+    ).values("room_id", "start", "end")
+
+    for stay in stays_query:
+        stay_room_id = stay["room_id"]
+        start = stay["start"]
+        end = stay["end"]
+        for room in rooms_reserved:
+            #                        v < instead of <=
+            if start <= room["datetime"] < end:
+                room["room_ids"].add(stay_room_id)
+    dates_and_forms = []
+    start_date = reservation.get_start_date() if reservation.get_start_date() else None
+    end_date = reservation.get_end_date() if reservation.get_end_date() else None
+    for room in rooms_reserved:
+        room_is_available = not possible_rooms_ids.issubset(room["room_ids"])
+        if start_date or end_date:
+            if not room_is_available and start_date <= room["datetime"] <= end_date:
+                reservation.reset_dates()
+        form = (
+            DateTimeForm(initial={"datetime": room["datetime"]})
+            if room_is_available
+            else None
+        )
+        dates_and_forms.append([room["datetime"], form])
+    return dates_and_forms
 
 
-def before_range_start(new_range: datetime, range_start: datetime):
-    return new_range < range_start
+# We avoid converting standard datetime objects into Pendulum DateTimes by initializing them correctly here.
+class PendulumCalendar(calendar.Calendar):
+    def itermonthpens(self, year, month, default_hour=10):
+        pens = []
+        for y, m, d in self.itermonthdays3(year, month):
+            pens.append(pendulum.datetime(year=y, month=m, day=d, hour=default_hour))
+        return pens
 
 
-def generate_calendars(reservation: Reservation, date_: date):
-    tz = ZoneInfo(TIME_ZONE)
-    if date_:
-        the_date = date_
-    else:
-        the_date = datetime.now(tz=tz).date()
-    next_month_date = the_date + relativedelta(months=1)
-    cal = calendar.Calendar(firstweekday=calendar.MONDAY)
+def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
+    if not date_:
+        date_ = pendulum.now()
+    next_month_date = date_.add(months=1)
+    cal = PendulumCalendar(firstweekday=calendar.MONDAY)
+    selected_dates = cal.itermonthpens(date_.year, date_.month)
+    next_month_dates = cal.itermonthpens(next_month_date.year, next_month_date.month)
+
+    selected_dates_and_forms = compile_dates_information(reservation, selected_dates)
+    next_month_dates_and_forms = compile_dates_information(
+        reservation, next_month_dates
+    )
     current_language = get_language()
     weekdays = get_localized_day_names(cal.firstweekday, current_language)
-    the_date_dates_iter = cal.itermonthdates(the_date.year, the_date.month)
-    next_month_dates_iter = cal.itermonthdates(
-        next_month_date.year, next_month_date.month
-    )
-
     calendars = {
         "weekdays": weekdays,
-        "selected_month": {
-            "date": the_date,
-            "dates": compile_dates_information(reservation, the_date_dates_iter),
-        },
+        "selected_month": {"date": date_, "datetimes": selected_dates_and_forms},
         "next_month": {
             "date": next_month_date,
-            "dates": compile_dates_information(reservation, next_month_dates_iter),
+            "datetimes": next_month_dates_and_forms,
         },
     }
     return calendars

@@ -1,4 +1,4 @@
-{% var date=date %}
+{% var datetime=datetime %}
 {% var url=url %}
 <form action="{% url 'reservations:date_select' %}" method="post"
       hx-post="{% url 'reservations:date_select' %}"
@@ -8,6 +8,6 @@
   {{ children }}
   <button {% attrs name value %}
           class="mx-auto flex relative z-10 h-8 w-8 items-center justify-center tabular-nums {{ class }}">
-    <time datetime="{{ date|date:"Y-m-d" }}">{{ date.day }}</time>
+    <time datetime="{{ datetime }}">{{ datetime.day }}</time>
   </button>
 </form>
