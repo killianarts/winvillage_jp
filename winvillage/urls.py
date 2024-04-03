@@ -32,11 +32,11 @@ urlpatterns += i18n_patterns(
     path("", include("core.urls")),
     path("reservations/", include("reservations.urls")),
     path("winadmin/", include("winadmin.urls")),
-    path(
-        "jsi18n/recurrence/",
-        JavaScriptCatalog.as_view(packages=["recurrence"]),
-        name="javascript-catalog",
-    ),
+    # path(
+    #     "jsi18n/recurrence/",
+    #     JavaScriptCatalog.as_view(packages=["recurrence"]),
+    #     name="javascript-catalog",
+    # ),
     prefix_default_language=False,
 )
 
