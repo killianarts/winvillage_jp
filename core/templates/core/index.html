@@ -2,43 +2,43 @@
 {% load static i18n %}
 {% block extra_styles %}
   <style>
-   /* width */
-   .scrollbar {
-     --border-radius: 4px;
-   }
+      /* width */
+      .scrollbar {
+          --border-radius: 4px;
+      }
 
-   .scrollbar::-webkit-scrollbar {
-     width: 1rem;
-     height: 1rem;
-   }
+      .scrollbar::-webkit-scrollbar {
+          width: 1rem;
+          height: 1rem;
+      }
 
-   /* Track */
-   .scrollbar::-webkit-scrollbar-track {
-     background-color: rgba(28, 25, 23, 1);
-     border-radius: var(--border-radius);
-   }
+      /* Track */
+      .scrollbar::-webkit-scrollbar-track {
+          background-color: rgba(28, 25, 23, 1);
+          border-radius: var(--border-radius);
+      }
 
-   /* Handle */
-   .scrollbar::-webkit-scrollbar-thumb {
-     background-color: rgba(245, 245, 244, .5);
-     border-radius: var(--border-radius);
-   }
+      /* Handle */
+      .scrollbar::-webkit-scrollbar-thumb {
+          background-color: rgba(245, 245, 244, .5);
+          border-radius: var(--border-radius);
+      }
 
-   /* Handle on hover */
-   .scrollbar::-webkit-scrollbar-thumb:hover {
-     background-color: rgba(249, 115, 22, 1);
-     border-radius: var(--border-radius);
-   }
+      /* Handle on hover */
+      .scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: rgba(249, 115, 22, 1);
+          border-radius: var(--border-radius);
+      }
   </style>
 {% endblock %}
 {% block content_main %}
   <main class="pt-28 lg:pt-36 max-w-screen-2xl mx-auto">
     <div class="grid grid-cols-4 gap-7 mx-5 md:mx-20">
-      {% static 'core/img/winvillage.jpg' as image_url %}
-      {#% four_col_image_grid_cell variant="wide" background_image_url=image_url %#}
+      {% static 'core/img/winvillage@0.25x.jpg' as image_url %}
+      {#% four_col_image_grid_cell variant="wide" image_url=image_url %#}
       {% #four_col_grid_cell variant="wide" %}
       <div class="hidden">
-        {% four_col_image_grid_cell background_image_url=image_url %}
+        {% four_col_image_grid_cell image_url=image_url %}
       </div>
       <div class="grid gap-5 relative">
         <div class="hidden sm:block max-w-[200px]">
@@ -51,12 +51,11 @@
           {% translate '静かな空間、最高の風呂、美味しいバーベキュー。' %}
           {% translate '佐世保でのグランピング。' %}
         </p>
-        {% #outline_button %}{% translate '予約を作る' %}{% /outline_button %}
       </div>
 
       {% /four_col_grid_cell %}
 
-      {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
+      {% four_col_image_grid_cell variant="wide" image_url=image_url %}
       {% #four_col_grid_cell variant="wide" %}
       <div class="space-y-5">
         {% translate 'family room' as subheader %}
@@ -64,7 +63,7 @@
         {% winvillage_header number="00" subheader=subheader header=header %}
         <p>
           {% blocktranslate %}
-          自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いスペース。キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ダラダラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれて、最高の朝を向かう。
+            自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いスペース。キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ダラダラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれて、最高の朝を向かう。
           {% endblocktranslate %}
         </p>
       </div>
@@ -75,8 +74,8 @@
       {% translate '露天風呂の予約であなたや家族だけの贅沢の風呂になる。' as body %}
       {% four_col_grid_cell_content icon=icon alt="lock" header=header body=body %}
       {% /four_col_grid_cell %}
-      {% static 'core/img/inside1.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url variant="normal" %}
+      {% static 'core/img/inside1@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url variant="normal" %}
       {% #four_col_grid_cell %}
       {% static 'core/img/icons/fridge.svg' as icon %}
       {% translate '台所' as header %}
@@ -89,18 +88,18 @@
       {% translate '露天風呂も部屋の風呂も温泉水を使います。お風呂のアメニティもついています。' as body %}
       {% four_col_grid_cell_content icon=icon alt="water" header=header body=body %}
       {% /four_col_grid_cell %}
-      {% static 'core/img/bathroom.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url %}
-      {% static 'core/img/bathroom_storage.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url %}
+      {% static 'core/img/bathroom@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url %}
+      {% static 'core/img/bathroom_storage@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url %}
       {% #four_col_grid_cell variant="wide" %}
       {% static 'core/img/icons/bed.svg' as icon %}
       {% translate 'ベッド' as header %}
       {% translate 'セミダブルベッド２台の部屋とダブルベッド１台の部屋から選ぶことができます。ソファベッドと布団もついています。' as body %}
       {% four_col_grid_cell_content icon=icon alt="water" header=header body=body %}
       {% /four_col_grid_cell %}
-      {% static 'core/img/inside3.jpg' as image_url %}
-      {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
+      {% static 'core/img/inside3@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell variant="wide" image_url=image_url %}
       {% #four_col_grid_cell %}
       {% static 'core/img/icons/wifi.svg' as icon %}
       {% translate 'WIFI' as header %}
@@ -113,8 +112,8 @@
       {% translate '９０度のサウナの中に、砂時計で安全に疲れを取ることができます。' as body %}
       {% four_col_grid_cell_content icon=icon alt="thermometer" header=header body=body %}
       {% /four_col_grid_cell %}
-      {% static 'core/img/outdoor_bath.jpg' as image_url %}
-      {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
+      {% static 'core/img/outdoor_bath@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell variant="wide" image_url=image_url %}
       {% #four_col_grid_cell variant="wide" %}
       <div class="space-y-5">
         {% translate 'solitude' as subheader %}
@@ -122,7 +121,7 @@
         {% winvillage_header number="01" subheader=subheader header=header %}
         <p>
           {% blocktranslate %}
-          温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。
+            温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。
           {% endblocktranslate %}
         </p>
       </div>
@@ -139,10 +138,10 @@
       {% translate 'グリルで焼く冷凍食品、肉や野菜を購入できます。' as body %}
       {% four_col_grid_cell_content icon=icon alt="meat" header=header body=body %}
       {% /four_col_grid_cell %}
-      {% static 'core/img/people.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url %}
-      {% static 'core/img/grill.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url %}
+      {% static 'core/img/people@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url %}
+      {% static 'core/img/grill@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url %}
       {% #four_col_grid_cell variant="wide" %}
       <div class="space-y-5">
         {% translate 'casual camping' as subheader %}
@@ -150,7 +149,7 @@
         {% winvillage_header number="02" subheader=subheader header=header %}
         <p>
           {% blocktranslate %}
-          山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。ベテランのキャンパーでも、初心者でも楽しめます。
+            山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。ベテランのキャンパーでも、初心者でも楽しめます。
           {% endblocktranslate %}
         </p>
       </div>
@@ -161,8 +160,8 @@
       {% translate '夜にハンバーグや唐揚げの軽食を注文できます。朝食もついています。' as body %}
       {% four_col_grid_cell_content icon=icon alt="meat" header=header body=body %}
       {% /four_col_grid_cell %}
-      {% static 'core/img/outside3.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url %}
+      {% static 'core/img/outside3@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url %}
       {% #four_col_grid_cell variant="wide" %}
       <div class="space-y-5">
         {% translate 'family fun' as subheader %}
@@ -170,23 +169,23 @@
         {% winvillage_header number="03" subheader=subheader header=header %}
         <p>
           {% blocktranslate %}
-          おもちゃをレンタルして、子供達が安全で広いスペースの中に自然を楽しみながら遊びます。ママとパパはバルコニーでゆっくりご飯を作ったり飲み物を飲みます。
+            おもちゃをレンタルして、子供達が安全で広いスペースの中に自然を楽しみながら遊びます。ママとパパはバルコニーでゆっくりご飯を作ったり飲み物を飲みます。
           {% endblocktranslate %}
         </p>
       </div>
       {% /four_col_grid_cell %}
-      {% static 'core/img/kart.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url %}
-      {% static 'core/img/outside2.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url %}
+      {% static 'core/img/kart@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url %}
+      {% static 'core/img/outside2@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url %}
       {% #four_col_grid_cell %}
       {% static 'core/img/icons/toy-brick.svg' as icon %}
       {% translate 'おもちゃ' as header %}
       {% translate 'シャボン玉、ポップアップテント、色々なリモコンかーやレゴをレンタルできます。' as body %}
       {% four_col_grid_cell_content icon=icon alt="toys" header=header body=body %}
       {% /four_col_grid_cell %}
-      {% static 'core/img/plates.jpg' as image_url %}
-      {% four_col_image_grid_cell background_image_url=image_url %}
+      {% static 'core/img/plates@0.25x.jpg' as image_url %}
+      {% four_col_image_grid_cell image_url=image_url %}
     </div>
     <div class="mt-8 mx-5 md:mx-20">
       <div class="space-y-7">
@@ -198,12 +197,12 @@
           </p>
           <h2 class="text-5xl font-black ">{% translate '部屋の基本スペック' %}</h2>
         </div>
-        <div class="aspect-h-1 aspect-w-2">
-          {% static 'core/img/outside1.jpg' as image_url %}
-          {% four_col_image_grid_cell variant="wide" background_image_url=image_url %}
+        <div class="">
+          {% static 'core/img/outside1@0.25x.jpg' as image_url %}
+          {% four_col_image_grid_cell variant="wide" image_url=image_url %}
         </div>
-        <div class="mx-auto flex flex-wrap sm:flex-nowrap justify-center gap-8 lg:mx-0 sm:grid-cols-2">
-          <div class="rounded-lg border-3 border-stone-900 bg-stone-100 drop-shadow-hard-45-md p-8 xl:p-10">
+        <div class="mx-auto flex flex-col justify-center sm:flex-row gap-8 lg:mx-0 relative">
+          <div class="w-full rounded-lg border-3 border-stone-900 bg-stone-100 drop-shadow-hard-45-md p-8 xl:p-10 space-y-3">
             <h3 id="tier-00" class="text-lg font-semibold leading-8 text-gray-900">{% translate '００・０１号室' %}</h3>
             <p class="mt-4 text-sm leading-6 text-gray-600">{% translate 'より広いスペースの中にセミダブルベッド２台あります。' %}</p>
             <ul role="list" class="mt-8 space-y-3 text-sm leading-6 xl:mt-10 text-gray-900">
@@ -252,234 +251,241 @@
                 </svg>
                 マットレスと布団セット
               </li>
-              <h4 class="font-black">キチン</h4>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'IHコンロ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '電子レンジ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'トースター' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '冷蔵庫' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ケトル' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '調理器具' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '食器' %}
-              </li>
-              <p>{% translate '・・・などなど' %}</p>
-              <h4 class="font-black">バス</h4>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '温泉水' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'バスタオル' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'フェイスタオル' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'シャンプー' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'コンディショナー' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ボディソープ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ボディタオル' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'コットン・綿棒' %}
-              </li>
-              <h4>{% translate '・・・などなど' %}</h4>
-              <h4 class="font-black">{% translate 'その他' %}</h4>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'トイレ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '冷暖房' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '５０型テレビ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'VOD' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'WIFI' %}
-              </li>
             </ul>
+            <details>
+              <summary class="cursor-pointer">{% trans 'Room Details' %}</summary>
+              <div>
+                <ul class="space-y-3">
+                  <h4 class="font-black">キチン</h4>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'IHコンロ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '電子レンジ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'トースター' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '冷蔵庫' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'ケトル' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '調理器具' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '食器' %}
+                  </li>
+                  <p>{% translate '・・・などなど' %}</p>
+                  <h4 class="font-black">バス</h4>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '温泉水' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'バスタオル' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'フェイスタオル' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'シャンプー' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'コンディショナー' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'ボディソープ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'ボディタオル' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'コットン・綿棒' %}
+                  </li>
+                  <h4>{% translate '・・・などなど' %}</h4>
+                  <h4 class="font-black">{% translate 'その他' %}</h4>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'トイレ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '冷暖房' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '５０型テレビ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'VOD' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'WIFI' %}
+                  </li>
+                </ul>
+              </div>
+            </details>
           </div>
-          <div class="rounded-lg border-3 border-stone-900 bg-stone-100 drop-shadow-hard-45-md p-8 xl:p-10">
+          <div class="w-full rounded-lg border-3 border-stone-900 bg-stone-100 drop-shadow-hard-45-md p-8 xl:p-10 space-y-3">
             <h3 id="tier-02" class="text-lg font-semibold leading-8 text-gray-900">{% translate '０２・０３号室' %}</h3>
             <p class="mt-4 text-sm leading-6 text-gray-600">{% translate '００・０１号室と違ってダブルベッドが１台あります。' %}</p>
             <ul role="list" class="mt-8 space-y-3 text-sm leading-6 xl:mt-10 text-gray-900">
@@ -528,314 +534,239 @@
                 </svg>
                 マットレスと布団セット
               </li>
-              <h4 class="font-black">キチン</h4>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'IHコンロ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '電子レンジ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'トースター' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '冷蔵庫' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ケトル' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '調理器具' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '食器' %}
-              </li>
-              <p>{% translate '・・・などなど' %}</p>
-              <h4 class="font-black">バス</h4>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '温泉水' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'バスタオル' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'フェイスタオル' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'シャンプー' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'コンディショナー' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ボディソープ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ボディタオル' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'コットン・綿棒' %}
-              </li>
-              <h4>{% translate '・・・などなど' %}</h4>
-              <h4 class="font-black">{% translate 'その他' %}</h4>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'トイレ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '冷暖房' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '５０型テレビ' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'VOD' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'WIFI' %}
-              </li>
             </ul>
-          </div>
-        </div>
-        <div id="pricing" class="text-center space-y-2">
-          <p class="uppercase font-industrial tracking-widest">
-            <span class="align-text-bottom">+</span>{% translate 'pricing' %}<span class="align-text-bottom">+</span>
-          </p>
-          <h2 class="text-5xl font-black">{% translate '値段表' %}</h2>
-        </div>
-        <div class="mx-auto mt-8">
-          <div class="drop-shadow-hard-45-md">
-            <div class="grid sm:grid-cols-2 gap-7 text-xs">
-              <div class="lg:hidden p-5 border-3 border-stone-900 rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
-                <h3 class="font-black text-lg text-center pb-2">{% translate '00・01号室' %}</h3>
-                <ul class="divide-y divide-stone-400 pt-3">
-                  <li class="flex justify-between"><span class="font-black">１名</span><span>---</span></li>
-                  <li class="flex justify-between"><span class="font-black">２名</span><span>￥35,000</span></li>
-                  <li class="flex justify-between"><span class="font-black">３名</span><span>￥45,000</span></li>
-                  <li class="flex justify-between"><span class="font-black">４名</span><span>￥52,000</span></li>
-                  <li class="flex justify-between"><span class="font-black">５名</span><span>￥55,000</span></li>
-                  <li class="flex justify-between"><span class="font-black">６名</span><span>￥66,000</span></li>
+            <details class="">
+              <summary class="cursor-pointer">{% trans 'Room Details' %}</summary>
+              <div>
+                <ul class="space-y-3">
+                  <h4 class="font-black">キチン</h4>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'IHコンロ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '電子レンジ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'トースター' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '冷蔵庫' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'ケトル' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '調理器具' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '食器' %}
+                  </li>
+                  <p>{% translate '・・・などなど' %}</p>
+                  <h4 class="font-black">バス</h4>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '温泉水' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'バスタオル' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'フェイスタオル' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'シャンプー' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'コンディショナー' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'ボディソープ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'ボディタオル' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'コットン・綿棒' %}
+                  </li>
+                  <h4>{% translate '・・・などなど' %}</h4>
+                  <h4 class="font-black">{% translate 'その他' %}</h4>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'トイレ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '冷暖房' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate '５０型テレビ' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'VOD' %}
+                  </li>
+                  <li class="flex gap-x-3">
+                    <svg class="h-6 w-5 flex-none text-stone-900"
+                         viewBox="0 0 20 20"
+                         fill="currentColor"
+                         aria-hidden="true">
+                      <path fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    {% translate 'WIFI' %}
+                  </li>
                 </ul>
               </div>
-              <div class="lg:hidden p-5 border-3 border-stone-900 rounded-lg bg-stone-100 mb-5 divide-y divide-stone-600">
-                <h3 class="font-black text-lg text-center pb-2">{% translate '02・03号室' %}</h3>
-                <ul class="divide-y divide-stone-400 pt-3">
-                  <li class="flex justify-between"><span class="font-black">１名</span><span>￥20,000</span></li>
-                  <li class="flex justify-between"><span class="font-black">２名</span><span>￥26,000</span></li>
-                  <li class="flex justify-between"><span class="font-black">３名</span><span>￥33,000</span></li>
-                  <li class="flex justify-between"><span class="font-black">４名</span><span>￥40,000</span></li>
-                  <li class="flex justify-between"><span class="font-black">５名</span><span>---</span></li>
-                  <li class="flex justify-between"><span class="font-black">６名</span><span>---</span></li>
-                </ul>
-              </div>
-            </div>
-            <div class="max-w-fit mx-auto hidden lg:block shadow border-3 border-b-0 sm:border-3 border-stone-900 rounded-lg bg-stone-100">
-              <table class="divide-y divide-stone-400">
-                <thead>
-                  <tr>
-                    <th id="spacer"
-                        scope="col"
-                        class="py-3.5 pl-4 pr-3 text-left text-sm font-black text-stone-900 sm:pl-6">{% translate '号室' %}</th>
-                    <th scope="col"
-                        class="py-3.5 pl-4 pr-3 text-left text-sm font-black text-stone-900">{% translate '１名' %}</th>
-                    <th scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '２名' %}</th>
-                    <th scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '３名' %}</th>
-                    <th scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '４名' %}</th>
-                    <th scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '５名' %}</th>
-                    <th scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-black text-stone-900">{% translate '６名' %}</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-stone-400">
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
-                      00<span class="hidden lg:inline">・</span><br class="lg:hidden">01
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥35,000</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥45,000</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥52,000</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥55,000</td>
-                    <td class="whitespace-nowrap abbreviate px-3 py-4 text-sm text-stone-900">￥66,000</td>
-                  </tr>
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-black text-stone-900 sm:pl-6">
-                      02<span class="hidden lg:inline">・</span><br class="lg:hidden">03
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥20,000</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥26,000</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥33,000</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900">￥40,000</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-900"></td>
-                  </tr>
-                  <!-- More people... -->
-                </tbody>
-              </table>
-            </div>
+            </details>
           </div>
         </div>
         <div id="access" class="text-center space-y-2">
@@ -852,11 +783,13 @@
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
-          {% static 'core/img/front.jpg' as image_url %}
-          <div style="background-image: url({{ image_url }});" class="bg-cover bg-center min-h-[30dvh] border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
+          {% static 'core/img/front@0.25x.jpg' as image_url %}
+          <div style="background-image: url({{ image_url }});"
+               class="bg-cover bg-center min-h-[30dvh] border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
           </div>
-          {% static 'core/img/front_logo.jpg' as image_url %}
-          <div style="background-image: url({{ image_url }});" class="bg-cover bg-center min-h-[30dvh] border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
+          {% static 'core/img/front_logo@0.25x.jpg' as image_url %}
+          <div style="background-image: url({{ image_url }});"
+               class="bg-cover bg-center min-h-[30dvh] border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
           </div>
         </div>
       </div>

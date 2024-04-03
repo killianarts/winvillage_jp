@@ -1,6 +1,6 @@
-/*
-! tailwindcss v3.4.0 | MIT License | https://tailwindcss.com
-*/
+/*@import "/static/css/tailwind.css";*/
+
+/*! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com*/
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -854,6 +854,42 @@ select {
   top: 0px;
 }
 
+.top-1\/2 {
+  top: 50%;
+}
+
+.top-\[9999px\] {
+  top: 9999px;
+}
+
+.top-\[-9999px\] {
+  top: -9999px;
+}
+
+.-top-\[9999px\] {
+  top: -9999px;
+}
+
+.-bottom-\[9999px\] {
+  bottom: -9999px;
+}
+
+.-left-\[9999px\] {
+  left: -9999px;
+}
+
+.-right-\[9999px\] {
+  right: -9999px;
+}
+
+.left-1 {
+  left: 0.25rem;
+}
+
+.left-1\/2 {
+  left: 50%;
+}
+
 .isolate {
   isolation: isolate;
 }
@@ -916,6 +952,10 @@ select {
 
 .m-3 {
   margin: 0.75rem;
+}
+
+.m-auto {
+  margin: auto;
 }
 
 .-mx-2 {
@@ -1006,6 +1046,10 @@ select {
 
 .ml-3 {
   margin-left: 0.75rem;
+}
+
+.ml-5 {
+  margin-left: 1.25rem;
 }
 
 .mr-16 {
@@ -1112,12 +1156,32 @@ select {
   height: 2rem;
 }
 
+.h-\[auto\] {
+  height: auto;
+}
+
 .h-full {
   height: 100%;
 }
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[10\] {
+  height: 10;
+}
+
+.h-\[100\] {
+  height: 100;
+}
+
+.h-\[100vh\] {
+  height: 100vh;
+}
+
+.h-auto {
+  height: auto;
 }
 
 .max-h-16 {
@@ -1134,6 +1198,34 @@ select {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-\[2\] {
+  min-height: 2;
+}
+
+.min-h-\[2--\] {
+  min-height: 2--;
+}
+
+.min-h-\[20\] {
+  min-height: 20;
+}
+
+.min-h-\[200p\] {
+  min-height: 200p;
+}
+
+.min-h-full {
+  min-height: 100%;
+}
+
+.min-h-\[auto\] {
+  min-height: auto;
+}
+
+.min-h-\[300px\] {
+  min-height: 300px;
 }
 
 .w-0 {
@@ -1268,6 +1360,36 @@ select {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.-translate-x-1 {
+  --tw-translate-x: -0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-translate-x-1\/2 {
+  --tw-translate-x: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-translate-y-\[50\%\] {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-translate-x-\[505\] {
+  --tw-translate-x: -505;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-translate-x-\[50\%\] {
+  --tw-translate-x: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -1302,10 +1424,6 @@ select {
 
 .flex-col {
   flex-direction: column;
-}
-
-.flex-wrap {
-  flex-wrap: wrap;
 }
 
 .place-items-center {
@@ -1457,11 +1575,6 @@ select {
   border-color: rgb(214 211 209 / var(--tw-divide-opacity));
 }
 
-.divide-stone-400 > :not([hidden]) ~ :not([hidden]) {
-  --tw-divide-opacity: 1;
-  border-color: rgb(168 162 158 / var(--tw-divide-opacity));
-}
-
 .divide-stone-50 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgb(250 250 249 / var(--tw-divide-opacity));
@@ -1469,11 +1582,6 @@ select {
 
 .divide-stone-500\/25 > :not([hidden]) ~ :not([hidden]) {
   border-color: rgb(120 113 108 / 0.25);
-}
-
-.divide-stone-600 > :not([hidden]) ~ :not([hidden]) {
-  --tw-divide-opacity: 1;
-  border-color: rgb(87 83 78 / var(--tw-divide-opacity));
 }
 
 .justify-self-end {
@@ -1520,6 +1628,11 @@ select {
   border-radius: 0.125rem;
 }
 
+.rounded-l {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -1530,10 +1643,6 @@ select {
 
 .border-3 {
   border-width: 3px;
-}
-
-.border-b-0 {
-  border-bottom-width: 0;
 }
 
 .border-b-2 {
@@ -1747,6 +1856,11 @@ select {
   background-color: rgb(254 249 195 / var(--tw-bg-opacity));
 }
 
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity));
+}
+
 .bg-cover {
   background-size: cover;
 }
@@ -1761,6 +1875,16 @@ select {
 
 .stroke-\[3\] {
   stroke-width: 3;
+}
+
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.object-fill {
+  -o-object-fit: fill;
+     object-fit: fill;
 }
 
 .p-1 {
@@ -1879,6 +2003,11 @@ select {
   padding-bottom: 1.5rem;
 }
 
+.py-\[50\%\] {
+  padding-top: 50%;
+  padding-bottom: 50%;
+}
+
 .pb-2 {
   padding-bottom: 0.5rem;
 }
@@ -1913,10 +2042,6 @@ select {
 
 .pt-28 {
   padding-top: 7rem;
-}
-
-.pt-3 {
-  padding-top: 0.75rem;
 }
 
 .pt-5 {
@@ -2047,11 +2172,6 @@ select {
 
 .tracking-widest {
   letter-spacing: 0.1em;
-}
-
-.text-black {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .text-blue-500 {
@@ -2388,6 +2508,11 @@ select {
   content: var(--tw-content);
 }
 
+.odd\:bg-stone-100:nth-child(odd) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 244 / var(--tw-bg-opacity));
+}
+
 .hover\:translate-x-1:hover {
   --tw-translate-x: 0.25rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -2395,6 +2520,12 @@ select {
 
 .hover\:translate-y-1:hover {
   --tw-translate-y: 0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.hover\:scale-105:hover {
+  --tw-scale-x: 1.05;
+  --tw-scale-y: 1.05;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2540,6 +2671,17 @@ select {
   text-decoration-line: underline;
 }
 
+.hover\:ring-2:hover {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.hover\:ring-stone-500:hover {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(120 113 108 / var(--tw-ring-opacity));
+}
+
 .hover\:ring-transparent:hover {
   --tw-ring-color: transparent;
 }
@@ -2658,16 +2800,8 @@ select {
     max-width: 24rem;
   }
 
-  .sm\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .sm\:flex-row {
     flex-direction: row;
-  }
-
-  .sm\:flex-nowrap {
-    flex-wrap: nowrap;
   }
 
   .sm\:place-items-center {
@@ -2682,10 +2816,6 @@ select {
 
   .sm\:rounded-lg {
     border-radius: 0.5rem;
-  }
-
-  .sm\:border-3 {
-    border-width: 3px;
   }
 
   .sm\:p-6 {
@@ -2709,10 +2839,6 @@ select {
 
   .sm\:pl-0 {
     padding-left: 0px;
-  }
-
-  .sm\:pl-6 {
-    padding-left: 1.5rem;
   }
 
   .sm\:text-left {
@@ -2813,14 +2939,6 @@ select {
     margin-left: 18rem;
   }
 
-  .lg\:block {
-    display: block;
-  }
-
-  .lg\:inline {
-    display: inline;
-  }
-
   .lg\:flex {
     display: flex;
   }
@@ -2914,3 +3032,380 @@ select {
     display: inline;
   }
 }
+
+/*@layer components {*/
+
+.recurrence-widget {
+  border: 1px solid #ccc;
+}
+
+.recurrence-widget .panel {
+  border-bottom: 1px solid #ddd;
+}
+
+.recurrence-widget select {
+  border-radius: 0.125rem;
+  margin: 0 .5em;
+}
+
+.recurrence-widget input[type=text], .recurrence-widget input.date-field, .recurrence-widget input[type=checkbox], .recurrence-widget input[name=interval], .recurrence-widget input[name=count] {
+  margin: 0.25rem;
+  border-radius: 0.125rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(168 162 158 / var(--tw-border-opacity));
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.recurrence-widget input[type=radio] {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.recurrence-widget a.recurrence-label {
+  display: block;
+  cursor: pointer;
+  padding: .5em .75em;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-right: 3em;
+  color: black;
+}
+
+.recurrence-widget .remove,
+.recurrence-widget .remove:link,
+.recurrence-widget .remove:visited {
+  float: left;
+  padding: .25em .5em;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  color: #555;
+  line-height: 1.4em;
+}
+
+.recurrence-widget .remove:hover {
+  color: #a00;
+}
+
+.recurrence-widget .control {
+  padding: .5em 1em .5em .5em;
+}
+
+.recurrence-widget .add-button {
+  /*color: green;*/
+  --tw-text-opacity: 1;
+  color: rgb(28 25 23 / var(--tw-text-opacity));
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.recurrence-widget .add-button:hover {
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity));
+}
+
+.recurrence-widget .plus {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-right: .5em;
+}
+
+.recurrence-widget .control .add-date {
+  padding-left: 1em;
+  margin-left: 1em;
+  border-left: 1px solid #ddd;
+}
+
+.recurrence-widget .freq {
+  display: inline
+}
+
+.recurrence-widget .interval {
+  display: inline;
+  padding-left: 1em;
+}
+
+.recurrence-widget form {
+  overflow: hidden;
+  padding: .5em 2.2em;
+  border-top: 1px solid #ddd;
+}
+
+.recurrence-widget .form {
+  padding: .5em 0;
+}
+
+.recurrence-widget .radio {
+  margin-left: 0;
+}
+
+.recurrence-widget .radio:before {
+  padding: 0px;
+}
+
+.recurrence-widget .form ul {
+  margin: 0;
+  padding: 0;
+}
+
+.recurrence-widget .form ul li {
+  list-style-type: none;
+}
+
+.recurrence-widget .section {
+  margin: .5em 1em;
+}
+
+.recurrence-widget .until-count {
+  margin: 0;
+  padding: 0;
+}
+
+.recurrence-widget .until-count li {
+  margin: 0;
+  padding: 0;
+  display: inline;
+  list-style-type: none;
+}
+
+.recurrence-widget .until-count .count {
+  padding-left: 1em;
+}
+
+/*.recurrence-widget .monthday .recurrence-grid {*/
+
+/*    @apply bg-red-500*/
+
+/*}*/
+
+.recurrence-widget .recurrence-grid {
+  width: 100%;
+}
+
+.recurrence-widget .recurrence-grid tr:nth-child(even) {
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(231 229 228 / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 244 / var(--tw-bg-opacity));
+}
+
+.recurrence-widget .recurrence-grid td {
+  /*text-align: center;*/
+  cursor: pointer;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.recurrence-widget .recurrence-grid td:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(231 229 228 / var(--tw-bg-opacity));
+}
+
+.recurrence-widget .recurrence-grid td.active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(231 229 228 / var(--tw-bg-opacity));
+}
+
+.recurrence-widget .recurrence-grid td.active:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(214 211 209 / var(--tw-bg-opacity));
+}
+
+/*.recurrence-widget .recurrence-grid td.empty {*/
+
+/*    border: 0;*/
+
+/*}*/
+
+/*.recurrence-widget .grid-disabled td.active {*/
+
+/*    background-color: #ddd;*/
+
+/*}*/
+
+.recurrence-widget .disabled {
+  opacity: 0.75;
+}
+
+.recurrence-widget .limit ul {
+  margin-top: .5em;
+}
+
+.recurrence-widget .weekly .section {
+  margin: 1em 0;
+}
+
+.recurrence-widget .weekly tr {
+}
+
+.recurrence-widget .weekly td {
+  cursor: pointer;
+  border-width: 1px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+
+.recurrence-widget .weekly td:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(231 229 228 / var(--tw-bg-opacity));
+}
+
+.recurrence-widget .yearly table {
+  margin: .5em 0 1em 0;
+}
+
+.recurrence-widget .yearly td {
+  padding: 1em 1.5em;
+}
+
+.recurrence-widget .checkbox {
+  margin-left: 0;
+}
+
+.recurrence-widget .checkbox:before {
+  width: auto;
+  height: auto;
+}
+
+.recurrence-widget .until-count {
+  margin-left: 1.5em;
+}
+
+.recurrence-widget .mode {
+  padding: .25em 0 1em 0;
+}
+
+.recurrence-widget .date-selector .calendar-button {
+  background: url('../img/recurrence-calendar-icon.png') no-repeat center;
+  padding: .25em;
+  border: 1px black;
+}
+
+.recurrence-widget.hidden, .recurrence-widget .hidden {
+  display: none;
+}
+
+.recurrence-calendar {
+  position: absolute;
+  background-color: white;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  /*outline: 3px solid white;*/
+  margin: 0;
+}
+
+.recurrence-calendar td {
+  padding: 0;
+}
+
+.recurrence-calendar a,
+.recurrence-calendar a:link,
+.recurrence-calendar a:visited {
+  color: #555;
+  font-weight: bold;
+}
+
+.recurrence-calendar .year,
+.recurrence-calendar .navigation {
+  border-right: 1px solid #ccc;
+}
+
+.recurrence-calendar .body td {
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.recurrence-calendar .body td.header {
+  border-top: 1px solid #ccc;
+  font-weight: bold;
+  color: #555;
+}
+
+.recurrence-calendar .body td.header,
+.recurrence-calendar .body td.day {
+  padding: .25em;
+  text-align: center;
+  vertical-align: center;
+}
+
+.recurrence-calendar .body td.day {
+  cursor: pointer;
+}
+
+.recurrence-calendar .body td.day:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 237 213 / var(--tw-bg-opacity));
+}
+
+.recurrence-calendar .body td.active {
+  /*background-color: #ddd;*/
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity))
+}
+
+.recurrence-calendar .body td.active:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 88 12 / var(--tw-bg-opacity));
+}
+
+.recurrence-calendar .body td.empty {
+  --tw-bg-opacity: 1;
+  background-color: rgb(231 229 228 / var(--tw-bg-opacity));
+}
+
+.recurrence-calendar .year {
+  padding-top: .25em;
+  padding-right: 2em;
+  text-align: center;
+}
+
+.recurrence-calendar .navigation {
+  width: 100%;
+  text-align: center;
+}
+
+.recurrence-calendar .navigation td.prev-year,
+.recurrence-calendar .navigation td.next-year,
+.recurrence-calendar .navigation td.prev-month,
+.recurrence-calendar .navigation td.next-month {
+  /*width: 1%;*/
+  font-size: .8em;
+}
+
+.recurrence-calendar .remove,
+.recurrence-calendar .remove:link,
+.recurrence-calendar .remove:visited {
+  float: left;
+  padding: .1em .25em;
+  padding-bottom: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  color: #555;
+  line-height: 1.2em;
+}
+
+.recurrence-calendar .remove:hover {
+  color: #a00;
+}
+
+.recurrence-calendar .footer {
+  height: .5em;
+  overflow: hidden;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+/*}*/

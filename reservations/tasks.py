@@ -1,9 +1,15 @@
-from celery import shared_task
+from celery import shared_task, Celery
 from sendgrid import SendGridAPIClient, Mail
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
 from reservations.models import Reservation
 from winvillage import settings
+import os
+
+app = Celery("winvillage")
+app.conf.update(
+    BROKER_URL=os.environ["REDIS_URL"], CELERY_RESULT_BACKEND=os.environ["REDIS_URL"]
+)
 
 
 @shared_task

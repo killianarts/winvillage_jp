@@ -34,11 +34,12 @@ django-phonenumber-field = { extras = ["phonenumberslite"], version = "^7.2.0" }
 celery = { extras = ["redis"], version = "^5.3.4" }
 babel = "^2.13.1"
 honcho = "^1.1.0"
-pendulum = "^3.0.0"
+pendulum = {extras = ["test"], version = "^3.0.0"}
 django = "^5.0.1"
 ruff = "^0.1.15"
 slippers = "^0.6.2"
 django-debug-toolbar = "^4.3.0"
+django-recurrence = "^1.11.1"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"

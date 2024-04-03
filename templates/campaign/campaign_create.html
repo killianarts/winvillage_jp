@@ -1,0 +1,16 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n static %}
+{% block extra_scripts %}
+  <script src="{% url 'javascript-catalog' %}"></script>
+{% endblock %}
+{% block extra_styles %}
+  <link rel="stylesheet" href="{% static 'recurrence/css/recurrence.css' %}">
+{% endblock %}
+{% block content %}
+  <form action="" class="">
+    <div id="container" class="max-w-lg">
+      {{ form.media }}
+      {{ form }}
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,538 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-24 23:11+0100\n"
+"PO-Revision-Date: 2024-03-29 04:23+0000\n"
+"Last-Translator: None None <micah@killianarts.online>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Translated-Using: django-rosetta 0.9.9\n"
+
+#: static/recurrence/js/recurrence-widget.js:1609
+msgctxt "date"
+msgid "%l, %F %j, %Y"
+msgstr ""
+
+#: static/recurrence/js/recurrence-widget.js:1774
+msgid "including"
+msgstr "含めて"
+
+#: static/recurrence/js/recurrence-widget.js:1774
+msgid "excluding"
+msgstr "除いて"
+
+#: static/recurrence/js/recurrence-widget.js:1778
+msgid "Frequency"
+msgstr "回数"
+
+#: static/recurrence/js/recurrence-widget.js:1779
+msgid "On the"
+msgstr "に"
+
+#: static/recurrence/js/recurrence-widget.js:1780
+msgid "Each"
+msgstr "各"
+
+#: static/recurrence/js/recurrence-widget.js:1781
+msgid "Every"
+msgstr "毎"
+
+#: static/recurrence/js/recurrence-widget.js:1782
+msgid "Until"
+msgstr "まで"
+
+#: static/recurrence/js/recurrence-widget.js:1783
+msgid "Occurs %(number)s time"
+msgstr " %(number)s回"
+
+#: static/recurrence/js/recurrence-widget.js:1784
+msgid "Occurs %(number)s times"
+msgstr " %(number)s回"
+
+#: static/recurrence/js/recurrence-widget.js:1785
+msgid "Date"
+msgstr "日付"
+
+#: static/recurrence/js/recurrence-widget.js:1786
+msgid "Time"
+msgstr "時間"
+
+#: static/recurrence/js/recurrence-widget.js:1787
+msgid "Repeat until"
+msgstr "この日付、もしくはこの回数まで"
+
+#: static/recurrence/js/recurrence-widget.js:1788
+msgid "Exclude these occurences"
+msgstr "これらを除く"
+
+#: static/recurrence/js/recurrence-widget.js:1789
+msgid "Exclude this date"
+msgstr "この日付を除く"
+
+#: static/recurrence/js/recurrence-widget.js:1790
+msgid "Add rule"
+msgstr "ルールを追加する"
+
+#: static/recurrence/js/recurrence-widget.js:1791
+msgid "Add date"
+msgstr "日付を追加する"
+
+#: static/recurrence/js/recurrence-widget.js:1792
+msgid "Remove"
+msgstr "削除"
+
+#: static/recurrence/js/recurrence-widget.js:1793
+msgid "Calendar"
+msgstr "カレンダー"
+
+#: static/recurrence/js/recurrence.js:218
+msgctxt "Until date format"
+msgid "%Y-%m-%d"
+msgstr ""
+
+#: static/recurrence/js/recurrence.js:1017
+msgid "midnight"
+msgstr "真夜"
+
+#: static/recurrence/js/recurrence.js:1018
+msgid "noon"
+msgstr "真昼"
+
+#: static/recurrence/js/recurrence.js:1019
+msgid "on the %(items)s"
+msgstr "%(items)sに"
+
+#: static/recurrence/js/recurrence.js:1020
+msgid "every %(number)s %(freq)s"
+msgstr "毎%(number)s %(freq)s"
+
+#: static/recurrence/js/recurrence.js:1021
+msgid "each %(items)s"
+msgstr "各%(items)s"
+
+#: static/recurrence/js/recurrence.js:1022
+msgid "occuring %(number)s time"
+msgstr "%(number)s回"
+
+#: static/recurrence/js/recurrence.js:1023
+msgid "occuring %(number)s times"
+msgstr "%(number)s回"
+
+#: static/recurrence/js/recurrence.js:1024
+msgid "until %(date)s"
+msgstr "%(date)sまで"
+
+#: static/recurrence/js/recurrence.js:1028
+msgid "year"
+msgstr "年"
+
+#: static/recurrence/js/recurrence.js:1028
+msgid "month"
+msgstr "月"
+
+#: static/recurrence/js/recurrence.js:1028
+msgid "week"
+msgstr "週間"
+
+#: static/recurrence/js/recurrence.js:1028
+msgid "day"
+msgstr "日"
+
+#: static/recurrence/js/recurrence.js:1029
+msgid "hour"
+msgstr "時間"
+
+#: static/recurrence/js/recurrence.js:1029
+msgid "minute"
+msgstr "分"
+
+#: static/recurrence/js/recurrence.js:1029
+msgid "second"
+msgstr "秒"
+
+#: static/recurrence/js/recurrence.js:1032
+msgid "years"
+msgstr "年"
+
+#: static/recurrence/js/recurrence.js:1032
+msgid "months"
+msgstr "月"
+
+#: static/recurrence/js/recurrence.js:1032
+msgid "weeks"
+msgstr "週間"
+
+#: static/recurrence/js/recurrence.js:1032
+msgid "days"
+msgstr "日"
+
+#: static/recurrence/js/recurrence.js:1033
+msgid "hours"
+msgstr "時間"
+
+#: static/recurrence/js/recurrence.js:1033
+msgid "minutes"
+msgstr "分"
+
+#: static/recurrence/js/recurrence.js:1033
+msgid "seconds"
+msgstr "秒"
+
+#: static/recurrence/js/recurrence.js:1036
+msgid "annually"
+msgstr "年に"
+
+#: static/recurrence/js/recurrence.js:1036
+msgid "monthly"
+msgstr "月に"
+
+#: static/recurrence/js/recurrence.js:1036
+msgid "weekly"
+msgstr "週間に"
+
+#: static/recurrence/js/recurrence.js:1036
+msgid "daily"
+msgstr "1日に"
+
+#: static/recurrence/js/recurrence.js:1037
+msgid "hourly"
+msgstr "1時間に"
+
+#: static/recurrence/js/recurrence.js:1037
+msgid "minutely"
+msgstr "1分に"
+
+#: static/recurrence/js/recurrence.js:1037
+msgid "secondly"
+msgstr "1秒に"
+
+#: static/recurrence/js/recurrence.js:1040
+msgid "Monday"
+msgstr "月曜日"
+
+#: static/recurrence/js/recurrence.js:1040
+msgid "Tuesday"
+msgstr "火曜日"
+
+#: static/recurrence/js/recurrence.js:1040
+msgid "Wednesday"
+msgstr "水曜日"
+
+#: static/recurrence/js/recurrence.js:1040
+msgid "Thursday"
+msgstr "木曜日"
+
+#: static/recurrence/js/recurrence.js:1041
+msgid "Friday"
+msgstr "金曜日"
+
+#: static/recurrence/js/recurrence.js:1041
+msgid "Saturday"
+msgstr "土曜日"
+
+#: static/recurrence/js/recurrence.js:1041
+msgid "Sunday"
+msgstr "日曜日"
+
+#: static/recurrence/js/recurrence.js:1044
+msgid "Mon"
+msgstr "月曜"
+
+#: static/recurrence/js/recurrence.js:1044
+msgid "Tue"
+msgstr "火曜"
+
+#: static/recurrence/js/recurrence.js:1044
+msgid "Wed"
+msgstr "水曜"
+
+#: static/recurrence/js/recurrence.js:1044
+msgid "Thu"
+msgstr "木曜"
+
+#: static/recurrence/js/recurrence.js:1045
+msgid "Fri"
+msgstr "金曜"
+
+#: static/recurrence/js/recurrence.js:1045
+msgid "Sat"
+msgstr "土曜"
+
+#: static/recurrence/js/recurrence.js:1045
+msgid "Sun"
+msgstr "日曜"
+
+#: static/recurrence/js/recurrence.js:1048
+msgctxt "Monday first letter"
+msgid "M"
+msgstr "月"
+
+#: static/recurrence/js/recurrence.js:1049
+msgctxt "Tuesday first letter"
+msgid "T"
+msgstr "火"
+
+#: static/recurrence/js/recurrence.js:1050
+msgctxt "Wednesday first letter"
+msgid "W"
+msgstr "水"
+
+#: static/recurrence/js/recurrence.js:1051
+msgctxt "Thursday first letter"
+msgid "T"
+msgstr "木"
+
+#: static/recurrence/js/recurrence.js:1052
+msgctxt "Friday first letter"
+msgid "F"
+msgstr "金"
+
+#: static/recurrence/js/recurrence.js:1053
+msgctxt "Saturday first letter"
+msgid "S"
+msgstr "土"
+
+#: static/recurrence/js/recurrence.js:1054
+msgctxt "Sunday first letter"
+msgid "S"
+msgstr "日"
+
+#: static/recurrence/js/recurrence.js:1057
+msgid "first %(weekday)s"
+msgstr "1番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1058
+msgid "second %(weekday)s"
+msgstr "2番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1059
+msgid "third %(weekday)s"
+msgstr "3番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1060
+msgid "fourth %(weekday)s"
+msgstr "4番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1061
+#: static/recurrence/js/recurrence.js:1070
+msgid "last %(weekday)s"
+msgstr "最後の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1062
+msgid "second last %(weekday)s"
+msgstr "最後から2番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1063
+msgid "third last %(weekday)s"
+msgstr "最後から３番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1066
+msgid "1st %(weekday)s"
+msgstr "1番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1067
+msgid "2nd %(weekday)s"
+msgstr "2番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1068
+msgid "3rd %(weekday)s"
+msgstr "3番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1069
+msgid "4th %(weekday)s"
+msgstr "4番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1071
+msgid "2nd last %(weekday)s"
+msgstr "最後から2番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1072
+msgid "3rd last %(weekday)s"
+msgstr "最後から３番目の%(weekday)s"
+
+#: static/recurrence/js/recurrence.js:1075
+#: static/recurrence/js/recurrence.js:1081
+msgid "last"
+msgstr "最後の"
+
+#: static/recurrence/js/recurrence.js:1076
+msgid "second last"
+msgstr "最後から2番目の"
+
+#: static/recurrence/js/recurrence.js:1077
+msgid "third last"
+msgstr "最後から3番目の"
+
+#: static/recurrence/js/recurrence.js:1078
+msgid "fourth last"
+msgstr "最後から4番目の"
+
+#: static/recurrence/js/recurrence.js:1082
+msgid "2nd last"
+msgstr "最後から2番目の"
+
+#: static/recurrence/js/recurrence.js:1083
+msgid "3rd last"
+msgstr "最後から3番目の"
+
+#: static/recurrence/js/recurrence.js:1084
+msgid "4th last"
+msgstr "最後から4番目の"
+
+#: static/recurrence/js/recurrence.js:1087
+msgid "January"
+msgstr "1月"
+
+#: static/recurrence/js/recurrence.js:1087
+msgid "February"
+msgstr "2月"
+
+#: static/recurrence/js/recurrence.js:1087
+#: static/recurrence/js/recurrence.js:1099
+msgid "March"
+msgstr "3月"
+
+#: static/recurrence/js/recurrence.js:1088
+#: static/recurrence/js/recurrence.js:1100
+msgid "April"
+msgstr "4月"
+
+#: static/recurrence/js/recurrence.js:1088
+#: static/recurrence/js/recurrence.js:1094
+#: static/recurrence/js/recurrence.js:1100
+msgctxt "month name"
+msgid "May"
+msgstr "5月"
+
+#: static/recurrence/js/recurrence.js:1088
+#: static/recurrence/js/recurrence.js:1100
+msgid "June"
+msgstr "6月"
+
+#: static/recurrence/js/recurrence.js:1089
+#: static/recurrence/js/recurrence.js:1101
+msgid "July"
+msgstr "7月"
+
+#: static/recurrence/js/recurrence.js:1089
+msgid "August"
+msgstr "8月"
+
+#: static/recurrence/js/recurrence.js:1089
+msgid "September"
+msgstr "9月"
+
+#: static/recurrence/js/recurrence.js:1090
+msgid "October"
+msgstr "10月"
+
+#: static/recurrence/js/recurrence.js:1090
+msgid "November"
+msgstr "11月"
+
+#: static/recurrence/js/recurrence.js:1090
+msgid "December"
+msgstr "12月"
+
+#: static/recurrence/js/recurrence.js:1093
+msgid "Jan"
+msgstr "1月"
+
+#: static/recurrence/js/recurrence.js:1093
+msgid "Feb"
+msgstr "2月"
+
+#: static/recurrence/js/recurrence.js:1093
+msgid "Mar"
+msgstr "3月"
+
+#: static/recurrence/js/recurrence.js:1094
+msgid "Apr"
+msgstr "4月"
+
+#: static/recurrence/js/recurrence.js:1094
+msgid "Jun"
+msgstr "6月"
+
+#: static/recurrence/js/recurrence.js:1095
+msgid "Jul"
+msgstr "7月"
+
+#: static/recurrence/js/recurrence.js:1095
+msgid "Aug"
+msgstr "8月"
+
+#: static/recurrence/js/recurrence.js:1095
+msgid "Sep"
+msgstr "9月"
+
+#: static/recurrence/js/recurrence.js:1096
+msgid "Oct"
+msgstr "10月"
+
+#: static/recurrence/js/recurrence.js:1096
+msgid "Nov"
+msgstr "11月"
+
+#: static/recurrence/js/recurrence.js:1096
+msgid "Dec"
+msgstr "12月"
+
+#: static/recurrence/js/recurrence.js:1099
+msgid "Jan."
+msgstr "1月"
+
+#: static/recurrence/js/recurrence.js:1099
+msgid "Feb."
+msgstr "2月"
+
+#: static/recurrence/js/recurrence.js:1101
+msgid "Aug."
+msgstr "8月"
+
+#: static/recurrence/js/recurrence.js:1101
+msgid "Sept."
+msgstr "9月"
+
+#: static/recurrence/js/recurrence.js:1102
+msgid "Oct."
+msgstr "10月"
+
+#: static/recurrence/js/recurrence.js:1102
+msgid "Nov."
+msgstr "11月"
+
+#: static/recurrence/js/recurrence.js:1102
+msgid "Dec."
+msgstr "12月"
+
+#: static/recurrence/js/recurrence.js:1105
+msgid "a.m."
+msgstr "午前"
+
+#: static/recurrence/js/recurrence.js:1105
+msgid "p.m."
+msgstr "午後"
+
+#: static/recurrence/js/recurrence.js:1106
+msgid "AM"
+msgstr "午前"
+
+#: static/recurrence/js/recurrence.js:1106
+msgid "PM"
+msgstr "午後"
+
+#: static/recurrence/js/recurrence.js:1108
+msgctxt "Day of month"
+msgid "%j%S"
+msgstr ""

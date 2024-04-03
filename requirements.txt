@@ -86,3 +86,14 @@ vine==5.1.0 ; python_version >= "3.12" and python_version < "4.0"
 wcwidth==0.2.13 ; python_version >= "3.12" and python_version < "4.0"
 werkzeug==3.0.1 ; python_version >= "3.12" and python_version < "4.0"
 whitenoise[brotli]==6.6.0 ; python_version >= "3.12" and python_version < "4.0"
+
+Django~=5.0.2
+pendulum~=3.0.0
+django-model-utils~=4.4.0
+sendgrid~=6.11.0
+winvillage~=0.1.0
+celery~=5.3.6
+Faker~=23.3.0
+django-recurrence~=1.11.1
+Babel~=2.14.0
+python-dateutil~=2.8.2

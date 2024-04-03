@@ -47,12 +47,18 @@
   <!-- _hyperscript library -->
   <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
   {% block hyperscript_behaviors %}{% endblock %}
-  <script src="{% static 'core/js/hyperscript.js' %}"></script>
+  {% block hyperscript_src %}
+    <script src="{% static 'core/js/hyperscript.js' %}"></script>
+  {% endblock %}
   {#    <!-- Alpine.js library -->#}
   {#    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>#}
   <!-- HTMX library -->
-  <script src="{% static 'core/js/htmx.js' %}"></script>
-  <script src="{% static 'core/js/idiomorph-ext.js' %}"></script>
+  {% block htmx_src %}
+    <script src="{% static 'core/js/htmx.js' %}"></script>
+    {% block idiomorph_src %}
+      <script src="{% static 'core/js/idiomorph-ext.js' %}"></script>
+    {% endblock %}
+  {% endblock %}
   <!-- This is necessary to make Google (potentially) display a picture in the search result. -->
   {#    <script type="application/ld+json">#}
   {#      {#}

@@ -78,6 +78,7 @@ THIRD_PARTY_APPS = [
     "responsive_images",
     "phonenumbers",
     "slippers",
+    "recurrence",
 ]
 
 if DEBUG:
@@ -282,6 +283,7 @@ LANGUAGES = (
 # django-admin makemessages -l ja
 LOCALE_PATHS = [
     str(BASE_DIR / "locale"),
+    str(BASE_DIR / "recurrence/locale"),
 ]
 
 PARLER_LANGUAGES = {
@@ -299,6 +301,8 @@ PARLER_LANGUAGES = {
     },
 }
 
+ROSETTA_WSGI_AUTO_RELOAD = True
+ROSETTA_UWSGI_AUTO_RELOAD = True
 
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -332,7 +336,8 @@ if DEBUG:
 
 # Tailwind CLI
 # This is needed until django-tailwind-cli is updated with the latest version.
-TAILWIND_CLI_VERSION = "3.4.0"
+TAILWIND_CLI_VERSION = "3.4.1"
+TAILWIND_CLI_SRC_CSS = BASE_DIR / "static/recurrence/css/recurrence.css"
 
 # MEDIA
 # ------------------------------------------------------------------------------

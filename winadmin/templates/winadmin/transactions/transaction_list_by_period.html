@@ -28,7 +28,7 @@
         <form action="{% url 'winadmin:transaction_export_csv_by_period' %}" method="get">
           <input type="hidden" name="year" value="{{ form.year.value }}">
           <input type="hidden" name="month" value="{{ form.month.value }}">
-          {% #button name="export" type="submit" %}{% blocktrans %}Export CSV{% endblocktrans %}{% /button %}
+          {% #outline_button name="export" type="submit" class="ml-5" %}{% blocktrans %}Export CSV{% endblocktrans %}{% /outline_button %}
         </form>
         <table id="orders-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
           <thead>

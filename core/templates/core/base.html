@@ -69,18 +69,16 @@
            class="block px-6 py-2 text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:text-orange-950 hover:bg-stone-50">{% translate 'アクセス' %}</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-2">
-        <div class="grid gap-2">
-          <div class="flex justify-end gap-2 text-lg text-stone-900">
-            <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-              <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
-                    class="stroke-stone-900 stroke-[3]"/>
-            </svg>
-            <a href="tel:0956-30-8411">0956-30-8411</a>
-          </div>
-          <a href="{% url 'reservations:index' %}">
-            {% #outline_button %}
-            {% translate 'Make a Reservation' %}
-            {% /outline_button %}
+        <div class="text-lg text-stone-900">
+          <a href="tel:0956-30-8411"><h3 class="font-industrial uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
+          after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
+            <div class="flex justify-center gap-2">
+              <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+                <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
+                      class="stroke-stone-900 stroke-[3]"/>
+              </svg>
+              0956-30-8411
+            </div>
           </a>
         </div>
       </div>
@@ -120,13 +118,18 @@
                  class="-mx-3 block px-3 py-2 rounded-md text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:bg-orange-500 hover:text-stone-100">{% translate '値段表' %}</a>
               <a href="#access"
                  class="-mx-3 block px-3 py-2 rounded-md text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:bg-orange-500 hover:text-stone-100">{% translate 'アクセス' %}</a>
-            </div>
-            <div class="py-6">
-              {% #outline_button %}
-              <a href="{% url 'reservations:index' %}">
-                {% translate 'Make a Reservation' %}
-              </a>
-              {% /outline_button %}
+              <div class="text-lg text-stone-900">
+                <a href="tel:0956-30-8411"><h3 class="font-industrial uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
+          after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
+                  <div class="flex justify-center gap-2">
+                    <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+                      <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
+                            class="stroke-stone-900 stroke-[3]"/>
+                    </svg>
+                    0956-30-8411
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -149,24 +152,26 @@
   <footer class="mx-auto max-w-fit min-h-screen grid place-items-center">
     <div class="mx-5 md:mx-20 my-7 space-y-5 text-center">
       <div class="mx-auto w-fit"><img src="{% static 'core/img/light_logo.svg' %}" alt="logo"/></div>
-      <h1 class="font-industrial text-2xl lg:text-3xl xl:text-5xl uppercase">
+      <h2 class="font-industrial text-2xl lg:text-3xl xl:text-5xl uppercase">
         {% translate 'Relaxation Awaits' %}
-      </h1>
+      </h2>
       <p class="text-balance">
         {% translate '最高のグランピングが佐世保で待っています。' %}
       </p>
-      <div class="flex justify-center gap-2 text-lg text-stone-900">
-        <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-          <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
-                class="stroke-stone-900 stroke-[3]"/>
-        </svg>
-        <a href="tel:0956-30-8411">0956-30-8411</a>
+
+      <div class="text-lg text-stone-900">
+        <a href="tel:0956-30-8411"><h3 class="font-industrial uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
+          after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
+          <div class="flex justify-center gap-2">
+            <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+              <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
+                    class="stroke-stone-900 stroke-[3]"/>
+            </svg>
+            0956-30-8411
+          </div>
+        </a>
       </div>
-      <a class="block" href="{% url 'reservations:index' %}">
-        {% #outline_button class="w-full" %}
-        {% translate 'Make a Reservation' %}
-        {% /outline_button %}
-      </a>
+
     </div>
   </footer>
 {% endblock %}

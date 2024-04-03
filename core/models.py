@@ -14,14 +14,6 @@ from customer.models import Customer
 auth_user = get_user_model()
 
 
-class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
 class PendulumDateTimeField(models.DateTimeField):
     def from_db_value(self, value, expression, connection):
         if value is None:
@@ -54,6 +46,14 @@ class PendulumDateTimeField(models.DateTimeField):
             return "datetime"
         else:
             return "timestamp"
+
+
+class BaseModel(models.Model):
+    created_at = PendulumDateTimeField(auto_now_add=True, null=True)
+    updated_at = PendulumDateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        abstract = True
 
 
 class ContactInfo(BaseModel):

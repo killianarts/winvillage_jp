@@ -18,6 +18,7 @@ from django.apps import apps
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls.static import static
+from django.views.i18n import JavaScriptCatalog
 from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
@@ -31,6 +32,11 @@ urlpatterns += i18n_patterns(
     path("", include("core.urls")),
     path("reservations/", include("reservations.urls")),
     path("winadmin/", include("winadmin.urls")),
+    path(
+        "jsi18n/recurrence/",
+        JavaScriptCatalog.as_view(packages=["recurrence"]),
+        name="javascript-catalog",
+    ),
     prefix_default_language=False,
 )
 

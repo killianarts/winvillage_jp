@@ -1,13 +1,22 @@
 from datetime import datetime
 
 from django import forms
+from django.forms import inlineformset_factory, BaseInlineFormSet
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 
 from core.forms import TailwindFormMixin
 from core.models import Item, Transaction
-from reservations.models import Stay, ContactInfo, PricingTier, Room
+from reservations.models import (
+    Stay,
+    ContactInfo,
+    PricingTier,
+    Room,
+    PricingTierGroup,
+    RoomTier,
+    Campaign,
+)
 
 
 class LoginForm(TailwindFormMixin, forms.Form):
@@ -214,17 +223,26 @@ class SquarePaymentTokenForm(TailwindFormMixin, forms.Form):
 
 class RoomCreateForm(TailwindFormMixin, forms.Form):
     room_name = forms.CharField(label=_("Room Name"), max_length=255)
-    pricing_tiers = forms.MultipleChoiceField(
-        label=_("Pricing Tiers"),
-        widget=forms.CheckboxSelectMultiple,
-    )
+    tier = forms.ChoiceField()
 
+    # pricing_tiers = forms.MultipleChoiceField(
+    #     label=_("Pricing Tiers"),
+    #     widget=forms.CheckboxSelectMultiple,
+    # )
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields["pricing_tiers"].choices = [
+    #         (choice.id, choice)
+    #         for choice in PricingTier.objects.all().order_by("id")
+    #         if PricingTier.objects.all().exists()
+    #     ]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["pricing_tiers"].choices = [
+        self.fields["tier"].choices = [
             (choice.id, choice)
-            for choice in PricingTier.objects.all().order_by("id")
-            if PricingTier.objects.all().exists()
+            for choice in RoomTier.objects.all().order_by("name")
+            if RoomTier.objects.all().exists()
         ]
 
 
@@ -249,25 +267,84 @@ class RoomDetailForm(TailwindFormMixin, forms.ModelForm):
         ]
 
 
-class PricingTierCreateForm(TailwindFormMixin, forms.ModelForm):
+class PricingTierCreateForm(forms.ModelForm):
     class Meta:
         model = PricingTier
-        fields = ["name", "number_of_adults", "price_per_night", "price_per_hour"]
+        fields = ["number_of_adults", "price_overnight", "price_short_term"]
         labels = {
-            "name": _("Name"),
             "number_of_adults": _("Number of Adults"),
-            "price_per_night": _("Price per Night"),
-            "price_per_hour": _("Price per Hour"),
+            "price_overnight": _("Price overnight"),
+            "price_short_term": _("Price Short-term"),
         }
 
 
 class PricingTierDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = PricingTier
-        fields = ["name", "number_of_adults", "price_per_night", "price_per_hour"]
+        fields = ["number_of_adults", "price_overnight", "price_short_term"]
         labels = {
-            "name": _("Name"),
             "number_of_adults": _("Number of Adults"),
-            "price_per_night": _("Price per Night"),
-            "price_per_hour": _("Price per Hour"),
+            "price_overnight": _("Price Overnight"),
+            "price_short_term": _("Price Short-term"),
         }
+
+
+class IncrementalPricingTierFormSet(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        self.min_adults = kwargs.pop("min_adults", 1)
+        self.max_adults = kwargs.pop("max_adults", 6)
+        super().__init__(*args, **kwargs)
+
+    def get_form_kwargs(self, index):
+        kwargs = super().get_form_kwargs(index)
+        initial_number_of_adults = self.min_adults + index
+        initial = kwargs.get("initial", {})
+        initial["number_of_adults"] = initial_number_of_adults
+        kwargs["initial"] = initial
+        return kwargs
+
+
+class PricingTierGroupCreateForm(forms.Form):
+    name = forms.CharField(max_length=100, label=_("Name"))
+    min_adults = forms.IntegerField(
+        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
+    )
+    max_adults = forms.IntegerField(
+        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
+    )
+    room_tiers = forms.ModelMultipleChoiceField(
+        queryset=RoomTier.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label=_("Room Tiers"),
+    )
+    campaigns = forms.ModelMultipleChoiceField(
+        queryset=Campaign.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label=_("Campaigns"),
+    )
+
+
+class PricingTierGroupDetailForm(forms.ModelForm):
+    class Meta:
+        model = PricingTierGroup
+        fields = ["name", "room_tiers", "campaigns"]
+        widgets = {"campaigns": forms.CheckboxSelectMultiple}
+
+
+class RoomTierCreateForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = RoomTier
+        fields = ["name"]
+
+
+class CampaignCreateForm(forms.ModelForm):
+    class Meta:
+        model = Campaign
+        fields = ["name", "recurrences"]
+
+
+class CampaignDetailForm(forms.ModelForm):
+    class Meta:
+        model = Campaign
+        fields = ["name", "recurrences"]

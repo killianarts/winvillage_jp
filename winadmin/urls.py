@@ -88,6 +88,26 @@ urlpatterns = [
         views.send_confirmation_email,
         name="send_confirmation_email",
     ),
+    path(
+        "reservations/campaign/create/",
+        views.campaign_create,
+        name="reservations/campaign_create",
+    ),
+    path(
+        "reservations/campaign/list/",
+        views.campaign_list,
+        name="reservations/campaign_list",
+    ),
+    path(
+        "reservations/campaign/detail/<int:campaign_id>/",
+        views.campaign_detail,
+        name="reservations/campaign_detail",
+    ),
+    path(
+        "reservations/pricing_tier_group/create/",
+        views.pricing_tier_group_create,
+        name="pricing_tier_group_create",
+    ),
     path("customer/create/", customer.customer_create, name="customer_create"),
     path(
         "customer/create-bulk/",

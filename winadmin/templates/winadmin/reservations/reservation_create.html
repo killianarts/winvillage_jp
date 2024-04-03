@@ -43,39 +43,39 @@
     <div class="space-y-5">
       <div class="grid grid-cols-1 divide-y-2 divide-stone-50">
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Start Date:{% endblocktrans %}</span>
+          <span>{% blocktrans %}Start Date{% endblocktrans %}:</span>
           <span>{{ reservation.start }}</span>
         </div>
         {% if reservation.end %}
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-            <span>{% blocktrans %}End Date:{% endblocktrans %}</span>
+            <span>{% blocktrans %}End Date{% endblocktrans %}:</span>
             <span>{{ reservation.end }}</span>
           </div>
         {% endif %}
         {% if reservation.start_time and reservation.end_time and not reservation.stay.end_date %}
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-            <span>{% blocktrans %}Start Time:{% endblocktrans %}</span>
+            <span>{% blocktrans %}Start Time{% endblocktrans %}:</span>
             <span>{{ reservation.start_time }}</span>
           </div>
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-            <span>{% blocktrans %}End Time:{% endblocktrans %}</span>
+            <span>{% blocktrans %}End Time{% endblocktrans %}:</span>
             <span>{{ reservation.end_time }}</span>
           </div>
         {% endif %}
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}First Name:{% endblocktrans %}</span>
+          <span>{% blocktrans %}First Name{% endblocktrans %}:</span>
           <span>{{ reservation.first_name }}</span>
         </div>
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Last Name:{% endblocktrans %}</span>
+          <span>{% blocktrans %}Last Name{% endblocktrans %}:</span>
           <span>{{ reservation.last_name }}</span>
         </div>
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Email:{% endblocktrans %}</span>
+          <span>{% blocktrans %}Email{% endblocktrans %}:</span>
           <span>{{ reservation.email }}</span>
         </div>
         <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-          <span>{% blocktrans %}Phone:{% endblocktrans %}</span>
+          <span>{% blocktrans %}Phone{% endblocktrans %}:</span>
           <span>{{ reservation.phone.as_national }}</span>
         </div>
         {% for order_item in reservation.order_items.all %}

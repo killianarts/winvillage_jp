@@ -11,6 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
 from phonenumber_field.modelfields import PhoneNumberField
+from recurrence.fields import RecurrenceField
 
 from core.models import Item, ContactInfo, BaseModel, PendulumDateTimeField
 from customer.models import Customer
@@ -28,7 +29,7 @@ class OrderItem(BaseModel):
     user = models.ForeignKey(
         auth_user, on_delete=models.CASCADE, null=True, verbose_name=_("User")
     )
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=1, verbose_name=_("Quantity"))
 
     def __str__(self):
@@ -67,56 +68,13 @@ class Order(models.Model):
         return int(total)
 
 
-# class Address(BaseModel):
-#     class Meta:
-#         verbose_name = _("Address")
-#         verbose_name_plural = _("Addresses")
-#
-#     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, verbose_name=_("User"), null=True)
-#     state = models.CharField(max_length=50)
-#     city = models.CharField(max_length=50)
-#     street_address = models.CharField(max_length=50)
-#     secondary_address = models.CharField(max_length=100, blank=True)
-#     postal_code = models.IntegerField()
-#     is_primary = models.BooleanField(default=False)
-#
-#     def __str__(self):
-#         return f"{self.street_address}"
-#
-#     @property
-#     def full_address(self):
-#         address_parts = [self.street_address]
-#
-#         if self.secondary_address:
-#             address_parts.append(self.secondary_address)
-#
-#         address_parts.append(f"{self.city}, {self.state} {self.postal_code}")
-#
-#         return "\n".join(address_parts)
-#
-#     def save(self, *args, **kwargs):
-#         # If this is a new address and is_primary is True, make sure no other addresses
-#         # for this account have is_primary set to True
-#         if self.pk is None and self.is_primary:
-#             Address.objects.filter(user=self.user, is_primary=True).update(
-#                 is_primary=False
-#             )
-#
-#         # If this is an existing address and is_primary is being set to True,
-#         # make sure no other addresses for this account have is_primary set to True
-#         elif self.pk is not None and self.is_primary:
-#             Address.objects.filter(user=self.user).exclude(pk=self.pk).update(
-#                 is_primary=False
-#             )
-#
-#         super(Address, self).save(*args, **kwargs)
+class Campaign(models.Model):
+    class Meta:
+        verbose_name = _("Campaign")
+        verbose_name_plural = _("Campaigns")
 
-
-class SpecialDate(models.Model):
-    date = models.DateField()
-    name = models.CharField(max_length=255)
-    price_per_night = models.DecimalField(max_digits=19, decimal_places=4)
-    price_per_hour = models.DecimalField(max_digits=19, decimal_places=4)
+    name = models.CharField(max_length=50, verbose_name=_("Name"))
+    recurrences = RecurrenceField(verbose_name=_("Recurrences"))
 
     def __str__(self):
         return self.name
@@ -131,32 +89,45 @@ class PricingTier(models.Model):
         def order_by_name(self):
             return self.order_by("price_per_night").all()
 
-    objects = PricingTierManager()
-    name = models.CharField(max_length=50, verbose_name=_("Name"))
-
+    # objects = PricingTierManager()
     ADULT_CHOICES = ((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"), (6, "6"))
-
+    tier_group = models.ForeignKey(
+        "PricingTierGroup", on_delete=models.CASCADE, blank=True, null=True
+    )
     number_of_adults = models.IntegerField(
         default=1, choices=ADULT_CHOICES, verbose_name=_("Number of Adults")
     )
-    price_per_night = models.DecimalField(
-        max_digits=19, decimal_places=4, verbose_name=_("Price per Night")
+    price_overnight = models.DecimalField(
+        max_digits=19, decimal_places=4, verbose_name=_("Price Overnight")
     )
-    price_per_hour = models.DecimalField(
-        max_digits=19, decimal_places=4, verbose_name=_("Price per Hour")
+    price_short_term = models.DecimalField(
+        max_digits=19, decimal_places=4, verbose_name=_("Price Short-term")
     )
 
     def __str__(self):
-        return f"{self.name} ￥{self.get_price_per_night()}/night, ￥{self.get_price_per_hour()}/hour"
+        return (
+            f"￥{self.get_price_overnight()}/night, ￥{self.get_price_short_term()}/hour"
+        )
 
-    def get_price_per_night(self):
-        return round(self.price_per_night, 2)
+    def get_price_overnight(self):
+        return round(self.price_overnight, 2)
 
-    def get_price_per_hour(self):
-        return round(self.price_per_hour, 2)
+    def get_price_short_term(self):
+        return round(self.price_short_term, 2)
 
     def get_absolute_url(self):
         return reverse("winadmin:pricing_tier_detail", kwargs={"pk": self.pk})
+
+
+class RoomTier(models.Model):
+    class Meta:
+        verbose_name = _("Room Tier")
+        verbose_name_plural = _("Rooms Tiers")
+
+    name = models.CharField(max_length=255, verbose_name=_("Name"))
+
+    def __str__(self):
+        return self.name
 
 
 class Room(models.Model):
@@ -164,22 +135,17 @@ class Room(models.Model):
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
 
-    name = models.CharField(max_length=50, verbose_name=_("Name"))
-    pricing_tiers = models.ManyToManyField(PricingTier)
+    name = models.CharField(max_length=255, verbose_name=_("Name"))
+    room_tier = models.ForeignKey(
+        "RoomTier",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name=_("Room Tier"),
+    )
 
     def __str__(self):
         return f"{self.name}"
-
-    def get_price_per_night(self, number_of_adults):
-        try:
-            tier = self.pricing_tiers.get(number_of_adults=number_of_adults)
-            return round(tier.price_per_night, 2)
-        except PricingTier.DoesNotExist:
-            return None
-
-    def get_price_per_hour(self, number_of_adults):
-        tier = self.pricing_tiers.get(number_of_adults=number_of_adults)
-        return round(tier.price_per_hour, 2)
 
 
 ADULT_CHOICES = ((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"), (6, "6"))
@@ -192,6 +158,41 @@ CHILDREN_CHOICES = (
     (5, "5"),
     (6, "6"),
 )
+
+
+# Find
+class PricingTierGroup(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    room_tiers = models.ManyToManyField("RoomTier")
+    campaigns = models.ManyToManyField("Campaign", blank=True)
+
+    def create_group(self, form, formset):
+        self.name = form.cleaned_data.get("name")
+        room_tiers = form.cleaned_data.get("room_tiers")
+        campaigns = form.cleaned_data.get("campaigns")
+        self.save()
+        for tier in room_tiers:
+            self.room_tiers.add(tier)
+
+        for form in formset:
+            number_of_adults = form.cleaned_data.get("number_of_adults")
+            price_overnight = form.cleaned_data.get("price_overnight")
+            price_short_term = form.cleaned_data.get("price_short_term")
+            tier = PricingTier.objects.create(
+                tier_group=self,
+                number_of_adults=number_of_adults,
+                price_overnight=price_overnight,
+                price_short_term=price_short_term,
+            )
+
+        if campaigns:
+            for campaign in campaigns:
+                self.campaigns.add(campaign)
+        self.save()
+        return self
+
+    def __str__(self):
+        return self.name
 
 
 class Stay(BaseModel):
@@ -298,11 +299,11 @@ class Reservation(BaseModel):
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
     stay = models.ForeignKey(Stay, on_delete=models.CASCADE, null=True, blank=True)
     first_name = models.CharField(
-        max_length=50, verbose_name=_("First name"), null=True
+        max_length=255, verbose_name=_("First name"), null=True
     )
     last_name = models.CharField(max_length=50, verbose_name=_("Last name"), null=True)
-    email = models.EmailField(max_length=254, verbose_name=_("Email"), null=True)
-    phone = PhoneNumberField(max_length=254, verbose_name=_("Phone"), null=True)
+    email = models.EmailField(max_length=255, verbose_name=_("Email"), null=True)
+    phone = PhoneNumberField(max_length=255, verbose_name=_("Phone"), null=True)
     order_items = models.ManyToManyField(OrderItem)
 
     def check_availability(self, *, start_date, end_date):

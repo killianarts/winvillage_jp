@@ -1,7 +1,33 @@
+{% load static %}
 {% var variant=variant|default:"normal" %}
 {% var class=class %}
-{% var background_image_url %}
-<div class="border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg grid place-items-center bg-cover bg-center min-h-[200px] {{ class }} {{ variant|match:"normal: col-span-4 sm:col-span-2 xl:col-span-1 , wide: col-span-4 lg:col-span-2 xl:col-span-2" }}"
-     style="background-image: url('{{ background_image_url }}')">
+{% var image_url %}
+<div class="bg-stone-50 drop-shadow-hard-45-md rounded-lg grid place-items-center min-h-[200px] {{ class }} {{ variant|match:"normal: col-span-4 sm:col-span-2 xl:col-span-1 , wide: col-span-4 lg:col-span-2 xl:col-span-2" }}"
+        {#     style="background-image: url('{{ image_url }}')"#}
+>
+  <picture class="w-full h-full">
+    {# Tailwind 2xl #}
+{#    <source class="" media="(min-width: 1536px)" srcset="{% static 'core/img/DEBUG 2xl.svg' %}">#}
+{#    <source class="" media="(min-width: 1536px)" srcset="{{ image_url }}">#}
+    {# Tailwind xl #}
+{#    <source class="" media="(min-width: 1280px)" srcset="{% static 'core/img/DEBUG xl.svg' %}">#}
+{#    <source class="" media="(min-width: 1280px)" srcset="{% static 'core/img/DEBUG xl.svg' %}">#}
+    {# Tailwind lg #}
+{#    <source class="" media="(min-width: 1024px)" srcset="{% static 'core/img/DEBUG lg.svg' %}">#}
+{#    <source class="" media="(min-width: 1024px)" srcset="{% static 'core/img/DEBUG lg.svg' %}">#}
+{#     Tailwind md #}
+{#    <source class="" media="(min-width: 768px)" srcset="{% static 'core/img/DEBUG md.svg' %}">#}
+{#    <source class="" media="(min-width: 768px)" srcset="{% static 'core/img/DEBUG md.svg' %}">#}
+    {# Tailwind sm #}
+{#    <source class="" media="(min-width: 640px)" srcset="{% static 'core/img/DEBUG sm.svg' %}">#}
+{#    <source class="" media="(min-width: 640px)" srcset="{% static 'core/img/DEBUG sm.svg' %}">#}
+    {# Default #}
+{#    <img class="border border-3 border-stone-900 object-cover w-full h-full rounded-lg"#}
+{#         src="{% static 'core/img/DEBUG mobile.svg' %}"#}
+{#         alt="">    #}
+    <img class="border border-3 border-stone-900 object-cover w-full h-full rounded-lg"
+         src="{{ image_url }}"
+         alt="" loading="lazy">
+  </picture>
   {{ children }}
 </div>
