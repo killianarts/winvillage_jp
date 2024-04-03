@@ -5,10 +5,13 @@ from django.template.loader import render_to_string
 from reservations.models import Reservation
 from winvillage import settings
 import os
+import environ
 
+env = environ.Env()
 app = Celery("winvillage")
 app.conf.update(
-    BROKER_URL=os.environ["REDIS_URL"], CELERY_RESULT_BACKEND=os.environ["REDIS_URL"]
+    BROKER_URL=env("REDIS_URL", default="redis://127.0.0.1:6379/0"),
+    CELERY_RESULT_BACKEND=env("REDIS_URL", default="redis://127.0.0.1:6379/0"),
 )
 
 
