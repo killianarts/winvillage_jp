@@ -1,6 +1,13 @@
 {% load static %}
 <meta charset="UTF-8">
 
+{# When a site is still in development, you don't want Google to index it at all. #}
+{# If you only set the robot.txt to Disallow, you won't block Google. You'll only block access to the internals of the page. #}
+{# See: https://support.google.com/webmasters/answer/7489871?hl=en#zippy=%2Cthis-is-my-site%2Cthe-page-is-blocked-by-robotstxt #}
+
+{#  <meta name="robots" content="noindex, nofollow" />#}
+
+
 {#    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VY8KJ3S1CP"></script>#}
 {#    <script>#}
 {#        window.dataLayer = window.dataLayer || [];#}
@@ -18,7 +25,7 @@ that the content provides a brief description of the webpage. The "content" attr
 description text. This description is typically used by search engines to provide a summary of the webpage's content
 in search results. It helps users understand what the webpage is about before they click on it. -->
 <meta name="description"
-      content="Winvillage - glamping in Imari, Japan">
+      content="伊万里でのグランピング - ウインヴィレッジ">
 <!-- This meta tag configures the viewport settings for the webpage. The "name" attribute is set to "viewport" to
 indicate that it specifies the viewport properties. The "content" attribute contains the actual settings,
 in this case, "width=device-width, initial-scale=1". This tells the browser to set the width of the viewport to the
@@ -34,39 +41,39 @@ card with a large image preview. -->
 that it specifies the title for Twitter sharing. The "content" attribute contains the actual title text, which in
 this case is "伊万里での大人の秘密基地ガレージ倉庫の募集ページ". This title will be displayed when the webpage is shared on
 Twitter. -->
-<meta name="twitter:title" content="Winvillage">
+<meta name="twitter:title" content="ウインヴィレッジ">
 <!-- This meta tag sets the description for Twitter sharing. The "name" attribute is set to "twitter:description" to
 indicate that it specifies the description for Twitter sharing. The "content" attribute contains the actual
 description text, which in this case is the same as the previous meta tag's description content. This description
 will be displayed when the webpage is shared on Twitter. -->
 <meta name="twitter:description"
-      content="Winvillage glamping site in Imari, Japan">
+      content="伊万里でのグランピング - ウインヴィレッジ">
 <!-- This meta tag sets the image for Twitter sharing. The "name" attribute is set to "twitter:image" to indicate
 that it specifies the image for Twitter sharing. The "content" attribute contains the URL or path to the image file.
 This image will be displayed as a preview when the
 webpage is shared on Twitter. -->
-<meta name="twitter:image" content="{% static 'core/img/desktop_hero.jpg' %}">
+<meta name="twitter:image" content="{% static 'core/img/winvillage@0.25x.jpg' %}">
 <!-- This meta tag sets the Twitter account username for the webpage. The "name" attribute is set to "twitter:site"
 to indicate that it specifies the Twitter account username. The "content" attribute contains the actual username,
 which in this case is "@killian_arts". This associates the webpage with the specified Twitter account when it is
 shared on Twitter. -->
-<meta name="twitter:site" content="@killian_arts">
+{#<meta name="twitter:site" content="@killian_arts">#}
 <!-- This meta tag sets the title for Open Graph sharing. The "property" attribute is set to "og:title" to indicate
 that it specifies the title for Open Graph sharing. The "content" attribute contains the actual title text, which is
 the same as the previous Twitter title. This title will be displayed when the webpage is shared using Open Graph
 protocol. -->
-<meta property="og:title" content="Winvillage">
+<meta property="og:title" content="ウインヴィレッジ">
 <!-- This meta tag sets the description for Open Graph sharing. The "property" attribute is set to "og:description"
 to indicate that it specifies the description for Open Graph sharing. The "content" attribute contains the actual
 description text, which is the same as the previous Twitter description. This description will be displayed when the
 webpage is shared using Open Graph protocol. -->
 <meta property="og:description"
-      content="Winvillage glamping site in Imari, Japan">
+      content="伊万里でのグランピング - ウインヴィレッジ">
 <!-- This meta tag sets the image for Open Graph sharing. The "property" attribute is set to "og:image" to indicate
 that it specifies the image for Open Graph sharing. The "content" attribute contains the URL or path to the image
 file, which is the same as the previous Twitter image. This image will be displayed as a preview when the webpage is
 shared using Open Graph protocol. -->
-<meta property="og:image" content="{% static 'core/img/desktop_hero.jpg' %}">
+<meta property="og:image" content="{% static 'core/img/winvillage@0.25x.jpg' %}">
 <!-- This meta tag sets the URL for Open Graph sharing. The "property" attribute is set to "og:url" to indicate that
 it specifies the URL for Open Graph sharing. The "content" attribute contains the actual URL, which in this case is
 "http://kitasan.online". This URL will be associated with the webpage when it is shared using Open Graph protocol. -->
@@ -78,15 +85,15 @@ content type, which is "website". This indicates that the shared content is a we
 <!-- This meta tag sets the name of the content item. The "itemprop" attribute is set to "name" to indicate that it
 specifies the name of the content item. The "content" attribute contains the actual name text, which is the same as
 the previous Twitter and Open Graph titles. This name will be associated with the content item. -->
-<meta itemprop="name" content="Winvillage">
+<meta itemprop="name" content="ウインヴィレッジ">
 <!-- This meta tag sets the description of the content item. The "itemprop" attribute is set to "description" to
 indicate that it specifies the description of the content item. The "content" attribute contains the actual
 description text, which is the same as the previous Twitter and Open Graph descriptions. This description will be
 associated with the content item. -->
 <meta itemprop="description"
-      content="Winvillage glamping site in Imari, Japan">
+      content="伊万里でのグランピング - ウインヴィレッジ">
 <!-- This meta tag sets the image for the content item. The "itemprop" attribute is set to "image" to indicate that
 it specifies the image for the content item. The "content" attribute contains the URL or path to the image file,
 which is the same as the previous Twitter and Open Graph images. This image will be associated with the content
 item. -->
-<meta itemprop="image" content="{% static 'core/img/desktop_hero.jpg' %}">
+<meta itemprop="image" content="{% static 'core/img/winvillage@0.25x.jpg' %}">

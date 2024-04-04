@@ -27,10 +27,14 @@ def flush_session(request):
     return HttpResponse("Flushed")
 
 
-@require_GET
-def robots_txt(request):
-    lines = [
-        "User-Agent: *",
-        "Disallow: /",
-    ]
-    return HttpResponse("\n".join(lines), content_type="text/plain")
+# If you want to completely block search engines,
+# you need to set the <meta name="robots" content="noindex, nofollow" /> tag in your base.html file.
+# See: https://support.google.com/webmasters/answer/7489871?hl=en#zippy=%2Cthis-is-my-site%2Cthe-page-is-blocked-by-robotstxt
+
+# @require_GET
+# def robots_txt(request):
+#     lines = [
+#         "User-Agent: *",
+#         "Disallow: /",
+#     ]
+#     return HttpResponse("\n".join(lines), content_type="text/plain")
