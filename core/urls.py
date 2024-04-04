@@ -12,7 +12,7 @@ urlpatterns = [
     path("get-messages/", views.get_messages, name="get_messages"),
     path("flush-session/", views.flush_session, name="flush_session"),
     path(
-        "sitemap.xml",
+        "sitemap.xml/",
         sitemap,
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
