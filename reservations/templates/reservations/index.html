@@ -58,7 +58,7 @@
                 {% translate 'Continue' %}
                 {% /outline_button %}
               </a>
-              {% if DEBUG %}
+              {% if debug %}
                 <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg cursor-pointer"
                           hx-post="{% url 'core:flush_session' %}"
                           hx-target="this"
@@ -299,7 +299,7 @@
         </div>
       {% endif %}
     </div>
-    {% if DEBUG %}
+    {% if debug %}
       <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg"
                 hx-post="{% url 'core:flush_session' %}"
                 hx-target="this"
