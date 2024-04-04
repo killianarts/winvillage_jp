@@ -11,7 +11,10 @@
     {% block subtitle %}{% trans "Winvillage" %}{% endblock %}
   </title>
   {% tailwind_css %}
-
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'core/img/favicon/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/img/favicon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'core/img/favicon/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'core/img/favicon/site.webmanifest' %}">
   <!-- _hyperscript library -->
   <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
   {% block hyperscript_behaviors %}{% endblock %}
