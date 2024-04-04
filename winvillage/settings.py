@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from pathlib import Path
+
 import environ
 from django.apps import apps
 
@@ -64,6 +65,7 @@ DJANGO_APPS = [
     "django.contrib.humanize",  # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    "django.contrib.sitemaps",
 ]
 
 THIRD_PARTY_APPS = [
