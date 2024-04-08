@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-03 07:08+0000\n"
-"PO-Revision-Date: 2024-03-27 03:51+0000\n"
+"POT-Creation-Date: 2024-04-04 05:54+0000\n"
+"PO-Revision-Date: 2024-04-04 05:54+0000\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -166,48 +166,44 @@ msgstr "総額"
 msgid "Glamping in Imari"
 msgstr "伊万里でのグランピング"
 
-#: core/templates/core/base.html:11 core/templates/core/base.html:96
+#: core/templates/core/base.html:11 core/templates/core/base.html:97
 #: reservations/templates/reservations/index.html:10
 #: reservations/templates/reservations/index_old.html:8
 #: reservations/templates/reservations/option_selection.html:8
 msgid "Winvillage"
 msgstr "ウイン・ヴィレッジ"
 
-#: core/templates/core/base.html:46
+#: core/templates/core/base.html:49
 msgid "Win Village"
 msgstr "ウイン・ヴィレッジ"
 
-#: core/templates/core/base.html:48
+#: core/templates/core/base.html:51
 msgid "Win Village Logo"
 msgstr "ウイン・ヴィレッジのロゴ"
 
-#: core/templates/core/base.html:65 core/templates/core/base.html:115
+#: core/templates/core/base.html:68 core/templates/core/base.html:116
 #: core/templates/core/index.html:198
 msgid "部屋の基本スペック"
 msgstr ""
 
-#: core/templates/core/base.html:67 core/templates/core/base.html:118
-msgid "値段表"
-msgstr ""
-
-#: core/templates/core/base.html:69 core/templates/core/base.html:120
+#: core/templates/core/base.html:70 core/templates/core/base.html:119
 #: core/templates/core/index.html:775
 msgid "アクセス"
 msgstr ""
 
-#: core/templates/core/base.html:98
+#: core/templates/core/base.html:99
 msgid "Winvillage Logo"
 msgstr "ウイン・ヴィレッジのロゴ"
 
-#: core/templates/core/base.html:103
+#: core/templates/core/base.html:104
 msgid "Close menu"
 msgstr "メニューを閉じる"
 
-#: core/templates/core/base.html:156
+#: core/templates/core/base.html:155
 msgid "Relaxation Awaits"
 msgstr "Relaxation Awaits"
 
-#: core/templates/core/base.html:159
+#: core/templates/core/base.html:158
 msgid "最高のグランピングが佐世保で待っています。"
 msgstr ""
 
@@ -415,10 +411,8 @@ msgid "ソファベッド（ダブル）、１台"
 msgstr ""
 
 #: core/templates/core/index.html:256 core/templates/core/index.html:539
-#, fuzzy
-#| msgid "Confirm Details"
 msgid "Room Details"
-msgstr "詳細を確認する"
+msgstr "部屋の詳細"
 
 #: core/templates/core/index.html:269 core/templates/core/index.html:552
 #: core/templates/core/room_details.html:51
@@ -1738,11 +1732,11 @@ msgstr "部屋が削除できました。"
 msgid "%(tier_name)s Created Successfully!"
 msgstr "%(tier_name)sが制作できました"
 
-#: winvillage/settings.py:279
+#: winvillage/settings.py:280
 msgid "English"
 msgstr "英語"
 
-#: winvillage/settings.py:280
+#: winvillage/settings.py:281
 msgid "Japanese"
 msgstr "日本語"
 
