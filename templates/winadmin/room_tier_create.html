@@ -1,0 +1,19 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n %}
+{% block content %}
+  <div id="content-wrapper">
+    <h1 class="text-3xl">{% translate 'Create Room Tier' %}</h1>
+    {% block form %}
+      <form class="max-w-xl" action="." method="post"
+            hx-post="."
+            hx-target="#content-wrapper"
+            hx-swap="morph:outerHTML"
+            hx-vals='{"use_block": "content"}'>
+        {{ form }}
+        {% #outline_button name="submit" type="submit" %}
+        {% trans "Submit" %}
+        {% /outline_button %}
+      </form>
+    {% endblock %}
+  </div>
+{% endblock %}

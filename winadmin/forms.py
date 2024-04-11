@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django import forms
-from django.forms import inlineformset_factory, BaseInlineFormSet
+from django.forms import BaseInlineFormSet
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
@@ -221,9 +221,12 @@ class SquarePaymentTokenForm(TailwindFormMixin, forms.Form):
     token = forms.CharField(widget=forms.HiddenInput())
 
 
-class RoomCreateForm(TailwindFormMixin, forms.Form):
-    room_name = forms.CharField(label=_("Room Name"), max_length=255)
-    tier = forms.ChoiceField()
+class RoomCreateForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ["name", "room_tier"]
+
+    name = forms.CharField(label=_("Room Name"), max_length=255)
 
     # pricing_tiers = forms.MultipleChoiceField(
     #     label=_("Pricing Tiers"),
@@ -237,34 +240,33 @@ class RoomCreateForm(TailwindFormMixin, forms.Form):
     #         for choice in PricingTier.objects.all().order_by("id")
     #         if PricingTier.objects.all().exists()
     #     ]
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["tier"].choices = [
-            (choice.id, choice)
-            for choice in RoomTier.objects.all().order_by("name")
-            if RoomTier.objects.all().exists()
-        ]
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields["room_tier"].choices = [
+    #         (choice.id, choice)
+    #         for choice in RoomTier.objects.all().order_by("name")
+    #         if RoomTier.objects.all().exists()
+    #     ]
 
 
 class RoomDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Room
-        fields = ["name", "pricing_tiers"]
+        fields = ["name", "room_tier"]
 
     name = forms.CharField(label=_("Room Name"), max_length=255)
-    pricing_tiers = forms.ModelMultipleChoiceField(
-        label=_("Pricing Tiers"),
-        queryset=PricingTier.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-    )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["pricing_tiers"].choices = [
-            (choice.id, choice)
-            for choice in PricingTier.objects.all()
-            if PricingTier.objects.all().exists()
-        ]
+
+class RoomTierCreateForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = RoomTier
+        fields = ["name"]
+
+
+class RoomTierDetailForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = RoomTier
+        fields = ["name"]
 
 
 class PricingTierCreateForm(forms.ModelForm):
@@ -325,17 +327,36 @@ class PricingTierGroupCreateForm(forms.Form):
     )
 
 
-class PricingTierGroupDetailForm(forms.ModelForm):
-    class Meta:
-        model = PricingTierGroup
-        fields = ["name", "room_tiers", "campaigns"]
-        widgets = {"campaigns": forms.CheckboxSelectMultiple}
+# class PricingTierGroupDetailForm(forms.ModelForm):
+#     class Meta:
+#         model = PricingTierGroup
+#         fields = ["name", "room_tiers", "campaigns"]
+#         widgets = {"campaigns": forms.CheckboxSelectMultiple}
 
 
-class RoomTierCreateForm(TailwindFormMixin, forms.ModelForm):
-    class Meta:
-        model = RoomTier
-        fields = ["name"]
+class PricingTierGroupDetailForm(forms.Form):
+    name = forms.CharField(max_length=100, label=_("Name"))
+    min_adults = forms.IntegerField(
+        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
+    )
+    max_adults = forms.IntegerField(
+        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
+    )
+    room_tiers = forms.ModelMultipleChoiceField(
+        queryset=RoomTier.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label=_("Room Tiers"),
+    )
+    campaigns = forms.ModelMultipleChoiceField(
+        queryset=Campaign.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label=_("Campaigns"),
+    )
+
+    def __init__(self, *args, **kwargs):
+        # self.min_adults.initial =
+        super(PricingTierGroupDetailForm, self).__init__(*args, **kwargs)
 
 
 class CampaignCreateForm(forms.ModelForm):

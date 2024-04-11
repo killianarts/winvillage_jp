@@ -2305,16 +2305,6 @@ select {
   transition-timing-function: linear;
 }
 
-.backdrop\:bg-stone-900\/50::backdrop {
-  background-color: rgb(28 25 23 / 0.5);
-}
-
-.backdrop\:backdrop-blur-sm::backdrop {
-  --tw-backdrop-blur: blur(4px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
 .before\:absolute::before {
   content: var(--tw-content);
   position: absolute;

@@ -8,7 +8,7 @@ import pendulum
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
@@ -27,11 +27,6 @@ from core.utils import (
     htmx_form_validate,
 )
 from reservations import forms
-from reservations.calendar_utils import (
-    generate_calendars,
-    get_previous_month,
-    get_next_month,
-)
 from reservations.forms import DateForm
 from reservations.models import (
     Reservation,
@@ -40,8 +35,14 @@ from reservations.models import (
     PricingTier,
     PricingTierGroup,
     Campaign,
+    RoomTier,
 )
 from reservations.tasks import send_confirmation_email
+from reservations.utils import (
+    generate_calendars,
+    get_previous_month,
+    get_next_month,
+)
 from winadmin.forms import (
     LoginForm,
     ItemCreateForm,
@@ -63,6 +64,8 @@ from winadmin.forms import (
     IncrementalPricingTierFormSet,
     CampaignCreateForm,
     CampaignDetailForm,
+    RoomTierCreateForm,
+    RoomTierDetailForm,
 )
 from winadmin.models import SpecialDate
 from winvillage import settings
@@ -245,14 +248,15 @@ def item_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
             if form.is_valid():
                 item.delete()
                 messages.success(request, _("Item Successfully Edited"))
+                return HttpResponseClientRedirect(reverse("winadmin:item_list"))
             else:
                 messages.error(request, _("Error"))
-
+    response = TemplateResponse(
+        request, "winadmin/inventory/item_detail.html", {"form": form, "item": item}
+    )
     return trigger_client_event(
-        TemplateResponse(
-            request, "winadmin/inventory/item_detail.html", {"form": form, "item": item}
-        ),
-        "getMessages",
+        response=response,
+        name="getMessages",
     )
 
 
@@ -267,7 +271,7 @@ def item_delete(request: HtmxHttpRequest, pk: int) -> HttpResponse:
     else:
         form = ItemEditForm(request.POST, instance=item)
         messages.error(request, _("Error"))
-    return redirect("winadmin:list_inventory")
+    return HttpResponseClientRedirect(reverse("winadmin:list_inventory"))
 
 
 # Transactions
@@ -827,34 +831,18 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def room_create(request: HtmxHttpRequest) -> HttpResponse:
     room_create_form = RoomCreateForm()
-    tier_add_form = PricingTierCreateForm()
     if request.method == "POST":
-        if "add-tier" in request.POST:
-            form = PricingTierCreateForm(request.POST)
-            if form.is_valid():
-                form.save()
-                # TODO: Figure out how to use sessions to save state of RoomCreateForm
-                room_create_form = RoomCreateForm(request.POST)
-                tier_name = form.cleaned_data["name"]
-                messages.success(request, f"{tier_name} Created Successfully!")
-            else:
-                messages.error(request, "Error!")
         if "create-room" in request.POST:
             room_create_form = RoomCreateForm(request.POST)
             if room_create_form.is_valid():
-                room_name = room_create_form.cleaned_data["room_name"]
-                room = Room.objects.create(name=room_name)
-                pricing_tiers = room_create_form.cleaned_data["pricing_tiers"]
-                for tier in pricing_tiers:
-                    room.pricing_tiers.add(tier)
-                room.save()
-                messages.success(request, "Success!")
+                instance = room_create_form.save()
+                messages.success(request, f"{ instance } successfully created")
                 room_create_form = RoomCreateForm()
             else:
                 messages.error(request, "Error!")
-    context = {"room_create_form": room_create_form, "tier_add_form": tier_add_form}
+    context = {"room_create_form": room_create_form}
     response = TemplateResponse(request, "winadmin/room_create.html", context)
-    return trigger_client_event(response, "getMessages")
+    return trigger_client_event(response=response, name="getMessages")
 
 
 @login_required(login_url="winadmin:login_page")
@@ -890,6 +878,54 @@ def room_detail(request: HtmxHttpRequest, room_id: int) -> HttpResponse:
     context = {"form": form}
     response = TemplateResponse(request, "winadmin/room_detail.html", context)
     return trigger_client_event(response, "getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def room_tier_create(request: HtmxHttpRequest) -> HttpResponse:
+    form = RoomTierCreateForm()
+    if request.method == "POST":
+        form = RoomTierCreateForm(request.POST)
+        if form.is_valid():
+            instance = form.save()
+            messages.success(request, "Success!")
+        else:
+            messages.error(request, "Error!")
+    context = {"form": form}
+    response = TemplateResponse(request, "winadmin/room_tier_create.html", context)
+    return trigger_client_event(response=response, name="getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def room_tier_list(request: HtmxHttpRequest) -> HttpResponse:
+    room_tiers = RoomTier.objects.all()
+    if "filter" in request.GET:
+        filters = request.GET.getlist("filter", default=None)
+        # for filter in filters:
+        # Insert Filters Here
+        # room_tiers = RoomTier.objects.filter()
+    context = {"room_tiers": room_tiers}
+    return TemplateResponse(request, "winadmin/room_tier_list.html", context)
+
+
+@for_htmx(use_block_from_params=True)
+def room_tier_detail(request: HtmxHttpRequest, room_tier_id: int) -> HttpResponse:
+    room_tier = get_object_or_404(RoomTier, id=room_tier_id)
+    form = RoomTierDetailForm(instance=room_tier)
+    if request.method == "POST":
+        form = RoomTierDetailForm(request.POST, instance=room_tier)
+        if "edit" in request.POST:
+            if form.is_valid():
+                instance = form.save()
+                messages.success(request, "Success!")
+            else:
+                messages.error(request, "Error!")
+        if "delete" in request.POST:
+            room_tier.delete()
+            messages.success(request, "Success!")
+            return HttpResponseClientRedirect(reverse("winadmin:room_tier_list"))
+    context = {"form": form}
+    response = TemplateResponse(request, "winadmin/room_tier_detail.html", context)
+    return trigger_client_event(response=response, name="getMessages")
 
 
 @login_required(login_url="winadmin:login_page")
@@ -1060,23 +1096,54 @@ def pricing_tier_group_detail(
     request: HtmxHttpRequest, pricing_tier_group_id: int
 ) -> HttpResponse:
     pricing_tier_group = get_object_or_404(PricingTierGroup, id=pricing_tier_group_id)
-    form = PricingTierGroupDetailForm(instance=pricing_tier_group)
+    PricingTierFormSet = modelformset_factory(
+        model=PricingTier,
+        fields=("number_of_adults", "price_overnight", "price_short_term"),
+        extra=0,
+    )
+
+    initial = {
+        "name": pricing_tier_group.name,
+        "min_adults": pricing_tier_group.minimum_number_of_adults,
+        "max_adults": pricing_tier_group.maximum_number_of_adults,
+        "room_tiers": pricing_tier_group.room_tiers.all(),
+        "campaigns": pricing_tier_group.campaigns.all(),
+    }
+    min_adults = int(
+        request.GET.get("min_adults")
+        or request.POST.get("min_adults")
+        or pricing_tier_group.minimum_number_of_adults
+    )
+    max_adults = int(
+        request.GET.get("max_adults")
+        or request.POST.get("max_adults")
+        or pricing_tier_group.maximum_number_of_adults
+    )
+    form = PricingTierGroupDetailForm(initial=initial)
+    queryset = PricingTier.objects.filter(tier_group=pricing_tier_group)
+    formset = PricingTierFormSet(queryset=queryset)
+
     if request.method == "POST":
-        form = PricingTierGroupDetailForm(request.POST)
+        form = PricingTierGroupDetailForm(request.POST, instance=pricing_tier_group)
+        formset = PricingTierFormSet(request.POST, request.FILES, queryset=queryset)
         if "edit" in request.POST:
-            if form.is_valid():
-                instance = form.save()
-                messages.success(request, "Success!")
+            if form.is_valid() and formset.is_valid():
+                group = pricing_tier_group.edit_group(form=form, formset=formset)
+                messages.success(request, f"Group {group.name} edited successfully.")
             else:
                 messages.error(request, "Error!")
-        if "delete" in request.POST:
+        elif "delete" in request.POST:
+            group_name = pricing_tier_group.name
             pricing_tier_group.delete()
-            messages.success(request, "Success!")
-            return HttpResponseClientRedirect("reservations:pricing_tier_group_list")
-    context = {"form": form}
-    return TemplateResponse(
+            messages.success(request, f"Group {group_name} deleted successfully.")
+            return HttpResponseClientRedirect(
+                reverse("winadmin:pricing_tier_group_list")
+            )
+    context = {"form": form, "formset": formset}
+    response = TemplateResponse(
         request, "reservations/pricing_tier_group_detail.html", context
     )
+    return trigger_client_event(response=response, name="getMessages")
 
 
 @for_htmx(use_block_from_params=True)
@@ -1090,18 +1157,17 @@ def campaign_create(request: HtmxHttpRequest) -> HttpResponse:
         else:
             messages.error(request, "Error!")
     context = {"form": form}
-    return TemplateResponse(request, "campaign/campaign_create.html", context)
+    response = TemplateResponse(request, "campaign/campaign_create.html", context)
+    return trigger_client_event(response=response, name="getMessages")
 
 
 @for_htmx(use_block_from_params=True)
 def campaign_list(request: HtmxHttpRequest) -> HttpResponse:
     campaigns = Campaign.objects.all()
-    if "filter" in request.GET:
-        filters = request.GET.getlist("filter", default=None)
-        for filter in filters:
-            pass
-            # Insert Filters Here
-            # campaigns = Campaign.objects.filter()
+    # if "filter" in request.GET:
+    #     filters = request.GET.getlist("filter", default=None)
+    #     for filter in filters:
+    # campaigns = Campaign.objects.filter()
     context = {"campaigns": campaigns}
     return TemplateResponse(request, "campaign/campaign_list.html", context)
 
@@ -1111,7 +1177,7 @@ def campaign_detail(request: HtmxHttpRequest, campaign_id: int) -> HttpResponse:
     campaign = get_object_or_404(Campaign, id=campaign_id)
     form = CampaignDetailForm(instance=campaign)
     if request.method == "POST":
-        form = CampaignDetailForm(request.POST)
+        form = CampaignDetailForm(request.POST, instance=campaign)
         if "edit" in request.POST:
             if form.is_valid():
                 instance = form.save()
@@ -1121,6 +1187,7 @@ def campaign_detail(request: HtmxHttpRequest, campaign_id: int) -> HttpResponse:
         if "delete" in request.POST:
             campaign.delete()
             messages.success(request, "Success!")
-            return HttpResponseClientRedirect("campaign:campaign_list")
+            return HttpResponseClientRedirect(reverse("winadmin:campaign_list"))
     context = {"form": form}
-    return TemplateResponse(request, "campaign/campaign_detail.html", context)
+    response = TemplateResponse(request, "campaign/campaign_detail.html", context)
+    return trigger_client_event(response=response, name="getMessages")

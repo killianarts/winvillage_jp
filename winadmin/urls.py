@@ -1,5 +1,4 @@
 from django.urls import path
-
 from customer import views as customer
 from . import views
 
@@ -89,24 +88,19 @@ urlpatterns = [
         name="send_confirmation_email",
     ),
     path(
-        "reservations/campaign/create/",
+        "campaign/create/",
         views.campaign_create,
-        name="reservations/campaign_create",
+        name="campaign_create",
     ),
     path(
-        "reservations/campaign/list/",
+        "campaign/list/",
         views.campaign_list,
-        name="reservations/campaign_list",
+        name="campaign_list",
     ),
     path(
-        "reservations/campaign/detail/<int:campaign_id>/",
+        "campaign/detail/<int:campaign_id>/",
         views.campaign_detail,
-        name="reservations/campaign_detail",
-    ),
-    path(
-        "reservations/pricing_tier_group/create/",
-        views.pricing_tier_group_create,
-        name="pricing_tier_group_create",
+        name="campaign_detail",
     ),
     path("customer/create/", customer.customer_create, name="customer_create"),
     path(
@@ -134,12 +128,34 @@ urlpatterns = [
         views.room_detail,
         name="room_detail",
     ),
+    path("room_tier/create/", views.room_tier_create, name="room_tier_create"),
+    path("room_tier/list/", views.room_tier_list, name="room_tier_list"),
+    path(
+        "room_tier/detail/<int:room_tier_id>/",
+        views.room_tier_detail,
+        name="room_tier_detail",
+    ),
     path("pricing_tier/create/", views.pricing_tier_create, name="pricing_tier_create"),
     path("pricing_tier/list/", views.pricing_tier_list, name="pricing_tier_list"),
     path(
         "pricing_tier/detail/<int:pricing_tier_id>/",
         views.pricing_tier_detail,
         name="pricing_tier_detail",
+    ),
+    path(
+        "pricing_tier_group/create/",
+        views.pricing_tier_group_create,
+        name="pricing_tier_group_create",
+    ),
+    path(
+        "pricing_tier_group/list/",
+        views.pricing_tier_group_list,
+        name="pricing_tier_group_list",
+    ),
+    path(
+        "pricing_tier_group/detail/<int:pricing_tier_group_id>/",
+        views.pricing_tier_group_detail,
+        name="pricing_tier_group_detail",
     ),
 ]
 

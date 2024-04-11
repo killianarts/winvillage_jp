@@ -40,6 +40,7 @@ ruff = "^0.1.15"
 slippers = "^0.6.2"
 django-debug-toolbar = "^4.3.0"
 django-recurrence = "^1.11.1"
+django-decorator-include = "^3.0"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"

@@ -1,7 +1,7 @@
 {% if messages %}
   <ul id="message-list"
       class="space-y-5"
-      _="on load wait 1s then transition my opacity to 0 over 500ms then remove me">
+      _="on load wait 3s then transition my opacity to 0 over 500ms then remove me">
     {% for message in messages %}
       {% if message.level_tag == "info" %}
         <li class="text-blue-500 px-5 py-2 rounded-lg bg-blue-100 border border-blue-200">{{ message }}</li>

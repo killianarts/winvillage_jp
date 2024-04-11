@@ -5,6 +5,7 @@ from zoneinfo import ZoneInfo
 
 import pendulum
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -73,7 +74,7 @@ class Campaign(models.Model):
         verbose_name = _("Campaign")
         verbose_name_plural = _("Campaigns")
 
-    name = models.CharField(max_length=50, verbose_name=_("Name"))
+    name = models.CharField(max_length=50, verbose_name=_("Name"), unique=True)
     recurrences = RecurrenceField(verbose_name=_("Recurrences"))
 
     def __str__(self):
@@ -124,7 +125,7 @@ class RoomTier(models.Model):
         verbose_name = _("Room Tier")
         verbose_name_plural = _("Rooms Tiers")
 
-    name = models.CharField(max_length=255, verbose_name=_("Name"))
+    name = models.CharField(max_length=255, verbose_name=_("Name"), unique=True)
 
     def __str__(self):
         return self.name
@@ -135,7 +136,7 @@ class Room(models.Model):
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
 
-    name = models.CharField(max_length=255, verbose_name=_("Name"))
+    name = models.CharField(max_length=255, verbose_name=_("Name"), unique=True)
     room_tier = models.ForeignKey(
         "RoomTier",
         on_delete=models.CASCADE,
@@ -163,11 +164,19 @@ CHILDREN_CHOICES = (
 # Find
 class PricingTierGroup(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    minimum_number_of_adults = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(2)]
+    )
+    maximum_number_of_adults = models.IntegerField(
+        validators=[MinValueValidator(4), MaxValueValidator(6)]
+    )
     room_tiers = models.ManyToManyField("RoomTier")
     campaigns = models.ManyToManyField("Campaign", blank=True)
 
     def create_group(self, form, formset):
         self.name = form.cleaned_data.get("name")
+        self.minimum_number_of_adults = form.cleaned_data.get("min_adults")
+        self.maximum_number_of_adults = form.cleaned_data.get("max__adults")
         room_tiers = form.cleaned_data.get("room_tiers")
         campaigns = form.cleaned_data.get("campaigns")
         self.save()
@@ -189,6 +198,36 @@ class PricingTierGroup(models.Model):
             for campaign in campaigns:
                 self.campaigns.add(campaign)
         self.save()
+        return self
+
+    def edit_group(self, form, formset):
+        self.name = form.cleaned_data.get("name")
+        room_tiers = form.cleaned_data.get("room_tiers")
+        form_campaigns = form.cleaned_data.get("campaigns")
+        for tier in room_tiers:
+            tier.save()
+
+        for form in formset:
+            form.save()
+
+        self.save()
+
+        if not form_campaigns and self.campaigns.all().exists():
+            for campaign in self.campaigns.all():
+                self.campaigns.remove(campaign)
+
+        elif form_campaigns and not self.campaigns.all().exists():
+            for campaign in form_campaigns:
+                self.campaigns.add(campaign)
+
+        elif form_campaigns and self.campaigns.all().exists():
+            for campaign in self.campaigns.all():
+                if campaign not in form_campaigns:
+                    self.campaigns.remove(campaign)
+            for campaign in form_campaigns:
+                if campaign not in self.campaigns.all():
+                    self.campaigns.add(campaign)
+
         return self
 
     def __str__(self):
@@ -321,7 +360,7 @@ class Reservation(BaseModel):
     def get_possible_rooms_queryset(self):
         number_of_adults = self.get_number_of_adults()
         rooms_queryset = Room.objects.filter(
-            pricing_tiers__number_of_adults=number_of_adults
+            room_tier__pricingtiergroup__pricingtier__number_of_adults=number_of_adults
         ).order_by("name")
         return rooms_queryset
 

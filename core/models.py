@@ -86,7 +86,7 @@ class Item(models.Model):
         verbose_name = _("Item")
         verbose_name_plural = _("Items")
 
-    name = models.CharField(verbose_name=_("Name"), max_length=100)
+    name = models.CharField(verbose_name=_("Name"), max_length=100, unique=True)
     price = models.DecimalField(
         verbose_name=_("Price"), max_digits=19, decimal_places=4
     )

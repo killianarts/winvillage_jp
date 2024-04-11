@@ -22,6 +22,8 @@ from django.views.i18n import JavaScriptCatalog
 from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
+from decorator_include import decorator_include
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
@@ -31,7 +33,7 @@ urlpatterns += i18n_patterns(
     path(settings.ADMIN_URL, admin.site.urls),
     path("", include("core.urls")),
     path("reservations/", include("reservations.urls")),
-    path("winadmin/", include("winadmin.urls")),
+    path("winadmin/", decorator_include(login_required, "winadmin.urls")),
     path(
         "jsi18n/recurrence/",
         JavaScriptCatalog.as_view(packages=["recurrence"]),
