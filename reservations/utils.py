@@ -44,14 +44,15 @@ def get_room_price(reservation: Reservation, room: Room, number_of_adults: int):
         return group.pricingtier_set.filter(number_of_adults=number_of_adults).values_list("price_overnight", flat=True)
 
     def get_short_term_price(group):
-        return group.pricingtier_set.filter(number_of_adults=number_of_adults).values_list("price_short_term", flat=True)
+        return group.pricingtier_set.filter(number_of_adults=number_of_adults).values_list(
+            "price_short_term", flat=True
+        )
 
     # There may be multiple pricingtiergroup's that contain a compaign that is applicable to a room on a given date.
     # To resolve the conflict, I'm choosing to get the most recently defined group.
     # This feels like a very important choice being done with one line of code.
     # TODO: Consider ways of formalizing this choice more thoughtfully and visibly.
     pricingtiergroups = room.room_tier.pricingtiergroup_set.all().order_by("updated_at")
-    # @formatter:off
     dates_with_prices = {}
     for group in pricingtiergroups:
         for period_datetime in period.range("days"):
@@ -74,9 +75,6 @@ def get_room_price(reservation: Reservation, room: Room, number_of_adults: int):
     for date_, price_ in dates_with_prices.items():
         price += price_.first()
     return price
-
-
-# @formatter:on
 
 
 def get_form_and_rooms_data(reservation):
