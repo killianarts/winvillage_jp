@@ -44,36 +44,36 @@
          hx-swap="outerHTML"
          hx-target="#pricing-tiers-table"
          hx-push-url="true"
-         hx-include="[name=min_adults], [name=max_adults]"
+         hx-include="[name=minimum_number_of_adults], [name=maximum_number_of_adults]"
          hx-vals='{"use_block": "pricing-tiers-table"}'
-         hx-trigger="change from:[name=min_adults], change from:[name=max_adults]"
+         hx-trigger="change from:[name=minimum_number_of_adults], change from:[name=maximum_number_of_adults]"
          hx-select="#pricing-tiers-table"
          class="grid grid-cols-2 w-fit gap-7">
       <div class="min-max-values">
-        {% if form.min_adults.errors %}
+        {% if form.minimum_number_of_adults.errors %}
           <p class="text-red-500 help is-danger">
-            {{ form.min_adults.errors }}
+            {{ form.minimum_number_of_adults.errors }}
           </p>
         {% else %}
           <p class="invisible">
             {% blocktrans %}No errors{% endblocktrans %}
           </p>
         {% endif %}
-        <div>{{ form.min_adults.label_tag }}</div>
-        <div>{{ form.min_adults }}</div>
+        <div>{{ form.minimum_number_of_adults.label_tag }}</div>
+        <div>{{ form.minimum_number_of_adults }}</div>
       </div>
       <div class="min-max-values">
-        {% if form.max_adults.errors %}
+        {% if form.maximum_number_of_adults.errors %}
           <p class="text-red-500 help is-danger">
-            {{ form.max_adults.errors }}
+            {{ form.maximum_number_of_adults.errors }}
           </p>
         {% else %}
           <p class="invisible">
             {% blocktrans %}No errors{% endblocktrans %}
           </p>
         {% endif %}
-        <div>{{ form.max_adults.label_tag }}</div>
-        <div>{{ form.max_adults }}</div>
+        <div>{{ form.maximum_number_of_adults.label_tag }}</div>
+        <div>{{ form.maximum_number_of_adults }}</div>
       </div>
     </div>
     {% block pricing-tiers-table %}
@@ -117,17 +117,17 @@
       </table>
     {% endblock %}
     <div class="grid">
-      {% if form.campaigns.errors %}
+      {% if form.campaign.errors %}
         <p class="text-red-500 help is-danger">
-          {{ form.campaigns.errors }}
+          {{ form.campaign.errors }}
         </p>
       {% else %}
         <p class="invisible">
           {% blocktrans %}No errors{% endblocktrans %}
         </p>
       {% endif %}
-      <div>{{ form.campaigns.label_tag }}</div>
-      <div>{{ form.campaigns }}</div>
+      <div>{{ form.campaign.label_tag }}</div>
+      <div>{{ form.campaign }}</div>
     </div>
     <div class="space-x-5">
       {% #outline_button name="edit" type="submit" %}{% translate 'Edit' %}{% /outline_button %}

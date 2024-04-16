@@ -88,16 +88,12 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
 
 @login_required(login_url="winadmin:login_page")
 def inventory_management_page(request: HtmxHttpRequest) -> HttpResponse:
-    return TemplateResponse(
-        request, "winadmin/index.html", {"greeting": "Hello from inventory."}
-    )
+    return TemplateResponse(request, "winadmin/index.html", {"greeting": "Hello from inventory."})
 
 
 @login_required(login_url="winadmin:login_page")
 def sale_management_page(request: HtmxHttpRequest) -> HttpResponse:
-    return TemplateResponse(
-        request, "winadmin/index.html", {"greeting": "Hello from sales."}
-    )
+    return TemplateResponse(request, "winadmin/index.html", {"greeting": "Hello from sales."})
 
 
 @htmx_form_validate(form_class=LoginForm)
@@ -113,9 +109,7 @@ def login_page(request: HtmxHttpRequest) -> HttpResponse:
                 login(request, user)
                 return redirect("winadmin:index")
             else:
-                messages.error(
-                    request=request, message=_("There was an error logging in.")
-                )
+                messages.error(request=request, message=_("There was an error logging in."))
     context = {"form": form}
     return TemplateResponse(request, "winadmin/login_page.html", context)
 
@@ -171,9 +165,7 @@ def item_create(request: HtmxHttpRequest) -> HttpResponse:
                 messages.success(request, _("Item Successfully Added"))
     form = ItemCreateForm()
     return trigger_client_event(
-        TemplateResponse(
-            request, "winadmin/inventory/item_create.html", {"form": form}
-        ),
+        TemplateResponse(request, "winadmin/inventory/item_create.html", {"form": form}),
         "getMessages",
     )
 
@@ -251,9 +243,7 @@ def item_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
                 return HttpResponseClientRedirect(reverse("winadmin:item_list"))
             else:
                 messages.error(request, _("Error"))
-    response = TemplateResponse(
-        request, "winadmin/inventory/item_detail.html", {"form": form, "item": item}
-    )
+    response = TemplateResponse(request, "winadmin/inventory/item_detail.html", {"form": form, "item": item})
     return trigger_client_event(
         response=response,
         name="getMessages",
@@ -318,9 +308,7 @@ def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    sales = sales.filter(transaction_datetime__year=year).filter(
-        transaction_datetime__month=month
-    )
+    sales = sales.filter(transaction_datetime__year=year).filter(transaction_datetime__month=month)
     balance, ledger = get_balance_and_ledger(sales)
     context = {
         "ledger": ledger,
@@ -329,9 +317,7 @@ def _sales_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         "month": month,
         "form": form,
     }
-    return TemplateResponse(
-        request, "winadmin/transactions/sales_list_by_period.html", context
-    )
+    return TemplateResponse(request, "winadmin/transactions/sales_list_by_period.html", context)
 
 
 @login_required(login_url="winadmin:login_page")
@@ -349,9 +335,7 @@ def transaction_create(request: HtmxHttpRequest) -> HttpResponse:
     form = TransactionCreateForm()
     context = {"form": form}
     return trigger_client_event(
-        TemplateResponse(
-            request, "winadmin/transactions/transaction_create.html", context
-        ),
+        TemplateResponse(request, "winadmin/transactions/transaction_create.html", context),
         "getMessages",
     )
 
@@ -372,9 +356,7 @@ def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    transactions = transactions.filter(transaction_datetime__year=year).filter(
-        transaction_datetime__month=month
-    )
+    transactions = transactions.filter(transaction_datetime__year=year).filter(transaction_datetime__month=month)
     balance, ledger = get_balance_and_ledger(transactions)
     context = {
         "ledger": ledger,
@@ -383,9 +365,7 @@ def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         "month": month,
         "form": form,
     }
-    return TemplateResponse(
-        request, "winadmin/transactions/transaction_list_by_period.html", context
-    )
+    return TemplateResponse(request, "winadmin/transactions/transaction_list_by_period.html", context)
 
 
 @login_required(login_url="winadmin:login_page")
@@ -394,9 +374,7 @@ def transaction_export_csv_by_period(request) -> HttpResponse:
     if form.is_valid():
         year = form.cleaned_data["year"]
         month = form.cleaned_data["month"]
-        transactions = Transaction.objects.filter(
-            transaction_datetime__year=year
-        ).filter(transaction_datetime__month=month)
+        transactions = Transaction.objects.filter(transaction_datetime__year=year).filter(transaction_datetime__month=month)
         balance, ledger = get_balance_and_ledger(transactions)
         response = HttpResponse(content_type="text/csv")
         filename = f"transactions_{year}_{month}.csv"
@@ -447,13 +425,9 @@ def transaction_detail(request: HtmxHttpRequest, id: int) -> HttpResponse:
         form = TransactionCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(
-                request, messages.INFO, _("Transaction Created Successfully")
-            )
+            messages.add_message(request, messages.INFO, _("Transaction Created Successfully"))
     context = {"form": form}
-    return TemplateResponse(
-        request, "winadmin/transactions/transaction_create.html", context
-    )
+    return TemplateResponse(request, "winadmin/transactions/transaction_create.html", context)
 
 
 # Reservations
@@ -462,11 +436,7 @@ def transaction_detail(request: HtmxHttpRequest, id: int) -> HttpResponse:
 @login_required(login_url="winadmin:login_page")
 @for_htmx(use_block_from_params=True)
 def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
-    reservations = (
-        Reservation.objects.select_related("stay")
-        .exclude(stay__status="not_reserved")
-        .order_by("stay__start_date")
-    )
+    reservations = Reservation.objects.select_related("stay").exclude(stay__status="not_reserved").order_by("stay__start_date")
     form = []
     active_timezone = activate(TIMEZONE)
     year = request.GET.get("year", datetime.now(tz=active_timezone).year)
@@ -482,18 +452,14 @@ def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    reservations = reservations.filter(stay__start_date__year=year).filter(
-        stay__start_date__month=month
-    )
+    reservations = reservations.filter(stay__start_date__year=year).filter(stay__start_date__month=month)
     context = {
         "reservations": reservations,
         "year": year,
         "month": month,
         "form": form,
     }
-    return TemplateResponse(
-        request, "winadmin/reservations/reservation_list_by_period.html", context
-    )
+    return TemplateResponse(request, "winadmin/reservations/reservation_list_by_period.html", context)
 
 
 @login_required(login_url="winadmin:login_page")
@@ -536,9 +502,7 @@ def reservation_create_no_calendar(request: HtmxHttpRequest) -> HttpResponse:
         "reservation": reservation,
         "grill": grills,
     }
-    return TemplateResponse(
-        request, "winadmin/reservations/reservation_create.html", context
-    )
+    return TemplateResponse(request, "winadmin/reservations/reservation_create.html", context)
 
 
 RESERVATION_TEMPLATE = "winadmin/reservations/reservation_create.html"
@@ -582,9 +546,7 @@ def datetime_select(request: HtmxHttpRequest) -> HttpResponse:
         if "select_date" in request.POST:
             calendar_cell_form = DateForm(request.POST)
             if calendar_cell_form.is_valid():
-                selected_date = pendulum.instance(
-                    calendar_cell_form.cleaned_data["date"]
-                )
+                selected_date = pendulum.instance(calendar_cell_form.cleaned_data["date"])
                 start_date, end_date = reservation.set_dates(selected_date)
         if "select_time" in request.POST:
             time_form = forms.TimeSelectForm(request.POST)
@@ -789,9 +751,7 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
             send_confirmation_email(reservation)
             reservation.set_status("reserved")
             context = {"payment": payment}
-            return TemplateResponse(
-                request, "winadmin/reservations/reservation_create.html", context
-            )
+            return TemplateResponse(request, "winadmin/reservations/reservation_create.html", context)
     form = SquarePaymentTokenForm()
     context = {
         "form": form,
@@ -800,9 +760,7 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
         "SQUARE_LOCATION_ID": SQUARE_LOCATION_ID,
         "SQUARE_CURRENCY": SQUARE_CURRENCY,
     }
-    return TemplateResponse(
-        request, "winadmin/reservations/reservation_create.html", context
-    )
+    return TemplateResponse(request, "winadmin/reservations/reservation_create.html", context)
 
 
 # def send_confirmation_email(reservation):
@@ -986,9 +944,7 @@ def pricing_tier_detail(request: HtmxHttpRequest, pricing_tier_id: int) -> HttpR
 
 @login_required(login_url="winadmin:login_page")
 def test_pricing_tiers(request):
-    return TemplateResponse(
-        request=request, template="winadmin/reservations/test.html", context={}
-    )
+    return TemplateResponse(request=request, template="winadmin/reservations/test.html", context={})
 
 
 @login_required(login_url="winadmin:login_page")
@@ -999,9 +955,7 @@ def recurrence(request):
     the_next_month = the_month.add(months=1)
     current_calendar = cal.itermonthdates(the_month.year, the_month.month)
     next_calendar = cal.itermonthdates(the_next_month.year, the_next_month.month)
-    weekends = SpecialDate.objects.get(name="Weekend").recurrence.between(
-        last_month, the_next_month, dtstart=last_month
-    )
+    weekends = SpecialDate.objects.get(name="Weekend").recurrence.between(last_month, the_next_month, dtstart=last_month)
     weekends = [day.date() for day in weekends]
     calendars = {"selected_month": current_calendar, "next_month": next_calendar}
     return TemplateResponse(
@@ -1035,12 +989,8 @@ def recurrence(request):
 
 @for_htmx(use_block_from_params=True)
 def pricing_tier_group_create(request: HtmxHttpRequest) -> HttpResponse:
-    min_adults = int(
-        request.GET.get("min_adults") or request.POST.get("min_adults") or 1
-    )
-    max_adults = int(
-        request.GET.get("max_adults") or request.POST.get("max_adults") or 6
-    )
+    min_adults = int(request.GET.get("min_adults") or request.POST.get("min_adults") or 1)
+    max_adults = int(request.GET.get("max_adults") or request.POST.get("max_adults") or 6)
     num_extras = max_adults - min_adults + 1
     PricingTierFormSet = inlineformset_factory(
         parent_model=PricingTierGroup,
@@ -1050,9 +1000,7 @@ def pricing_tier_group_create(request: HtmxHttpRequest) -> HttpResponse:
         extra=num_extras,
         can_delete=False,
     )
-    form = PricingTierGroupCreateForm(
-        initial={"min_adults": min_adults, "max_adults": max_adults}
-    )
+    form = PricingTierGroupCreateForm(initial={"min_adults": min_adults, "max_adults": max_adults})
     formset = PricingTierFormSet(min_adults=min_adults, max_adults=max_adults)
     if request.method == "POST":
         form = PricingTierGroupCreateForm(request.POST)
@@ -1062,18 +1010,12 @@ def pricing_tier_group_create(request: HtmxHttpRequest) -> HttpResponse:
                 group_obj = PricingTierGroup()
                 group = group_obj.create_group(form=form, formset=formset)
                 messages.success(request, f"Group {group.name} created successfully.")
-                form = PricingTierGroupCreateForm(
-                    initial={"min_adults": min_adults, "max_adults": max_adults}
-                )
-                formset = PricingTierFormSet(
-                    min_adults=min_adults, max_adults=max_adults
-                )
+                form = PricingTierGroupCreateForm(initial={"min_adults": min_adults, "max_adults": max_adults})
+                formset = PricingTierFormSet(min_adults=min_adults, max_adults=max_adults)
             else:
                 messages.error(request, "Error!")
     context = {"form": form, "formset": formset}
-    response = TemplateResponse(
-        request, "reservations/pricing_tier_group_create.html", context
-    )
+    response = TemplateResponse(request, "reservations/pricing_tier_group_create.html", context)
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -1086,38 +1028,26 @@ def pricing_tier_group_list(request: HtmxHttpRequest) -> HttpResponse:
         # Insert Filters Here
         # pricing_tier_groups = PricingTierGroup.objects.filter()
     context = {"pricing_tier_groups": pricing_tier_groups}
-    return TemplateResponse(
-        request, "reservations/pricing_tier_group_list.html", context
-    )
+    return TemplateResponse(request, "reservations/pricing_tier_group_list.html", context)
 
 
 @for_htmx(use_block_from_params=True)
-def pricing_tier_group_detail(
-    request: HtmxHttpRequest, pricing_tier_group_id: int
-) -> HttpResponse:
+def pricing_tier_group_detail(request: HtmxHttpRequest, pricing_tier_group_id: int) -> HttpResponse:
     pricing_tier_group = get_object_or_404(PricingTierGroup, id=pricing_tier_group_id)
+
+    initial = {
+        "name": pricing_tier_group.name,
+        "minimum_number_of_adults": pricing_tier_group.minimum_number_of_adults,
+        "maximum_number_of_adults": pricing_tier_group.maximum_number_of_adults,
+        "room_tiers": pricing_tier_group.room_tiers.all(),
+        "campaign": pricing_tier_group.campaign,
+    }
+    min_adults = int(request.GET.get("min_adults") or request.POST.get("min_adults") or pricing_tier_group.minimum_number_of_adults)
+    max_adults = int(request.GET.get("max_adults") or request.POST.get("max_adults") or pricing_tier_group.maximum_number_of_adults)
     PricingTierFormSet = modelformset_factory(
         model=PricingTier,
         fields=("number_of_adults", "price_overnight", "price_short_term"),
         extra=0,
-    )
-
-    initial = {
-        "name": pricing_tier_group.name,
-        "min_adults": pricing_tier_group.minimum_number_of_adults,
-        "max_adults": pricing_tier_group.maximum_number_of_adults,
-        "room_tiers": pricing_tier_group.room_tiers.all(),
-        "campaigns": pricing_tier_group.campaigns.all(),
-    }
-    min_adults = int(
-        request.GET.get("min_adults")
-        or request.POST.get("min_adults")
-        or pricing_tier_group.minimum_number_of_adults
-    )
-    max_adults = int(
-        request.GET.get("max_adults")
-        or request.POST.get("max_adults")
-        or pricing_tier_group.maximum_number_of_adults
     )
     form = PricingTierGroupDetailForm(initial=initial)
     queryset = PricingTier.objects.filter(tier_group=pricing_tier_group)
@@ -1136,13 +1066,9 @@ def pricing_tier_group_detail(
             group_name = pricing_tier_group.name
             pricing_tier_group.delete()
             messages.success(request, f"Group {group_name} deleted successfully.")
-            return HttpResponseClientRedirect(
-                reverse("winadmin:pricing_tier_group_list")
-            )
+            return HttpResponseClientRedirect(reverse("winadmin:pricing_tier_group_list"))
     context = {"form": form, "formset": formset}
-    response = TemplateResponse(
-        request, "reservations/pricing_tier_group_detail.html", context
-    )
+    response = TemplateResponse(request, "reservations/pricing_tier_group_detail.html", context)
     return trigger_client_event(response=response, name="getMessages")
 
 

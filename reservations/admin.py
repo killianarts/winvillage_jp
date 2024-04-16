@@ -94,8 +94,31 @@ admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Stay, StayAdmin)
 admin.site.register(Order)
 admin.site.register(OrderItem)
-admin.site.register(Campaign)
-admin.site.register(Room)
+
+
+class CampaignAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "created_at",
+        "updated_at",
+    )
+
+
+admin.site.register(Campaign, CampaignAdmin)
+
+
+class RoomAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "room_tier",
+        "created_at",
+        "updated_at",
+    )
+
+
+admin.site.register(Room, RoomAdmin)
 admin.site.register(RoomTier)
 admin.site.register(PricingTier)
 admin.site.register(PricingTierGroup, PricingTierGroupAdmin)

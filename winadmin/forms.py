@@ -307,11 +307,21 @@ class IncrementalPricingTierFormSet(BaseInlineFormSet):
 
 
 class PricingTierGroupCreateForm(forms.Form):
+    class Meta:
+        model = PricingTierGroup
+        fields = (
+            "name",
+            "minimum_number_of_adults",
+            "maximum_number_of_adults",
+            "room_tiers",
+            "campaign",
+        )
+
     name = forms.CharField(max_length=100, label=_("Name"))
-    min_adults = forms.IntegerField(
+    minimum_number_of_adults = forms.IntegerField(
         initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
     )
-    max_adults = forms.IntegerField(
+    maximum_number_of_adults = forms.IntegerField(
         initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
     )
     room_tiers = forms.ModelMultipleChoiceField(
@@ -319,9 +329,8 @@ class PricingTierGroupCreateForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         label=_("Room Tiers"),
     )
-    campaigns = forms.ModelMultipleChoiceField(
+    campaigns = forms.ModelChoiceField(
         queryset=Campaign.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
         required=False,
         label=_("Campaigns"),
     )
@@ -334,12 +343,22 @@ class PricingTierGroupCreateForm(forms.Form):
 #         widgets = {"campaigns": forms.CheckboxSelectMultiple}
 
 
-class PricingTierGroupDetailForm(forms.Form):
+class PricingTierGroupDetailForm(forms.ModelForm):
+    class Meta:
+        model = PricingTierGroup
+        fields = (
+            "name",
+            "minimum_number_of_adults",
+            "maximum_number_of_adults",
+            "room_tiers",
+            "campaign",
+        )
+
     name = forms.CharField(max_length=100, label=_("Name"))
-    min_adults = forms.IntegerField(
+    minimum_number_of_adults = forms.IntegerField(
         initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
     )
-    max_adults = forms.IntegerField(
+    maximum_number_of_adults = forms.IntegerField(
         initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
     )
     room_tiers = forms.ModelMultipleChoiceField(
@@ -347,16 +366,11 @@ class PricingTierGroupDetailForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
         label=_("Room Tiers"),
     )
-    campaigns = forms.ModelMultipleChoiceField(
+    campaign = forms.ModelChoiceField(
         queryset=Campaign.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
         required=False,
-        label=_("Campaigns"),
+        label=_("Campaign"),
     )
-
-    def __init__(self, *args, **kwargs):
-        # self.min_adults.initial =
-        super(PricingTierGroupDetailForm, self).__init__(*args, **kwargs)
 
 
 class CampaignCreateForm(forms.ModelForm):
