@@ -374,7 +374,9 @@ def transaction_export_csv_by_period(request) -> HttpResponse:
     if form.is_valid():
         year = form.cleaned_data["year"]
         month = form.cleaned_data["month"]
-        transactions = Transaction.objects.filter(transaction_datetime__year=year).filter(transaction_datetime__month=month)
+        transactions = Transaction.objects.filter(transaction_datetime__year=year).filter(
+            transaction_datetime__month=month
+        )
         balance, ledger = get_balance_and_ledger(transactions)
         response = HttpResponse(content_type="text/csv")
         filename = f"transactions_{year}_{month}.csv"
@@ -436,7 +438,9 @@ def transaction_detail(request: HtmxHttpRequest, id: int) -> HttpResponse:
 @login_required(login_url="winadmin:login_page")
 @for_htmx(use_block_from_params=True)
 def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
-    reservations = Reservation.objects.select_related("stay").exclude(stay__status="not_reserved").order_by("stay__start_date")
+    reservations = (
+        Reservation.objects.select_related("stay").exclude(stay__status="not_reserved").order_by("stay__start_date")
+    )
     form = []
     active_timezone = activate(TIMEZONE)
     year = request.GET.get("year", datetime.now(tz=active_timezone).year)
@@ -955,7 +959,9 @@ def recurrence(request):
     the_next_month = the_month.add(months=1)
     current_calendar = cal.itermonthdates(the_month.year, the_month.month)
     next_calendar = cal.itermonthdates(the_next_month.year, the_next_month.month)
-    weekends = SpecialDate.objects.get(name="Weekend").recurrence.between(last_month, the_next_month, dtstart=last_month)
+    weekends = SpecialDate.objects.get(name="Weekend").recurrence.between(
+        last_month, the_next_month, dtstart=last_month
+    )
     weekends = [day.date() for day in weekends]
     calendars = {"selected_month": current_calendar, "next_month": next_calendar}
     return TemplateResponse(
@@ -1042,8 +1048,12 @@ def pricing_tier_group_detail(request: HtmxHttpRequest, pricing_tier_group_id: i
         "room_tiers": pricing_tier_group.room_tiers.all(),
         "campaign": pricing_tier_group.campaign,
     }
-    min_adults = int(request.GET.get("min_adults") or request.POST.get("min_adults") or pricing_tier_group.minimum_number_of_adults)
-    max_adults = int(request.GET.get("max_adults") or request.POST.get("max_adults") or pricing_tier_group.maximum_number_of_adults)
+    min_adults = int(
+        request.GET.get("min_adults") or request.POST.get("min_adults") or pricing_tier_group.minimum_number_of_adults
+    )
+    max_adults = int(
+        request.GET.get("max_adults") or request.POST.get("max_adults") or pricing_tier_group.maximum_number_of_adults
+    )
     PricingTierFormSet = modelformset_factory(
         model=PricingTier,
         fields=("number_of_adults", "price_overnight", "price_short_term"),
