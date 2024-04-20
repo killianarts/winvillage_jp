@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from phonenumber_field.formfields import PhoneNumberField
 
 from core.forms import ReservationsContactInformationFormMixin, TailwindFormMixin
-from reservations.models import Stay, Room
+from reservations.models import Stay
 
 
 class GrillOptionForm(forms.Form):
@@ -87,11 +87,10 @@ class RoomChoiceField(forms.ModelChoiceField):
         return obj.name
 
 
-class RoomChoiceForm(forms.Form):
-    rooms = RoomChoiceField(queryset=None, widget=forms.RadioSelect)
+class RoomTierChoiceForm(forms.Form):
+    roomtiers = RoomChoiceField(queryset=None, widget=forms.RadioSelect)
 
-    # form = RoomChoiceForm(queryset=queryset)
     def __init__(self, *args, **kwargs):
         queryset = kwargs.pop("queryset", None)
-        super(RoomChoiceForm, self).__init__(*args, **kwargs)
-        self.fields["rooms"].queryset = queryset
+        super(RoomTierChoiceForm, self).__init__(*args, **kwargs)
+        self.fields["roomtiers"].queryset = queryset

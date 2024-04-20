@@ -6,9 +6,8 @@ import pendulum
 from babel.dates import format_date
 from django.utils.translation import get_language
 
-from reservations.forms import DateTimeForm
-from reservations.forms import RoomChoiceForm
-from reservations.models import Reservation, Stay, Room
+from reservations.forms import DateTimeForm, RoomTierChoiceForm
+from reservations.models import Reservation, Stay, Room, RoomTier
 
 
 def make_pen(dt: datetime | date) -> pendulum.DateTime:
@@ -37,8 +36,9 @@ def campaign_occurrences(reservation, campaign):
     )
 
 
-def get_room_price(reservation: Reservation, room: Room, number_of_adults: int):
+def get_room_price(reservation: Reservation, room: Room):
     period = reservation.get_stay_period()
+    number_of_adults = reservation.get_number_of_adults()
 
     def get_overnight_price(group):
         return group.pricingtier_set.filter(number_of_adults=number_of_adults).values_list("price_overnight", flat=True)
@@ -77,34 +77,131 @@ def get_room_price(reservation: Reservation, room: Room, number_of_adults: int):
     return price
 
 
-def get_form_and_rooms_data(reservation):
+# def get_form_and_rooms_data(reservation):
+#     start = reservation.get_start_date()
+#     end = reservation.get_end_date()
+#     rooms_queryset = reservation.get_possible_rooms_queryset()
+#     available_rooms = reservation.check_availability(start_date=start, end_date=end)
+#     rooms_data = []
+#     if available_rooms:
+#         for room in available_rooms:
+#             # Check if the period between the start and end dates falls into an active campaign.
+#             # First we need to know which PricingTierGroups this room is in.
+#             # We get that information through its RoomTier
+#             price = get_room_price(reservation=reservation, room=room)
+#             rooms_data.append(
+#                 {
+#                     "room": room,
+#                     "price": price,
+#                 }
+#             )
+#     room_name = reservation.get_room_name()
+#     initial = {}
+#     if room_name:
+#         if reservation.get_possible_rooms_queryset().filter(name=room_name).exists():
+#             initial = {"rooms": reservation.stay.room}
+#         else:
+#             reservation.reset_rooms()
+#     form = RoomChoiceForm(queryset=rooms_queryset, initial=initial)
+#     return form, rooms_data
+
+
+# TODO: Move utilities to the Reservation model.
+def get_roomtier_price(reservation: Reservation, roomtier: RoomTier, number_of_adults: int):
+    def get_overnight_price(group):
+        return (
+            group.pricingtier_set.filter(number_of_adults=number_of_adults)
+            .values_list("price_overnight", flat=True)
+            .first()
+        )
+
+    def get_short_term_price(group):
+        return (
+            group.pricingtier_set.filter(number_of_adults=number_of_adults)
+            .values_list("price_short_term", flat=True)
+            .first()
+        )
+
+    def get_child_overnight_price(group):
+        return group.price_overnight_child
+
+    def get_child_short_term_price(group):
+        return group.price_short_term_child
+
+    # There may be multiple pricingtiergroup's that contain a compaign that is applicable to a room on a given date.
+    # To resolve the conflict, I'm choosing to get the most recently defined group.
+    # This feels like a very important choice being done with one line of code.
+    # TODO: Consider ways of formalizing this choice more thoughtfully and visibly.
+    pricingtiergroups = roomtier.pricingtiergroup_set.all().order_by("updated_at")
+    dates_with_prices = {}
+    period = reservation.get_stay_period()
+    number_of_nights = period.in_days()
+    pricing_period = reservation.get_pricing_period()
+    for group in pricingtiergroups:
+        for period_datetime in pricing_period:
+            if group.campaign:
+                for campaign_date in campaign_occurrences(reservation, group.campaign):
+                    if period_datetime.date() == campaign_date.date():
+                        if number_of_nights >= 1:
+                            dates_with_prices[period_datetime.date()] = {
+                                "price_adult": get_overnight_price(group),
+                                "price_child": get_child_overnight_price(group),
+                            }
+                        else:
+                            dates_with_prices[period_datetime.date()] = {
+                                "price_adult": get_short_term_price(group),
+                                "price_child": get_child_short_term_price(group),
+                            }
+
+            elif not group.campaign:
+                if number_of_nights >= 1:
+                    dates_with_prices[period_datetime.date()] = {
+                        "price_adult": get_overnight_price(group),
+                        "price_child": get_child_overnight_price(group),
+                    }
+                else:
+                    dates_with_prices[period_datetime.date()] = {
+                        "price_adult": get_short_term_price(group),
+                        "price_child": get_child_short_term_price(group),
+                    }
+
+    price = 0
+    for date_, prices_ in dates_with_prices.items():
+        price += prices_["price_adult"]
+    for date_, prices_ in dates_with_prices.items():
+        price += prices_["price_child"] * reservation.get_number_of_children()
+    return price
+
+
+def get_form_and_roomtier_data(reservation):
     start = reservation.get_start_date()
     end = reservation.get_end_date()
     number_of_adults = reservation.get_number_of_adults()
-    rooms_queryset = reservation.get_possible_rooms_queryset()
+    roomtier_queryset = reservation.get_possible_roomtier_queryset()
     available_rooms = reservation.check_availability(start_date=start, end_date=end)
-    if available_rooms:
-        rooms_data = []
-        for room in available_rooms:
+    available_roomtiers = reservation.check_roomtier_availability(available_rooms)
+    roomtier_data = []
+    if available_roomtiers:
+        for tier in available_roomtiers:
             # Check if the period between the start and end dates falls into an active campaign.
             # First we need to know which PricingTierGroups this room is in.
             # We get that information through its RoomTier
-            price = get_room_price(reservation=reservation, room=room, number_of_adults=number_of_adults)
-            rooms_data.append(
+            price = get_roomtier_price(reservation=reservation, roomtier=tier, number_of_adults=number_of_adults)
+            roomtier_data.append(
                 {
-                    "name": room.name,
+                    "tier": tier,
                     "price": price,
                 }
             )
-    room_name = reservation.get_room_name()
+    roomtier_name = reservation.get_roomtier_name()
     initial = {}
-    if room_name:
-        if reservation.get_possible_rooms_queryset().filter(name=room_name).exists():
-            initial = {"rooms": reservation.stay.room}
+    if roomtier_name:
+        if reservation.get_possible_roomtier_queryset().filter(name=roomtier_name).exists():
+            initial = {"roomtiers": reservation.stay.room.room_tier}
         else:
             reservation.reset_rooms()
-    form = RoomChoiceForm(queryset=rooms_queryset, initial=initial)
-    return form, rooms_data
+    form = RoomTierChoiceForm(queryset=roomtier_queryset, initial=initial)
+    return form, roomtier_data
 
 
 # def get_form_and_rooms_data(reservation):
@@ -133,8 +230,8 @@ def get_form_and_rooms_data(reservation):
 
 
 def get_form_with_POST_data(reservation, request):
-    rooms_queryset = reservation.get_possible_rooms_queryset()
-    form = RoomChoiceForm(request.POST, queryset=rooms_queryset)
+    roomtier_queryset = reservation.get_possible_roomtier_queryset()
+    form = RoomTierChoiceForm(request.POST, queryset=roomtier_queryset)
     return form
 
 

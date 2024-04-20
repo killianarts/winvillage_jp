@@ -81,9 +81,7 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
         if "select_date" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)
             if calendar_cell_form.is_valid():
-                selected_datetime = pendulum.instance(
-                    calendar_cell_form.cleaned_data["datetime"]
-                )
+                selected_datetime = pendulum.instance(calendar_cell_form.cleaned_data["datetime"])
                 start, end = reservation.set_dates(selected_datetime)
         # if "select_time" in request.POST:
         #     time_form = forms.TimeSelectForm(request.POST)
@@ -105,20 +103,19 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def room_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    form, rooms_data = utils.get_form_and_rooms_data(reservation)
+    form, roomtier_data = utils.get_form_and_roomtier_data(reservation)
     if request.method == "POST":
         form = utils.get_form_with_POST_data(reservation, request)
         if form.is_valid():
-            reservation.set_room(form)
-    context = {"form": form, "rooms_data": rooms_data, "reservation": reservation}
+            # TODO: Set the Stay's price here somehow.
+            reservation.set_room(form, roomtier_data)
+    context = {"form": form, "roomtier_data": roomtier_data, "reservation": reservation}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
 def times_view(request):
     datetimes = generate_interval_range(range_unit="minutes", range_amount=30)
-    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(
-        stay__end__date="2024-1-11"
-    )
+    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(stay__end__date="2024-1-11")
     return TemplateResponse(
         request,
         "reservations/times.html",
@@ -131,9 +128,7 @@ def times_view(request):
 
 def times_view(request):
     datetimes = generate_datetimes()
-    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(
-        stay__end__date="2024-1-11"
-    )
+    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(stay__end__date="2024-1-11")
     return TemplateResponse(
         request,
         "reservations/times.html",

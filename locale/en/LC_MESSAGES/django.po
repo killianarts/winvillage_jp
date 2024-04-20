@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-16 06:08+0000\n"
+"POT-Creation-Date: 2024-04-18 06:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Contact Infos"
 msgstr ""
 
-#: core/models.py:64 reservations/models.py:297
+#: core/models.py:64 reservations/models.py:276
 msgid "First name"
 msgstr ""
 
@@ -46,7 +46,7 @@ msgid "Category Name"
 msgstr ""
 
 #: core/models.py:86 core/models.py:169 winadmin/forms.py:151
-#: winadmin/views.py:395
+#: winadmin/views.py:397
 msgid "Item"
 msgstr ""
 
@@ -54,15 +54,15 @@ msgstr ""
 msgid "Items"
 msgstr ""
 
-#: core/models.py:89 core/models.py:156 reservations/models.py:71
-#: reservations/models.py:112 reservations/models.py:123
+#: core/models.py:89 core/models.py:156 reservations/models.py:70
+#: reservations/models.py:111 reservations/models.py:122
 #: templates/campaign/campaign_list.html:32
 #: templates/winadmin/room_tier_list.html:32 winadmin/forms.py:65
 #: winadmin/forms.py:94 winadmin/forms.py:148 winadmin/forms.py:320
 #: winadmin/forms.py:357 winadmin/models.py:11
 #: winadmin/templates/winadmin/inventory/item_list.html:13
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:39
-#: winadmin/views.py:392
+#: winadmin/views.py:394
 msgid "Name"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgid "Bank Deposit"
 msgstr ""
 
 #: core/models.py:163 customer/models.py:24 winadmin/forms.py:149
-#: winadmin/views.py:393
+#: winadmin/views.py:395
 msgid "Customer"
 msgstr ""
 
@@ -144,10 +144,10 @@ msgstr ""
 msgid "Transaction Datetime"
 msgstr ""
 
-#: core/models.py:171 reservations/models.py:32 winadmin/forms.py:152
+#: core/models.py:171 reservations/models.py:31 winadmin/forms.py:152
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:41
-#: winadmin/views.py:396
+#: winadmin/views.py:398
 msgid "Quantity"
 msgstr ""
 
@@ -159,7 +159,7 @@ msgstr ""
 #: winadmin/forms.py:153
 #: winadmin/templates/winadmin/reservations/reservation_create.html:92
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:79
-#: winadmin/views.py:397
+#: winadmin/views.py:399
 msgid "Total Price"
 msgstr ""
 
@@ -593,7 +593,7 @@ msgstr ""
 #: customer/forms.py:12 customer/forms.py:21 customer/forms.py:30
 #: customer/forms.py:53 customer/forms.py:63 customer/forms.py:73
 #: customer/templates/customer/customer_list.html:35 reservations/forms.py:31
-#: reservations/models.py:299
+#: reservations/models.py:278
 #: reservations/templates/reservations/index.html:558 winadmin/forms.py:172
 #: winadmin/forms.py:198 winadmin/forms.py:215
 #: winadmin/templates/winadmin/reservations/reservation_create.html:74
@@ -739,55 +739,55 @@ msgstr ""
 msgid "Please choose the number of adults."
 msgstr ""
 
-#: reservations/models.py:27
+#: reservations/models.py:26
 msgid "Order Item"
 msgstr ""
 
-#: reservations/models.py:28
+#: reservations/models.py:27
 msgid "Order Items"
 msgstr ""
 
-#: reservations/models.py:30 reservations/models.py:43
+#: reservations/models.py:29 reservations/models.py:42
 msgid "User"
 msgstr ""
 
-#: reservations/models.py:40
+#: reservations/models.py:39
 msgid "Order"
 msgstr ""
 
-#: reservations/models.py:41
+#: reservations/models.py:40
 msgid "Orders"
 msgstr ""
 
-#: reservations/models.py:46
+#: reservations/models.py:45
 msgid "Ordered?"
 msgstr ""
 
-#: reservations/models.py:47
+#: reservations/models.py:46
 msgid "Ordered Date"
 msgstr ""
 
-#: reservations/models.py:68 winadmin/forms.py:372
+#: reservations/models.py:67 winadmin/forms.py:372
 msgid "Campaign"
 msgstr ""
 
-#: reservations/models.py:69 winadmin/forms.py:335
+#: reservations/models.py:68 winadmin/forms.py:335
 msgid "Campaigns"
 msgstr ""
 
-#: reservations/models.py:72 winadmin/models.py:12
+#: reservations/models.py:71 winadmin/models.py:12
 msgid "Recurrences"
 msgstr ""
 
-#: reservations/models.py:80
+#: reservations/models.py:79
 msgid "Pricing tier"
 msgstr ""
 
-#: reservations/models.py:81
+#: reservations/models.py:80
 msgid "Pricing tiers"
 msgstr ""
 
-#: reservations/models.py:90 reservations/models.py:226
+#: reservations/models.py:89 reservations/models.py:232
 #: reservations/templates/reservations/index.html:510
 #: templates/reservations/pricing_tier_group_create.html:84
 #: templates/reservations/pricing_tier_group_detail.html:84
@@ -796,100 +796,108 @@ msgstr ""
 msgid "Number of Adults"
 msgstr ""
 
-#: reservations/models.py:91 winadmin/forms.py:289
+#: reservations/models.py:90 winadmin/forms.py:289
 msgid "Price Overnight"
 msgstr ""
 
-#: reservations/models.py:92 winadmin/forms.py:279 winadmin/forms.py:290
+#: reservations/models.py:91 winadmin/forms.py:279 winadmin/forms.py:290
 msgid "Price Short-term"
 msgstr ""
 
-#: reservations/models.py:109 reservations/models.py:129
+#: reservations/models.py:108 reservations/models.py:128
 msgid "Room Tier"
 msgstr ""
 
-#: reservations/models.py:110
+#: reservations/models.py:109
 msgid "Rooms Tiers"
 msgstr ""
 
-#: reservations/models.py:120
+#: reservations/models.py:119
 #: reservations/templates/reservations/email/confirmation_email.txt:7
 #: reservations/templates/reservations/index.html:566
 msgid "Room"
 msgstr ""
 
-#: reservations/models.py:121
+#: reservations/models.py:120
 msgid "Rooms"
 msgstr ""
 
-#: reservations/models.py:213
+#: reservations/models.py:154
+msgid "Price Per Child Overnight"
+msgstr ""
+
+#: reservations/models.py:157
+msgid "Price Per Child Short-Term"
+msgstr ""
+
+#: reservations/models.py:218
 msgid "Stay"
 msgstr ""
 
-#: reservations/models.py:214
+#: reservations/models.py:219
 msgid "Stays"
 msgstr ""
 
-#: reservations/models.py:218 winadmin/forms.py:206
+#: reservations/models.py:223 winadmin/forms.py:206
 msgid "Not Reserved"
 msgstr ""
 
-#: reservations/models.py:219 winadmin/forms.py:207
+#: reservations/models.py:224 winadmin/forms.py:207
 msgid "Reserved"
 msgstr ""
 
-#: reservations/models.py:220 winadmin/forms.py:208
+#: reservations/models.py:225 winadmin/forms.py:208
 msgid "Checked In"
 msgstr ""
 
-#: reservations/models.py:221 winadmin/forms.py:209
+#: reservations/models.py:226 winadmin/forms.py:209
 msgid "Checked Out"
 msgstr ""
 
-#: reservations/models.py:222 winadmin/forms.py:210
+#: reservations/models.py:227 winadmin/forms.py:210
 msgid "Cancelled"
 msgstr ""
 
-#: reservations/models.py:231
+#: reservations/models.py:238
 #: reservations/templates/reservations/index.html:514
 msgid "Number of Children"
 msgstr ""
 
-#: reservations/models.py:234
+#: reservations/models.py:241
 #: reservations/templates/reservations/email/confirmation_email.txt:10
 #: winadmin/forms.py:216
 msgid "Start"
 msgstr ""
 
-#: reservations/models.py:235
+#: reservations/models.py:242
 #: reservations/templates/reservations/email/confirmation_email.txt:11
 #: winadmin/forms.py:217
 msgid "End"
 msgstr ""
 
-#: reservations/models.py:292
+#: reservations/models.py:271
 msgid "Reservation"
 msgstr ""
 
-#: reservations/models.py:293
+#: reservations/models.py:272
 msgid "Reservations"
 msgstr ""
 
-#: reservations/models.py:298
+#: reservations/models.py:277
 msgid "Last name"
 msgstr ""
 
-#: reservations/models.py:300
+#: reservations/models.py:279
 #: reservations/templates/reservations/index.html:562
 #: winadmin/templates/winadmin/reservations/reservation_create.html:78
 msgid "Phone"
 msgstr ""
 
-#: reservations/models.py:491
+#: reservations/models.py:581
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:492
+#: reservations/models.py:582
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -1678,7 +1686,7 @@ msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:37
-#: winadmin/views.py:394
+#: winadmin/views.py:396
 msgid "Date"
 msgstr ""
 
@@ -1707,7 +1715,7 @@ msgid "Return Amount"
 msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
-#: winadmin/views.py:398
+#: winadmin/views.py:400
 msgid "Balance"
 msgstr ""
 
@@ -1767,7 +1775,7 @@ msgstr ""
 msgid "Item Successfully Deleted"
 msgstr ""
 
-#: winadmin/views.py:332 winadmin/views.py:428
+#: winadmin/views.py:332 winadmin/views.py:430
 msgid "Transaction Created Successfully"
 msgstr ""
 
@@ -1775,23 +1783,23 @@ msgstr ""
 msgid "Transaction Couldn't Be Created"
 msgstr ""
 
-#: winadmin/views.py:688
+#: winadmin/views.py:692
 msgid "Reservation successfully edited."
 msgstr ""
 
-#: winadmin/views.py:829
+#: winadmin/views.py:833
 msgid "Room successfully edited"
 msgstr ""
 
-#: winadmin/views.py:831
+#: winadmin/views.py:835
 msgid "Couldn't edit room"
 msgstr ""
 
-#: winadmin/views.py:834
+#: winadmin/views.py:838
 msgid "Room deleted successfully"
 msgstr ""
 
-#: winadmin/views.py:900
+#: winadmin/views.py:904
 #, python-format
 msgid "%(tier_name)s Created Successfully!"
 msgstr ""
