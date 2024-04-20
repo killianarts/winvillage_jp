@@ -107,7 +107,6 @@ def room_select(request: HtmxHttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = utils.get_form_with_POST_data(reservation, request)
         if form.is_valid():
-            # TODO: Set the Stay's price here somehow.
             reservation.set_room(form, roomtier_data)
     context = {"form": form, "roomtier_data": roomtier_data, "reservation": reservation}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
