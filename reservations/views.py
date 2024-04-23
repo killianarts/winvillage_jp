@@ -50,7 +50,7 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
 def date_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     today_date = pendulum.today()
-    form = forms.DateTimeForm(initial={"date": today_date})
+    form = forms.DateTimeForm(initial={"datetime": today_date})
     # if reservation.start_time() and reservation.end_time():
     #     initial = {
     #         "start_time": reservation.start_time(),
@@ -64,19 +64,19 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
     end = reservation.stay.end if reservation.stay.end else None
     if request.method == "GET":
         if "get_previous_month" in request.GET:
-            form = DateForm(request.GET)
+            form = forms.DateTimeForm(request.GET)
             if form.is_valid():
-                date = make_pen(form.cleaned_data["date"])
-                date = get_previous_month(date)
-                form = forms.DateForm(initial={"date": date})
-                calendars = generate_calendars(reservation, date)
+                datetime = make_pen(form.cleaned_data["datetime"])
+                datetime = get_previous_month(datetime)
+                form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendars = generate_calendars(reservation, datetime)
         elif "get_next_month" in request.GET:
-            form = DateForm(request.GET)
+            form = forms.DateTimeForm(request.GET)
             if form.is_valid():
-                date = make_pen(form.cleaned_data["date"])
-                date = get_next_month(date)
-                form = forms.DateForm(initial={"date": date})
-                calendars = generate_calendars(reservation, date)
+                datetime = make_pen(form.cleaned_data["datetime"])
+                datetime = get_next_month(datetime)
+                form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendars = generate_calendars(reservation, datetime)
     if request.method == "POST":
         if "select_date" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)

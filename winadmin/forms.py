@@ -21,9 +21,7 @@ from reservations.models import (
 
 class LoginForm(TailwindFormMixin, forms.Form):
     username = forms.CharField(label=_("Username"), max_length=30)
-    password = forms.CharField(
-        label=_("Password"), widget=forms.PasswordInput, max_length=30
-    )
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, max_length=30)
 
 
 class ItemCreateFormRenderer(TemplatesSetting):
@@ -318,12 +316,8 @@ class PricingTierGroupCreateForm(forms.Form):
         )
 
     name = forms.CharField(max_length=100, label=_("Name"))
-    minimum_number_of_adults = forms.IntegerField(
-        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
-    )
-    maximum_number_of_adults = forms.IntegerField(
-        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
-    )
+    minimum_number_of_adults = forms.IntegerField(initial=1, min_value=1, max_value=2, label=_("Minimum Adults"))
+    maximum_number_of_adults = forms.IntegerField(initial=6, min_value=4, max_value=6, label=_("Maximum Adults"))
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -355,12 +349,8 @@ class PricingTierGroupDetailForm(forms.ModelForm):
         )
 
     name = forms.CharField(max_length=100, label=_("Name"))
-    minimum_number_of_adults = forms.IntegerField(
-        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
-    )
-    maximum_number_of_adults = forms.IntegerField(
-        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
-    )
+    minimum_number_of_adults = forms.IntegerField(initial=1, min_value=1, max_value=2, label=_("Minimum Adults"))
+    maximum_number_of_adults = forms.IntegerField(initial=6, min_value=4, max_value=6, label=_("Maximum Adults"))
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -383,3 +373,7 @@ class CampaignDetailForm(forms.ModelForm):
     class Meta:
         model = Campaign
         fields = ["name", "recurrences"]
+
+
+class CampaignTestForm(forms.Form):
+    test = forms.DateTimeField(widget=forms.SelectDateWidget)

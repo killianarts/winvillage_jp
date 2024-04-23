@@ -330,14 +330,20 @@ class PendulumCalendar(calendar.Calendar):
             pens.append(pendulum.datetime(year=y, month=m, day=d, hour=default_hour))
         return pens
 
+    def itermonthnaivepens(self, year, month, default_hour=10):
+        pens = []
+        for y, m, d in self.itermonthdays3(year, month):
+            pens.append(pendulum.naive(year=y, month=m, day=d, hour=default_hour))
+        return pens
+
 
 def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
     if not date_:
         date_ = pendulum.now()
     next_month_date = date_.add(months=1)
     cal = PendulumCalendar(firstweekday=calendar.MONDAY)
-    selected_dates = cal.itermonthpens(date_.year, date_.month)
-    next_month_dates = cal.itermonthpens(next_month_date.year, next_month_date.month)
+    selected_dates = cal.itermonthnaivepens(date_.year, date_.month)
+    next_month_dates = cal.itermonthnaivepens(next_month_date.year, next_month_date.month)
 
     selected_dates_and_forms = compile_dates_information(reservation, selected_dates)
     next_month_dates_and_forms = compile_dates_information(reservation, next_month_dates)
@@ -349,6 +355,60 @@ def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
         "next_month": {
             "date": next_month_date,
             "datetimes": next_month_dates_and_forms,
+        },
+    }
+    return calendars
+
+
+def generate_campaign_calendars(
+    campaign=None,
+    date_: pendulum.Date = None,
+):
+    if not date_:
+        date_ = pendulum.now()
+    current = date_
+    next = date_.add(months=1)
+
+    def get_nstart_and_nend(pen):
+        start = pen.start_of("month")
+        nstart = pendulum.naive(start.year, start.month, start.day)
+        end = pen.end_of("month")
+        nend = pendulum.naive(end.year, end.month, end.day)
+        return nstart, nend
+
+    current_nstart, current_nend = get_nstart_and_nend(current)
+    next_nstart, next_nend = get_nstart_and_nend(next)
+
+    def get_occurrences(start, end, dates):
+        occurrences = {}
+        if campaign:
+            campaign_occurrences = campaign.recurrences.between(
+                after=start,
+                before=end,
+                dtstart=start,
+                inc=True,
+            )
+            for dt in dates:
+                occurrences[dt] = dt in campaign_occurrences
+        else:
+            for dt in dates:
+                occurrences[dt] = False
+        return occurrences
+
+    next_month_date = date_.add(months=1)
+    cal = PendulumCalendar(firstweekday=calendar.MONDAY)
+    selected_month_dates = cal.itermonthnaivepens(date_.year, date_.month, default_hour=0)
+    next_month_dates = cal.itermonthnaivepens(next_month_date.year, next_month_date.month, default_hour=0)
+    selected_month_occurrences = get_occurrences(start=current_nstart, end=current_nend, dates=selected_month_dates)
+    next_month_occurrences = get_occurrences(start=next_nstart, end=next_nend, dates=next_month_dates)
+    current_language = get_language()
+    weekdays = get_localized_day_names(cal.firstweekday, current_language)
+    calendars = {
+        "weekdays": weekdays,
+        "selected_month": {"date": date_, "occurrences": selected_month_occurrences},
+        "next_month": {
+            "date": next_month_date,
+            "occurrences": next_month_occurrences,
         },
     }
     return calendars

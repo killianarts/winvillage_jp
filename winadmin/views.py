@@ -42,6 +42,8 @@ from reservations.utils import (
     generate_calendars,
     get_previous_month,
     get_next_month,
+    generate_campaign_calendars,
+    make_pen,
 )
 from winadmin.forms import (
     LoginForm,
@@ -66,6 +68,7 @@ from winadmin.forms import (
     CampaignDetailForm,
     RoomTierCreateForm,
     RoomTierDetailForm,
+    CampaignTestForm,
 )
 from winadmin.models import SpecialDate
 from winvillage import settings
@@ -1085,14 +1088,30 @@ def pricing_tier_group_detail(request: HtmxHttpRequest, pricing_tier_group_id: i
 @for_htmx(use_block_from_params=True)
 def campaign_create(request: HtmxHttpRequest) -> HttpResponse:
     form = CampaignCreateForm()
+    # today_date = pendulum.today()
+    # date_filter_form = forms.DateTimeForm(initial={"datetime": today_date})
+    # if request.htmx:
+    #     form = CampaignCreateForm(request.POST)
+    #     if form.is_valid():
+    #         campaign = form.save(commit=False)
+    #         calendars = generate_campaign_calendars(campaign=campaign)
+    #     else:
+    #         calendars = generate_campaign_calendars()
     if request.method == "POST":
         form = CampaignCreateForm(request.POST)
         if form.is_valid():
             instance = form.save()
             messages.success(request, "Success!")
         else:
+            # calendars = generate_campaign_calendars()
             messages.error(request, "Error!")
-    context = {"form": form}
+    # elif request.method == "GET":
+    #     calendars = generate_campaign_calendars()
+    context = {
+        "form": form,
+        # "date_filter_form": date_filter_form,
+        # "calendars": calendars
+    }
     response = TemplateResponse(request, "campaign/campaign_create.html", context)
     return trigger_client_event(response=response, name="getMessages")
 
@@ -1112,6 +1131,27 @@ def campaign_list(request: HtmxHttpRequest) -> HttpResponse:
 def campaign_detail(request: HtmxHttpRequest, campaign_id: int) -> HttpResponse:
     campaign = get_object_or_404(Campaign, id=campaign_id)
     form = CampaignDetailForm(instance=campaign)
+
+    today_date = pendulum.today()
+    date_filter_form = forms.DateTimeForm(initial={"datetime": today_date})
+    if request.method == "GET":
+        if "get_previous_month" in request.GET:
+            form = forms.DateTimeForm(request.GET)
+            if form.is_valid():
+                datetime = make_pen(form.cleaned_data["datetime"])
+                datetime = get_previous_month(datetime)
+                date_filter_form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendars = generate_campaign_calendars(campaign=campaign, date_=datetime)
+        elif "get_next_month" in request.GET:
+            form = forms.DateTimeForm(request.GET)
+            if form.is_valid():
+                datetime = make_pen(form.cleaned_data["datetime"])
+                datetime = get_next_month(datetime)
+                date_filter_form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendars = generate_campaign_calendars(campaign=campaign, date_=datetime)
+        else:
+            calendars = generate_campaign_calendars(campaign=campaign, date_=today_date)
+
     if request.method == "POST":
         form = CampaignDetailForm(request.POST, instance=campaign)
         if "edit" in request.POST:
@@ -1124,6 +1164,68 @@ def campaign_detail(request: HtmxHttpRequest, campaign_id: int) -> HttpResponse:
             campaign.delete()
             messages.success(request, "Success!")
             return HttpResponseClientRedirect(reverse("winadmin:campaign_list"))
-    context = {"form": form}
+    context = {"form": form, "date_filter_form": date_filter_form, "calendars": calendars}
     response = TemplateResponse(request, "campaign/campaign_detail.html", context)
+    return trigger_client_event(response=response, name="getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def pricing_tier_group_detail(request: HtmxHttpRequest, pricing_tier_group_id: int) -> HttpResponse:
+    pricing_tier_group = get_object_or_404(PricingTierGroup, id=pricing_tier_group_id)
+    today_date = pendulum.today()
+    date_filter_form = forms.DateTimeForm(initial={"datetime": today_date})
+    initial = {
+        "name": pricing_tier_group.name,
+        "minimum_number_of_adults": pricing_tier_group.minimum_number_of_adults,
+        "maximum_number_of_adults": pricing_tier_group.maximum_number_of_adults,
+        "room_tiers": pricing_tier_group.room_tiers.all(),
+        "campaign": pricing_tier_group.campaign,
+    }
+    PricingTierFormSet = modelformset_factory(
+        model=PricingTier,
+        fields=("number_of_adults", "price_overnight", "price_short_term"),
+        extra=0,
+    )
+    form = PricingTierGroupDetailForm(initial=initial)
+    queryset = PricingTier.objects.filter(tier_group=pricing_tier_group)
+    formset = PricingTierFormSet(queryset=queryset)
+    if request.method == "GET":
+        if "get_previous_month" in request.GET:
+            form = forms.DateTimeForm(request.GET)
+            if form.is_valid():
+                datetime = make_pen(form.cleaned_data["datetime"])
+                datetime = get_previous_month(datetime)
+                date_filter_form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendars = generate_campaign_calendars(campaign=pricing_tier_group.campaign, date_=datetime)
+        elif "get_next_month" in request.GET:
+            form = forms.DateTimeForm(request.GET)
+            if form.is_valid():
+                datetime = make_pen(form.cleaned_data["datetime"])
+                datetime = get_next_month(datetime)
+                date_filter_form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendars = generate_campaign_calendars(campaign=pricing_tier_group.campaign, date_=datetime)
+        else:
+            calendars = generate_campaign_calendars(campaign=pricing_tier_group.campaign, date_=today_date)
+    if request.method == "POST":
+        form = PricingTierGroupDetailForm(request.POST, instance=pricing_tier_group)
+        formset = PricingTierFormSet(request.POST, request.FILES, queryset=queryset)
+        if "edit" in request.POST:
+            if form.is_valid() and formset.is_valid():
+                group = pricing_tier_group.edit_group(form=form, formset=formset)
+                calendars = generate_campaign_calendars(campaign=pricing_tier_group.campaign, date_=today_date)
+                messages.success(request, f"Group {group.name} edited successfully.")
+            else:
+                messages.error(request, "Error!")
+        elif "delete" in request.POST:
+            group_name = pricing_tier_group.name
+            pricing_tier_group.delete()
+            messages.success(request, f"Group {group_name} deleted successfully.")
+            return HttpResponseClientRedirect(reverse("winadmin:pricing_tier_group_list"))
+    context = {
+        "form": form,
+        "formset": formset,
+        "date_filter_form": date_filter_form,
+        "calendars": calendars,
+    }
+    response = TemplateResponse(request, "reservations/pricing_tier_group_detail.html", context)
     return trigger_client_event(response=response, name="getMessages")

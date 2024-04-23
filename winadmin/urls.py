@@ -72,9 +72,7 @@ urlpatterns = [
         views.datetime_select,
         name="datetime_select",
     ),
-    path(
-        "reservations/create/option-select/", views.option_select, name="option_select"
-    ),
+    path("reservations/create/option-select/", views.option_select, name="option_select"),
     path("reservations/create/update-price/", views.update_price, name="update_price"),
     path(
         "reservations/detail/<int:pk>/",
@@ -160,9 +158,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path(
-        "inventory/", views.inventory_management_page, name="inventory_management_page"
-    ),
+    path("inventory/", views.inventory_management_page, name="inventory_management_page"),
     path("transactions/sale/", views.sale_management_page, name="sale_management_page"),
     # "inventory/", views.inventory_management_page, name="inventory_management_page"
 ]

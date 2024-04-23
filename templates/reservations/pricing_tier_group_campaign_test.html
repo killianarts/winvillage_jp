@@ -1,52 +1,143 @@
 {% extends 'winadmin/index.html' %}
-{% load i18n static %}
-{% block extra_scripts %}
-  <script src="{% url 'javascript-catalog' %}"></script>
-  <script>
-      recurrenceWidget = document.getElementsByClassName('recurrence-widget')
-      htmx.onLoad(function (recurrenceWidget) {
-          django.jQuery(document).ready(function () {
-              // Init on all existing recurrence fields
-              initRecurrenceWidget();
-              // Begin DOM observation for new inline additions
-              const targetNode = document.getElementById('container');
-              const config = {attributes: false, childList: true, subtree: true};
-              observer.observe(targetNode, config);
-          });
-      })
-  </script>
-{% endblock %}
-{% block extra_styles %}
-  <link rel="stylesheet" href="{% static 'recurrence/css/recurrence.css' %}">
-{% endblock %}
-{% block subtitle %}
-  {% blocktrans %}Edit Campaign{% endblocktrans %}
-{% endblock %}
+{% load i18n widget_tweaks %}
 {% block content %}
-  {{ form.media }}
-  <div id="content-wrapper" class="space-y-5">
-    <h1 class="text-3xl">{% translate 'Edit Campaign' %}</h1>
-    <form class="grid max-w-xl" action="."
-          hx-post="."
-          hx-target="#content-wrapper"
-          hx-swap="morph:outerHTML"
-          hx-vals='{"use_block": "content"}'>
-      <div id="container" class="space-y-5">
-        {{ form }}
-        <div class="space-x-5">
-          {% #outline_button id="submit-button" name="edit" type="submit" %}
-          {% trans "Edit" %}
-          {% /outline_button %}
-          {% #outline_button name="delete" type="submit" variant="danger" %}
-          {% trans "Delete" %}
-          {% /outline_button %}
+  <div id="wrapper" class="space-y-5">
+    <form action="." method="POST"
+          hx-post="." hx-swap="outerHTML" hx-target="this" hx-vals='{"use_block": "content"}'
+          class="grid space-y-5">
+      <h2 class="mb-2 pb-2 text-xl text-orange-950 sm:text-3xl">
+        {% blocktrans %}Edit Pricing Tiers{% endblocktrans %}</h2>
+      {% csrf_token %}
+      {% if errors %}
+        {% for error in errors %}
+          <div class="grid control">
+            {% render_field error error_class=error_class %}
+          </div>
+        {% endfor %}
+      {% endif %}
+      <div class="grid">
+        {% if form.name.errors %}
+          <p class="text-red-500 help is-danger">
+            {{ form.name.errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+        <div>{{ form.name.label_tag }}</div>
+        <div>{{ form.name }}</div>
+      </div>
+      <div class="grid">
+        {% if form.room_tiers.errors %}
+          <p class="text-red-500 help is-danger">
+            {{ form.room_tiers.errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+        <div>{{ form.room_tiers.label_tag }}</div>
+        <div>{{ form.room_tiers }}</div>
+      </div>
+      <div hx-get="."
+           hx-swap="outerHTML"
+           hx-target="#pricing-tiers-table"
+           hx-push-url="true"
+           hx-include="[name=minimum_number_of_adults], [name=maximum_number_of_adults]"
+           hx-vals='{"use_block": "pricing-tiers-table"}'
+           hx-trigger="change from:[name=minimum_number_of_adults], change from:[name=maximum_number_of_adults]"
+           hx-select="#pricing-tiers-table"
+           class="grid grid-cols-2 w-fit gap-7">
+        <div class="min-max-values">
+          {% if form.minimum_number_of_adults.errors %}
+            <p class="text-red-500 help is-danger">
+              {{ form.minimum_number_of_adults.errors }}
+            </p>
+          {% else %}
+            <p class="invisible">
+              {% blocktrans %}No errors{% endblocktrans %}
+            </p>
+          {% endif %}
+          <div>{{ form.minimum_number_of_adults.label_tag }}</div>
+          <div>{{ form.minimum_number_of_adults }}</div>
+        </div>
+        <div class="min-max-values">
+          {% if form.maximum_number_of_adults.errors %}
+            <p class="text-red-500 help is-danger">
+              {{ form.maximum_number_of_adults.errors }}
+            </p>
+          {% else %}
+            <p class="invisible">
+              {% blocktrans %}No errors{% endblocktrans %}
+            </p>
+          {% endif %}
+          <div>{{ form.maximum_number_of_adults.label_tag }}</div>
+          <div>{{ form.maximum_number_of_adults }}</div>
         </div>
       </div>
+      {% block pricing-tiers-table %}
+        <table id="pricing-tiers-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
+          <thead>
+          <tr class="text-left">
+            <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
+              <span class="pl-6">{% translate 'Number of Adults' %}</span>
+            </th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Overnight Price' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short-term Price' %}</th>
+          </tr>
+          </thead>
+          <tbody class="divide-y divide-stone-200">
+          {{ formset.management_form }}
+          {% for form in formset %}
+            <tr class="hover:bg-stone-50 odd:bg-stone-100">
+              <td class="whitespace-nowrap pr-3 pl-4 py-4 text-sm font-medium text-stone-900 sm:pl-0">
+              <span class="pl-6">
+                {{ form.id.as_hidden }}
+                {{ form.number_of_adults.as_hidden }}
+                {{ form.number_of_adults.value }}
+              </span>
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                {{ form.price_overnight }}
+                {% if form.errors %}
+                  <p class="text-red-500 help is-danger">
+                    {{ form.errors }}
+                  </p>
+                {% else %}
+                  <p class="hidden">
+                    {% blocktrans %}No errors{% endblocktrans %}
+                  </p>
+                {% endif %}
+              </td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ form.price_short_term }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      {% endblock %}
+      <div class="grid">
+        {% if form.campaign.errors %}
+          <p class="text-red-500 help is-danger">
+            {{ form.campaign.errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+        <div>{{ form.campaign.label_tag }}</div>
+        <div>{{ form.campaign }}</div>
+      </div>
+      <div class="space-x-5">
+        {% #outline_button name="edit" type="submit" %}{% translate 'Edit' %}{% /outline_button %}
+        {% #outline_button name="delete" type="submit" variant="danger" %}{% translate 'Delete' %}{% /outline_button %}
+      </div>
     </form>
-
+  
     {% block calendars %}
-      <div id="calendars" class="max-w-3xl p-5 shadow-sm border border-stone-100">
-        <h3 class="text-3xl text-center pb-5">{% translate 'Effective Campaign Days' %}</h3>
+      <div id="calendars" class="mx-auto max-w-3xl p-5 shadow-sm border border-stone-100">
         <div id="month-switcher" class="flex items-center">
           <form action="." method="get" class="grid grid-cols-2 w-full"
                 hx-get="."
