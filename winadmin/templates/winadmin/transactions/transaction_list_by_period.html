@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
   <div class="overflow-hidden">
-    <h1 class="mb-5 text-3xl">{% translate 'Business Order Management' %}</h1>
+    <h1 class="mb-5 text-3xl">{% translate 'Transaction Management' %}</h1>
     <form hx-get="."
           hx-trigger="change delay:0ms"
           hx-swap="outerHTML"
@@ -43,7 +43,7 @@
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Sale Amount' %}</th>
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Return Amount' %}</th>
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Purchase Amount' %}</th>
-            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Payment Amount' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Bank Deposit Amount' %}</th>
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Remainder' %}</th>
           </tr>
           </thead>

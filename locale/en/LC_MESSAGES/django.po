@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-23 14:48+0900\n"
+"POT-Creation-Date: 2024-04-24 13:53+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr ""
 
 #: core/models.py:75 core/models.py:95 winadmin/forms.py:65
 #: winadmin/forms.py:94
-#: winadmin/templates/winadmin/inventory/category_list.html:13
+#: winadmin/templates/winadmin/inventory/category_list.html:14
 #: winadmin/templates/winadmin/inventory/item_list.html:16
 msgid "Category"
 msgstr ""
@@ -46,7 +46,7 @@ msgid "Category Name"
 msgstr ""
 
 #: core/models.py:86 core/models.py:169 winadmin/forms.py:149
-#: winadmin/views.py:400
+#: winadmin/views.py:391
 msgid "Item"
 msgstr ""
 
@@ -62,7 +62,7 @@ msgstr ""
 #: winadmin/forms.py:351 winadmin/models.py:11
 #: winadmin/templates/winadmin/inventory/item_list.html:13
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:39
-#: winadmin/views.py:397
+#: winadmin/views.py:388
 msgid "Name"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgid "Bank Deposit"
 msgstr ""
 
 #: core/models.py:163 customer/models.py:24 winadmin/forms.py:147
-#: winadmin/views.py:398
+#: winadmin/views.py:389
 msgid "Customer"
 msgstr ""
 
@@ -147,7 +147,7 @@ msgstr ""
 #: core/models.py:171 reservations/models.py:31 winadmin/forms.py:150
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:41
-#: winadmin/views.py:401
+#: winadmin/views.py:392
 msgid "Quantity"
 msgstr ""
 
@@ -159,7 +159,7 @@ msgstr ""
 #: winadmin/forms.py:151
 #: winadmin/templates/winadmin/reservations/reservation_create.html:92
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:79
-#: winadmin/views.py:402
+#: winadmin/views.py:393
 msgid "Total Price"
 msgstr ""
 
@@ -663,6 +663,7 @@ msgstr ""
 #: templates/winadmin/pricing_tier_detail.html:20
 #: templates/winadmin/room_detail.html:21
 #: templates/winadmin/room_tier_detail.html:20
+#: templates/winadmin/transactions/transaction_detail.html:22
 #: winadmin/templates/winadmin/inventory/item_detail.html:21
 msgid "Delete"
 msgstr ""
@@ -1219,8 +1220,14 @@ msgstr ""
 #: winadmin/templates/winadmin/inventory/item_create.html:16
 #: winadmin/templates/winadmin/inventory/item_detail.html:18
 #: winadmin/templates/winadmin/reservations/reservation_detail.html:21
-#: winadmin/templates/winadmin/transactions/transaction_create.html:16
+#: winadmin/templates/winadmin/transactions/transaction_create.html:18
 msgid "Submit"
+msgstr ""
+
+#: templates/campaign/campaign_create.html:44
+#: templates/campaign/campaign_detail.html:49
+#: templates/reservations/pricing_tier_group_detail.html:141
+msgid "Effective Campaign Days"
 msgstr ""
 
 #: templates/campaign/campaign_detail.html:23
@@ -1234,12 +1241,8 @@ msgstr ""
 #: templates/winadmin/pricing_tier_detail.html:17
 #: templates/winadmin/room_detail.html:18
 #: templates/winadmin/room_tier_detail.html:17
+#: templates/winadmin/transactions/transaction_detail.html:19
 msgid "Edit"
-msgstr ""
-
-#: templates/campaign/campaign_detail.html:49
-#: templates/reservations/pricing_tier_group_detail.html:141
-msgid "Effective Campaign Days"
 msgstr ""
 
 #: templates/campaign/campaign_list.html:4
@@ -1404,6 +1407,11 @@ msgstr ""
 msgid "Room Tier List"
 msgstr ""
 
+#: templates/winadmin/transactions/transaction_detail.html:4
+#: templates/winadmin/transactions/transaction_detail.html:8
+msgid "Edit Transaction"
+msgstr ""
+
 #: users/apps.py:7
 msgid "Users"
 msgstr ""
@@ -1562,29 +1570,21 @@ msgid "View Room Tiers"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:144
+#: winadmin/templates/winadmin/index.html:264
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:8
-msgid "Business Order Management"
+msgid "Transaction Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:148
-msgid "View Business Orders"
+#: winadmin/templates/winadmin/index.html:268
+msgid "View Transactions"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:150
-msgid "Create Business Order"
-msgstr ""
-
-#: winadmin/templates/winadmin/index.html:264
-msgid "Order Management"
-msgstr ""
-
-#: winadmin/templates/winadmin/index.html:268
-msgid "View Orders"
-msgstr ""
-
 #: winadmin/templates/winadmin/index.html:270
+#: winadmin/templates/winadmin/transactions/transaction_create.html:4
 #: winadmin/templates/winadmin/transactions/transaction_create.html:8
-msgid "Create Order"
+msgid "Create Transaction"
 msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_create.html:4
@@ -1605,6 +1605,10 @@ msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_list.html:4
 msgid "Category List View"
+msgstr ""
+
+#: winadmin/templates/winadmin/inventory/category_list.html:16
+msgid "Items in Category"
 msgstr ""
 
 #: winadmin/templates/winadmin/inventory/item_create.html:4
@@ -1703,7 +1707,7 @@ msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:37
-#: winadmin/views.py:399
+#: winadmin/views.py:390
 msgid "Date"
 msgstr ""
 
@@ -1732,12 +1736,8 @@ msgid "Return Amount"
 msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
-#: winadmin/views.py:403
+#: winadmin/views.py:394
 msgid "Balance"
-msgstr ""
-
-#: winadmin/templates/winadmin/transactions/transaction_create.html:4
-msgid "Create Transaction"
 msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:4
@@ -1753,7 +1753,7 @@ msgid "Purchase Amount"
 msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:46
-msgid "Payment Amount"
+msgid "Bank Deposit Amount"
 msgstr ""
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:47
@@ -1768,55 +1768,59 @@ msgstr ""
 msgid "Item Successfully Added"
 msgstr ""
 
-#: winadmin/views.py:185
-msgid "Category Successfully Added"
-msgstr ""
-
-#: winadmin/views.py:188 winadmin/views.py:209
-msgid "Input category name"
-msgstr ""
-
-#: winadmin/views.py:207
-msgid "Category Successfully Edited"
-msgstr ""
-
-#: winadmin/views.py:239 winadmin/views.py:245
+#: winadmin/views.py:187 winadmin/views.py:193
 msgid "Item Successfully Edited"
 msgstr ""
 
-#: winadmin/views.py:241 winadmin/views.py:248 winadmin/views.py:266
+#: winadmin/views.py:189 winadmin/views.py:196
 msgid "Error"
 msgstr ""
 
-#: winadmin/views.py:263
-msgid "Item Successfully Deleted"
+#: winadmin/views.py:213
+msgid "Category Successfully Added"
 msgstr ""
 
-#: winadmin/views.py:335 winadmin/views.py:433
+#: winadmin/views.py:216 winadmin/views.py:237
+msgid "Input category name"
+msgstr ""
+
+#: winadmin/views.py:235
+msgid "Category Successfully Edited"
+msgstr ""
+
+#: winadmin/views.py:326
 msgid "Transaction Created Successfully"
 msgstr ""
 
-#: winadmin/views.py:337
+#: winadmin/views.py:328
 msgid "Transaction Couldn't Be Created"
 msgstr ""
 
-#: winadmin/views.py:695
+#: winadmin/views.py:435
+msgid "Transaction Edited Successfully"
+msgstr ""
+
+#: winadmin/views.py:438
+msgid "Transaction Deleted Successfully"
+msgstr ""
+
+#: winadmin/views.py:702
 msgid "Reservation successfully edited."
 msgstr ""
 
-#: winadmin/views.py:836
+#: winadmin/views.py:843
 msgid "Room successfully edited"
 msgstr ""
 
-#: winadmin/views.py:838
+#: winadmin/views.py:845
 msgid "Couldn't edit room"
 msgstr ""
 
-#: winadmin/views.py:841
+#: winadmin/views.py:848
 msgid "Room deleted successfully"
 msgstr ""
 
-#: winadmin/views.py:907
+#: winadmin/views.py:914
 #, python-format
 msgid "%(tier_name)s Created Successfully!"
 msgstr ""

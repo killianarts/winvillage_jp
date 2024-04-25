@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-23 14:49+0900\n"
-"PO-Revision-Date: 2024-04-23 14:49+0900\n"
+"POT-Creation-Date: 2024-04-24 13:53+0900\n"
+"PO-Revision-Date: 2024-04-24 13:53+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -33,7 +33,7 @@ msgstr "名字"
 
 #: core/models.py:75 core/models.py:95 winadmin/forms.py:65
 #: winadmin/forms.py:94
-#: winadmin/templates/winadmin/inventory/category_list.html:13
+#: winadmin/templates/winadmin/inventory/category_list.html:14
 #: winadmin/templates/winadmin/inventory/item_list.html:16
 msgid "Category"
 msgstr "カテゴリー"
@@ -47,7 +47,7 @@ msgid "Category Name"
 msgstr "カテゴリーの名前"
 
 #: core/models.py:86 core/models.py:169 winadmin/forms.py:149
-#: winadmin/views.py:400
+#: winadmin/views.py:391
 msgid "Item"
 msgstr "アイテム"
 
@@ -63,7 +63,7 @@ msgstr "アイテム"
 #: winadmin/forms.py:351 winadmin/models.py:11
 #: winadmin/templates/winadmin/inventory/item_list.html:13
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:39
-#: winadmin/views.py:397
+#: winadmin/views.py:388
 msgid "Name"
 msgstr "名前"
 
@@ -126,7 +126,7 @@ msgstr "売上"
 
 #: core/models.py:151
 msgid "Purchase"
-msgstr "購入"
+msgstr "仕入"
 
 #: core/models.py:152
 msgid "Return"
@@ -134,10 +134,10 @@ msgstr "返品"
 
 #: core/models.py:153
 msgid "Bank Deposit"
-msgstr "仕入れ"
+msgstr "預金振込"
 
 #: core/models.py:163 customer/models.py:24 winadmin/forms.py:147
-#: winadmin/views.py:398
+#: winadmin/views.py:389
 msgid "Customer"
 msgstr "顧客"
 
@@ -148,7 +148,7 @@ msgstr "取引日時"
 #: core/models.py:171 reservations/models.py:31 winadmin/forms.py:150
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:41
-#: winadmin/views.py:401
+#: winadmin/views.py:392
 msgid "Quantity"
 msgstr "量"
 
@@ -160,7 +160,7 @@ msgstr "量"
 #: winadmin/forms.py:151
 #: winadmin/templates/winadmin/reservations/reservation_create.html:92
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:79
-#: winadmin/views.py:402
+#: winadmin/views.py:393
 msgid "Total Price"
 msgstr "総額"
 
@@ -664,6 +664,7 @@ msgstr "修正を投稿する"
 #: templates/winadmin/pricing_tier_detail.html:20
 #: templates/winadmin/room_detail.html:21
 #: templates/winadmin/room_tier_detail.html:20
+#: templates/winadmin/transactions/transaction_detail.html:22
 #: winadmin/templates/winadmin/inventory/item_detail.html:21
 msgid "Delete"
 msgstr "削除する"
@@ -1226,9 +1227,15 @@ msgstr "キャンペーンを作る"
 #: winadmin/templates/winadmin/inventory/item_create.html:16
 #: winadmin/templates/winadmin/inventory/item_detail.html:18
 #: winadmin/templates/winadmin/reservations/reservation_detail.html:21
-#: winadmin/templates/winadmin/transactions/transaction_create.html:16
+#: winadmin/templates/winadmin/transactions/transaction_create.html:18
 msgid "Submit"
 msgstr "投稿する"
+
+#: templates/campaign/campaign_create.html:44
+#: templates/campaign/campaign_detail.html:49
+#: templates/reservations/pricing_tier_group_detail.html:141
+msgid "Effective Campaign Days"
+msgstr "有効なキャンペーンの日付"
 
 #: templates/campaign/campaign_detail.html:23
 #: templates/campaign/campaign_detail.html:28
@@ -1241,13 +1248,9 @@ msgstr "キャンペーンを変更する"
 #: templates/winadmin/pricing_tier_detail.html:17
 #: templates/winadmin/room_detail.html:18
 #: templates/winadmin/room_tier_detail.html:17
+#: templates/winadmin/transactions/transaction_detail.html:19
 msgid "Edit"
 msgstr "変更"
-
-#: templates/campaign/campaign_detail.html:49
-#: templates/reservations/pricing_tier_group_detail.html:141
-msgid "Effective Campaign Days"
-msgstr "有効なキャンペーンの日付"
 
 #: templates/campaign/campaign_list.html:4
 msgid "Campaign List View"
@@ -1413,6 +1416,13 @@ msgstr "部屋帯リストビュー"
 msgid "Room Tier List"
 msgstr "部屋帯リスト"
 
+#: templates/winadmin/transactions/transaction_detail.html:4
+#: templates/winadmin/transactions/transaction_detail.html:8
+#, fuzzy
+#| msgid "Transaction"
+msgid "Edit Transaction"
+msgstr "取引"
+
 #: users/apps.py:7
 msgid "Users"
 msgstr "ユーザー"
@@ -1571,30 +1581,22 @@ msgid "View Room Tiers"
 msgstr "部屋帯を見る"
 
 #: winadmin/templates/winadmin/index.html:144
+#: winadmin/templates/winadmin/index.html:264
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:8
-msgid "Business Order Management"
-msgstr "仕入管理"
+msgid "Transaction Management"
+msgstr "取引管理"
 
 #: winadmin/templates/winadmin/index.html:148
-msgid "View Business Orders"
-msgstr "仕入を見る"
+#: winadmin/templates/winadmin/index.html:268
+msgid "View Transactions"
+msgstr "取引を見る"
 
 #: winadmin/templates/winadmin/index.html:150
-msgid "Create Business Order"
-msgstr "仕入を作る"
-
-#: winadmin/templates/winadmin/index.html:264
-msgid "Order Management"
-msgstr "注文管理"
-
-#: winadmin/templates/winadmin/index.html:268
-msgid "View Orders"
-msgstr "注文を見る"
-
 #: winadmin/templates/winadmin/index.html:270
+#: winadmin/templates/winadmin/transactions/transaction_create.html:4
 #: winadmin/templates/winadmin/transactions/transaction_create.html:8
-msgid "Create Order"
-msgstr "注文を作る"
+msgid "Create Transaction"
+msgstr "取引を作る"
 
 #: winadmin/templates/winadmin/inventory/category_create.html:4
 msgid "Create Category"
@@ -1615,6 +1617,12 @@ msgstr "カテゴリー変更ビュー"
 #: winadmin/templates/winadmin/inventory/category_list.html:4
 msgid "Category List View"
 msgstr "カテゴリーリストビュー"
+
+#: winadmin/templates/winadmin/inventory/category_list.html:16
+#, fuzzy
+#| msgid "Create Category"
+msgid "Items in Category"
+msgstr "カテゴリーを作る"
 
 #: winadmin/templates/winadmin/inventory/item_create.html:4
 msgid "Create Item"
@@ -1712,7 +1720,7 @@ msgstr ""
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:37
-#: winadmin/views.py:399
+#: winadmin/views.py:390
 msgid "Date"
 msgstr "日付"
 
@@ -1741,13 +1749,9 @@ msgid "Return Amount"
 msgstr "返品額"
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
-#: winadmin/views.py:403
+#: winadmin/views.py:394
 msgid "Balance"
 msgstr "残り"
-
-#: winadmin/templates/winadmin/transactions/transaction_create.html:4
-msgid "Create Transaction"
-msgstr "取引を作る"
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:4
 msgid "Transaction List View"
@@ -1759,11 +1763,11 @@ msgstr "CSVをエクスポート"
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:45
 msgid "Purchase Amount"
-msgstr "購入額"
+msgstr "仕入額"
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:46
-msgid "Payment Amount"
-msgstr "仕入れ額"
+msgid "Bank Deposit Amount"
+msgstr "預金振込額"
 
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:47
 msgid "Remainder"
@@ -1777,55 +1781,63 @@ msgstr "ログインした時にエラーが発生しました。"
 msgid "Item Successfully Added"
 msgstr "アイテムが追加できました"
 
-#: winadmin/views.py:185
-msgid "Category Successfully Added"
-msgstr "カテゴリーが追加できました"
-
-#: winadmin/views.py:188 winadmin/views.py:209
-msgid "Input category name"
-msgstr "カテゴリー名を入力する"
-
-#: winadmin/views.py:207
-msgid "Category Successfully Edited"
-msgstr "カテゴリーが変更できました"
-
-#: winadmin/views.py:239 winadmin/views.py:245
+#: winadmin/views.py:187 winadmin/views.py:193
 msgid "Item Successfully Edited"
 msgstr "アイテムが変更できました"
 
-#: winadmin/views.py:241 winadmin/views.py:248 winadmin/views.py:266
+#: winadmin/views.py:189 winadmin/views.py:196
 msgid "Error"
 msgstr "エラー"
 
-#: winadmin/views.py:263
-msgid "Item Successfully Deleted"
-msgstr "アイテムが削除できました"
+#: winadmin/views.py:213
+msgid "Category Successfully Added"
+msgstr "カテゴリーが追加できました"
 
-#: winadmin/views.py:335 winadmin/views.py:433
+#: winadmin/views.py:216 winadmin/views.py:237
+msgid "Input category name"
+msgstr "カテゴリー名を入力する"
+
+#: winadmin/views.py:235
+msgid "Category Successfully Edited"
+msgstr "カテゴリーが変更できました"
+
+#: winadmin/views.py:326
 msgid "Transaction Created Successfully"
 msgstr "取引が制作できました"
 
-#: winadmin/views.py:337
+#: winadmin/views.py:328
 msgid "Transaction Couldn't Be Created"
 msgstr "取引が制作できませんでした"
 
-#: winadmin/views.py:695
+#: winadmin/views.py:435
+#, fuzzy
+#| msgid "Transaction Created Successfully"
+msgid "Transaction Edited Successfully"
+msgstr "取引が制作できました"
+
+#: winadmin/views.py:438
+#, fuzzy
+#| msgid "Transaction Created Successfully"
+msgid "Transaction Deleted Successfully"
+msgstr "取引が制作できました"
+
+#: winadmin/views.py:702
 msgid "Reservation successfully edited."
 msgstr "予約が変更できました"
 
-#: winadmin/views.py:836
+#: winadmin/views.py:843
 msgid "Room successfully edited"
 msgstr "部屋が変更できました"
 
-#: winadmin/views.py:838
+#: winadmin/views.py:845
 msgid "Couldn't edit room"
 msgstr "部屋を変更できませんでした"
 
-#: winadmin/views.py:841
+#: winadmin/views.py:848
 msgid "Room deleted successfully"
 msgstr "部屋が削除できました。"
 
-#: winadmin/views.py:907
+#: winadmin/views.py:914
 #, python-format
 msgid "%(tier_name)s Created Successfully!"
 msgstr "%(tier_name)sが制作できました"
@@ -1837,6 +1849,30 @@ msgstr "英語"
 #: winvillage/settings.py:279
 msgid "Japanese"
 msgstr "日本語"
+
+#~ msgid "Payment Amount"
+#~ msgstr "仕入れ額"
+
+#~ msgid "Order Management"
+#~ msgstr "仕入管理"
+
+#~ msgid "View Orders"
+#~ msgstr "仕入を見る"
+
+#~ msgid "Create Order"
+#~ msgstr "仕入を作る"
+
+#~ msgid "Business Order Management"
+#~ msgstr "仕入管理"
+
+#~ msgid "Item Successfully Deleted"
+#~ msgstr "アイテムが削除できました"
+
+#~ msgid "View Business Orders"
+#~ msgstr "仕入を見る"
+
+#~ msgid "Create Business Order"
+#~ msgstr "仕入を作る"
 
 #~ msgid "Price per Night"
 #~ msgstr "一泊の値段"

@@ -15,11 +15,6 @@ urlpatterns = [
         name="item_detail",
     ),
     path(
-        "inventory/item/<int:pk>/delete/",
-        views.item_delete,
-        name="item_delete",
-    ),
-    path(
         "inventory/create/",
         views.item_create,
         name="item_create",
