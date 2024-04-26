@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-24 13:53+0900\n"
+"POT-Creation-Date: 2024-04-26 11:28+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -971,7 +971,6 @@ msgstr ""
 
 #: reservations/templates/reservations/index.html:7
 #: winadmin/templates/winadmin/index.html:303
-#: winadmin/templates/winadmin/index.html:308
 msgid "Make a Reservation"
 msgstr ""
 
@@ -1585,6 +1584,10 @@ msgstr ""
 #: winadmin/templates/winadmin/transactions/transaction_create.html:4
 #: winadmin/templates/winadmin/transactions/transaction_create.html:8
 msgid "Create Transaction"
+msgstr ""
+
+#: winadmin/templates/winadmin/index.html:308
+msgid "View Reservations"
 msgstr ""
 
 #: winadmin/templates/winadmin/inventory/category_create.html:4

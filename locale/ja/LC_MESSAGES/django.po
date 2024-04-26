@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-24 13:53+0900\n"
+"POT-Creation-Date: 2024-04-26 11:28+0900\n"
 "PO-Revision-Date: 2024-04-24 13:53+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -976,7 +976,6 @@ msgstr "チックいんは午後12時から、チェックアウトは午前10�
 
 #: reservations/templates/reservations/index.html:7
 #: winadmin/templates/winadmin/index.html:303
-#: winadmin/templates/winadmin/index.html:308
 msgid "Make a Reservation"
 msgstr "予約を作る"
 
@@ -1598,6 +1597,10 @@ msgstr "取引を見る"
 msgid "Create Transaction"
 msgstr "取引を作る"
 
+#: winadmin/templates/winadmin/index.html:308
+msgid "View Reservations"
+msgstr "予約を見る"
+
 #: winadmin/templates/winadmin/inventory/category_create.html:4
 msgid "Create Category"
 msgstr "カテゴリーを作る"
@@ -1888,9 +1891,6 @@ msgstr "日本語"
 
 #~ msgid "pricing"
 #~ msgstr "pricing"
-
-#~ msgid "View Reservations"
-#~ msgstr "予約を見る"
 
 #~ msgid "End Date:"
 #~ msgstr "終了日"
