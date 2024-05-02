@@ -13,6 +13,7 @@ from pathlib import Path
 
 import environ
 from django.apps import apps
+from django.urls import reverse
 
 # For translation
 from django.utils.translation import gettext_lazy as _, get_language
@@ -113,9 +114,9 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
+LOGIN_REDIRECT_URL = "users:login_page"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-# LOGIN_URL = "login_page"
+LOGIN_URL = "users:login_page"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------

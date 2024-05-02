@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.apps import apps
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include, re_path, reverse
 from django.conf.urls.static import static
 from django.views.i18n import JavaScriptCatalog
 from django.views.static import serve
@@ -33,6 +33,7 @@ urlpatterns += i18n_patterns(
     path(settings.ADMIN_URL, admin.site.urls),
     path("", include("core.urls")),
     path("reservations/", include("reservations.urls")),
+    path("users/", include("users.urls")),
     path("winadmin/", decorator_include(login_required, "winadmin.urls")),
     path(
         "jsi18n/recurrence/",
@@ -57,6 +58,4 @@ if settings.DEBUG:
     # This will only work in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    urlpatterns += [
-        re_path(r"^media/(?P<path>.*)", serve, {"document_root": settings.MEDIA_ROOT})
-    ]
+    urlpatterns += [re_path(r"^media/(?P<path>.*)", serve, {"document_root": settings.MEDIA_ROOT})]

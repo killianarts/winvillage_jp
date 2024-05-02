@@ -1,14 +1,12 @@
 from django.urls import path
 
-from .views import (
-    user_detail_view,
-    user_redirect_view,
-    user_update_view,
-)
+from . import views
 
 app_name = "users"
 urlpatterns = [
-    path("~redirect/", view=user_redirect_view, name="redirect"),
-    path("~update/", view=user_update_view, name="update"),
-    path("<str:username>/", view=user_detail_view, name="detail"),
+    # path("~redirect/", views.user_redirect_view, name="redirect"),
+    # path("~update/", views.user_update_view, name="update"),
+    # path("<str:username>/", views.user_detail_view, name="detail"),
+    path("login_page/", views.login_page, name="login_page"),
+    path("logout/", views._logout, name="logout"),
 ]

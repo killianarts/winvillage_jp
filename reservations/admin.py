@@ -19,12 +19,13 @@ class ReservationAdmin(admin.ModelAdmin):
         "id",
         "user",
         "stay",
-        "first_name",
-        "last_name",
-        "email",
-        "phone",
+        "stay__status",
+        "customer",
         "order_items_list",
     )
+
+    def stay__status(self, obj):
+        return obj.stay.status
 
 
 class StayAdmin(admin.ModelAdmin):

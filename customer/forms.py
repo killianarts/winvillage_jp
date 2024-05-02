@@ -74,3 +74,16 @@ class TicketReopenForm(TicketFormMixin, forms.Form):
     phone = PhoneNumberField(label=_("Phone #"))
 
     do_htmx_validation = False
+
+
+class CustomerCheckInForm(TailwindFormMixin, forms.Form):
+    first_name = forms.CharField(label=_("First Name"))
+    last_name = forms.CharField(label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))
+    phone = PhoneNumberField(label=_("Phone #"))
+
+    do_htmx_validation = False
+
+
+class CustomerTransactionForm:
+    pass

@@ -315,7 +315,9 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
     for room in rooms_reserved:
         room_is_available = not possible_rooms_ids.issubset(room["room_ids"])
         if start_date or end_date:
-            if not room_is_available and start_date <= room["datetime"] <= end_date:
+            if start_date < pendulum.today() > end_date:
+                reservation.reset_dates()
+            elif not room_is_available and start_date <= room["datetime"] <= end_date:
                 reservation.reset_dates()
         form = DateTimeForm(initial={"datetime": room["datetime"]}) if room_is_available else None
         dates_and_forms.append([room["datetime"], form])
@@ -342,8 +344,8 @@ def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
         date_ = pendulum.now()
     next_month_date = date_.add(months=1)
     cal = PendulumCalendar(firstweekday=calendar.MONDAY)
-    selected_dates = cal.itermonthnaivepens(date_.year, date_.month)
-    next_month_dates = cal.itermonthnaivepens(next_month_date.year, next_month_date.month)
+    selected_dates = cal.itermonthpens(date_.year, date_.month)
+    next_month_dates = cal.itermonthpens(next_month_date.year, next_month_date.month)
 
     selected_dates_and_forms = compile_dates_information(reservation, selected_dates)
     next_month_dates_and_forms = compile_dates_information(reservation, next_month_dates)

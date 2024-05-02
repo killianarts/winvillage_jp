@@ -1,4 +1,5 @@
 from django.urls import path
+
 from customer import views as customer
 from . import views
 
@@ -6,8 +7,6 @@ app_name = "winadmin"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("login/", views.login_page, name="login_page"),
-    path("logout/", views._logout, name="logout"),
     path("inventory/list/", views.item_list, name="item_list"),
     path(
         "inventory/item/<int:pk>/",
@@ -52,7 +51,7 @@ urlpatterns = [
         name="transaction_detail",
     ),
     path(
-        "reservations/",
+        "reservations/list/",
         views.reservation_list_by_period,
         name="reservation_list_by_period",
     ),
@@ -107,6 +106,12 @@ urlpatterns = [
         customer.customer_detail,
         name="customer_detail",
     ),
+    path(
+        "customer/check-in/",
+        customer.customer_check_in,
+        name="customer_check_in",
+    ),
+    path("customer/transaction/", customer.checked_in_customer_transaction, name="checked_in_customer_transaction"),
     path("ticket/create/", customer.ticket_create, name="ticket_create"),
     path("ticket/list/", customer.ticket_list, name="ticket_list"),
     path(
@@ -155,5 +160,4 @@ urlpatterns = [
 urlpatterns += [
     path("inventory/", views.inventory_management_page, name="inventory_management_page"),
     path("transactions/sale/", views.sale_management_page, name="sale_management_page"),
-    # "inventory/", views.inventory_management_page, name="inventory_management_page"
 ]

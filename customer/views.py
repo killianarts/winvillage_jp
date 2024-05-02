@@ -1,3 +1,4 @@
+import pendulum
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -15,6 +16,7 @@ from core.utils import (
     htmx_form_validate,
 )
 from customer.models import Customer, make_customers, TicketNote, Ticket
+from reservations.models import Reservation, Room, Order
 
 
 @login_required(login_url="winadmin:login_page")
@@ -28,9 +30,7 @@ def customer_create(request: HtmxHttpRequest) -> HttpResponse:
                 customer = form.save()
                 messages.success(
                     request,
-                    message=_(
-                        "Customer named %(customer_full_name)s created successfully!"
-                    )
+                    message=_("Customer named %(customer_full_name)s created successfully!")
                     % {"customer_full_name": customer.full_name},
                 )
                 return HttpResponseClientRedirect(reverse("winadmin:customer_list"))
@@ -47,12 +47,7 @@ def customer_create(request: HtmxHttpRequest) -> HttpResponse:
 def customer_create_bulk(request: HtmxHttpRequest) -> HttpResponse:
     customers = make_customers(int(request.POST.get("howmany", "1")))
     if request.method == "POST":
-        return HttpResponse(
-            "".join(
-                format_html("Created {0}<br>", customer.full_name)
-                for customer in customers
-            )
-        )
+        return HttpResponse("".join(format_html("Created {0}<br>", customer.full_name) for customer in customers))
     return TemplateResponse(request, "customer/customer_create_bulk.html", {})
 
 
@@ -147,9 +142,7 @@ def ticket_create(request: HtmxHttpRequest) -> HttpResponse:
             else:
                 messages.error(request, message=_("Ticket couldn't be created!"))
                 context = {"form": form}
-    return trigger_client_event(
-        TemplateResponse(request, "ticket/ticket_create.html", context), "getMessages"
-    )
+    return trigger_client_event(TemplateResponse(request, "ticket/ticket_create.html", context), "getMessages")
 
 
 @login_required(login_url="winadmin:login_page")
@@ -213,6 +206,43 @@ def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
         "ticket": ticket,
         "notes": ticket.notes.all().order_by("created_at"),
     }
-    return trigger_client_event(
-        TemplateResponse(request, "ticket/ticket_detail.html", context), "getMessages"
-    )
+    return trigger_client_event(TemplateResponse(request, "ticket/ticket_detail.html", context), "getMessages")
+
+
+@login_required(login_url="winadmin:login_page")
+@for_htmx(use_block_from_params=True)
+def customer_check_in(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_object_or_404(Reservation, pk=pk)
+    date_ = pendulum.today()
+    form = forms.CustomerCheckInForm()
+    reservations = Reservation.objects.filter(stay__start=date_)
+    context = {"form": form, "reservations": reservations}
+    response = TemplateResponse(request, "customer/customer_check_in.html", context)
+    return trigger_client_event(response, "getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def checked_in_customer_transaction(request):
+    rooms = Room.objects.all()
+    occupied_rooms = Room.objects.occupied_rooms()
+    if request.method == "POST":
+        form = forms.CustomerTransactionForm(request.POST)
+        if "cancel-order" in request.POST:
+            customer_id = request.POST.get("customer-id", None)
+            customer = get_object_or_404(Customer, pk=customer_id)
+            customer.cancel_order()
+    else:
+        if "get-customer-information" in request.GET:
+            customer_id = request.GET.get("customer-id", None)
+            customer = get_object_or_404(Customer, pk=customer_id)
+            customer_cart = Order.get_or_create(customer=customer)
+            initial = {"customer": customer, "customer_cart": customer_cart}
+            form = forms.CustomerTransationForm(initial)
+
+    context = {
+        # "form": form,
+        "rooms": rooms,
+        "occupied_rooms": occupied_rooms,
+    }
+    response = TemplateResponse(request, "customer/checked_in_customer_transaction.html", context)
+    return trigger_client_event(response, "getMessages")

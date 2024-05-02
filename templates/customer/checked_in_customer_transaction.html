@@ -1,0 +1,12 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n %}
+{% block content %}
+  {% for room in rooms %}
+  	{% if room in occupied_rooms %}
+      <p class="text-red-500">{{ room }}</p>
+  	{% else %} 
+      <p>{{ room }}</p>
+    {% endif %}
+  {% endfor %}
+  
+{% endblock %}

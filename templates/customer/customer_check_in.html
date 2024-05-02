@@ -1,11 +1,11 @@
 {% extends 'winadmin/index.html' %}
-{% load widget_tweaks widget_checks static i18n %}
+{% load static i18n %}
 {% block subtitle %}
-  {% translate 'Edit Reservation' %}
+  {% translate 'Check In' %}
 {% endblock %}
 {% block content %}
   <div id="reservation-detail-form-wrapper">
-    <h1 class="text-3xl">{% translate 'Edit Reservation' %}</h1>
+    <h1 class="text-3xl">{% translate 'Check In' %}</h1>
     <form class="grid max-w-xl"
           action="." method="post" novalidate
           hx-post="."
@@ -17,8 +17,8 @@
       	{{ order_item }}
       {% endfor %}
 
-      {% #outline_button name="edit" type="submit" %}
-      {% trans "Edit" %}
+      {% #outline_button name="check-in" type="submit" %}
+      {% trans "Checkin" %}
       {% /outline_button %}
     </form>
   </div>

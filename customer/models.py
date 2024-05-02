@@ -18,7 +18,6 @@ class BaseModel(models.Model):
         abstract = True
 
 
-# Create your models here.
 class Customer(BaseModel):
     class Meta:
         verbose_name = _("Customer")
@@ -50,14 +49,7 @@ def make_customers(count):
     for i in range(count):
         first_name = faker["ja-JP"].first_name()
         last_name = faker["ja-JP"].last_name()
-        company_name = (
-            faker["en-US"]
-            .company()
-            .lower()
-            .replace(" ", "")
-            .replace(",", "")
-            .replace("-", "")
-        )
+        company_name = faker["en-US"].company().lower().replace(" ", "").replace(",", "").replace("-", "")
         email = f"{last_name.lower()}{first_name.lower()}@{company_name}.com"
         phone = faker["ja-JP"].phone_number()
         created.append(

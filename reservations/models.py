@@ -40,7 +40,7 @@ class Order(BaseModel):
         verbose_name_plural = _("Orders")
 
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, verbose_name=_("User"))
-    # customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     items = models.ManyToManyField(OrderItem)
     ordered = models.BooleanField(default=False, verbose_name=_("Ordered?"))
     ordered_date = models.DateTimeField(blank=True, null=True, verbose_name=_("Ordered Date"))
@@ -115,10 +115,15 @@ class RoomTier(BaseModel):
 
 
 class Room(BaseModel):
+    class RoomManager(models.Manager):
+        def occupied_rooms(self):
+            return super().get_queryset().filter(stay__status="checked_in")
+
     class Meta:
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
 
+    objects = RoomManager()
     name = models.CharField(max_length=255, verbose_name=_("Name"), unique=True)
     room_tier = models.ForeignKey(
         "RoomTier",
@@ -273,10 +278,7 @@ class Reservation(BaseModel):
 
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
     stay = models.ForeignKey(Stay, on_delete=models.CASCADE, null=True, blank=True)
-    first_name = models.CharField(max_length=255, verbose_name=_("First name"), null=True)
-    last_name = models.CharField(max_length=50, verbose_name=_("Last name"), null=True)
-    email = models.EmailField(max_length=255, verbose_name=_("Email"), null=True)
-    phone = PhoneNumberField(max_length=255, verbose_name=_("Phone"), null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     order_items = models.ManyToManyField(OrderItem)
 
     def check_availability(self, *, start_date, end_date):
@@ -425,6 +427,7 @@ class Reservation(BaseModel):
             if tierprice["tier"] == tier:
                 self.stay.price = tierprice["price"]
         self.stay.save()
+        self.save()
 
     def get_room_name(self):
         if self.stay.room:
@@ -570,6 +573,7 @@ class Reservation(BaseModel):
 
     def confirm(self):
         self.set_status("reserved")
+        self.save()
 
     def __str__(self):
         return f"Reservation id: {self.id}, User: {self.user}"

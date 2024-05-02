@@ -1,11 +1,14 @@
 {% extends 'winadmin/base.html' %}
-{% load i18n widget_tweaks %}
+{% load i18n %}
 {% block content %}
-  <div id="reservation-form-wrapper" class="mx-auto max-w-xl px-5">
+  <div id="login-form-wrapper" class="mx-auto max-w-xl px-5">
     <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
       {% translate 'Winvillage Admin Login' %}</h2>
-    <form action="." method="post" class="grid" novalidate>
+    <form action="." method="post" class="grid" hx-post="." hx-swap="outerHTML" hx-target="#login-form-wrapper">
       {% csrf_token %}
+      {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+      {% endif %}
       {#      <fieldset>#}
       {#        <legend class="sr-only">{% translate 'Contact Information' %}</legend>#}
       {#        <div class="grid grid-cols-1">#}

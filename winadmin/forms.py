@@ -5,6 +5,8 @@ from django.forms import BaseInlineFormSet
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
+from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumber
 
 from core.forms import TailwindFormMixin
 from core.models import Item, Transaction
@@ -174,6 +176,23 @@ class ReservationCreateForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = True
 
 
+class ReservationDetailForm(TailwindFormMixin, forms.Form):
+    STATUS_CHOICES = Choices(
+        ("not_reserved", _("Not Reserved")),
+        ("reserved", _("Reserved")),
+        ("checked_in", _("Checked In")),
+        ("checked_out", _("Checked Out")),
+        ("cancelled", _("Cancelled")),
+    )
+    status = forms.ChoiceField(choices=STATUS_CHOICES)
+    first_name = forms.CharField(label=_("First Name"))
+    last_name = forms.CharField(label=_("Last Name"))
+    email = forms.EmailField(label=_("Email"))
+    phone = PhoneNumberField(label=_("Phone #"))
+    start = forms.DateTimeField(widget=DateInput, label=_("Start"))
+    end = forms.DateTimeField(widget=DateInput, label=_("End"))
+
+
 class StayForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Stay
@@ -197,22 +216,6 @@ class ContactInfoForm(TailwindFormMixin, forms.ModelForm):
         }
 
     do_htmx_validation = True
-
-
-class ReservationDetailForm(TailwindFormMixin, forms.Form):
-    STATUS_CHOICES = Choices(
-        ("not_reserved", _("Not Reserved")),
-        ("reserved", _("Reserved")),
-        ("checked_in", _("Checked In")),
-        ("checked_out", _("Checked Out")),
-        ("cancelled", _("Cancelled")),
-    )
-    status = forms.ChoiceField(choices=STATUS_CHOICES)
-    first_name = forms.CharField(label=_("First Name"))
-    last_name = forms.CharField(label=_("Last Name"))
-    email = forms.EmailField(label=_("Email"))
-    start = forms.DateTimeField(widget=DateInput, label=_("Start"))
-    end = forms.DateTimeField(widget=DateInput, label=_("End"))
 
 
 class SquarePaymentTokenForm(TailwindFormMixin, forms.Form):

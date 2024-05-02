@@ -10,4 +10,4 @@
 {% translate 'Start' %}: {{ reservation.stay.start|date }}
 {% translate 'End' %}: {{ reservation.stay.end|date }}
 
-{% blocktrans %}Check-in start at 12:00pm and checkout is at 10:00am {% endblocktrans %}
+{% blocktrans %}Check-in starts at 12:00pm and checkout is at 10:00am {% endblocktrans %}
