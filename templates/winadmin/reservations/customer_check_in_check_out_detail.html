@@ -1,0 +1,36 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n tz %}
+{% block subtitle %}
+  {% translate 'Customer Check In Check Out Table' %}
+{% endblock %}
+{% block content %}
+  <div id="content-wrapper" class="overflow-hidden">
+    <div class="max-w-lg">
+      <fieldset class="border border-2 border-stone-900 rounded-md px-5 pb-5 pt-2">
+        <legend class="px-4 text-xl">{% translate 'Reservation Details' %}</legend>
+        <div class="grid grid-cols-2 gap-2 mb-5">
+          <span>{% translate 'Start' %}: </span> <span>{{ reservation.stay.start|date:"Y-m-d" }}</span>
+          <span>{% translate 'End' %}: </span> <span>{{ reservation.stay.end|date:"Y-m-d" }}</span>
+          <span>{% translate 'Customer Name' %}: </span> <span>{{ reservation.customer }}</span>
+          <span>{% translate 'Payment Due' %}: </span> <span>￥{{ reservation.get_price|floatformat:"2g" }}</span>
+          <span>{% translate 'Room' %}: </span> <span>{{ reservation.stay.room }}</span>
+        </div>
+        <form action="{% url "winadmin:customer_check_in_check_out_detail" reservation_id=reservation.id %}"
+              method="post"
+              hx-post="{% url "winadmin:customer_check_in_check_out_detail" reservation_id=reservation.id %}"
+              hx-swap="outerHTML"
+              hx-target="#content-wrapper"
+              hx-push-url="true"
+              hx-vals='{"use_block": "content"}'>
+          {% if reservation.stay.status == "checked_in" %}
+            {% #outline_button name="check-out" type="submit" %}{% translate 'Check Out' %}{% /outline_button %}
+          {% elif reservation.stay.status == "reserved" %}
+            {% #outline_button name="check-in" type="submit" %}{% translate 'Check In' %}{% /outline_button %}
+          {% else %}
+            <p class="text-center text-xl text-orange-500">{% translate 'This stay has already been complete.' %}</p>
+          {% endif %}
+        </form>
+      </fieldset>
+    </div>
+  </div>
+{% endblock %}

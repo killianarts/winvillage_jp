@@ -77,12 +77,11 @@
 
 <body hx-ext="morph" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 {% block body %}
-  {% block header %}
-    {#    {% include 'core/header.html' %}#}
-  {% endblock %}
-  <main id="admin-main-wrapper">
+  <main id="admin-main-wrapper" class="grid">
+    {% block header %}
+    {% endblock %}
     {# Margin makes room for sidebar. #}
-    <div id="dashboard-content" class="py-10 lg:ml-72">
+    <div id="dashboard-content" class="relative pt-10 xl:ml-72">
       <div class="px-4 sm:px-6 lg:px-8">
         {% block messages %}
           <div id="messages" class="fixed bottom-10 right-10"
@@ -90,13 +89,6 @@
                hx-target="this"
                hx-swap="morph:outerHTML"
                hx-trigger="getMessages from:body">{% include 'core/messages.html' %}</div>
-          {#          {% if messages %}#}
-          {#            <div id="messages" class="fixed bottom-10 right-10"#}
-          {#                 hx-get="{% url 'core:get_messages' %}"#}
-          {#                 hx-target="this"#}
-          {#                 hx-swap="morph:outerHTML"#}
-          {#                 hx-trigger="load from:body">{% include 'core/messages.html' %}</div>#}
-          {#          {% endif %}#}
         {% endblock %}
         {% block main %}
           {% block top_content %}
@@ -109,7 +101,6 @@
     </div>
   </main>
   {% block footer %}
-    {#    {% include 'core/footer.html' %}#}
   {% endblock %}
 {% endblock %}
 </body>

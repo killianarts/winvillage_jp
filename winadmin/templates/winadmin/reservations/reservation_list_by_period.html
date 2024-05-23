@@ -25,10 +25,10 @@
     {% block reservations_table %}
       <div id="reservations-table" class="max-w-7xl">
         <h2 class="mb-5 text-2xl">{{ year }}-{{ month }}</h2>
-      {# border-collapse is set on <table> elements in Tailwind, allowing borders to "just work". #}
-      {# We have to manually add border-collapse when defining a div with the .table class to make borders work. #}
-      {# I'm not using a <table> because <tr> elements can't be wrapped in <a> tags. #}
-      {# However, an <a> tag can act like a <tr> using display: table-row. #}
+        {# border-collapse is set on <table> elements in Tailwind, allowing borders to "just work". #}
+        {# We have to manually add border-collapse when defining a div with the .table class to make borders work. #}
+        {# I'm not using a <table> because <tr> elements can't be wrapped in <a> tags. #}
+        {# However, an <a> tag can act like a <tr> using display: table-row. #}
         <div-table class="table border-collapse w-full max-w-7xl divide-y divide-stone-300">
           <div-thead class="table-header-group">
             <div-tr class="table-row text-left">
@@ -49,25 +49,26 @@
                  class="table-row hover:bg-stone-50 font-code text-lg">
                 <div-td class="table-cell whitespace-nowrap py-4 pr-3 pl-4 font-medium slashed-zero tabular-nums text-stone-900 sm:pl-0">
                   {#                <a class="pl-6" href="{% url 'winadmin:reservation_detail' reservation.pk %}">#}
-                  {% timezone "Asia/Tokyo" %}
-                    <span class="pl-6">{{ reservation.stay.start|date:"Y-m-d" }}</span>
-                  {% endtimezone %}
+{#                  {% timezone "Asia/Tokyo" %}#}
+                                        <span class="pl-6">{{ reservation.stay.start|date:"Y-m-d" }}</span>
+{#                    <span class="pl-6">{{ reservation.stay.start }}</span>#}
+{#                  {% endtimezone %}#}
                   {#                </a>#}
                 </div-td>
                 <div-td class="table-cell whitespace-nowrap px-3 py-4 font-medium slashed-zero tabular-nums text-stone-600 text-stone-900">
-                  {% timezone "Asia/Tokyo" %}
-                    {{ reservation.stay.end|date:"Y-m-d" }}
-                  {% endtimezone %}
+{#                  {% timezone "Asia/Tokyo" %}#}
+                                        {{ reservation.stay.end|date:"Y-m-d" }}
+{#                    {{ reservation.stay.end }}#}
+{#                  {% endtimezone %}#}
                 </div-td>
                 <div-td class="table-cell whitespace-nowrap px-3 py-4 text-stone-600">{{ reservation.stay.status_display }}</div-td>
-                <div-td class="table-cell whitespace-nowrap px-3 py-4 slashed-zero tabular-nums text-stone-600">{{ reservation.last_name }}</div-td>
-                <div-td class="table-cell whitespace-nowrap px-3 py-4 slashed-zero tabular-nums text-stone-600">{{ reservation.first_name }}</div-td>
-
+                <div-td class="table-cell whitespace-nowrap px-3 py-4 slashed-zero tabular-nums text-stone-600">{{ reservation.customer.last_name }}</div-td>
+                <div-td class="table-cell whitespace-nowrap px-3 py-4 slashed-zero tabular-nums text-stone-600">{{ reservation.customer.first_name }}</div-td>
                 <div-td class="table-cell whitespace-nowrap px-3 py-4 slashed-zero tabular-nums text-stone-600">
-                  {{ reservation.email }}
+                  {{ reservation.customer.email }}
                 </div-td>
                 <div-td class="table-cell whitespace-nowrap px-3 py-4 slashed-zero tabular-nums text-stone-600">
-                  {{ reservation.get_price }}
+                  {{ reservation.customer.phone }}
                 </div-td>
               </a>
             {% endfor %}

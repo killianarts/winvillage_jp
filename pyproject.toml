@@ -41,10 +41,12 @@ slippers = "^0.6.2"
 django-debug-toolbar = "^4.3.0"
 django-recurrence = "^1.11.1"
 django-decorator-include = "^3.0"
+django-relativedelta = "^2.0.0"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"
 django-pattern-library = "^1.1.0"
+isort = "^5.13.2"
 
 [build-system]
 requires = ["poetry-core"]

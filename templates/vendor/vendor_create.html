@@ -1,0 +1,28 @@
+{% extends 'winadmin/index.html' %}
+{% load static i18n %}
+{% block extra_styles %}
+{% endblock %}
+{% block subtitle %}
+    {% blocktrans %}Create Vendor{% endblocktrans %}
+{% endblock %}
+{% block content %}
+    <div id="content-wrapper">
+        <h1 class="text-3xl">{% translate 'Create Vendor' %}</h1>
+        {% block form %}
+            <form id="vendor-create-form" class="max-w-xl grid" action="." novalidate
+                  hx-post="."
+                  hx-target="#content-wrapper"
+                  hx-swap="outerHTML"
+                  hx-vals='{"use_block": "content"}'>
+                <div>
+                    {{ form }}
+                </div>
+                <div>
+                    {% #outline_button id="submit-button" name="create-vendor" value="create-vendor" type="submit" %}
+                    {% trans "Submit" %}
+                    {% /outline_button %}
+                </div>
+            </form>
+        {% endblock %}
+    </div>
+{% endblock %}

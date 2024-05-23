@@ -7,14 +7,15 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import StatusField, MonitorField
-from phonenumber_field.modelfields import PhoneNumberField
 from recurrence.fields import RecurrenceField
 
 from core.models import Item, ContactInfo, BaseModel, PendulumDateTimeField
 from customer.models import Customer
+from winvillage.settings import TIME_ZONE
 
 # from reservations.forms import GrillOptionForm
 
@@ -43,7 +44,6 @@ class Order(BaseModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     items = models.ManyToManyField(OrderItem)
     ordered = models.BooleanField(default=False, verbose_name=_("Ordered?"))
-    ordered_date = models.DateTimeField(blank=True, null=True, verbose_name=_("Ordered Date"))
 
     def __str__(self):
         return f"User: {self.user}, Items: {self.get_quantity()}"
@@ -60,6 +60,11 @@ class Order(BaseModel):
         for order_item in self.items.all():
             total += order_item.item.price * order_item.quantity
         return int(total)
+
+    def make_purchase(self):
+        self.ordered = True
+        for orderitem in self.items:
+            orderitem.item.stock_quantity = orderitem.item.stock_quantity - orderitem.quantity
 
 
 class Campaign(BaseModel):
@@ -87,8 +92,8 @@ class PricingTier(BaseModel):
     ADULT_CHOICES = ((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"), (6, "6"))
     tier_group = models.ForeignKey("PricingTierGroup", on_delete=models.CASCADE, blank=True, null=True)
     number_of_adults = models.IntegerField(default=1, choices=ADULT_CHOICES, verbose_name=_("Number of Adults"))
-    price_overnight = models.DecimalField(max_digits=19, decimal_places=4, verbose_name=_("Price Overnight"))
-    price_short_term = models.DecimalField(max_digits=19, decimal_places=4, verbose_name=_("Price Short-term"))
+    price_overnight = models.DecimalField(max_digits=19, decimal_places=2, verbose_name=_("Price Overnight"))
+    price_short_term = models.DecimalField(max_digits=19, decimal_places=2, verbose_name=_("Price Short-term"))
 
     def __str__(self):
         return f"￥{self.get_price_overnight()}/night, ￥{self.get_price_short_term()}/hour"
@@ -118,6 +123,18 @@ class Room(BaseModel):
     class RoomManager(models.Manager):
         def occupied_rooms(self):
             return super().get_queryset().filter(stay__status="checked_in")
+
+        def rooms_and_customers(self):
+            occupied_rooms = Room.objects.occupied_rooms()
+            reservations = Reservation.objects.filter(stay__room__in=occupied_rooms)
+            rooms_with_occupants = {}
+            for room in rooms:
+                customer = None
+                if room in occupied_rooms:
+                    if reservations.filter(stay__status="checked_in").exists():
+                        customer = reservations.filter(stay__status="checked_in").first().customer
+                rooms_with_occupants[room] = customer
+            return rooms_with_occupants
 
     class Meta:
         verbose_name = _("Room")
@@ -156,10 +173,10 @@ class PricingTierGroup(BaseModel):
     maximum_number_of_adults = models.IntegerField(validators=[MinValueValidator(4), MaxValueValidator(6)])
     room_tiers = models.ManyToManyField("RoomTier")
     price_overnight_child = models.DecimalField(
-        max_digits=19, decimal_places=4, verbose_name=_("Price Per Child Overnight")
+        max_digits=19, decimal_places=2, verbose_name=_("Price Per Child Overnight")
     )
     price_short_term_child = models.DecimalField(
-        max_digits=19, decimal_places=4, verbose_name=_("Price Per Child Short-Term")
+        max_digits=19, decimal_places=2, verbose_name=_("Price Per Child Short-Term")
     )
     campaign = models.ForeignKey("Campaign", null=True, blank=True, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
@@ -210,7 +227,7 @@ class PricingTierGroup(BaseModel):
 class Stay(BaseModel):
     class StayManager(models.Manager):
         def get_stays_for_date(self, date):
-            time_zone = ZoneInfo("Asia/Tokyo")
+            time_zone = timezone.get_default_timezone()
             target_date = datetime.strptime(date, "%Y-%m-%d").astimezone(time_zone).date()
             next_date = target_date + timedelta(days=1)
 
@@ -246,7 +263,7 @@ class Stay(BaseModel):
     start = PendulumDateTimeField(verbose_name=_("Start"), null=True, blank=True)
     end = PendulumDateTimeField(verbose_name=_("End"), null=True, blank=True)
     status_changed = MonitorField(monitor="status")
-    price = models.DecimalField(max_digits=16, decimal_places=4, null=True, blank=True)
+    price = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True)
 
     def get_stay_range(self):
         return (
@@ -279,7 +296,7 @@ class Reservation(BaseModel):
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
     stay = models.ForeignKey(Stay, on_delete=models.CASCADE, null=True, blank=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
-    order_items = models.ManyToManyField(OrderItem)
+    order_items = models.ManyToManyField(OrderItem, blank=True)
 
     def check_availability(self, *, start_date, end_date):
         reservations = Reservation.objects.filter(
@@ -313,115 +330,44 @@ class Reservation(BaseModel):
         )
         return roomtier_queryset
 
+    def set_dates(self, selected_datetime: pendulum.DateTime):
+        if not self.stay.start or not self.stay.end:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+
+        START_AND_END_ARE_THE_SAME = self.stay.start == self.stay.end
+        NEW_DATE_AFTER_END = selected_datetime > self.stay.end
+
+        if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
+            self.stay.end = selected_datetime
+        else:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        if not self.check_availability(start_date=self.stay.start, end_date=self.stay.end).exists():
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        self.stay.save()
+        return self.stay.start, self.stay.end
+
+    def reset_dates(self):
+        self.stay.start = None
+        self.stay.end = None
+        self.stay.save()
+
+    def reset_rooms(self):
+        self.stay.room = None
+        self.stay.save()
+
     def set_number_of_visitors(self, form):
         self.stay.number_of_adults = form.cleaned_data["number_of_adults"]
         self.stay.number_of_children = form.cleaned_data["number_of_children"]
         self.stay.save()
 
-    def get_roomtier_price(self):
-        def campaign_occurrences(campaign):
-            return campaign.recurrences.between(
-                self.get_start_date(),
-                self.get_end_date(),
-                dtstart=self.get_start_date(),
-                dtend=self.get_end_date(),
-                inc=True,
-            )
-
-        def get_overnight_price(group):
-            return (
-                group.pricingtier_set.filter(number_of_adults=self.get_number_of_adults())
-                .values_list("price_overnight", flat=True)
-                .first()
-            )
-
-        def get_short_term_price(group):
-            return (
-                group.pricingtier_set.filter(number_of_adults=self.get_number_of_adults())
-                .values_list("price_short_term", flat=True)
-                .first()
-            )
-
-        def get_child_overnight_price(group):
-            return group.price_overnight_child
-
-        def get_child_short_term_price(group):
-            return group.price_short_term_child
-
-        # There may be multiple pricingtiergroup's that contain a compaign that is applicable to a room on a given date.
-        # To resolve the conflict, I'm choosing to get the most recently defined group.
-        # This feels like a very important choice being done with one line of code.
-        # TODO: Consider ways of formalizing this choice more thoughtfully and visibly.
-        pricingtiergroups = self.stay.room.room_tier.pricingtiergroup_set.all().order_by("updated_at")
-        dates_with_prices = {}
-        period = self.get_stay_period()
-        number_of_nights = period.in_days()
-        pricing_period = self.get_pricing_period()
-        for group in pricingtiergroups:
-            for period_datetime in pricing_period:
-                if group.campaign:
-                    for campaign_date in campaign_occurrences(group.campaign):
-                        if period_datetime.date() == campaign_date.date():
-                            if number_of_nights >= 1:
-                                dates_with_prices[period_datetime.date()] = {
-                                    "price_adult": get_overnight_price(group),
-                                    "price_child": get_child_overnight_price(group),
-                                }
-                            else:
-                                dates_with_prices[period_datetime.date()] = {
-                                    "price_adult": get_short_term_price(group),
-                                    "price_child": get_child_short_term_price(group),
-                                }
-                elif not group.campaign:
-                    if number_of_nights >= 1:
-                        dates_with_prices[period_datetime.date()] = {
-                            "price_adult": get_overnight_price(group),
-                            "price_child": get_child_overnight_price(group),
-                        }
-                    else:
-                        dates_with_prices[period_datetime.date()] = {
-                            "price_adult": get_short_term_price(group),
-                            "price_child": get_child_short_term_price(group),
-                        }
-        price = 0
-        for date_, prices_ in dates_with_prices.items():
-            price += prices_["price_adult"]
-        for date_, prices_ in dates_with_prices.items():
-            price += prices_["price_child"] * self.get_number_of_children()
-        return price
-
-    def get_form_and_roomtier_data(self, form_class):
-        start = self.get_start_date()
-        end = self.get_end_date()
-        available_rooms = self.check_availability(start_date=start, end_date=end)
-        available_roomtiers = self.check_roomtier_availability(available_rooms)
-        roomtier_data = []
-        if available_roomtiers:
-            for tier in available_roomtiers:
-                price = self.get_roomtier_price()
-                roomtier_data.append(
-                    {
-                        "tier": tier,
-                        "price": price,
-                    }
-                )
-        roomtier_name = self.get_roomtier_name()
-        roomtier_queryset = self.get_possible_roomtier_queryset()
-        initial = {}
-        if roomtier_name:
-            if roomtier_queryset.filter(name=roomtier_name).exists():
-                initial = {"roomtiers": self.stay.room.room_tier}
-            else:
-                self.reset_rooms()
-        else:
-            self.reset_rooms()
-
-        form = form_class(queryset=roomtier_queryset, initial=initial)
-        return form, roomtier_data
-
-    def set_room(self, form, roomtier_data):
+    def set_room(self, form, roomtier_data, start, end):
         tier = form.cleaned_data["roomtiers"]
-        available_rooms = Room.objects.filter(room_tier=tier)
+        available_rooms = Room.objects.filter(room_tier=tier).exclude(
+            stay__status__in=["reserved", "checked_in"], stay__start__lte=end, stay__end__gt=start
+        )
         self.stay.room = available_rooms.first()
         for tierprice in roomtier_data:
             if tierprice["tier"] == tier:
@@ -524,34 +470,6 @@ class Reservation(BaseModel):
     #     self.stay.save()
     #     return self.stay.start, self.stay.end
 
-    def set_dates(self, selected_datetime: pendulum.DateTime):
-        if not self.stay.start or not self.stay.end:
-            self.stay.start = selected_datetime
-            self.stay.end = selected_datetime
-
-        START_AND_END_ARE_THE_SAME = self.stay.start == self.stay.end
-        NEW_DATE_AFTER_END = selected_datetime > self.stay.end
-
-        if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
-            self.stay.end = selected_datetime
-        else:
-            self.stay.start = selected_datetime
-            self.stay.end = selected_datetime
-        if not self.check_availability(start_date=self.stay.start, end_date=self.stay.end).exists():
-            self.stay.start = selected_datetime
-            self.stay.end = selected_datetime
-        self.stay.save()
-        return self.stay.start, self.stay.end
-
-    def reset_dates(self):
-        self.stay.start = None
-        self.stay.end = None
-        self.stay.save()
-
-    def reset_rooms(self):
-        self.stay.room = None
-        self.stay.save()
-
     def start_time(self):
         if self.stay.start:
             return self.stay.start.time()
@@ -571,12 +489,19 @@ class Reservation(BaseModel):
     def set_status(self, status_choice: str):
         return self.stay.set_status(status_choice)
 
-    def confirm(self):
+    def confirm(self, customer):
         self.set_status("reserved")
+        self.customer = customer
         self.save()
 
+    def check_in(self):
+        self.set_status("checked_in")
+
+    def check_out(self):
+        self.set_status("checked_out")
+
     def __str__(self):
-        return f"Reservation id: {self.id}, User: {self.user}"
+        return f"Reservation id: {self.id}, Customer: {self.customer}"
 
     def order_items_list(self):
         items = []
@@ -585,7 +510,7 @@ class Reservation(BaseModel):
         return items
 
     def get_full_name(self) -> str:
-        return f"{self.last_name}{self.first_name}"
+        return f"{self.customer}"
 
     def get_absolute_url(self, pk):
         return reverse("winadmin:reservation_detail", kwargs={"pk": self.pk})

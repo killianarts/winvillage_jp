@@ -1,0 +1,35 @@
+{% extends 'winadmin/index.html' %}
+{% load i18n %}
+{% block content %}
+  <div id="content-wrapper">
+    <h1 class="text-3xl mb-5">{% translate 'Room List' %}</h1>
+    <div class="grid grid-cols-2 gap-5">
+      {% for room, customer in rooms_with_occupants.items %}
+        {% if room in occupied_rooms %}
+          <div id="occupant"
+               class="flex gap-5 text-green-600 items-center bg-stone-100 p-10 outline outline-2 outline-stone-900 rounded-md">
+            <p>{{ room }} - {{ customer }}</p>
+            <div id="actions"
+                 class="flex gap-5">
+              {% #outline_button %}
+              <a href="{% url "winadmin:checked_in_customer_purchase" room_id=room.id customer_id=customer.id %}"
+                 hx-boost="true">
+                {% translate 'Purchase' %}
+              </a>
+              {% /outline_button %}
+              {% #outline_button %}
+              <a href="{% url "winadmin:checked_in_customer_return" room_id=room.id customer_id=customer.id %}"
+                 hx-boost="true">
+                {% translate 'Return' %}
+              </a>
+              {% /outline_button %}
+            </div>
+          </div>
+        {% else %}
+          <div class="bg-stone-100 p-10 outline outline-2 outline-stone-900 rounded-md">{{ room }}</div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+

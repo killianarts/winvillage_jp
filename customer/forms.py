@@ -1,9 +1,13 @@
 from django import forms
+from django.forms import modelformset_factory
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.formfields import PhoneNumberField
 
-from core.forms import TailwindFormMixin
+from core.forms import TailwindFormMixin, ReadOnlyFormMixin
+from core.models import Item, Category
+from customer.models import Customer
+from reservations.models import OrderItem
 
 
 class CustomerDetailForm(TailwindFormMixin, forms.Form):
@@ -85,5 +89,75 @@ class CustomerCheckInForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = False
 
 
-class CustomerTransactionForm:
-    pass
+class CustomerForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ["first_name", "last_name", "email", "phone"]
+
+
+class ItemForm(ReadOnlyFormMixin, forms.Form):
+    item_id = forms.DecimalField(widget=forms.HiddenInput())
+    name = forms.CharField(label=_("Name"))
+    price = forms.DecimalField(label=_("Price"))
+    quantity = forms.DecimalField(label=_("Quantity"), min_value=0)
+
+
+# class ItemFormRenderer(TemplatesSetting):
+#     form_template_name = "core/forms/tailwind/div.html"
+#     formset_template_name = "core/forms/formsets/div.html"
+#     single_field_row_template = "core/forms/formsets/formset_field_row.html"
+#     field_template_name = "core/forms/tailwind/field_row_read_only.html"
+#
+#
+# class ItemFormMixin(TemplatesSetting):
+#     default_renderer = ItemFormRenderer()
+#
+#     # def __init__(self, *args, **kwargs) -> None:
+#     # We don’t want ':' as a label suffix:
+#     # return super().__init__(*args, label_suffix="", **kwargs)
+#
+#     def get_context(self, *args, **kwargs):
+#         return super().get_context(*args, **kwargs) | {
+#             "single_field_row_template": self.renderer.single_field_row_template,
+#         }
+#
+#
+# class ItemForm(ItemFormMixin, forms.ModelForm):
+#     # default_renderer = ItemFormRenderer()
+#
+#     class Meta:
+#         model = Item
+#         fields = ["id", "name", "price"]
+#
+#     quantity = forms.DecimalField(label=_("Quantity"), min_value=0)
+#
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         # Initialize the quantity_in_order field with the annotated value from the model instance
+#         if self.instance:
+#             self.fields["quantity"].initial = self.instance.quantity_in_order
+#
+#     def save(self, commit=False):
+#         # Custom save method to handle the quantity_in_order field
+#         instance = super().save(commit=False)
+#         # Find the related OrderItem instances for the current Item
+#         order_item, created = OrderItem.objects.get_or_create(item=self.instance)
+#         # Update the quantity field of each related OrderItem with the form's value
+#         quantity = self.cleaned_data.get("quantity")
+#         if quantity > 0:
+#             order_item.quantity = quantity
+#             order_item.save()
+#             instance.save()
+#         else:
+#             order_item.delete()
+#
+#
+# ItemFormSet = modelformset_factory(Item, form=ItemForm, extra=0)
+
+
+class CategoryFilterForm(forms.Form):
+    categories = forms.ChoiceField(
+        choices=[("0", "All")] + [(category.id, category.name) for category in Category.objects.all()],
+        widget=forms.RadioSelect(),
+        initial="0",
+    )

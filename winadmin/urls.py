@@ -66,7 +66,9 @@ urlpatterns = [
         views.datetime_select,
         name="datetime_select",
     ),
-    path("reservations/create/option-select/", views.option_select, name="option_select"),
+    path(
+        "reservations/create/option-select/", views.option_select, name="option_select"
+    ),
     path("reservations/create/update-price/", views.update_price, name="update_price"),
     path(
         "reservations/detail/<int:pk>/",
@@ -107,11 +109,30 @@ urlpatterns = [
         name="customer_detail",
     ),
     path(
-        "customer/check-in/",
-        customer.customer_check_in,
-        name="customer_check_in",
+        "customer/check-in-check-out/",
+        views.customer_check_in_check_out_list,
+        name="customer_check_in_check_out_list",
     ),
-    path("customer/transaction/", customer.checked_in_customer_transaction, name="checked_in_customer_transaction"),
+    path(
+        "customer/check-in-check-out/<int:reservation_id>",
+        views.customer_check_in_check_out_detail,
+        name="customer_check_in_check_out_detail",
+    ),
+    path(
+        "customer/occupied-rooms/",
+        customer.occupied_room_list,
+        name="occupied_room_list",
+    ),
+    path(
+        "customer/purchase/<int:room_id>/<int:customer_id>",
+        customer.checked_in_customer_purchase,
+        name="checked_in_customer_purchase",
+    ),
+    path(
+        "customer/return/<int:room_id>/<int:customer_id>",
+        customer.checked_in_customer_return,
+        name="checked_in_customer_return",
+    ),
     path("ticket/create/", customer.ticket_create, name="ticket_create"),
     path("ticket/list/", customer.ticket_list, name="ticket_list"),
     path(
@@ -155,9 +176,15 @@ urlpatterns = [
         views.pricing_tier_group_detail,
         name="pricing_tier_group_detail",
     ),
+    path("vendor/create/", views.vendor_create, name="vendor_create"),
+    path("vendor/list/", views.vendor_list, name="vendor_list"),
+    path("vendor/detail/<int:vendor_id>/", views.vendor_detail, name="vendor_detail"),
+    path("invoice/create/", views.invoice_create, name="invoice_create"),
 ]
 
 urlpatterns += [
-    path("inventory/", views.inventory_management_page, name="inventory_management_page"),
+    path(
+        "inventory/", views.inventory_management_page, name="inventory_management_page"
+    ),
     path("transactions/sale/", views.sale_management_page, name="sale_management_page"),
 ]

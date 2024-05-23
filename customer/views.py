@@ -1,6 +1,7 @@
-import pendulum
+from django.contrib import messages
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory, formset_factory
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
@@ -10,13 +11,14 @@ from django.utils.translation import gettext_lazy as _
 from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
 
 import customer.forms as forms
+from core.models import Item, Transaction
 from core.utils import (
     HtmxHttpRequest,
     for_htmx,
     htmx_form_validate,
 )
 from customer.models import Customer, make_customers, TicketNote, Ticket
-from reservations.models import Reservation, Room, Order
+from reservations.models import Reservation, Room, Order, OrderItem
 
 
 @login_required(login_url="winadmin:login_page")
@@ -209,40 +211,132 @@ def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
     return trigger_client_event(TemplateResponse(request, "ticket/ticket_detail.html", context), "getMessages")
 
 
-@login_required(login_url="winadmin:login_page")
+def occupied_room_list(request):
+    rooms = Room.objects.all()
+    occupied_rooms = Room.objects.occupied_rooms()
+    reservations = Reservation.objects.filter(stay__room__in=occupied_rooms)
+    rooms_with_occupants = {}
+    form = None
+    for room in rooms:
+        customer = None
+        if room in occupied_rooms:
+            if reservations.filter(stay__status="checked_in").exists():
+                customer = reservations.get(stay__room=room, stay__status="checked_in").customer
+        rooms_with_occupants[room] = customer
+
+    context = {
+        "form": form,
+        "reservations": reservations,
+        "rooms": rooms,
+        "occupied_rooms": occupied_rooms,
+        "rooms_with_occupants": rooms_with_occupants,
+    }
+    return TemplateResponse(request, "customer/occupied_room_list.html", context)
+
+
 @for_htmx(use_block_from_params=True)
-def customer_check_in(request: HtmxHttpRequest) -> HttpResponse:
-    reservation = get_object_or_404(Reservation, pk=pk)
-    date_ = pendulum.today()
-    form = forms.CustomerCheckInForm()
-    reservations = Reservation.objects.filter(stay__start=date_)
-    context = {"form": form, "reservations": reservations}
-    response = TemplateResponse(request, "customer/customer_check_in.html", context)
+def checked_in_customer_purchase(request, room_id, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    customer_information_form = forms.CustomerForm(instance=customer)
+    order, created = Order.objects.get_or_create(customer=customer, ordered=False)
+    room = Room.objects.get(id=room_id)
+    shop_items = Item.in_stock.with_orderitem_quantities(order).order_by("category", "name")
+    shop_item_forms = []
+    for item in shop_items:
+        initial = {"item_id": item.id, "name": item.name, "price": item.price, "quantity": item.quantity_in_order}
+        form = forms.ItemForm(initial=initial)
+        shop_item_forms.append([item, form])
+    if request.method == "POST":
+        form = forms.ItemForm(request.POST)
+        if request.htmx:
+            if form.is_valid():
+                item_id = form.cleaned_data["item_id"]
+                quantity = form.cleaned_data["quantity"]
+                order_item, created = OrderItem.objects.get_or_create(item_id=item_id)
+                if created:
+                    order.items.add(order_item)
+                    order.save()
+                if quantity > 0:
+                    order_item.quantity = quantity
+                    order_item.save()
+                else:
+                    order_item.delete()
+        if "check-out" in request.POST:
+            transactions = Transaction.sales.create_sales_from_order(order_obj=order)
+            for orderitem in order.items.all():
+                orderitem.item.stock_quantity -= orderitem.quantity
+                orderitem.item.save()
+            order.ordered = True
+            order.save()
+            messages.success(request, _("Purchase Completed."))
+            return HttpResponseClientRedirect(reverse("winadmin:index"))
+        elif "cancel" in request.POST:
+            if order:
+                order.delete()
+                messages.success(request, _("Purchase Cancelled."))
+                return HttpResponseClientRedirect(reverse("winadmin:index"))
+
+    context = {
+        "customer_information_form": customer_information_form,
+        "customer": customer,
+        "order": order,
+        "order_items": order.items.all(),
+        "shop_item_forms": shop_item_forms,
+        "room": room,
+    }
+    response = TemplateResponse(request, "customer/checked_in_customer_purchase.html", context)
     return trigger_client_event(response, "getMessages")
 
 
 @for_htmx(use_block_from_params=True)
-def checked_in_customer_transaction(request):
-    rooms = Room.objects.all()
-    occupied_rooms = Room.objects.occupied_rooms()
+def checked_in_customer_return(request, room_id, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    customer_information_form = forms.CustomerForm(instance=customer)
+    order, created = Order.objects.get_or_create(customer=customer, ordered=False)
+    room = Room.objects.get(id=room_id)
+    shop_items = Item.in_stock.with_orderitem_quantities(order).order_by("category", "name")
+    shop_item_forms = []
+    for item in shop_items:
+        initial = {"item_id": item.id, "name": item.name, "price": item.price, "quantity": item.quantity_in_order}
+        form = forms.ItemForm(initial=initial)
+        shop_item_forms.append([item, form])
     if request.method == "POST":
-        form = forms.CustomerTransactionForm(request.POST)
-        if "cancel-order" in request.POST:
-            customer_id = request.POST.get("customer-id", None)
-            customer = get_object_or_404(Customer, pk=customer_id)
-            customer.cancel_order()
-    else:
-        if "get-customer-information" in request.GET:
-            customer_id = request.GET.get("customer-id", None)
-            customer = get_object_or_404(Customer, pk=customer_id)
-            customer_cart = Order.get_or_create(customer=customer)
-            initial = {"customer": customer, "customer_cart": customer_cart}
-            form = forms.CustomerTransationForm(initial)
+        form = forms.ItemForm(request.POST)
+        if request.htmx:
+            if form.is_valid():
+                item_id = form.cleaned_data["item_id"]
+                quantity = form.cleaned_data["quantity"]
+                order_item, created = OrderItem.objects.get_or_create(item_id=item_id)
+                if created:
+                    order.items.add(order_item)
+                    order.save()
+                if quantity > 0:
+                    order_item.quantity = quantity
+                    order_item.save()
+                else:
+                    order_item.delete()
+        if "check-out" in request.POST:
+            transactions = Transaction.returns.create_returns_from_order(order_obj=order)
+            for orderitem in order.items.all():
+                orderitem.item.stock_quantity += orderitem.quantity
+                orderitem.item.save()
+            order.ordered = True
+            order.save()
+            messages.success(request, _("Return Completed."))
+            return HttpResponseClientRedirect(reverse("winadmin:index"))
+        elif "cancel" in request.POST:
+            if order:
+                order.delete()
+                messages.success(request, _("Return Cancelled."))
+                return HttpResponseClientRedirect(reverse("winadmin:index"))
 
     context = {
-        # "form": form,
-        "rooms": rooms,
-        "occupied_rooms": occupied_rooms,
+        "customer_information_form": customer_information_form,
+        "customer": customer,
+        "order": order,
+        "order_items": order.items.all(),
+        "shop_item_forms": shop_item_forms,
+        "room": room,
     }
-    response = TemplateResponse(request, "customer/checked_in_customer_transaction.html", context)
+    response = TemplateResponse(request, "customer/checked_in_customer_return.html", context)
     return trigger_client_event(response, "getMessages")

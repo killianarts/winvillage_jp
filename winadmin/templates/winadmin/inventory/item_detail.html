@@ -6,7 +6,7 @@
 {% block content %}
   <div id="content-wrapper">
     <h1 class="text-3xl">{% translate 'Edit Inventory Item' %}</h1>
-    <form action="." method="post"
+    <form action="." method="post" enctype="multipart/form-data"
           hx-post="."
           hx-target="#content-wrapper"
           hx-swap="morph:outerHTML"

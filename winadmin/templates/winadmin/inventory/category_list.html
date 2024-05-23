@@ -30,11 +30,11 @@
                 {{ category.name }}
               </a>
             </td>
-            {% for item in category.item_set.all %}
               <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
-                {{ item }}
-              </td>
+            {% for item in category.item_set.all %}
+                {{ item }}{% if category.item_set.all.count > 1 and not forloop.last %}, {% endif %} 
             {% endfor %}
+              </td>
           </tr>
         {% endfor %}
         </tbody>

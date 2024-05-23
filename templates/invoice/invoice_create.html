@@ -1,0 +1,30 @@
+{% extends 'winadmin/index.html' %}
+{% load static i18n %}
+{% block extra_styles %}
+{% endblock %}
+{% block subtitle %}
+  {% blocktrans %}Create Invoice{% endblocktrans %}
+{% endblock %}
+{% block content %}
+  <div id="content-wrapper">
+    <h1 class="text-3xl">{% translate 'Create Invoice' %}</h1>
+    {% block form %}
+      <form id="invoice-create-form" class="max-w-xl grid" action="." novalidate
+            hx-post="."
+            hx-target="#content-wrapper"
+            hx-swap="outerHTML"
+            hx-vals='{"use_block": "content"}'>
+        <div _="on htmx:afterSettle from #content-wrapper set input to the last <input/> in me then add @checked to the input">
+          {{ form }}
+        </div>
+        {{ due_date }}
+        <div>
+            {% #outline_button id="submit-button" name="create-invoice" value="create-room" type="submit" %}
+            {% trans "Submit" %}
+            {% /outline_button %}
+        </div>
+      </form>
+    {% endblock %}
+
+  </div>
+{% endblock %}

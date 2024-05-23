@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
 <div id="mobile-menu" class="relative z-50 invisible" role="dialog" aria-modal="true">
   <!--
@@ -52,13 +52,23 @@
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-stone-900 px-6 pb-2 ring-1 ring-white/10">
         <div class="flex h-16 shrink-0 items-center">
-          <a href="{% url 'winadmin:index' %}"><img class="h-16" src="{% static 'core/img/dark_logo.svg' %}" alt="Winvillage logo"></a>
+          <a href="{% url 'winadmin:index' %}"><img class="h-16"
+                                                    src="{% static 'core/img/dark_logo.svg' %}"
+                                                    alt="Winvillage logo"></a>
         </div>
         <nav class="flex flex-1 flex-col">
           <ul role="list" class="flex flex-1 flex-col gap-y-7">
             <li>
               {{ children }}
             </li>
+            {% if user.is_authenticated %}
+              <li class="-mx-6 mt-auto">
+                <a href="{% url 'users:logout' %}"
+                   class="flex justify-end gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-stone-800">
+                  <span aria-hidden="true">{% translate 'Log Out' %} {{ user }}</span>
+                </a>
+              </li>
+            {% endif %}
           </ul>
         </nav>
       </div>

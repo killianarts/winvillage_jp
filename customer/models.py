@@ -1,5 +1,7 @@
+import datetime
 from collections import OrderedDict
 
+import pendulum
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
@@ -7,12 +9,51 @@ from django.utils.translation import gettext_lazy as _
 from faker import Faker
 from phonenumber_field.modelfields import PhoneNumberField
 
+
 auth_user = get_user_model()
 
 
+class PendulumDateTimeField(models.DateTimeField):
+    # https://docs.djangoproject.com/en/5.0/howto/custom-model-fields#converting-values-to-python-objects
+    # If present for the field subclass, from_db_value() will be called in all circumstances when
+    # the data is loaded from the database, including in aggregates and values() calls.
+    def from_db_value(self, value, expression, connection):
+        if value is None:
+            return value
+        if isinstance(value, datetime.datetime):
+            return pendulum.instance(value)
+        return pendulum.parse(value)
+
+    # https://docs.djangoproject.com/en/5.0/howto/custom-model-fields#converting-values-to-python-objects
+    # to_python() is called by deserialization and during the clean() method used from forms.
+
+    # As a general rule, to_python() should deal gracefully with any of the following arguments:
+    # -- An instance of the correct type
+    # -- A string
+    # -- None (if the field allows null=True)
+    def to_python(self, value):
+        if isinstance(value, pendulum.DateTime):
+            return value
+        if isinstance(value, datetime.datetime):
+            return pendulum.instance(value)
+        if value is None:
+            return value
+        return pendulum.parse(value)
+
+    def get_prep_value(self, value):
+        if isinstance(value, pendulum.DateTime):
+            return value.to_iso8601_string()
+        if isinstance(value, datetime.datetime):
+            return pendulum.instance(value)
+        if isinstance(value, datetime.date):
+            return pendulum.instance(value)
+        if value is None:
+            return value
+
+
 class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = PendulumDateTimeField(auto_now_add=True, null=True)
+    updated_at = PendulumDateTimeField(auto_now=True, null=True)
 
     class Meta:
         abstract = True

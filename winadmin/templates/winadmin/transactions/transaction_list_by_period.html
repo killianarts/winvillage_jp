@@ -28,9 +28,10 @@
         <form action="{% url 'winadmin:transaction_export_csv_by_period' %}" method="get">
           <input type="hidden" name="year" value="{{ form.year.value }}">
           <input type="hidden" name="month" value="{{ form.month.value }}">
-          {% #outline_button name="export" type="submit" class="ml-5" %}{% blocktrans %}Export CSV{% endblocktrans %}{% /outline_button %}
+          {% #outline_button name="export" type="submit" class="ml-5" %}{% blocktrans %}Export
+                                                                                        CSV{% endblocktrans %}{% /outline_button %}
         </form>
-        <table id="orders-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
+        <table id="orders-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300 font-code">
           <thead>
           <tr class="text-left">
             <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
@@ -39,7 +40,7 @@
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Name' %}</th>
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Product' %}</th>
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Quantity' %}</th>
-            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Item' %}</th>
+            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Unit' %}</th>
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Sale Amount' %}</th>
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Return Amount' %}</th>
             <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Purchase Amount' %}</th>
@@ -52,16 +53,15 @@
             <tr class="hover:bg-stone-50">
               <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
                 <a hx-boost="true" class="pl-6"
-                                                       href="{% url 'winadmin:transaction_detail' transaction.id %}"
-                   href="#"
+                   href="{% url 'winadmin:transaction_detail' transaction.id %}"
                 >
-                  {{ transaction.transaction_datetime|date:"Y-m-d" }}
+                  {{ transaction.created_at|date:"Y-m-d" }}
                 </a>
               </td>
               <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.get_name_display }}</td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.item }}</td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.product }}</td>
               <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.quantity }}</td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.item.price_rounded }}</td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ transaction.price_per_unit }}</td>
 
               <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
                 {% if transaction.sale_amount %}{{ transaction.sale_amount }}{% endif %}

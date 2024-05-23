@@ -7,7 +7,7 @@ from babel.dates import format_date
 from django.utils.translation import get_language
 
 from reservations.forms import DateTimeForm, RoomTierChoiceForm
-from reservations.models import Reservation, Stay, Room, RoomTier
+from reservations.models import Reservation, Stay, RoomTier, Room
 
 
 def make_pen(dt: datetime | date) -> pendulum.DateTime:
@@ -36,77 +36,6 @@ def campaign_occurrences(reservation, campaign):
     )
 
 
-def get_room_price(reservation: Reservation, room: Room):
-    period = reservation.get_stay_period()
-    number_of_adults = reservation.get_number_of_adults()
-
-    def get_overnight_price(group):
-        return group.pricingtier_set.filter(number_of_adults=number_of_adults).values_list("price_overnight", flat=True)
-
-    def get_short_term_price(group):
-        return group.pricingtier_set.filter(number_of_adults=number_of_adults).values_list(
-            "price_short_term", flat=True
-        )
-
-    # There may be multiple pricingtiergroup's that contain a compaign that is applicable to a room on a given date.
-    # To resolve the conflict, I'm choosing to get the most recently defined group.
-    # This feels like a very important choice being done with one line of code.
-    # TODO: Consider ways of formalizing this choice more thoughtfully and visibly.
-    pricingtiergroups = room.room_tier.pricingtiergroup_set.all().order_by("updated_at")
-    dates_with_prices = {}
-    for group in pricingtiergroups:
-        for period_datetime in period.range("days"):
-            if group.campaign:
-                for campaign_date in campaign_occurrences(reservation, group.campaign):
-                    if period_datetime.date() == campaign_date.date():
-                        if period.in_days() >= 1:
-                            dates_with_prices[period_datetime.date()] = get_overnight_price(group)
-
-                        else:
-                            dates_with_prices[period_datetime.date()] = get_short_term_price(group)
-
-            elif not group.campaign:
-                if period.in_days() >= 1:
-                    dates_with_prices[period_datetime.date()] = get_overnight_price(group)
-                else:
-                    dates_with_prices[period_datetime.date()] = get_short_term_price(group)
-
-    price = 0
-    for date_, price_ in dates_with_prices.items():
-        price += price_.first()
-    return price
-
-
-# def get_form_and_rooms_data(reservation):
-#     start = reservation.get_start_date()
-#     end = reservation.get_end_date()
-#     rooms_queryset = reservation.get_possible_rooms_queryset()
-#     available_rooms = reservation.check_availability(start_date=start, end_date=end)
-#     rooms_data = []
-#     if available_rooms:
-#         for room in available_rooms:
-#             # Check if the period between the start and end dates falls into an active campaign.
-#             # First we need to know which PricingTierGroups this room is in.
-#             # We get that information through its RoomTier
-#             price = get_room_price(reservation=reservation, room=room)
-#             rooms_data.append(
-#                 {
-#                     "room": room,
-#                     "price": price,
-#                 }
-#             )
-#     room_name = reservation.get_room_name()
-#     initial = {}
-#     if room_name:
-#         if reservation.get_possible_rooms_queryset().filter(name=room_name).exists():
-#             initial = {"rooms": reservation.stay.room}
-#         else:
-#             reservation.reset_rooms()
-#     form = RoomChoiceForm(queryset=rooms_queryset, initial=initial)
-#     return form, rooms_data
-
-
-# TODO: Move utilities to the Reservation model.
 def get_roomtier_price(reservation: Reservation, roomtier: RoomTier, number_of_adults: int):
     def get_overnight_price(group):
         return (
@@ -173,11 +102,27 @@ def get_roomtier_price(reservation: Reservation, roomtier: RoomTier, number_of_a
     return price
 
 
-def get_form_and_roomtier_data(reservation):
+# This is at least suitable for the room_select view, because the start_date and end_date are known
+# I need this to work on each date in a calendar month, where the start_date and end_date aren't known.
+# However, I can't run it on every individual date because that is non-performant.
+# How do I get all of the available rooms in a calendar month, given just a number_of_adults?
+def get_available_rooms(number_of_adults, start_date, end_date):
+    qualifying_roomtiers = RoomTier.objects.filter(
+        pricingtiergroup__pricingtier__number_of_adults=number_of_adults
+    ).distinct()
+    qualifying_rooms = Room.objects.filter(room_tier__in=qualifying_roomtiers)
+    # remove rooms that are in Stay's marked "reserved" or "checked_in" for the given range between start_date and end_date
+    only_available_rooms = qualifying_rooms.exclude(
+        stay__status__in=["reserved", "checked_in"], stay__start__lte=end_date, stay__end__gt=start_date
+    )
+    return only_available_rooms
+
+
+def get_roomtier_data(reservation):
     start = reservation.get_start_date()
     end = reservation.get_end_date()
     number_of_adults = reservation.get_number_of_adults()
-    roomtier_queryset = reservation.get_possible_roomtier_queryset()
+
     available_rooms = reservation.check_availability(start_date=start, end_date=end)
     available_roomtiers = reservation.check_roomtier_availability(available_rooms)
     roomtier_data = []
@@ -193,6 +138,10 @@ def get_form_and_roomtier_data(reservation):
                     "price": price,
                 }
             )
+    return roomtier_data
+
+
+def get_form_initial_data(reservation):
     roomtier_name = reservation.get_roomtier_name()
     initial = {}
     if roomtier_name:
@@ -200,8 +149,7 @@ def get_form_and_roomtier_data(reservation):
             initial = {"roomtiers": reservation.stay.room.room_tier}
         else:
             reservation.reset_rooms()
-    form = RoomTierChoiceForm(queryset=roomtier_queryset, initial=initial)
-    return form, roomtier_data
+    return initial
 
 
 # def get_form_and_rooms_data(reservation):
@@ -261,54 +209,24 @@ def get_localized_day_names(firstweekday, locale="en"):
     return [format_date(d, "EEE", locale=locale) for d in week_dates]
 
 
-# def compile_dates_information(
-#     reservation: Reservation,
-#     _dates: Iterable[datetime],
-# ) -> List[Tuple[datetime, forms.Form, QuerySet]]:
-#     dates = []
-#     number_of_adults = reservation.get_number_of_adults()
-#     rooms_queryset = Room.objects.filter(
-#         pricing_tiers__number_of_adults=number_of_adults
-#     ).order_by("name")
-#     for _date in _dates:
-#         form = DateForm(initial={"date": _date})
-#         available_rooms = check_availability(
-#             number_of_adults=number_of_adults, queryset=rooms_queryset, _date=_date
-#         )
-#         # TODO: Figure out how to speed this up.
-#         #  The calls to `available_rooms` are causing about 74 queries.
-#         is_available = True if available_rooms else False
-#         if (
-#             not is_available
-#             and reservation.get_start_date() == _date
-#             or reservation.get_end_date() == _date
-#         ):
-#             reservation.reset_dates()
-#         dates.append((_date, form, is_available))
-#     return dates
-
-
 def compile_dates_information(reservation: Reservation, datetimes_iter):
     rooms_reserved = []
     for dt in datetimes_iter:
-        rooms_reserved.append({"datetime": dt, "room_ids": set()})
-
-    possible_rooms = reservation.get_possible_rooms_queryset()
-    possible_rooms_ids = {room_id for room_id in possible_rooms.values_list("id", flat=True)}
-    stays_query = Stay.objects.filter(
-        room__in=possible_rooms,
+        rooms_reserved.append({"datetime": dt, "room_ids": list()})
+    possible_rooms = reservation.get_possible_roomtier_queryset()
+    possible_rooms_ids = {room_id for room_id in possible_rooms.values_list("room__id", flat=True)}
+    not_possible_stays_query = Stay.objects.filter(
+        room_id__in=possible_rooms_ids,
+        status__in=["reserved", "checked_in"],
         start__lte=max(datetimes_iter),
         end__gte=min(datetimes_iter),
-    ).values("room_id", "start", "end")
+    ).exclude(end__lt=pendulum.today())
 
-    for stay in stays_query:
-        stay_room_id = stay["room_id"]
-        start = stay["start"]
-        end = stay["end"]
+    for not_possible_stay in not_possible_stays_query:
         for room in rooms_reserved:
-            #                            v < instead of <=
-            if start <= room["datetime"] < end:
-                room["room_ids"].add(stay_room_id)
+            if not_possible_stay.start <= room["datetime"] < not_possible_stay.end:
+                room["room_ids"].append(not_possible_stay.room.id)
+
     dates_and_forms = []
     start_date = reservation.get_start_date() if reservation.get_start_date() else None
     end_date = reservation.get_end_date() if reservation.get_end_date() else None
@@ -326,10 +244,12 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
 
 # We avoid serializing standard datetime objects into Pendulum DateTimes by initializing them correctly here.
 class PendulumCalendar(calendar.Calendar):
+    tz = "Asia/Tokyo"
+
     def itermonthpens(self, year, month, default_hour=10):
         pens = []
         for y, m, d in self.itermonthdays3(year, month):
-            pens.append(pendulum.datetime(year=y, month=m, day=d, hour=default_hour))
+            pens.append(pendulum.datetime(year=y, month=m, day=d, hour=default_hour, tz=self.tz))
         return pens
 
     def itermonthnaivepens(self, year, month, default_hour=10):

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-02 11:48+0900\n"
-"PO-Revision-Date: 2024-04-26 14:17+0900\n"
+"POT-Creation-Date: 2024-05-23 15:33+0900\n"
+"PO-Revision-Date: 2024-05-10 11:44+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,150 +19,196 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: core/models.py:61
+#: core/models.py:80
 msgid "Contact Info"
 msgstr "連絡情報"
 
-#: core/models.py:62
+#: core/models.py:81
 msgid "Contact Infos"
 msgstr "連絡情報"
 
-#: core/models.py:64
+#: core/models.py:83
 msgid "First name"
 msgstr "名字"
 
-#: core/models.py:75 core/models.py:95 winadmin/forms.py:67
-#: winadmin/forms.py:96
+#: core/models.py:94 core/models.py:131 winadmin/forms.py:68
+#: winadmin/forms.py:95
 #: winadmin/templates/winadmin/inventory/category_list.html:14
-#: winadmin/templates/winadmin/inventory/item_list.html:16
+#: winadmin/templates/winadmin/inventory/item_list.html:15
 msgid "Category"
 msgstr "カテゴリー"
 
-#: core/models.py:76 winadmin/templates/winadmin/inventory/category_list.html:9
+#: core/models.py:95 winadmin/templates/winadmin/inventory/category_list.html:9
 msgid "Categories"
 msgstr "カテゴリー"
 
-#: core/models.py:78 winadmin/forms.py:110 winadmin/forms.py:115
+#: core/models.py:97 winadmin/forms.py:108 winadmin/forms.py:113
 msgid "Category Name"
 msgstr "カテゴリーの名前"
 
-#: core/models.py:86 core/models.py:169 winadmin/forms.py:151
-#: winadmin/views.py:333
+#: core/models.py:122 winadmin/views.py:345
 msgid "Item"
 msgstr "アイテム"
 
-#: core/models.py:87
+#: core/models.py:123
 msgid "Items"
 msgstr "アイテム"
 
-#: core/models.py:89 core/models.py:156 reservations/models.py:70
-#: reservations/models.py:111 reservations/models.py:127
-#: templates/campaign/campaign_list.html:32
-#: templates/winadmin/room_tier_list.html:32 winadmin/forms.py:65
-#: winadmin/forms.py:94 winadmin/forms.py:148 winadmin/forms.py:321
-#: winadmin/forms.py:354 winadmin/models.py:11
+#: core/models.py:125 core/models.py:269 core/models.py:340
+#: customer/forms.py:100 reservations/models.py:75 reservations/models.py:116
+#: reservations/models.py:144 templates/campaign/campaign_list.html:32
+#: templates/winadmin/room_tier_list.html:32 winadmin/forms.py:66
+#: winadmin/forms.py:93 winadmin/forms.py:145 winadmin/forms.py:319
+#: winadmin/forms.py:356 winadmin/models.py:11
 #: winadmin/templates/winadmin/inventory/item_list.html:13
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:39
-#: winadmin/views.py:330
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:40
+#: winadmin/views.py:342
 msgid "Name"
 msgstr "名前"
 
-#: core/models.py:91
+#: core/models.py:127 core/models.py:393 customer/forms.py:101
 #: reservations/templates/reservations/email/confirmation_email.txt:8
-#: reservations/templates/reservations/index.html:571 winadmin/forms.py:66
-#: winadmin/forms.py:95 winadmin/templates/winadmin/inventory/item_list.html:15
+#: reservations/templates/reservations/index.html:570
+#: templates/customer/checked_in_customer_purchase.html:126
+#: templates/customer/checked_in_customer_purchase.html:203
+#: templates/customer/checked_in_customer_return.html:124
+#: templates/customer/checked_in_customer_return.html:201
+#: templates/customer/occupant_transaction.html:126
+#: templates/customer/occupant_transaction.html:203
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:45
+#: winadmin/forms.py:67 winadmin/forms.py:94
+#: winadmin/templates/winadmin/inventory/item_list.html:16
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:43
 msgid "Price"
 msgstr "値段"
 
-#: core/models.py:101 winadmin/forms.py:68 winadmin/forms.py:97
+#: core/models.py:137 winadmin/forms.py:69 winadmin/forms.py:96
 msgid "Image"
 msgstr "画像"
 
-#: core/models.py:103 winadmin/forms.py:69 winadmin/forms.py:98
+#: core/models.py:139 winadmin/forms.py:70 winadmin/forms.py:97
 msgid "Stock Quantity"
 msgstr "在庫量"
 
-#: core/models.py:104 winadmin/templates/winadmin/inventory/item_list.html:18
-msgid "In Stock?"
-msgstr "在庫あり？"
-
-#: core/models.py:105 winadmin/templates/winadmin/inventory/item_list.html:19
+#: core/models.py:140
 msgid "Active?"
 msgstr "アクティブ？"
 
-#: core/models.py:107
+#: core/models.py:142
 msgid "Reservation Option?"
 msgstr "予約オプション？"
 
-#: core/models.py:110
+#: core/models.py:145
 msgid "Long description"
 msgstr "長い説明"
 
-#: core/models.py:110 winadmin/forms.py:73 winadmin/forms.py:102
+#: core/models.py:145 winadmin/forms.py:73 winadmin/forms.py:100
 msgid "Description"
 msgstr "説明"
 
-#: core/models.py:114
+#: core/models.py:149
 msgid "Short description"
 msgstr "短い説明"
 
-#: core/models.py:115 winadmin/forms.py:74 winadmin/forms.py:103
-#: winadmin/templates/winadmin/inventory/item_list.html:20
+#: core/models.py:150 winadmin/forms.py:74 winadmin/forms.py:101
+#: winadmin/templates/winadmin/inventory/item_list.html:19
 msgid "Short Description"
 msgstr "短い説明"
 
-#: core/models.py:146
+#: core/models.py:240 core/models.py:249 reservations/models.py:293
+msgid "Reservation"
+msgstr "予約"
+
+#: core/models.py:258
 msgid "Transaction"
 msgstr "取引"
 
-#: core/models.py:147
+#: core/models.py:259
 msgid "Transactions"
 msgstr "取引"
 
-#: core/models.py:150
+#: core/models.py:263
 msgid "Sale"
 msgstr "売上"
 
-#: core/models.py:151
-msgid "Purchase"
-msgstr "仕入"
+#: core/models.py:264 core/models.py:387
+msgid "Procurement"
+msgstr ""
 
-#: core/models.py:152
+#: core/models.py:265 templates/customer/occupied_room_list.html:23
 msgid "Return"
 msgstr "返品"
 
-#: core/models.py:153
-msgid "Bank Deposit"
+#: core/models.py:266
+#, fuzzy
+#| msgid "Bank Deposit"
+msgid "Deposit"
 msgstr "預金振込"
 
-#: core/models.py:163 customer/models.py:23 winadmin/forms.py:149
-#: winadmin/views.py:331
+#: core/models.py:276 customer/models.py:64 winadmin/forms.py:146
+#: winadmin/views.py:343
 msgid "Customer"
 msgstr "顧客"
 
-#: core/models.py:166 winadmin/forms.py:150
-msgid "Transaction Datetime"
-msgstr "取引日時"
-
-#: core/models.py:171 reservations/models.py:31 winadmin/forms.py:152
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:35
+#: core/models.py:279 core/models.py:391
+#: templates/customer/checked_in_customer_purchase.html:123
+#: templates/customer/checked_in_customer_purchase.html:200
+#: templates/customer/checked_in_customer_return.html:121
+#: templates/customer/checked_in_customer_return.html:198
+#: templates/customer/occupant_transaction.html:123
+#: templates/customer/occupant_transaction.html:200 winadmin/forms.py:147
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:38
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:41
-#: winadmin/views.py:334
+msgid "Product"
+msgstr "商品"
+
+#: core/models.py:282 core/models.py:395 customer/forms.py:102
+#: reservations/models.py:32 winadmin/forms.py:148
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:42
+#: winadmin/views.py:346
 msgid "Quantity"
 msgstr "量"
 
-#: core/models.py:173
-#: reservations/templates/reservations/email/confirmation_email.html:779
-#: reservations/templates/reservations/index.html:340
-#: reservations/templates/reservations/payment_page.html:393
-#: reservations/templates/reservations/reservation_form.html:208
-#: winadmin/forms.py:153
-#: winadmin/templates/winadmin/reservations/reservation_create.html:92
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:79
-#: winadmin/views.py:335
-msgid "Total Price"
-msgstr "総額"
+#: core/models.py:285 core/models.py:288
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:40
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:43
+#, fuzzy
+#| msgid "Price Per Night"
+msgid "Price Per Unit"
+msgstr "一泊の値段"
+
+#: core/models.py:337
+msgid "Vendor"
+msgstr ""
+
+#: core/models.py:338
+msgid "Vendors"
+msgstr ""
+
+#: core/models.py:388
+msgid "Procurements"
+msgstr ""
+
+#: core/models.py:396
+msgid "Procured On"
+msgstr ""
+
+#: core/models.py:404
+msgid "Invoice"
+msgstr ""
+
+#: core/models.py:405
+msgid "Invoices"
+msgstr ""
+
+#: core/models.py:408
+msgid "Invoiced On"
+msgstr ""
+
+#: core/models.py:409
+msgid "Due On"
+msgstr ""
 
 #: core/templates/core/base.html:9
 msgid "Glamping in Imari"
@@ -209,8 +255,10 @@ msgstr "Relaxation Awaits"
 msgid "最高のグランピングが佐世保で待っています。"
 msgstr ""
 
+#: core/templates/core/forms/formsets/formset_field_row.html:44
 #: core/templates/core/forms/reservations/field_row.html:49
 #: core/templates/core/forms/tailwind/field_row.html:42
+#: core/templates/core/forms/tailwind/field_row_read_only.html:44
 #: customer/templates/ticket/forms/tailwind/field_row.html:37
 #: templates/reservations/pricing_tier_group_campaign_test.html:25
 #: templates/reservations/pricing_tier_group_campaign_test.html:38
@@ -575,68 +623,71 @@ msgstr "access"
 msgid "最低人数２人"
 msgstr ""
 
-#: customer/forms.py:10 customer/forms.py:19 customer/forms.py:28
-#: customer/forms.py:51 customer/forms.py:61 customer/forms.py:71
-#: customer/forms.py:80 customer/templates/customer/customer_list.html:34
+#: customer/forms.py:14 customer/forms.py:23 customer/forms.py:32
+#: customer/forms.py:55 customer/forms.py:65 customer/forms.py:75
+#: customer/forms.py:84 customer/templates/customer/customer_list.html:34
 #: reservations/forms.py:25
 #: reservations/templates/reservations/email/confirmation_email.txt:5
-#: reservations/templates/reservations/index.html:551 winadmin/forms.py:170
-#: winadmin/forms.py:188 winadmin/forms.py:213
+#: reservations/templates/reservations/index.html:554
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:43
+#: winadmin/forms.py:167 winadmin/forms.py:186 winadmin/forms.py:211
 #: winadmin/templates/winadmin/reservations/reservation_create.html:66
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:41
 msgid "First Name"
 msgstr "名前"
 
-#: customer/forms.py:11 customer/forms.py:20 customer/forms.py:29
-#: customer/forms.py:52 customer/forms.py:62 customer/forms.py:72
-#: customer/forms.py:81 customer/templates/customer/customer_list.html:32
+#: customer/forms.py:15 customer/forms.py:24 customer/forms.py:33
+#: customer/forms.py:56 customer/forms.py:66 customer/forms.py:76
+#: customer/forms.py:85 customer/templates/customer/customer_list.html:32
 #: reservations/forms.py:28
 #: reservations/templates/reservations/email/confirmation_email.txt:6
-#: reservations/templates/reservations/index.html:555 winadmin/forms.py:171
-#: winadmin/forms.py:189 winadmin/forms.py:214
+#: reservations/templates/reservations/index.html:558
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:42
+#: winadmin/forms.py:168 winadmin/forms.py:187 winadmin/forms.py:212
 #: winadmin/templates/winadmin/reservations/reservation_create.html:70
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:40
 msgid "Last Name"
 msgstr "名字"
 
-#: customer/forms.py:12 customer/forms.py:21 customer/forms.py:30
-#: customer/forms.py:53 customer/forms.py:63 customer/forms.py:73
-#: customer/forms.py:82 customer/templates/customer/customer_list.html:35
-#: reservations/forms.py:31 reservations/templates/reservations/index.html:559
-#: winadmin/forms.py:172 winadmin/forms.py:190 winadmin/forms.py:215
+#: customer/forms.py:16 customer/forms.py:25 customer/forms.py:34
+#: customer/forms.py:57 customer/forms.py:67 customer/forms.py:77
+#: customer/forms.py:86 customer/templates/customer/customer_list.html:35
+#: reservations/forms.py:31 reservations/templates/reservations/index.html:562
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:44
+#: winadmin/forms.py:169 winadmin/forms.py:188 winadmin/forms.py:213
 #: winadmin/templates/winadmin/reservations/reservation_create.html:74
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:42
 msgid "Email"
 msgstr "メール"
 
-#: customer/forms.py:13 customer/forms.py:22 customer/forms.py:31
-#: customer/forms.py:54 customer/forms.py:64 customer/forms.py:74
-#: customer/forms.py:83 customer/templates/customer/customer_list.html:36
-#: reservations/forms.py:34 winadmin/forms.py:191
+#: customer/forms.py:17 customer/forms.py:26 customer/forms.py:35
+#: customer/forms.py:58 customer/forms.py:68 customer/forms.py:78
+#: customer/forms.py:87 customer/templates/customer/customer_list.html:36
+#: reservations/forms.py:34 winadmin/forms.py:189
 msgid "Phone #"
 msgstr "電話番号"
 
-#: customer/forms.py:55 customer/forms.py:65
+#: customer/forms.py:59 customer/forms.py:69
 msgid "Notes"
 msgstr "メモ"
 
-#: customer/models.py:24
+#: customer/models.py:65
 msgid "Customers"
 msgstr "顧客"
 
-#: customer/models.py:68
+#: customer/models.py:109
 msgid "Ticket Note"
 msgstr "チケットのメモ"
 
-#: customer/models.py:69
+#: customer/models.py:110
 msgid "Ticket Notes"
 msgstr "チケットのメモ"
 
-#: customer/models.py:80
+#: customer/models.py:121
 msgid "Ticket"
 msgstr "チケット"
 
-#: customer/models.py:81 templates/ticket/ticket_list.html:8
+#: customer/models.py:122 templates/ticket/ticket_list.html:8
 msgid "Tickets"
 msgstr "チケット"
 
@@ -681,8 +732,9 @@ msgid "Customer Chart"
 msgstr "顧客表"
 
 #: customer/templates/customer/customer_list.html:10
-#: templates/ticket/ticket_list.html:12
+#: templates/ticket/ticket_list.html:12 templates/vendor/vendor_list.html:10
 #: templates/winadmin/pricing_tier_list.html:10
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:18
 #: templates/winadmin/room_list.html:10
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:17
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:17
@@ -701,209 +753,227 @@ msgstr "チケットを作る"
 msgid "Create Ticket"
 msgstr "チケットを作る"
 
-#: customer/views.py:33
+#: customer/views.py:35
 #, python-format
 msgid "Customer named %(customer_full_name)s created successfully!"
 msgstr "%(customer_full_name)sという顧客が制作できました。"
 
-#: customer/views.py:38
+#: customer/views.py:40
 msgid "Customer couldn't be created!"
 msgstr "顧客が制作できませんでした。"
 
-#: customer/views.py:84
+#: customer/views.py:86
 msgid "Customer edited successfully!"
 msgstr "顧客が変更できました。"
 
-#: customer/views.py:88
+#: customer/views.py:90
 msgid "Customer deleted successfully!"
 msgstr "顧客が削除できました。"
 
-#: customer/views.py:92
+#: customer/views.py:94
 msgid "Customer couldn't be edited!"
 msgstr "顧客が変更できませんでした。"
 
-#: customer/views.py:139
+#: customer/views.py:141
 msgid "Ticket created successfully!"
 msgstr "チケットが制作できました。"
 
-#: customer/views.py:143
+#: customer/views.py:145
 msgid "Ticket couldn't be created!"
 msgstr "チケットが制作できませんでした。"
 
-#: customer/views.py:174
+#: customer/views.py:176
 msgid "Ticket reopened."
 msgstr "チケットを再開しました。"
 
-#: customer/views.py:177
+#: customer/views.py:179
 msgid "Ticket reopened"
 msgstr "チケットを再開しました。"
 
-#: customer/views.py:192
+#: customer/views.py:194
 msgid "Note added to ticket."
 msgstr "チケットにメモが追加できました。"
 
-#: customer/views.py:196
+#: customer/views.py:198
 msgid "Note added and ticket closed"
 msgstr "チケットにメモが追加し、チケットが閉じました。"
+
+#: customer/views.py:271
+#, fuzzy
+#| msgid "Purchase Amount"
+msgid "Purchase Completed."
+msgstr "仕入額"
+
+#: customer/views.py:276
+#, fuzzy
+#| msgid "Cancelled"
+msgid "Purchase Cancelled."
+msgstr "中止"
+
+#: customer/views.py:325
+#, fuzzy
+#| msgid "Purchase Amount"
+msgid "Return Completed."
+msgstr "仕入額"
+
+#: customer/views.py:330
+#, fuzzy
+#| msgid "Cancelled"
+msgid "Return Cancelled."
+msgstr "中止"
 
 #: reservations/forms.py:76
 msgid "Please choose the number of adults."
 msgstr "大人の人数を選んでください。"
 
-#: reservations/models.py:26
+#: reservations/models.py:27
 msgid "Order Item"
 msgstr "注文アイテム"
 
-#: reservations/models.py:27
+#: reservations/models.py:28
 msgid "Order Items"
 msgstr "注文アイテム"
 
-#: reservations/models.py:29 reservations/models.py:42
+#: reservations/models.py:30 reservations/models.py:43
 msgid "User"
 msgstr "ユーザー"
 
-#: reservations/models.py:39
+#: reservations/models.py:40
 msgid "Order"
 msgstr "注文"
 
-#: reservations/models.py:40
+#: reservations/models.py:41
 msgid "Orders"
 msgstr "注文"
 
-#: reservations/models.py:45
+#: reservations/models.py:46
 msgid "Ordered?"
 msgstr "注文した？"
 
-#: reservations/models.py:46
-msgid "Ordered Date"
-msgstr "注文日"
-
-#: reservations/models.py:67 winadmin/forms.py:365
+#: reservations/models.py:72 winadmin/forms.py:371
 msgid "Campaign"
 msgstr "キャンペーン"
 
-#: reservations/models.py:68 winadmin/forms.py:332
+#: reservations/models.py:73 winadmin/forms.py:334
 msgid "Campaigns"
 msgstr "キャンペーン"
 
-#: reservations/models.py:71 winadmin/models.py:12
+#: reservations/models.py:76 winadmin/models.py:12
 msgid "Recurrences"
 msgstr "繰り返し"
 
-#: reservations/models.py:79
+#: reservations/models.py:84
 msgid "Pricing tier"
 msgstr "価格帯"
 
-#: reservations/models.py:80
+#: reservations/models.py:85
 msgid "Pricing tiers"
 msgstr "価格帯"
 
-#: reservations/models.py:89 reservations/models.py:237
-#: reservations/templates/reservations/index.html:511
+#: reservations/models.py:94 reservations/models.py:254
+#: reservations/templates/reservations/index.html:514
 #: templates/reservations/pricing_tier_group_campaign_test.html:85
 #: templates/reservations/pricing_tier_group_create.html:84
 #: templates/reservations/pricing_tier_group_detail.html:89
-#: templates/winadmin/pricing_tier_list.html:34 winadmin/forms.py:278
-#: winadmin/forms.py:289
+#: templates/winadmin/pricing_tier_list.html:34 winadmin/forms.py:276
+#: winadmin/forms.py:287
 msgid "Number of Adults"
 msgstr "大人の人数"
 
-#: reservations/models.py:90 winadmin/forms.py:290
+#: reservations/models.py:95 winadmin/forms.py:288
 msgid "Price Overnight"
 msgstr "一泊の値段"
 
-#: reservations/models.py:91 winadmin/forms.py:280 winadmin/forms.py:291
+#: reservations/models.py:96 winadmin/forms.py:278 winadmin/forms.py:289
 msgid "Price Short-term"
 msgstr "短時間の値段"
 
-#: reservations/models.py:108 reservations/models.py:133
+#: reservations/models.py:113 reservations/models.py:150
 msgid "Room Tier"
 msgstr "部屋帯"
 
-#: reservations/models.py:109
+#: reservations/models.py:114
 msgid "Rooms Tiers"
 msgstr "部屋帯"
 
-#: reservations/models.py:123
+#: reservations/models.py:140
 #: reservations/templates/reservations/email/confirmation_email.txt:7
-#: reservations/templates/reservations/index.html:567
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:16
 msgid "Room"
 msgstr "部屋"
 
-#: reservations/models.py:124
+#: reservations/models.py:141
 msgid "Rooms"
 msgstr "部屋"
 
-#: reservations/models.py:159
+#: reservations/models.py:176
 #, fuzzy
 #| msgid "Price Per Night"
 msgid "Price Per Child Overnight"
 msgstr "一泊の値段"
 
-#: reservations/models.py:162
+#: reservations/models.py:179
 #, fuzzy
 #| msgid "Price Per Night"
 msgid "Price Per Child Short-Term"
 msgstr "一泊の値段"
 
-#: reservations/models.py:223
+#: reservations/models.py:240
 msgid "Stay"
 msgstr "滞在"
 
-#: reservations/models.py:224
+#: reservations/models.py:241
 msgid "Stays"
 msgstr "滞在"
 
-#: reservations/models.py:228 winadmin/forms.py:181
+#: reservations/models.py:245 winadmin/forms.py:178
 msgid "Not Reserved"
 msgstr "予約なし"
 
-#: reservations/models.py:229 winadmin/forms.py:182
+#: reservations/models.py:246 winadmin/forms.py:179
 msgid "Reserved"
 msgstr "予約あり"
 
-#: reservations/models.py:230 winadmin/forms.py:183
+#: reservations/models.py:247 winadmin/forms.py:180
 msgid "Checked In"
 msgstr "チェックイン済み"
 
-#: reservations/models.py:231 winadmin/forms.py:184
+#: reservations/models.py:248 winadmin/forms.py:181
 msgid "Checked Out"
 msgstr "チェックアウト済み"
 
-#: reservations/models.py:232 winadmin/forms.py:185
+#: reservations/models.py:249 winadmin/forms.py:182
 msgid "Cancelled"
 msgstr "中止"
 
-#: reservations/models.py:243
-#: reservations/templates/reservations/index.html:515
+#: reservations/models.py:260
+#: reservations/templates/reservations/index.html:518
 msgid "Number of Children"
 msgstr "子供の人数"
 
-#: reservations/models.py:246
+#: reservations/models.py:263
 #: reservations/templates/reservations/email/confirmation_email.txt:10
-#: winadmin/forms.py:192
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:12
+#: winadmin/forms.py:190
 msgid "Start"
 msgstr "開始日"
 
-#: reservations/models.py:247
+#: reservations/models.py:264
 #: reservations/templates/reservations/email/confirmation_email.txt:11
-#: winadmin/forms.py:193
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:13
+#: winadmin/forms.py:191
 msgid "End"
 msgstr "終了日"
 
-#: reservations/models.py:276
-msgid "Reservation"
-msgstr "予約"
-
-#: reservations/models.py:277
+#: reservations/models.py:294
 msgid "Reservations"
 msgstr "予約"
 
-#: reservations/models.py:596
+#: reservations/models.py:521
 msgid "Reservation Token"
 msgstr ""
 
-#: reservations/models.py:597
+#: reservations/models.py:522
 msgid "Reservation Tokens"
 msgstr ""
 
@@ -952,8 +1022,19 @@ msgstr "確認します"
 msgid "Order Confirmation"
 msgstr ""
 
+#: reservations/templates/reservations/email/confirmation_email.html:779
+#: reservations/templates/reservations/index.html:343
+#: reservations/templates/reservations/payment_page.html:393
+#: reservations/templates/reservations/reservation_form.html:208
+#: winadmin/forms.py:149
+#: winadmin/templates/winadmin/reservations/reservation_create.html:92
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:78
+#: winadmin/views.py:347
+msgid "Total Price"
+msgstr "総額"
+
 #: reservations/templates/reservations/email/confirmation_email.txt:2
-#: reservations/templates/reservations/index.html:609
+#: reservations/templates/reservations/index.html:608
 #: winadmin/templates/winadmin/reservations/reservation_create.html:368
 msgid "Reservation Confirmed!"
 msgstr "予約が確認できました！"
@@ -969,7 +1050,7 @@ msgid "Check-in starts at 12:00pm and checkout is at 10:00am "
 msgstr "チックいんは午後12時から、チェックアウトは午前10時までです"
 
 #: reservations/templates/reservations/index.html:7
-#: winadmin/templates/winadmin/index.html:303
+#: winadmin/templates/winadmin/index.html:299
 msgid "Make a Reservation"
 msgstr "予約を作る"
 
@@ -984,15 +1065,15 @@ msgid "Number of travelers?"
 msgstr "旅行者の人数は？"
 
 #: reservations/templates/reservations/index.html:58
-#: reservations/templates/reservations/index.html:363
-#: reservations/templates/reservations/index.html:442
-#: reservations/templates/reservations/index.html:485
-#: reservations/templates/reservations/index.html:493
+#: reservations/templates/reservations/index.html:366
+#: reservations/templates/reservations/index.html:445
+#: reservations/templates/reservations/index.html:488
+#: reservations/templates/reservations/index.html:496
 msgid "Continue"
 msgstr "続く"
 
 #: reservations/templates/reservations/index.html:70
-#: reservations/templates/reservations/index.html:311
+#: reservations/templates/reservations/index.html:314
 msgid "Delete Session"
 msgstr "セッションを削除する"
 
@@ -1001,36 +1082,36 @@ msgstr "セッションを削除する"
 msgid "Choose the date"
 msgstr "日付を選ぶ"
 
-#: reservations/templates/reservations/index.html:281
-#: reservations/templates/reservations/index.html:354
-#: reservations/templates/reservations/index.html:434
-#: reservations/templates/reservations/index.html:480
-#: reservations/templates/reservations/index.html:586
+#: reservations/templates/reservations/index.html:284
+#: reservations/templates/reservations/index.html:357
+#: reservations/templates/reservations/index.html:437
+#: reservations/templates/reservations/index.html:483
+#: reservations/templates/reservations/index.html:585
 msgid "Go Back"
 msgstr "戻る"
 
-#: reservations/templates/reservations/index.html:292
+#: reservations/templates/reservations/index.html:295
 msgid "Continue, Choose Room"
 msgstr "続いて、部屋を選ぶ"
 
-#: reservations/templates/reservations/index.html:298
+#: reservations/templates/reservations/index.html:301
 msgid "Select a Date"
 msgstr "日付を選ぶ"
 
-#: reservations/templates/reservations/index.html:322
+#: reservations/templates/reservations/index.html:325
 msgid "Select Room"
 msgstr "部屋を選ぶ"
 
-#: reservations/templates/reservations/index.html:366
+#: reservations/templates/reservations/index.html:369
 msgid "Select a Room"
 msgstr "部屋を選ぶ"
 
-#: reservations/templates/reservations/index.html:379
+#: reservations/templates/reservations/index.html:382
 #: winadmin/templates/winadmin/reservations/reservation_create.html:304
 msgid "Select Start and End Times"
 msgstr "開始時間と終了時間を選ぶ"
 
-#: reservations/templates/reservations/index.html:394
+#: reservations/templates/reservations/index.html:397
 #: reservations/templates/reservations/option_selection.html:5
 #: reservations/templates/reservations/option_selection.html:36
 #: reservations/templates/reservations/reservation_form.html:45
@@ -1038,36 +1119,36 @@ msgstr "開始時間と終了時間を選ぶ"
 msgid "Choose Options"
 msgstr "オプションを選ぶ"
 
-#: reservations/templates/reservations/index.html:403
+#: reservations/templates/reservations/index.html:406
 #: reservations/templates/reservations/option_selection.html:45
 #: reservations/templates/reservations/reservation_form.html:52
 #: winadmin/templates/winadmin/reservations/reservation_create.html:324
 msgid "Option Types"
 msgstr "オプションのタイプ"
 
-#: reservations/templates/reservations/index.html:409
+#: reservations/templates/reservations/index.html:412
 #: reservations/templates/reservations/option_selection.html:51
 #: reservations/templates/reservations/reservation_form.html:59
 #: winadmin/templates/winadmin/reservations/reservation_create.html:337
 msgid "Price:"
 msgstr "値段"
 
-#: reservations/templates/reservations/index.html:416
+#: reservations/templates/reservations/index.html:419
 #: reservations/templates/reservations/option_selection.html:61
 #: reservations/templates/reservations/reservation_form.html:72
 #: winadmin/templates/winadmin/reservations/reservation_create.html:347
 msgid "Remove"
 msgstr "削除する"
 
-#: reservations/templates/reservations/index.html:418
+#: reservations/templates/reservations/index.html:421
 #: reservations/templates/reservations/option_selection.html:67
 #: reservations/templates/reservations/reservation_form.html:81
 #: winadmin/templates/winadmin/reservations/reservation_create.html:353
 msgid "Add"
 msgstr "追加する"
 
-#: reservations/templates/reservations/index.html:452
-#: reservations/templates/reservations/index.html:461
+#: reservations/templates/reservations/index.html:455
+#: reservations/templates/reservations/index.html:464
 #: reservations/templates/reservations/reservation_form.html:100
 #: reservations/templates/reservations/reservation_form.html:106
 #: winadmin/templates/winadmin/reservations/reservation_create.html:116
@@ -1075,58 +1156,58 @@ msgstr "追加する"
 msgid "Contact Information"
 msgstr "連絡情報"
 
-#: reservations/templates/reservations/index.html:507
+#: reservations/templates/reservations/index.html:510
 #: reservations/templates/reservations/reservation_form.html:155
 #: winadmin/templates/winadmin/reservations/reservation_create.html:42
 msgid "Confirm Details"
 msgstr "詳細を確認する"
 
-#: reservations/templates/reservations/index.html:519
+#: reservations/templates/reservations/index.html:522
 msgid "Length of Stay"
 msgstr "滞在の長さ"
 
-#: reservations/templates/reservations/index.html:521
+#: reservations/templates/reservations/index.html:524
 msgid "nights"
 msgstr "泊"
 
-#: reservations/templates/reservations/index.html:523
+#: reservations/templates/reservations/index.html:526
 msgid "night"
 msgstr "泊"
 
-#: reservations/templates/reservations/index.html:525
+#: reservations/templates/reservations/index.html:528
 msgid "hours"
 msgstr "時間"
 
-#: reservations/templates/reservations/index.html:527
+#: reservations/templates/reservations/index.html:530
 msgid "hour"
 msgstr "時間"
 
-#: reservations/templates/reservations/index.html:531 winadmin/forms.py:173
+#: reservations/templates/reservations/index.html:534 winadmin/forms.py:170
 #: winadmin/templates/winadmin/reservations/reservation_create.html:46
 msgid "Start Date"
 msgstr "開始日"
 
-#: reservations/templates/reservations/index.html:536 winadmin/forms.py:174
+#: reservations/templates/reservations/index.html:539 winadmin/forms.py:171
 #: winadmin/templates/winadmin/reservations/reservation_create.html:51
 msgid "End Date"
 msgstr "終了日"
 
-#: reservations/templates/reservations/index.html:542
+#: reservations/templates/reservations/index.html:545
 #: winadmin/templates/winadmin/reservations/reservation_create.html:57
 msgid "Start Time"
 msgstr "開始時間"
 
-#: reservations/templates/reservations/index.html:546
+#: reservations/templates/reservations/index.html:549
 #: winadmin/templates/winadmin/reservations/reservation_create.html:61
 msgid "End Time"
 msgstr "終了時間"
 
-#: reservations/templates/reservations/index.html:563
+#: reservations/templates/reservations/index.html:566
 #: winadmin/templates/winadmin/reservations/reservation_create.html:78
 msgid "Phone"
 msgstr "電話番号"
 
-#: reservations/templates/reservations/index.html:594
+#: reservations/templates/reservations/index.html:593
 msgid ""
 "\n"
 "              Make Reservation\n"
@@ -1135,7 +1216,7 @@ msgstr ""
 "\n"
 "予約を作る"
 
-#: reservations/templates/reservations/index.html:611
+#: reservations/templates/reservations/index.html:610
 msgid "An email has been sent to you with the details of your reservation."
 msgstr "予約の詳細はメールで送られました。"
 
@@ -1217,6 +1298,8 @@ msgid "Create Campaign"
 msgstr "キャンペーンを作る"
 
 #: templates/campaign/campaign_create.html:36 templates/custom_form.html:64
+#: templates/invoice/invoice_create.html:23
+#: templates/vendor/vendor_create.html:22
 #: templates/winadmin/pricing_tier_create.html:14
 #: templates/winadmin/room_create.html:22
 #: templates/winadmin/room_tier_create.html:14
@@ -1260,18 +1343,85 @@ msgstr "キャンペーンリストビュー"
 msgid "Campaign List"
 msgstr "キャンペーン"
 
+#: templates/customer/checked_in_customer_purchase.html:87
+#: templates/customer/checked_in_customer_return.html:85
+#: templates/customer/occupant_transaction.html:87
+msgid "+"
+msgstr ""
+
+#: templates/customer/checked_in_customer_purchase.html:95
+#: templates/customer/checked_in_customer_return.html:93
+#: templates/customer/occupant_transaction.html:95
+msgid "-"
+msgstr ""
+
+#: templates/customer/checked_in_customer_purchase.html:110
+#: templates/customer/checked_in_customer_return.html:108
+#: templates/customer/occupant_transaction.html:110
+msgid "Open Cart"
+msgstr "カートを開ける"
+
+#: templates/customer/checked_in_customer_purchase.html:117
+#: templates/customer/checked_in_customer_return.html:115
+#: templates/customer/occupant_transaction.html:117
+msgid "Close Cart"
+msgstr "カートを閉じる"
+
+#: templates/customer/checked_in_customer_purchase.html:125
+#: templates/customer/checked_in_customer_purchase.html:202
+#: templates/customer/checked_in_customer_return.html:123
+#: templates/customer/checked_in_customer_return.html:200
+#: templates/customer/occupant_transaction.html:125
+#: templates/customer/occupant_transaction.html:202
+msgid "Q"
+msgstr "量"
+
+#: templates/customer/checked_in_customer_purchase.html:157
+#: templates/customer/checked_in_customer_purchase.html:234
+#: templates/customer/checked_in_customer_return.html:155
+#: templates/customer/checked_in_customer_return.html:232
+#: templates/customer/occupant_transaction.html:157
+#: templates/customer/occupant_transaction.html:234
+msgid "Total"
+msgstr "総額"
+
+#: templates/customer/checked_in_customer_purchase.html:165
+#: templates/customer/checked_in_customer_return.html:163
+#: templates/customer/occupant_transaction.html:165
+#: templates/ticket/ticket_list.html:36
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:14
+msgid "Customer Name"
+msgstr "顧客名"
+
+#: templates/customer/checked_in_customer_purchase.html:168
+#: templates/customer/checked_in_customer_return.html:166
+#: templates/customer/occupant_transaction.html:168
+msgid "Checkout"
+msgstr "チェックアウト"
+
+#: templates/customer/checked_in_customer_purchase.html:176
+#: templates/customer/checked_in_customer_return.html:174
+#: templates/customer/occupant_transaction.html:176
+msgid "Cancel"
+msgstr "中止"
+
+#: templates/customer/checked_in_customer_purchase.html:254
+#: templates/customer/checked_in_customer_return.html:252
+#: templates/customer/occupant_transaction.html:254
+#, fuzzy
+#| msgid "Purchase"
+msgid "Confirm Purchase"
+msgstr "仕入"
+
 #: templates/customer/customer_check_in.html:4
 #: templates/customer/customer_check_in.html:8
-#, fuzzy
-#| msgid "Checked In"
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:28
 msgid "Check In"
-msgstr "チェックイン済み"
+msgstr "チェックイン"
 
 #: templates/customer/customer_check_in.html:21
-#, fuzzy
-#| msgid "Checked In"
 msgid "Checkin"
-msgstr "チェックイン済み"
+msgstr "チェックイン"
 
 #: templates/customer/customer_create_bulk.html:4
 msgid "Create Many Random Customers"
@@ -1285,6 +1435,24 @@ msgstr ""
 msgid "Make some!"
 msgstr ""
 
+#: templates/customer/occupied_room_list.html:5
+#: templates/winadmin/room_list.html:8
+#: winadmin/templates/winadmin/index.html:309
+msgid "Room List"
+msgstr "部屋リスト"
+
+#: templates/customer/occupied_room_list.html:17
+msgid "Purchase"
+msgstr "仕入"
+
+#: templates/invoice/invoice_create.html:6
+#: templates/invoice/invoice_create.html:10
+#, fuzzy
+#| msgid "Create Ticket"
+msgid "Create Invoice"
+msgstr "チケットを作る"
+
+#: templates/patterns/navigations/mobile_navigation/mobile_navigation_body.html:68
 #: templates/patterns/navigations/sidebar_navigation/sidebar_navigation_body.html:20
 msgid "Log Out"
 msgstr "ログアウト"
@@ -1354,13 +1522,41 @@ msgstr "チケットを閉じる"
 msgid "Ticket Number"
 msgstr "チケット番号"
 
-#: templates/ticket/ticket_list.html:36
-msgid "Customer Name"
-msgstr "顧客名"
-
 #: templates/ticket/ticket_list.html:37
 msgid "Closed?"
 msgstr "閉じている？"
+
+#: templates/vendor/vendor_create.html:6 templates/vendor/vendor_create.html:10
+#, fuzzy
+#| msgid "Create Order"
+msgid "Create Vendor"
+msgstr "仕入を作る"
+
+#: templates/vendor/vendor_list.html:4
+#, fuzzy
+#| msgid "Category List View"
+msgid "Vendor List View"
+msgstr "カテゴリーリストビュー"
+
+#: templates/vendor/vendor_list.html:8
+#, fuzzy
+#| msgid "Room List"
+msgid "Vendor List"
+msgstr "部屋リスト"
+
+#: templates/vendor/vendor_list.html:32
+#, fuzzy
+#| msgid "Tier Name"
+msgid "Vendor Name"
+msgstr "価格帯名"
+
+#: templates/vendor/vendor_list.html:34
+msgid "Cutoff Day"
+msgstr ""
+
+#: templates/vendor/vendor_list.html:35
+msgid "Due Day"
+msgstr ""
 
 #: templates/winadmin/pricing_tier_create.html:5
 #: templates/winadmin/room_create.html:6 templates/winadmin/room_create.html:10
@@ -1387,6 +1583,68 @@ msgstr "一泊の値段"
 msgid "Price Per Hour"
 msgstr "1時間の値段"
 
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:4
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:4
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:8
+#, fuzzy
+#| msgid "Customer Check In"
+msgid "Customer Check In Check Out Table"
+msgstr "顧客チェックイン"
+
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:10
+#, fuzzy
+#| msgid "Reservations"
+msgid "Reservation Details"
+msgstr "予約"
+
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:15
+#, fuzzy
+#| msgid "Payment Amount"
+msgid "Payment Due"
+msgstr "仕入れ額"
+
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:26
+#, fuzzy
+#| msgid "Checked Out"
+msgid "Check Out"
+msgstr "チェックアウト済み"
+
+#: templates/winadmin/reservations/customer_check_in_check_out_detail.html:30
+#, fuzzy
+#| msgid "This email has already been taken."
+msgid "This stay has already been complete."
+msgstr "このメールはすでに登録しています。"
+
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:20
+#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:19
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:19
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:19
+msgid "Year"
+msgstr "年"
+
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:21
+#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:20
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:20
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:20
+msgid "Month"
+msgstr "月"
+
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:22
+msgid "Day"
+msgstr ""
+
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:38
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:40
+#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:36
+#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:38
+msgid "Stay Start"
+msgstr "滞在開始日"
+
+#: templates/winadmin/reservations/customer_check_in_check_out_list.html:41
+#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:39
+msgid "Status"
+msgstr "状態"
+
 #: templates/winadmin/room_detail.html:4 templates/winadmin/room_detail.html:8
 msgid "Edit Room"
 msgstr "部屋を変更する"
@@ -1395,12 +1653,8 @@ msgstr "部屋を変更する"
 msgid "Room List View"
 msgstr "部屋リストビュー"
 
-#: templates/winadmin/room_list.html:8
-msgid "Room List"
-msgstr "部屋リスト"
-
-#: templates/winadmin/room_list.html:32 winadmin/forms.py:230
-#: winadmin/forms.py:258
+#: templates/winadmin/room_list.html:32 winadmin/forms.py:228
+#: winadmin/forms.py:256
 msgid "Room Name"
 msgstr "部屋名"
 
@@ -1462,37 +1716,42 @@ msgstr "情報が変更できました。"
 msgid "Username"
 msgstr "ユーザー名"
 
-#: winadmin/forms.py:26
+#: winadmin/forms.py:27
 msgid "Password"
 msgstr "パスワード"
 
-#: winadmin/forms.py:70 winadmin/forms.py:99
-msgid "In Stock"
-msgstr "在庫あり"
-
-#: winadmin/forms.py:71 winadmin/forms.py:100
+#: winadmin/forms.py:71 winadmin/forms.py:98
 msgid "Active"
 msgstr "アクティブ"
 
-#: winadmin/forms.py:72 winadmin/forms.py:101
+#: winadmin/forms.py:72 winadmin/forms.py:99
 msgid "Reservation Option"
 msgstr "予約オプション"
 
-#: winadmin/forms.py:279
+#: winadmin/forms.py:277
 msgid "Price overnight"
 msgstr "一泊の値段"
 
-#: winadmin/forms.py:322 winadmin/forms.py:355
+#: winadmin/forms.py:321 winadmin/forms.py:358
 msgid "Minimum Adults"
 msgstr "最小限の大人の人数"
 
-#: winadmin/forms.py:323 winadmin/forms.py:356
+#: winadmin/forms.py:324 winadmin/forms.py:361
 msgid "Maximum Adults"
 msgstr "最大限の大人の人数"
 
-#: winadmin/forms.py:327 winadmin/forms.py:360
+#: winadmin/forms.py:329 winadmin/forms.py:366
 msgid "Room Tiers"
 msgstr "部屋帯"
+
+#: winadmin/forms.py:397
+msgid ""
+"This value is additive. Example: If the cutoff day results in a cutoff "
+"*date* of 2024-5-10, and the due day here is 10, then the due day will "
+"result in a due date of 2024-5-20. A value of -1 will result in 'end of the "
+"month' value. If the cutoff date is 2024-5-10 and due day here is -1, then "
+"the due date will be 2024-5-31."
+msgstr ""
 
 #: winadmin/models.py:8
 msgid "Special Date"
@@ -1609,11 +1868,9 @@ msgstr "取引を見る"
 msgid "Create Transaction"
 msgstr "取引を作る"
 
-#: winadmin/templates/winadmin/index.html:308
-#, fuzzy
-#| msgid "Customer Chart"
+#: winadmin/templates/winadmin/index.html:304
 msgid "Customer Check In"
-msgstr "顧客表"
+msgstr "顧客チェックイン"
 
 #: winadmin/templates/winadmin/inventory/category_create.html:4
 msgid "Create Category"
@@ -1659,15 +1916,11 @@ msgstr "在庫アイテムリストのビュー"
 msgid "Stock"
 msgstr "在庫"
 
-#: winadmin/templates/winadmin/inventory/item_list.html:36
-#: winadmin/templates/winadmin/inventory/item_list.html:39
-msgid "True"
-msgstr ""
-
-#: winadmin/templates/winadmin/inventory/item_list.html:36
-#: winadmin/templates/winadmin/inventory/item_list.html:39
-msgid "False"
-msgstr ""
+#: winadmin/templates/winadmin/inventory/item_list.html:18
+#, fuzzy
+#| msgid "Stock"
+msgid "Stock Value"
+msgstr "在庫"
 
 #: winadmin/templates/winadmin/login_page.html:6
 msgid "Winvillage Admin Login"
@@ -1706,67 +1959,39 @@ msgstr "予約リストのビュー"
 msgid "Reservations Chart"
 msgstr "予約表"
 
-#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:19
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:19
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:19
-msgid "Year"
-msgstr "年"
-
-#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:20
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:20
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:20
-msgid "Month"
-msgstr "月"
-
-#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:36
-#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:38
-msgid "Stay Start"
-msgstr "滞在開始日"
-
-#: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:39
-msgid "Status"
-msgstr "状態"
-
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:4
 msgid "Sale List View"
 msgstr "売上リストのビュー"
 
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:8
 msgid "Sales Chart"
+msgstr "売上表"
+
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:29
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:31
+msgid ""
+"Export\n"
+"                                                                                        CSV"
 msgstr ""
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:31
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:37
-#: winadmin/views.py:332
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:36
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:38
+#: winadmin/views.py:344
 msgid "Date"
 msgstr "日付"
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:33
-msgid "Transaction Name"
-msgstr "取引名"
-
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:34
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:40
-msgid "Product"
-msgstr "商品"
-
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:36
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:42
-msgid "Price Per Item"
-msgstr "一品の値段"
-
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:37
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:43
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:41
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:44
 msgid "Sale Amount"
 msgstr "売上の金額"
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:38
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:44
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:42
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:45
 msgid "Return Amount"
 msgstr "返品額"
 
-#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
-#: winadmin/views.py:336
+#: winadmin/templates/winadmin/transactions/sales_list_by_period.html:43
+#: winadmin/views.py:348
 msgid "Balance"
 msgstr "残り"
 
@@ -1774,86 +1999,138 @@ msgstr "残り"
 msgid "Transaction List View"
 msgstr "取引リストのビュー"
 
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:31
-msgid "Export CSV"
-msgstr "CSVをエクスポート"
-
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:45
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:46
 msgid "Purchase Amount"
 msgstr "仕入額"
 
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:46
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:47
 msgid "Bank Deposit Amount"
 msgstr "預金振込額"
 
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:47
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:48
 msgid "Remainder"
 msgstr "残り"
 
-#: winadmin/views.py:117
+#: winadmin/views.py:118
 msgid "Item Successfully Added"
 msgstr "アイテムが追加できました"
 
-#: winadmin/views.py:135 winadmin/views.py:141
+#: winadmin/views.py:138 winadmin/views.py:144
 msgid "Item Successfully Edited"
 msgstr "アイテムが変更できました"
 
-#: winadmin/views.py:137 winadmin/views.py:144
+#: winadmin/views.py:140 winadmin/views.py:147
 msgid "Error"
 msgstr "エラー"
 
-#: winadmin/views.py:160
+#: winadmin/views.py:165
 msgid "Category Successfully Added"
 msgstr "カテゴリーが追加できました"
 
-#: winadmin/views.py:163 winadmin/views.py:183
+#: winadmin/views.py:168 winadmin/views.py:188
 msgid "Input category name"
 msgstr "カテゴリー名を入力する"
 
-#: winadmin/views.py:181
+#: winadmin/views.py:186
 msgid "Category Successfully Edited"
 msgstr "カテゴリーが変更できました"
 
-#: winadmin/views.py:270
+#: winadmin/views.py:276
 msgid "Transaction Created Successfully"
 msgstr "取引が制作できました"
 
-#: winadmin/views.py:272
+#: winadmin/views.py:278
 msgid "Transaction Couldn't Be Created"
 msgstr "取引が制作できませんでした"
 
-#: winadmin/views.py:376
+#: winadmin/views.py:381
 #, fuzzy
 #| msgid "Transaction Created Successfully"
 msgid "Transaction Edited Successfully"
 msgstr "取引が制作できました"
 
-#: winadmin/views.py:379
+#: winadmin/views.py:384
 #, fuzzy
 #| msgid "Transaction Created Successfully"
 msgid "Transaction Deleted Successfully"
 msgstr "取引が制作できました"
 
-#: winadmin/views.py:636
+#: winadmin/views.py:656
 msgid "Reservation successfully edited."
 msgstr "予約が変更できました"
 
-#: winadmin/views.py:755
+#: winadmin/views.py:717
+#, python-brace-format
+msgid "{reservation.customer} checked-in."
+msgstr ""
+
+#: winadmin/views.py:720
+#, python-brace-format
+msgid "{reservation.customer} is already checked-in."
+msgstr ""
+
+#: winadmin/views.py:725
+#, python-brace-format
+msgid "{reservation.customer} checked-out."
+msgstr ""
+
+#: winadmin/views.py:728
+#, python-brace-format
+msgid "{reservation.customer} is already checked-out."
+msgstr ""
+
+#: winadmin/views.py:842
 msgid "Room successfully edited"
 msgstr "部屋が変更できました"
 
-#: winadmin/views.py:757
+#: winadmin/views.py:844
 msgid "Couldn't edit room"
 msgstr "部屋を変更できませんでした"
 
-#: winadmin/views.py:760
+#: winadmin/views.py:847
 msgid "Room deleted successfully"
 msgstr "部屋が削除できました。"
 
-#: winadmin/views.py:828
+#: winadmin/views.py:915
 #, python-format
 msgid "%(tier_name)s Created Successfully!"
 msgstr "%(tier_name)sが制作できました"
+
+#: winadmin/views.py:1193
+#, fuzzy
+#| msgid "Transaction Created Successfully"
+msgid "Vendor Created Successfully"
+msgstr "取引が制作できました"
+
+#: winadmin/views.py:1195
+#, fuzzy
+#| msgid "Transaction Couldn't Be Created"
+msgid "Vendor Couldn't Be Created"
+msgstr "取引が制作できませんでした"
+
+#: winadmin/views.py:1216
+#, fuzzy
+#| msgid "Transaction Created Successfully"
+msgid "Vendor updated successfully"
+msgstr "取引が制作できました"
+
+#: winadmin/views.py:1218
+#, fuzzy
+#| msgid "Transaction Couldn't Be Created"
+msgid "Vendor couldn't be updated"
+msgstr "取引が制作できませんでした"
+
+#: winadmin/views.py:1243
+#, fuzzy
+#| msgid "Ticket created successfully!"
+msgid "Invoice created successfully"
+msgstr "チケットが制作できました。"
+
+#: winadmin/views.py:1245
+#, fuzzy
+#| msgid "Ticket couldn't be created!"
+msgid "Invoice couldn't be created"
+msgstr "チケットが制作できませんでした。"
 
 #: winvillage/settings.py:279
 msgid "English"
@@ -1862,6 +2139,34 @@ msgstr "英語"
 #: winvillage/settings.py:280
 msgid "Japanese"
 msgstr "日本語"
+
+#~ msgid "Make a Transaction"
+#~ msgstr "取引を作る"
+
+#~ msgid "In Stock"
+#~ msgstr "在庫あり"
+
+#~ msgid "In Stock?"
+#~ msgstr "在庫あり？"
+
+#~ msgid "Transaction Name"
+#~ msgstr "取引名"
+
+#~ msgid "Export CSV"
+#~ msgstr "CSVをエクスポート"
+
+#~ msgid "Price Per Item"
+#~ msgstr "一品の値段"
+
+#~ msgid "Transaction Datetime"
+#~ msgstr "取引日時"
+
+#~ msgid "Ordered Date"
+#~ msgstr "注文日"
+
+#, fuzzy
+#~ msgid "Item Name"
+#~ msgstr "部屋名"
 
 #~ msgid "Last name"
 #~ msgstr "名字"
@@ -1872,17 +2177,11 @@ msgstr "日本語"
 #~ msgid "View Reservations"
 #~ msgstr "予約を見る"
 
-#~ msgid "Payment Amount"
-#~ msgstr "仕入れ額"
-
 #~ msgid "Order Management"
 #~ msgstr "仕入管理"
 
 #~ msgid "View Orders"
 #~ msgstr "仕入を見る"
-
-#~ msgid "Create Order"
-#~ msgstr "仕入を作る"
 
 #~ msgid "Business Order Management"
 #~ msgstr "仕入管理"

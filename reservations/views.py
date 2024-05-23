@@ -1,8 +1,11 @@
+from itertools import product
+
 import pendulum
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
 import reservations.forms as forms
+from core.models import Transaction
 from core.utils import (
     HtmxHttpRequest,
     get_or_set_reservation_session,
@@ -44,6 +47,23 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
             reservation.set_number_of_visitors(form)
     context = {"form": form, "reservation": reservation}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
+
+
+# @htmx_form_validate(form_class=TravelerForm)
+# @for_htmx(use_block_from_params=True)
+# def index(request: HtmxHttpRequest) -> HttpResponse:
+#     reservation = get_or_set_reservation_session(request)
+#     initial = {
+#         "number_of_adults": reservation.stay.number_of_adults,
+#         "number_of_children": reservation.stay.number_of_children,
+#     }
+#     form = TravelerForm(initial=initial)
+#     if request.method == "POST":
+#         form = TravelerForm(request.POST)
+#         if form.is_valid():
+#             reservation.set_number_of_visitors(form)
+#     context = {"form": form, "reservation": reservation}
+#     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
 @for_htmx(use_block_from_params=True)
@@ -103,11 +123,13 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def room_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    form, roomtier_data = utils.get_form_and_roomtier_data(reservation)
+    roomtier_queryset = reservation.get_possible_roomtier_queryset()
+    roomtier_data = utils.get_roomtier_data(reservation)
+    form = forms.RoomTierChoiceForm(queryset=roomtier_queryset, initial=utils.get_form_initial_data(reservation))
     if request.method == "POST":
         form = utils.get_form_with_POST_data(reservation, request)
         if form.is_valid():
-            reservation.set_room(form, roomtier_data)
+            reservation.set_room(form, roomtier_data, reservation.get_start_date(), reservation.get_end_date())
     context = {"form": form, "roomtier_data": roomtier_data, "reservation": reservation}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
@@ -197,8 +219,16 @@ def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def reservation_details_review(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
+    first_name = request.session["first_name"]
+    last_name = request.session["last_name"]
+    email = request.session["email"]
+    phone = request.session["phone"]
     context = {
         "reservation": reservation,
+        "first_name": first_name,
+        "last_name": last_name,
+        "email": email,
+        "phone": phone,
     }
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
@@ -206,16 +236,20 @@ def reservation_details_review(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def reservation_confirm(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
+    first_name = request.session["first_name"]
+    last_name = request.session["last_name"]
+    email = request.session["email"]
+    phone = request.session["phone"]
+    customer, created = Customer.objects.get_or_create(
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        phone=phone,
+    )
+    reservation.confirm(customer=customer)
     response = send_confirmation_email.delay(reservation.id)
-    if response:
-        reservation.confirm()
-        customer, created = Customer.objects.get_or_create(
-            first_name=reservation.first_name,
-            last_name=reservation.last_name,
-            email=reservation.email,
-            phone=reservation.phone,
-        )
-        request.session.flush()
+    # if response:
+    #     request.session.flush()
     return TemplateResponse(request, RESERVATION_TEMPLATE, {})
 
 

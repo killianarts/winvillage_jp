@@ -146,10 +146,13 @@
                             <time datetime="{{ datetime }}">{{ datetime.day }}</time>
                           </span>
                 {% elif not form %}
+                  {# form is None for dates that are unavailable. #}
+                  {# A date is not available if all the rooms the customer qualifies for (based on Stay.number_of_adults)  #}
+                  {# are associated with Stay objects with status "reserved" with stay.start <= date < stay.end. #}
                   <span class="mx-auto flex h-8 w-8 items-center justify-center rounded-full tabular-nums text-red-200 pointer-events-none">
-                            X
-                          </span>
-                {% elif datetime.date == today_date.date %}
+                    X
+                  </span>
+                {% elif datetime.date == today_date.date and start and start.date != datetime.date %}
                   {% #calendar_cell_button datetime=datetime name="select_date" type="submit" class="text-blue-500 bg-blue-200 hover:bg-blue-300" %}
                   {{ form }}
                   {% /calendar_cell_button %}
@@ -548,23 +551,19 @@
           {% endif %}
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
             <span>{% blocktrans %}First Name{% endblocktrans %}:</span>
-            <span>{{ reservation.first_name }}</span>
+            <span>{{ first_name }}</span>
           </div>
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
             <span>{% blocktrans %}Last Name{% endblocktrans %}:</span>
-            <span>{{ reservation.last_name }}</span>
+            <span>{{ last_name }}</span>
           </div>
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
             <span>{% blocktrans %}Email{% endblocktrans %}:</span>
-            <span>{{ reservation.email }}</span>
+            <span>{{ email }}</span>
           </div>
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
             <span>{% blocktrans %}Phone{% endblocktrans %}:</span>
-            <span>{{ reservation.phone.as_national }}</span>
-          </div>
-          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-            <span>{% blocktrans %}Room{% endblocktrans %}:</span>
-            <span>{{ reservation.stay.room.name }}</span>
+            <span>{{ phone }}</span>
           </div>
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
             <span>{% translate 'Price' %}:</span>

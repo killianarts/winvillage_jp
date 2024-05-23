@@ -9,7 +9,7 @@ from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumber
 
 from core.forms import TailwindFormMixin
-from core.models import Item, Transaction
+from core.models import Invoice, Item, Transaction, Vendor
 from reservations.models import (
     Stay,
     ContactInfo,
@@ -23,7 +23,9 @@ from reservations.models import (
 
 class LoginForm(TailwindFormMixin, forms.Form):
     username = forms.CharField(label=_("Username"), max_length=30)
-    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, max_length=30)
+    password = forms.CharField(
+        label=_("Password"), widget=forms.PasswordInput, max_length=30
+    )
 
 
 class ItemCreateFormRenderer(TemplatesSetting):
@@ -55,7 +57,6 @@ class ItemCreateForm(ItemCreateFormMixin, forms.ModelForm):
             "category",
             "image",
             "stock_quantity",
-            "in_stock",
             "active",
             "reservation_option",
             "description",
@@ -67,7 +68,6 @@ class ItemCreateForm(ItemCreateFormMixin, forms.ModelForm):
             "category": _("Category"),
             "image": _("Image"),
             "stock_quantity": _("Stock Quantity"),
-            "in_stock": _("In Stock"),
             "active": _("Active"),
             "reservation_option": _("Reservation Option"),
             "description": _("Description"),
@@ -84,7 +84,6 @@ class ItemEditForm(TailwindFormMixin, forms.ModelForm):
             "category",
             "image",
             "stock_quantity",
-            "in_stock",
             "active",
             "reservation_option",
             "description",
@@ -96,7 +95,6 @@ class ItemEditForm(TailwindFormMixin, forms.ModelForm):
             "category": _("Category"),
             "image": _("Image"),
             "stock_quantity": _("Stock Quantity"),
-            "in_stock": _("In Stock"),
             "active": _("Active"),
             "reservation_option": _("Reservation Option"),
             "description": _("Description"),
@@ -138,8 +136,7 @@ class TransactionCreateForm(TailwindFormMixin, forms.ModelForm):
         fields = [
             "name",
             "customer",
-            "transaction_datetime",
-            "item",
+            "product",
             "quantity",
             "total_price",
         ]
@@ -147,8 +144,7 @@ class TransactionCreateForm(TailwindFormMixin, forms.ModelForm):
         labels = {
             "name": _("Name"),
             "customer": _("Customer"),
-            "transaction_datetime": _("Transaction Datetime"),
-            "item": _("Item"),
+            "product": _("Product"),
             "quantity": _("Quantity"),
             "total_price": _("Total Price"),
         }
@@ -164,6 +160,7 @@ class SetLedgerPeriodForm(forms.Form):
 class SetReservationPeriodForm(forms.Form):
     year = forms.IntegerField()
     month = forms.IntegerField()
+    day = forms.IntegerField()
 
 
 class ReservationCreateForm(TailwindFormMixin, forms.Form):
@@ -185,6 +182,7 @@ class ReservationDetailForm(TailwindFormMixin, forms.Form):
         ("cancelled", _("Cancelled")),
     )
     status = forms.ChoiceField(choices=STATUS_CHOICES)
+    price = forms.DecimalField()
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
@@ -319,8 +317,12 @@ class PricingTierGroupCreateForm(forms.Form):
         )
 
     name = forms.CharField(max_length=100, label=_("Name"))
-    minimum_number_of_adults = forms.IntegerField(initial=1, min_value=1, max_value=2, label=_("Minimum Adults"))
-    maximum_number_of_adults = forms.IntegerField(initial=6, min_value=4, max_value=6, label=_("Maximum Adults"))
+    minimum_number_of_adults = forms.IntegerField(
+        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
+    )
+    maximum_number_of_adults = forms.IntegerField(
+        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
+    )
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -352,8 +354,12 @@ class PricingTierGroupDetailForm(forms.ModelForm):
         )
 
     name = forms.CharField(max_length=100, label=_("Name"))
-    minimum_number_of_adults = forms.IntegerField(initial=1, min_value=1, max_value=2, label=_("Minimum Adults"))
-    maximum_number_of_adults = forms.IntegerField(initial=6, min_value=4, max_value=6, label=_("Maximum Adults"))
+    minimum_number_of_adults = forms.IntegerField(
+        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
+    )
+    maximum_number_of_adults = forms.IntegerField(
+        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
+    )
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -380,3 +386,20 @@ class CampaignDetailForm(forms.ModelForm):
 
 class CampaignTestForm(forms.Form):
     test = forms.DateTimeField(widget=forms.SelectDateWidget)
+
+
+class VendorCreateForm(forms.ModelForm):
+    class Meta:
+        model = Vendor
+        fields = ["name", "cutoff_day", "due_day"]
+        help_texts = {
+            "due_day": _(
+                "This value is additive. Example: If the cutoff day results in a cutoff *date* of 2024-5-10, and the due day here is 10, then the due day will result in a due date of 2024-5-20. A value of -1 will result in 'end of the month' value. If the cutoff date is 2024-5-10 and due day here is -1, then the due date will be 2024-5-31."
+            )
+        }
+
+
+class InvoiceCreateForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ["vendor", "invoiced_on", "due_on"]

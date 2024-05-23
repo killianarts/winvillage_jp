@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.utils.html import format_html
 
 from reservations.models import (
     Reservation,
@@ -93,7 +92,17 @@ class PricingTierGroupAdmin(admin.ModelAdmin):
 
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Stay, StayAdmin)
-admin.site.register(Order)
+
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ["customer", "orderitems"]
+
+    def orderitems(self, obj):
+        oitems = obj.items.all().values_list("item__name", flat=True)
+        return [item for item in oitems]
+
+
+admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
 
 
