@@ -1,18 +1,14 @@
 import pendulum
 from customer.models import Customer
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
 from django.db.models import Q, Sum
-from django.db.models.fields import PositiveIntegerField, PositiveSmallIntegerField
 from django.db.models.functions import Coalesce
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
-from recurrence.fields import RecurrenceField
-from relativedeltafield import RelativeDeltaField
 from winvillage import settings
 import datetime
 
