@@ -1,6 +1,7 @@
 import datetime
 from collections import OrderedDict
 
+from django.utils import timezone
 import pendulum
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
@@ -8,7 +9,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from faker import Faker
 from phonenumber_field.modelfields import PhoneNumberField
-
+from core.forms import PendulumField
 
 auth_user = get_user_model()
 
@@ -38,7 +39,7 @@ class PendulumDateTimeField(models.DateTimeField):
             return pendulum.instance(value)
         if value is None:
             return value
-        return pendulum.parse(value)
+        return pendulum.parse(value, tz=timezone.get_current_timezone())
 
     def get_prep_value(self, value):
         if isinstance(value, pendulum.DateTime):
@@ -49,6 +50,22 @@ class PendulumDateTimeField(models.DateTimeField):
             return pendulum.instance(value)
         if value is None:
             return value
+
+    def value_to_string(self, obj):
+        value = self._get_val_from_obj(obj)
+        return "" if value is None else value.isoformat()
+
+    def pre_save(self, model_instance, add):
+        value = super(PendulumField, self).pre_save(model_instance, add)
+        if isinstance(value, datetime.datetime):
+            value = pendulum.instance(value)
+            setattr(model_instance, self.attname, value)
+        return value
+
+    def formfield(self, **kwargs):
+        defaults = {"form_class": PendulumField}
+        defaults.update(kwargs)
+        return super(PendulumField, self).formfield(**defaults)
 
 
 class BaseModel(models.Model):
@@ -90,7 +107,14 @@ def make_customers(count):
     for i in range(count):
         first_name = faker["ja-JP"].first_name()
         last_name = faker["ja-JP"].last_name()
-        company_name = faker["en-US"].company().lower().replace(" ", "").replace(",", "").replace("-", "")
+        company_name = (
+            faker["en-US"]
+            .company()
+            .lower()
+            .replace(" ", "")
+            .replace(",", "")
+            .replace("-", "")
+        )
         email = f"{last_name.lower()}{first_name.lower()}@{company_name}.com"
         phone = faker["ja-JP"].phone_number()
         created.append(

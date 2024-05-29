@@ -4,6 +4,7 @@ from core.models import (
     Category,
     ContactInfo,
     Invoice,
+    Invooice,
     Item,
     Procurement,
     Transaction,
@@ -43,6 +44,19 @@ class ItemAdmin(admin.ModelAdmin):
 admin.site.register(Item, ItemAdmin)
 admin.site.register(ContactInfo)
 admin.site.register(Category)
-admin.site.register(Vendor)
-admin.site.register(Procurement)
+
+
+class VendorAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "cutoff_day", "due_day")
+
+
+admin.site.register(Vendor, VendorAdmin)
+
+
+class ProcurementAdmin(admin.ModelAdmin):
+    list_display = ("id", "vendor", "product", "procured_on")
+
+
+admin.site.register(Procurement, ProcurementAdmin)
 admin.site.register(Invoice)
+admin.site.register(Invooice)

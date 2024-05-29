@@ -1,31 +1,29 @@
 from datetime import datetime
 
+import pendulum
+from core.forms import TailwindFormMixin
+from core.models import Invoice, Item, Procurement, Transaction, Vendor
 from django import forms
-from django.forms import BaseInlineFormSet
+from django.forms import BaseInlineFormSet, widgets
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from phonenumber_field.formfields import PhoneNumberField
-from phonenumber_field.widgets import PhoneNumber
-
-from core.forms import TailwindFormMixin
-from core.models import Invoice, Item, Transaction, Vendor
 from reservations.models import (
-    Stay,
+    Campaign,
     ContactInfo,
     PricingTier,
-    Room,
     PricingTierGroup,
+    Room,
     RoomTier,
-    Campaign,
+    Stay,
 )
+from core.forms import PendulumField
 
 
 class LoginForm(TailwindFormMixin, forms.Form):
     username = forms.CharField(label=_("Username"), max_length=30)
-    password = forms.CharField(
-        label=_("Password"), widget=forms.PasswordInput, max_length=30
-    )
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, max_length=30)
 
 
 class ItemCreateFormRenderer(TemplatesSetting):
@@ -317,12 +315,8 @@ class PricingTierGroupCreateForm(forms.Form):
         )
 
     name = forms.CharField(max_length=100, label=_("Name"))
-    minimum_number_of_adults = forms.IntegerField(
-        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
-    )
-    maximum_number_of_adults = forms.IntegerField(
-        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
-    )
+    minimum_number_of_adults = forms.IntegerField(initial=1, min_value=1, max_value=2, label=_("Minimum Adults"))
+    maximum_number_of_adults = forms.IntegerField(initial=6, min_value=4, max_value=6, label=_("Maximum Adults"))
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -354,12 +348,8 @@ class PricingTierGroupDetailForm(forms.ModelForm):
         )
 
     name = forms.CharField(max_length=100, label=_("Name"))
-    minimum_number_of_adults = forms.IntegerField(
-        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
-    )
-    maximum_number_of_adults = forms.IntegerField(
-        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
-    )
+    minimum_number_of_adults = forms.IntegerField(initial=1, min_value=1, max_value=2, label=_("Minimum Adults"))
+    maximum_number_of_adults = forms.IntegerField(initial=6, min_value=4, max_value=6, label=_("Maximum Adults"))
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -384,11 +374,18 @@ class CampaignDetailForm(forms.ModelForm):
         fields = ["name", "recurrences"]
 
 
-class CampaignTestForm(forms.Form):
-    test = forms.DateTimeField(widget=forms.SelectDateWidget)
+class VendorCreateForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = Vendor
+        fields = ["name", "cutoff_day", "due_day"]
+        help_texts = {
+            "due_day": _(
+                "This value is additive. Example: If the cutoff day results in a cutoff *date* of 2024-5-10, and the due day here is 10, then the due day will result in a due date of 2024-5-20. A value of -1 will result in 'end of the month' value. If the cutoff date is 2024-5-10 and due day here is -1, then the due date will be 2024-5-31."
+            )
+        }
 
 
-class VendorCreateForm(forms.ModelForm):
+class VendorDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Vendor
         fields = ["name", "cutoff_day", "due_day"]
@@ -403,3 +400,23 @@ class InvoiceCreateForm(forms.ModelForm):
     class Meta:
         model = Invoice
         fields = ["vendor", "invoiced_on", "due_on"]
+
+
+class InvoiceDetailForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        models = Invoice
+        fields = ["vendor", "invoiced_on", "due_on"]
+
+
+class ProcurementCreateForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = Procurement
+        fields = ["vendor", "product", "price_per_unit", "quantity", "procured_on"]
+        widgets = {"procured_on": forms.SelectDateWidget()}
+
+
+class ProcurementDetailForm(TailwindFormMixin, forms.ModelForm):
+    class Meta:
+        model = Procurement
+        fields = ["vendor", "product", "price_per_unit", "quantity", "procured_on"]
+        widgets = {"procured_on": forms.SelectDateWidget()}

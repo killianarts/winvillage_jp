@@ -16,8 +16,10 @@
             hx-vals='{"use_block": "content"}'>
         <div _="on htmx:afterSettle from #content-wrapper set input to the last <input/> in me then add @checked to the input">
           {{ form }}
+          {#{ invoice.invoiced_on|date:"c" }#}
+          {{an_invoice.invoiced_on|date:"c"}}
+          {#{ this_month_cutoff_datetime|date:"c" }#}
         </div>
-        {{ due_date }}
         <div>
             {% #outline_button id="submit-button" name="create-invoice" value="create-room" type="submit" %}
             {% trans "Submit" %}

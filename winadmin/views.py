@@ -1,11 +1,19 @@
-import calendar
 import csv
 import uuid
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import pendulum
-from core.models import Category, Customer, Item, Procurement, Transaction, Vendor
+from core.models import (
+    Category,
+    Customer,
+    Invoice,
+    Invooice,
+    Item,
+    Procurement,
+    Transaction,
+    Vendor,
+)
 from core.utils import (
     HtmxHttpRequest,
     for_htmx,
@@ -51,12 +59,15 @@ from winadmin.forms import (
     CategoryDetailForm,
     IncrementalPricingTierFormSet,
     InvoiceCreateForm,
+    InvoiceDetailForm,
     ItemCreateForm,
     ItemEditForm,
     PricingTierCreateForm,
     PricingTierDetailForm,
     PricingTierGroupCreateForm,
     PricingTierGroupDetailForm,
+    ProcurementCreateForm,
+    ProcurementDetailForm,
     ReservationCreateForm,
     ReservationDetailForm,
     RoomCreateForm,
@@ -68,8 +79,8 @@ from winadmin.forms import (
     SquarePaymentTokenForm,
     TransactionCreateForm,
     VendorCreateForm,
+    VendorDetailForm,
 )
-from winadmin.models import SpecialDate
 
 SQUARE_APPLICATION_ID = settings.SQUARE_SETTINGS["SQUARE_APPLICATION_ID"]
 SQUARE_LOCATION_ID = settings.SQUARE_SETTINGS["SQUARE_LOCATION_ID"]
@@ -1210,50 +1221,129 @@ def vendor_list(request):
 def vendor_detail(request, vendor_id):
     vendor = get_object_or_404(Vendor, id=vendor_id)
     if request.method == "POST":
-        form = VendorCreateForm(request.POST, instance=vendor)
+        form = VendorDetailForm(request.POST, instance=vendor)
         if form.is_valid():
             form.save()
             messages.success(request, _("Vendor updated successfully"))
         else:
             messages.error(request, _("Vendor couldn't be updated"))
     else:
-        initial = {
-            "name": vendor.name,
-            "cutoff_day": vendor.cutoff_day,
-            "due_day": vendor.due_day,
-        }
-        form = VendorCreateForm(initial=initial)
+        form = VendorCreateForm(instance=vendor)
     response = TemplateResponse(request, "vendor/vendor_create.html", {"form": form})
     return trigger_client_event(response, "getMessages")
 
 
 @for_htmx(use_block_from_params=True)
 def invoice_create(request):
-    _date = pendulum.today().date()
-    vendor = Vendor.objects.get(id=2)
+    vendor = get_object_or_404(Vendor, id=1)
     if request.method == "POST":
         form = InvoiceCreateForm(request.POST)
         if form.is_valid():
+            this_month_cutoff_datetime = vendor.get_cutoff_date(
+                pendulum.today().year, pendulum.today().month
+            )
+            last_month_cutoff_datetime = this_month_cutoff_datetime.subtract(months=1)
             procurements = Procurement.objects.filter(
                 vendor=vendor,
-                procured_on__lte=_date,
-                procured_on__gt=_date.subtract(months=1),
+                procured_on__range=(
+                    last_month_cutoff_datetime,
+                    this_month_cutoff_datetime,
+                ),
             )
-            invoice = vendor.create_invoice(_date, procurements)
+            invoice = vendor.create_invoice(this_month_cutoff_datetime, procurements)
             messages.success(request, _("Invoice created successfully"))
         else:
             messages.error(request, _("Invoice couldn't be created"))
     else:
-        cutoff_date = vendor.get_cutoff_date(_date.year, _date.month)
-        due_date = vendor.get_due_date(cutoff_date)
-        initial = {"vendor": vendor, "invoiced_on": cutoff_date, "due_on": due_date}
+        this_month_cutoff_datetime = vendor.get_cutoff_date(
+            pendulum.today().year, pendulum.today().month
+        )
+        due_date = vendor.get_due_date(this_month_cutoff_datetime)
+        initial = {
+            "vendor": vendor,
+            "invoiced_on": this_month_cutoff_datetime,
+            "due_on": due_date,
+        }
         form = InvoiceCreateForm(initial=initial)
-
+        invoice = None
     response = TemplateResponse(
         request,
         "invoice/invoice_create.html",
         {
+            "invooice": Invooice.objects.all()[0],
+            "an_invoice": Invoice.objects.latest("invoiced_on"),
             "form": form,
+            "invoice": invoice,
+            "this_month_cutoff_datetime": this_month_cutoff_datetime,
         },
+    )
+    return trigger_client_event(response, "getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def invoice_list(request):
+    invoices = Invoice.objects.all()
+    context = {"invoices": invoices}
+    return TemplateResponse(request, "invoice/invoice_list.html", context)
+
+
+@for_htmx(use_block_from_params=True)
+def invoice_detail(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    if request.method == "POST":
+        form = InvoiceDetailForm(request.POST, instance=invoice)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Invoice successfully edited"))
+        else:
+            messages.error(request, _("Invoice couldn't be edited"))
+    else:
+        form = InvoiceDetailForm(instance=invoice)
+    response = TemplateResponse(request, "invoice/invoice_detail.html", {"form": form})
+    return trigger_client_event(response, "getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def procurement_create(request):
+    if request.method == "POST":
+        form = ProcurementCreateForm(request.POST)
+        if form.is_valid():
+            procurement = form.save()
+            item = Item.objects.get(id=procurement.product.id)
+            item.stock_quantity += procurement.quantity
+            item.save()
+            messages.success(request, _("Procurement created successfully"))
+        else:
+            messages.error(request, _("Procurement couldn't be created"))
+    else:
+        form = ProcurementCreateForm()
+    response = TemplateResponse(
+        request, "procurement/procurement_create.html", {"form": form}
+    )
+    return trigger_client_event(response, "getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def procurement_list(request):
+    procurements = Procurement.objects.all()
+    return TemplateResponse(
+        request, "procurement/procurement_list.html", {"procurements": procurements}
+    )
+
+
+@for_htmx(use_block_from_params=True)
+def procurement_detail(request, procurement_id):
+    procurement = get_object_or_404(Procurement, id=procurement_id)
+    if request.method == "POST":
+        form = ProcurementDetailForm(request.POST, instance=procurement)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Procurement edited successfully"))
+        else:
+            messages.error(request, _("Procurement couldn't be edited"))
+    else:
+        form = ProcurementDetailForm(instance=procurement)
+    response = TemplateResponse(
+        request, "procurement/procurement_detail.html", {"form": form}
     )
     return trigger_client_event(response, "getMessages")

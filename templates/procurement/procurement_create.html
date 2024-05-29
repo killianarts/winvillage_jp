@@ -1,0 +1,28 @@
+{% extends 'winadmin/index.html' %}
+{% load static i18n %}
+{% block extra_styles %}
+{% endblock %}
+{% block subtitle %}
+    {% blocktrans %}Create Procurement{% endblocktrans %}
+{% endblock %}
+{% block content %}
+    <div id="content-wrapper">
+        <h1 class="text-3xl">{% translate 'Create Procurement' %}</h1>
+        {% block form %}
+            <form id="procurement-create-form" class="max-w-xl grid" action="." novalidate
+                  hx-post="."
+                  hx-target="#content-wrapper"
+                  hx-swap="outerHTML"
+                  hx-vals='{"use_block": "content"}'>
+                <div>
+                    {{ form }}
+                </div>
+                <div>
+                    {% #outline_button id="submit-button" name="create-procurement" value="create-procurement" type="submit" %}
+                    {% trans "Submit" %}
+                    {% /outline_button %}
+                </div>
+            </form>
+        {% endblock %}
+    </div>
+{% endblock %}

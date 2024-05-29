@@ -180,6 +180,17 @@ urlpatterns = [
     path("vendor/list/", views.vendor_list, name="vendor_list"),
     path("vendor/detail/<int:vendor_id>/", views.vendor_detail, name="vendor_detail"),
     path("invoice/create/", views.invoice_create, name="invoice_create"),
+    path("invoice/list/", views.invoice_list, name="invoice_list"),
+    path(
+        "invoice/detail/<int:invoice_id>/", views.invoice_detail, name="invoice_detail"
+    ),
+    path("procurement/create/", views.procurement_create, name="procurement_create"),
+    path("procurement/list/", views.procurement_list, name="procurement_list"),
+    path(
+        "procurement/detail/<int:procurement_id>/",
+        views.procurement_detail,
+        name="procurement_detail",
+    ),
 ]
 
 urlpatterns += [
