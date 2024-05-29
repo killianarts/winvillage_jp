@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-29 14:28+0900\n"
+"POT-Creation-Date: 2024-05-29 15:20+0900\n"
 "PO-Revision-Date: 2024-05-10 11:44+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2274,11 +2274,11 @@ msgstr "顧客が変更できました。"
 msgid "Procurement couldn't be edited"
 msgstr "顧客が変更できませんでした。"
 
-#: winvillage/settings.py:279
+#: winvillage/settings.py:282
 msgid "English"
 msgstr "英語"
 
-#: winvillage/settings.py:280
+#: winvillage/settings.py:283
 msgid "Japanese"
 msgstr "日本語"
 

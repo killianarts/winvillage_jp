@@ -724,6 +724,21 @@ asgiref = ">=3.6"
 Django = ">=3.2"
 
 [[package]]
+name = "django-celery-results"
+version = "2.5.1"
+description = "Celery result backends for Django."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django_celery_results-2.5.1-py3-none-any.whl", hash = "sha256:0da4cd5ecc049333e4524a23fcfc3460dfae91aa0a60f1fae4b6b2889c254e01"},
+    {file = "django_celery_results-2.5.1.tar.gz", hash = "sha256:3ecb7147f773f34d0381bac6246337ce4cf88a2ea7b82774ed48e518b67bb8fd"},
+]
+
+[package.dependencies]
+celery = ">=5.2.7,<6.0"
+Django = ">=3.2.18"
+
+[[package]]
 name = "django-countries"
 version = "7.6.1"
 description = "Provides a country field for Django models."
@@ -2211,4 +2226,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "152935c227357359ab7912c17be62d0db3944ba5945a669bfa67a70d2cf808db"
+content-hash = "67d207139de7349251b19851f300594cedab2bd856ac8e901c9ebaf7931c7655"

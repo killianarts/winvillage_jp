@@ -82,6 +82,7 @@ THIRD_PARTY_APPS = [
     "phonenumbers",
     "slippers",
     "recurrence",
+    "django_celery_results",
 ]
 
 if DEBUG:
@@ -130,7 +131,9 @@ PASSWORD_HASHERS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -423,3 +426,7 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_TASK_DEFAULT_QUEUE = "default"
 CELERY_CREATE_MISSING_QUEUES = True
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_CACHE_BACKEND = "django-cache"
+CELERY_RESULT_EXTENDED = True

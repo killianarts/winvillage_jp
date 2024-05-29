@@ -42,6 +42,7 @@ django-debug-toolbar = "^4.3.0"
 django-recurrence = "^1.11.1"
 django-decorator-include = "^3.0"
 django-relativedelta = "^2.0.0"
+django-celery-results = "^2.5.1"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"
