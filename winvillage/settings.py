@@ -11,12 +11,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from pathlib import Path
 
-import environ
+import environ, os, sys
 from django.apps import apps
 from django.urls import reverse
 
 # For translation
-from django.utils.translation import gettext_lazy as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext_lazy as _
+
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +31,8 @@ if DJANGO_ENVIRONMENT == "dev":
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-DEBUG = env.bool("DJANGO_DEBUG", default=True)
+IS_NOT_RUNNING_TESTS = "test" not in sys.argv
+DEBUG = env.bool("DJANGO_DEBUG", default=IS_NOT_RUNNING_TESTS)
 
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
@@ -53,6 +57,7 @@ SECRET_KEY = env(
 DJANGO_SUPER_USER_NAME = env("DJANGO_SUPER_USER_NAME")
 DJANGO_SUPER_USER_EMAIL = env("DJANGO_SUPER_USER_EMAIL")
 DJANGO_SUPER_USER_PASSWORD = env("DJANGO_SUPER_USER_PASSWORD")
+ADMINISTRATOR_EMAILS = env.list("ADMINISTRATOR_EMAILS")
 
 # Application definition
 
@@ -83,6 +88,8 @@ THIRD_PARTY_APPS = [
     "slippers",
     "recurrence",
     "django_celery_results",
+    "mptt",
+    "hordak",
 ]
 
 if DEBUG:
@@ -375,6 +382,10 @@ PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_REGION = "JP"
 PHONENUMBER_DEFAULT_FORMAT = "INTERNATIONAL"
 
+# Hordak / accounting
+DEFAULT_CURRENCY = ["JPY"]
+CURRENCIES = ["JPY"]
+CURRENCY_CHOICES = [("JPY", "JPY ￥")]
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
@@ -423,10 +434,18 @@ CELERYD_TASK_SOFT_TIME_LIMIT = 60
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
-CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_TASK_DEFAULT_QUEUE = "default"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_CREATE_MISSING_QUEUES = True
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_CACHE_BACKEND = "django-cache"
 CELERY_RESULT_EXTENDED = True
+
+CELERY_BEAT_SCHEDULE = {
+    "make_invoices_every_day": {
+        "task": "tasks.make_invoices",
+        "schedule": crontab(minute=0, hour=0),
+    }
+}

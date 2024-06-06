@@ -29,10 +29,10 @@
         <thead>
         <tr class="text-left">
           <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-            <span class="pl-6">{% translate 'Procurement Name' %}</span>
+            <span class="pl-6">{% translate 'Vendor Name' %}</span>
           </th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Cutoff Day' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Due Day' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Product' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Procured On' %}</th>
         </tr>
         </thead>
         <tbody class="divide-y divide-stone-200">
@@ -40,14 +40,14 @@
           <tr class="hover:bg-stone-50">
             <td class="whitespace-nowrap py-4 pr-3 pl-4text-sm font-medium tabular-nums text-stone-900 sm:pl-0">
               <a hx-boost="true" class="pl-6" href="{% url 'winadmin:procurement_detail' procurement_id=procurement.id %}">
-                {{ procurement.name }}
+                {{ procurement.vendor }}
               </a>
             </td>
             <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
-                {{ procurement.cutoff_day }}
+                {{ procurement.product }}
             </td>
             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                {{ procurement.due_day }}
+                {{ procurement.procured_on }}
             </td>
           </tr>
         {% endfor %}

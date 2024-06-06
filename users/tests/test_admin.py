@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-from win_village.users.models import User
+from users.models import User
 
 
 class TestUserAdmin:

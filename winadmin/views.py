@@ -8,7 +8,6 @@ from core.models import (
     Category,
     Customer,
     Invoice,
-    Invooice,
     Item,
     Procurement,
     Transaction,
@@ -26,7 +25,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
-from django.utils.timezone import activate, deactivate
+from django.utils.timezone import activate, deactivate, get_default_timezone
 from django.utils.translation import gettext_lazy as _
 from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
 from reservations import forms
@@ -53,10 +52,12 @@ from winvillage import settings
 from winvillage.settings import TIME_ZONE
 
 from winadmin.forms import (
+    AccountForm,
     CampaignCreateForm,
     CampaignDetailForm,
     CategoryCreateForm,
     CategoryDetailForm,
+    CompanyWiseProcurementLedgerFilter,
     IncrementalPricingTierFormSet,
     InvoiceCreateForm,
     InvoiceDetailForm,
@@ -215,6 +216,7 @@ def category_list(request: HtmxHttpRequest) -> HttpResponse:
 
 
 # Transactions
+# TODO: Reimplement these using Hordak Transactions/Accounts
 
 
 def get_current_year_and_month(request, tz=TIMEZONE):
@@ -574,7 +576,7 @@ def option_select(request: HtmxHttpRequest) -> HttpResponse:
     return trigger_client_event(response, "updateReservationDetails", after="settle")
 
 
-@htmx_form_validate(form_class=ReservationCreateForm)
+# @htmx_form_validate(form_class=ReservationCreateForm)
 @for_htmx(use_block_from_params=True)
 def reservation_create(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
@@ -588,7 +590,7 @@ def reservation_create(request: HtmxHttpRequest) -> HttpResponse:
             )
             reservation.customer = customer
             reservation.confirm()
-            send_confirmation_email.delay(reservation.id)
+            response = send_confirmation_email.delay(reservation.id)
     return TemplateResponse(
         request,
         "winadmin/reservations/reservation_create.html",
@@ -1270,8 +1272,6 @@ def invoice_create(request):
         request,
         "invoice/invoice_create.html",
         {
-            "invooice": Invooice.objects.all()[0],
-            "an_invoice": Invoice.objects.latest("invoiced_on"),
             "form": form,
             "invoice": invoice,
             "this_month_cutoff_datetime": this_month_cutoff_datetime,
@@ -1347,3 +1347,72 @@ def procurement_detail(request, procurement_id):
         request, "procurement/procurement_detail.html", {"form": form}
     )
     return trigger_client_event(response, "getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def company_wise_procurement_ledger(request):
+    today = pendulum.today(tz=get_default_timezone())
+    vendor = Vendor.objects.first()
+    period = vendor.get_invoice_period(today.year, today.month)
+    procurements = Procurement.objects.filter(
+        vendor=vendor, procured_on__range=(period["start"], period["end"])
+    ).order_by("procured_on")
+    if request.htmx:
+        form = CompanyWiseProcurementLedgerFilter(request.GET)
+        if form.is_valid():
+            vendor = form.cleaned_data["name"]
+            period = vendor.get_invoice_period(today.year, today.month)
+            procurements = Procurement.objects.filter(
+                vendor=vendor, procured_on__range=(period["start"], period["end"])
+            ).order_by("procured_on")
+    else:
+        form = CompanyWiseProcurementLedgerFilter()
+
+    return TemplateResponse(
+        request,
+        "procurement/company_wise_procurement_ledger.html",
+        {
+            "vendor": vendor,
+            "procurements": procurements,
+            "period": period,
+            "form": form,
+        },
+    )
+
+
+@for_htmx(use_block_from_params=True)
+def accounts_payable_ledger(request):
+    invoices = Invoice.objects.all()
+    return TemplateResponse(
+        request, "procurement/accounts_payable_ledger.html", {"invoices": invoices}
+    )
+
+
+@for_htmx(use_block_from_params=True)
+def accounts_payable_aging_report(request):
+    # This requires both the "due_on" of the Vendor (to know how past due an invoice is)
+    # Account and Transactions to determine if a transfer of funds has been made.
+
+    vendors = Vendor.objects.all()
+    return TemplateResponse(
+        request,
+        "procurement/accounts_payable_aging_report.html",
+        {"vendors": vendors},
+    )
+
+
+@for_htmx(use_block_from_params=True)
+def account_create(request):
+    form = AccountForm()
+    if request.method == "POST":
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            account = form.save()
+            messages.success(request, f"{account} created successfully")
+    response = TemplateResponse(
+        request, "accounting/account_create.html", {"form": form}
+    )
+    return trigger_client_event(response=response, name="getMessages")
+
+
+# TODO: Make views for Hordak Accounts and Transactions

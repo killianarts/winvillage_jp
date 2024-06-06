@@ -4,6 +4,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.http import require_GET
 
 from core.utils import HtmxHttpRequest, for_htmx
+from core.tasks import run_task
 
 
 def index(request):
@@ -25,6 +26,11 @@ def flush_session(request):
     url = request.path_info
     request.session.flush()
     return HttpResponse("Flushed")
+
+
+def test(request):
+    response = run_task.delay()
+    return HttpResponse(response)
 
 
 # If you want to completely block search engines,

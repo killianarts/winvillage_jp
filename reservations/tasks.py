@@ -1,21 +1,20 @@
-from celery import shared_task, Celery
-from sendgrid import SendGridAPIClient, Mail
-from django.utils.translation import gettext_lazy as _
-from django.template.loader import render_to_string
-from reservations.models import Reservation
-from winvillage import settings
 import os
+
 import environ
+from celery import Celery, shared_task
+from django_celery_results.models import TaskResult
+from django.template.loader import render_to_string
+from django.utils.translation import gettext_lazy as _
+from sendgrid import Mail, SendGridAPIClient
+from winvillage import settings
+import json
+from reservations.models import Reservation
 
 env = environ.Env()
 app = Celery("winvillage")
-app.conf.update(
-    BROKER_URL=env("REDIS_URL", default="redis://127.0.0.1:6379/0"),
-    CELERY_RESULT_BACKEND=env("REDIS_URL", default="redis://127.0.0.1:6379/0"),
-)
 
 
-@shared_task
+@shared_task()
 def send_confirmation_email(reservation_id):
     reservation = Reservation.objects.get(id=reservation_id)
     subject_text = _("Winvillage Reservation Confirmation For")
@@ -26,9 +25,24 @@ def send_confirmation_email(reservation_id):
     message = Mail(
         from_email="noreply@winvillage.jp",
         to_emails=reservation.customer.email,
-        subject=_("Winvillage Reservation Confirmation For %(full_name)s") % {"full_name": reservation.get_full_name()},
+        subject=_("Winvillage Reservation Confirmation For %(first_name)s")
+        % {"first_name": reservation.customer.first_name},
         plain_text_content=plain_text_content,
     )
     sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
     response = sg.send(message)
-    return response
+    if 200 <= response.status_code < 300:
+        task_result = TaskResult.objects.create(
+            task_id=send_confirmation_email.request.id,
+            status="SUCCESS",
+            result="Email sent successfully.",
+        )
+        task_result.save()
+    else:
+        task_result = TaskResult.objects.create(
+            task_id=send_confirmation_email.request.id,
+            status="FAILURE",
+            result=f"Failed to send email, status code: {response.status_code}",
+        )
+        task_result.save()
+    return task_result

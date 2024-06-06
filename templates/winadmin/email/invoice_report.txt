@@ -1,0 +1,6 @@
+Invoice
+Vendor: {{ invoice.vendor }}
+Invoice Period: {{invoice_period.start}} - {{invoice_period.end}}
+{% for procurement in procurements %}
+{{procurement.product}} - {{ procurement.procured_on }}
+{% endfor %}

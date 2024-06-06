@@ -43,11 +43,14 @@ django-recurrence = "^1.11.1"
 django-decorator-include = "^3.0"
 django-relativedelta = "^2.0.0"
 django-celery-results = "^2.5.1"
+pytest = "^8.2.1"
+django-hordak = "^1.15.0"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"
 django-pattern-library = "^1.1.0"
 isort = "^5.13.2"
+freezegun = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core"]

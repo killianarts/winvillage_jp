@@ -187,10 +187,26 @@ urlpatterns = [
     path("procurement/create/", views.procurement_create, name="procurement_create"),
     path("procurement/list/", views.procurement_list, name="procurement_list"),
     path(
+        "procurement/company_wise_procurement_ledger/",
+        views.company_wise_procurement_ledger,
+        name="company_wise_procurement_ledger",
+    ),
+    path(
+        "procurement/accounts_payable_ledger/",
+        views.accounts_payable_ledger,
+        name="accounts_payable_ledger",
+    ),
+    path(
+        "procurement/accounts_payable_aging_report/",
+        views.accounts_payable_aging_report,
+        name="accounts_payable_aging_report",
+    ),
+    path(
         "procurement/detail/<int:procurement_id>/",
         views.procurement_detail,
         name="procurement_detail",
     ),
+    path("accounting/account_create/", views.account_create, name="account_create"),
 ]
 
 urlpatterns += [

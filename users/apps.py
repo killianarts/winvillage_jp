@@ -8,6 +8,6 @@ class UsersConfig(AppConfig):
 
     def ready(self):
         try:
-            import win_village.users.signals  # noqa: F401
+            import winvillage.users.signals  # noqa: F401
         except ImportError:
             pass

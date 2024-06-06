@@ -1,10 +1,13 @@
 from django.urls import resolve, reverse
 
-from win_village.users.models import User
+from users.models import User
 
 
 def test_detail(user: User):
-    assert reverse("users:detail", kwargs={"username": user.username}) == f"/users/{user.username}/"
+    assert (
+        reverse("users:detail", kwargs={"username": user.username})
+        == f"/users/{user.username}/"
+    )
     assert resolve(f"/users/{user.username}/").view_name == "users:detail"
 
 

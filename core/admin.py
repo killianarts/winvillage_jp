@@ -4,7 +4,6 @@ from core.models import (
     Category,
     ContactInfo,
     Invoice,
-    Invooice,
     Item,
     Procurement,
     Transaction,
@@ -59,4 +58,3 @@ class ProcurementAdmin(admin.ModelAdmin):
 
 admin.site.register(Procurement, ProcurementAdmin)
 admin.site.register(Invoice)
-admin.site.register(Invooice)

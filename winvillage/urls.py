@@ -28,6 +28,7 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
 ]
+
 urlpatterns += i18n_patterns(
     path("__reload__/", include("django_browser_reload.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
@@ -40,6 +41,7 @@ urlpatterns += i18n_patterns(
         JavaScriptCatalog.as_view(packages=["recurrence"]),
         name="javascript-catalog",
     ),
+    path("hordak/", include("hordak.urls")),
     prefix_default_language=False,
 )
 
@@ -58,4 +60,6 @@ if settings.DEBUG:
     # This will only work in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    urlpatterns += [re_path(r"^media/(?P<path>.*)", serve, {"document_root": settings.MEDIA_ROOT})]
+    urlpatterns += [
+        re_path(r"^media/(?P<path>.*)", serve, {"document_root": settings.MEDIA_ROOT})
+    ]

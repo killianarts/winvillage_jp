@@ -47,8 +47,8 @@ class PendulumDateTimeField(models.DateTimeField):
 
     def get_prep_value(self, value):
         if isinstance(value, pendulum.DateTime):
-            # return value.to_iso8601_string()
-            return value
+            return value.to_iso8601_string()
+            # return value
         if isinstance(value, datetime.datetime):
             return pendulum.instance(value)
         if isinstance(value, datetime.date):
@@ -56,9 +56,9 @@ class PendulumDateTimeField(models.DateTimeField):
         if value is None:
             return value
 
-    def value_to_string(self, obj):
-        value = self._get_val_from_obj(obj)
-        return "" if value is None else value.isoformat()
+    # def value_to_string(self, obj):
+    #     value = self._get_val_from_obj(obj)
+    #     return "" if value is None else value.isoformat()
 
     def db_type(self, connection):
         if connection.vendor == "mysql":
@@ -123,7 +123,9 @@ class Item(BaseModel):
         verbose_name_plural = _("Items")
 
     name = models.CharField(verbose_name=_("Name"), max_length=100, unique=True)
-    price = models.DecimalField(verbose_name=_("Price"), max_digits=19, decimal_places=2)
+    price = models.DecimalField(
+        verbose_name=_("Price"), max_digits=19, decimal_places=2
+    )
     category = models.ForeignKey(
         Category,
         verbose_name=_("Category"),
@@ -131,11 +133,17 @@ class Item(BaseModel):
         blank=True,
         on_delete=models.SET_NULL,
     )
-    image = models.ImageField(upload_to="item_images/", verbose_name=_("Image"), null=True, blank=True)
+    image = models.ImageField(
+        upload_to="item_images/", verbose_name=_("Image"), null=True, blank=True
+    )
     stock_quantity = models.IntegerField(default=1, verbose_name=_("Stock Quantity"))
     active = models.BooleanField(default=False, verbose_name=_("Active?"))
-    reservation_option = models.BooleanField(default=False, verbose_name=_("Reservation Option?"))
-    description = models.TextField(default=_("Long description"), verbose_name=_("Description"), null=True)
+    reservation_option = models.BooleanField(
+        default=False, verbose_name=_("Reservation Option?")
+    )
+    description = models.TextField(
+        default=_("Long description"), verbose_name=_("Description"), null=True
+    )
     short_description = models.CharField(
         max_length=280,
         default=_("Short description"),
@@ -166,13 +174,20 @@ class Item(BaseModel):
 class Transaction(BaseModel):
     class TransactionReturnsManager(models.Manager):
         def get_queryset(self):
-            return super().get_queryset().filter(name__in=["return"]).order_by("created_at")
+            return (
+                super()
+                .get_queryset()
+                .filter(name__in=["return"])
+                .order_by("created_at")
+            )
 
         def create_returns_from_order(self, order_obj):
             with transaction.atomic():
                 orderitem_transactions = []
                 for orderitem in order_obj.items.all():
-                    orderitem_transaction = self.create(orderitem_obj=orderitem, customer_obj=order_obj.customer)
+                    orderitem_transaction = self.create(
+                        orderitem_obj=orderitem, customer_obj=order_obj.customer
+                    )
                     orderitem_transactions.append(orderitem_transaction)
                 return orderitem_transactions
 
@@ -190,13 +205,17 @@ class Transaction(BaseModel):
 
     class TransactionSalesManager(models.Manager):
         def get_queryset(self):
-            return super().get_queryset().filter(name__in=["sale"]).order_by("created_at")
+            return (
+                super().get_queryset().filter(name__in=["sale"]).order_by("created_at")
+            )
 
         def create_sales_from_order(self, order_obj):
             with transaction.atomic():
                 orderitem_transactions = []
                 for orderitem in order_obj.items.all():
-                    orderitem_transaction = self.create(orderitem_obj=orderitem, customer_obj=order_obj.customer)
+                    orderitem_transaction = self.create(
+                        orderitem_obj=orderitem, customer_obj=order_obj.customer
+                    )
                     orderitem_transactions.append(orderitem_transaction)
                 return orderitem_transactions
 
@@ -229,7 +248,8 @@ class Transaction(BaseModel):
                     customer=reservation_obj.customer,
                     product=_("Reservation"),
                     quantity=reservation_obj.get_stay_period_in_nights(),
-                    price_per_unit=reservation_obj.get_price() / reservation_obj.get_stay_period_in_nights(),
+                    price_per_unit=reservation_obj.get_price()
+                    / reservation_obj.get_stay_period_in_nights(),
                     total_price=reservation_obj.get_price(),
                 )
                 return transaction_obj
@@ -245,7 +265,9 @@ class Transaction(BaseModel):
         RETURN = "return", _("Return")
         DEPOSIT = "deposit", _("Deposit")
 
-    name = models.CharField(max_length=30, choices=TransactionType, verbose_name=_("Name"))
+    name = models.CharField(
+        max_length=30, choices=TransactionType, verbose_name=_("Name")
+    )
     customer = models.ForeignKey(
         Customer,
         null=True,
@@ -256,11 +278,15 @@ class Transaction(BaseModel):
     product = models.CharField(
         max_length=50, verbose_name=_("Product")
     )  # For Item, the name. For Reservation, "Reservation"
-    quantity = models.IntegerField(default=1, verbose_name=_("Quantity"))  # For Reservation, number of nights
+    quantity = models.IntegerField(
+        default=1, verbose_name=_("Quantity")
+    )  # For Reservation, number of nights
     price_per_unit = models.DecimalField(
         max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit")
     )  # Price per night
-    total_price = models.DecimalField(max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit"))
+    total_price = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit")
+    )
     objects = models.Manager()
     sales = TransactionSalesManager()
     returns = TransactionReturnsManager()
@@ -312,8 +338,12 @@ class Vendor(BaseModel):
         verbose_name_plural = _("Vendors")
 
     name = models.CharField(max_length=50, verbose_name=_("Name"))
-    cutoff_day = models.SmallIntegerField(default=30, validators=[MaxValueValidator(31), MinValueValidator(-1)])
-    due_day = models.SmallIntegerField(default=30, validators=[MaxValueValidator(31), MinValueValidator(-1)])
+    cutoff_day = models.SmallIntegerField(
+        default=30, validators=[MaxValueValidator(31), MinValueValidator(-1)]
+    )
+    due_day = models.SmallIntegerField(
+        default=30, validators=[MaxValueValidator(31), MinValueValidator(-1)]
+    )
 
     def get_cutoff_date(self, invoice_year, invoice_month):
         default_timezone = timezone.get_default_timezone()
@@ -321,16 +351,27 @@ class Vendor(BaseModel):
         is_end_of_month = cutoff_day == -1
         cutoff_date = None
         if is_end_of_month:
-            cutoff_date = pendulum.datetime(invoice_year, invoice_month, 1, tz=default_timezone).end_of("month")
+            cutoff_date = (
+                pendulum.datetime(invoice_year, invoice_month, 1, tz=default_timezone)
+                .subtract(months=1)
+                .end_of("month")
+                .start_of("day")
+            )
         else:
-            cutoff_date = pendulum.datetime(invoice_year, invoice_month, cutoff_day, tz=default_timezone).end_of("day")
+            cutoff_date = pendulum.datetime(
+                invoice_year, invoice_month, cutoff_day, tz=default_timezone
+            ).start_of("day")
         return cutoff_date
 
     def get_due_date(self, cutoff_date):
+        cutoff_day = self.cutoff_day
+        cutoff_day_is_end_of_month = cutoff_day == -1
         due_day = self.due_day
-        is_end_of_month = due_day == -1
+        due_day_is_end_of_month = due_day == -1
         due_date = None
-        if is_end_of_month:
+        if due_day_is_end_of_month and cutoff_day_is_end_of_month:
+            due_date = cutoff_date.add(months=1).end_of("month")
+        elif due_day_is_end_of_month and not cutoff_day_is_end_of_month:
             due_date = cutoff_date.end_of("month")
         else:
             due_date = cutoff_date.add(days=due_day)
@@ -339,11 +380,32 @@ class Vendor(BaseModel):
     def create_invoice(self, _date, procurements):
         cutoff_date = self.get_cutoff_date(_date.year, _date.month)
         due_date = self.get_due_date(cutoff_date)
-        invoice = Invoice.objects.create(vendor=self, invoiced_on=cutoff_date, due_on=due_date)
+        amount = 0
+        for procurement in procurements:
+            amount += procurement.get_total_price()
+        invoice = Invoice.objects.create(
+            vendor=self, invoiced_on=cutoff_date, due_on=due_date, amount=amount
+        )
         for procurement in procurements:
             invoice.procurements.add(procurement)
         invoice.save()
         return invoice
+
+    def get_invoice_period(self, year, month):
+        this_month_cutoff_date = self.get_cutoff_date(year, month)
+        last_month_cutoff_date = this_month_cutoff_date.subtract(months=1)
+        return {"start": last_month_cutoff_date, "end": this_month_cutoff_date}
+
+    def get_current_invoice(self):
+        invoice = Invoice.current.filter(vendor=self)
+        if invoice.exists():
+            return invoice.first()
+        return invoice
+
+    def get_one_to_thirty_day_past_due_invoice(self):
+        today = pendulum.today(tz=timezone.get_default_timezone_name())
+        current_invoice = self.get_current_invoice()
+        current_due_date = current_invoice.due_on
 
     def __str__(self):
         return self.name
@@ -356,32 +418,42 @@ class Procurement(BaseModel):
 
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     product = models.ForeignKey(Item, on_delete=models.CASCADE)
-    price_per_unit = models.DecimalField(max_digits=14, decimal_places=2, verbose_name=_("Price"))
+    price_per_unit = models.DecimalField(
+        max_digits=14, decimal_places=2, verbose_name=_("Price")
+    )
     quantity = models.PositiveSmallIntegerField(verbose_name=_("Quantity"))
     procured_on = PendulumDateTimeField(verbose_name=_("Procured On"))
+
+    def get_total_price(self):
+        return self.price_per_unit * self.quantity
 
     def __str__(self):
         return f"{self.vendor}, {self.product}"
 
 
 class Invoice(BaseModel):
+    class CurrentInvoiceManager(models.Manager):
+        def get_queryset(self):
+            today = pendulum.today(tz=timezone.get_current_timezone_name())
+            return super().get_queryset().filter(due_on__gte=today)
+
     class Meta:
         verbose_name = _("Invoice")
         verbose_name_plural = _("Invoices")
 
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     procurements = models.ManyToManyField(Procurement)
     invoiced_on = PendulumDateTimeField(verbose_name=_("Invoiced On"))
     due_on = PendulumDateTimeField(verbose_name=_("Due On"))
+    amount = models.DecimalField(max_digits=19, decimal_places=2)
 
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    objects = models.Manager()
+    current = CurrentInvoiceManager()
+
+    def compare_to_current(self, invoice):
+        current = self.current
+        diff = current.due_on.diff(invoice.due_on)
+        return diff
 
     def __str__(self):
-        return f"{self.vendor}, {self.invoiced_on}"
-
-
-class Invooice(models.Model):
-    created_on = models.DateTimeField(auto_now_add=True)
-    editable_dt = models.DateTimeField()
-
-    def __str__(self):
-        return f"{self.created_on}, {self.editable_dt}"
+        return f"Vendor: {self.vendor}, Due On: {self.due_on}"

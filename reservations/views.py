@@ -49,36 +49,11 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
-# @htmx_form_validate(form_class=TravelerForm)
-# @for_htmx(use_block_from_params=True)
-# def index(request: HtmxHttpRequest) -> HttpResponse:
-#     reservation = get_or_set_reservation_session(request)
-#     initial = {
-#         "number_of_adults": reservation.stay.number_of_adults,
-#         "number_of_children": reservation.stay.number_of_children,
-#     }
-#     form = TravelerForm(initial=initial)
-#     if request.method == "POST":
-#         form = TravelerForm(request.POST)
-#         if form.is_valid():
-#             reservation.set_number_of_visitors(form)
-#     context = {"form": form, "reservation": reservation}
-#     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
-
-
 @for_htmx(use_block_from_params=True)
 def date_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     today_date = pendulum.today()
     form = forms.DateTimeForm(initial={"datetime": today_date})
-    # if reservation.start_time() and reservation.end_time():
-    #     initial = {
-    #         "start_time": reservation.start_time(),
-    #         "end_time": reservation.end_time(),
-    #     }
-    # else:
-    #     initial = None
-    # time_form = forms.TimeSelectForm(initial=initial)
     calendars = generate_calendars(reservation, today_date)
     start = reservation.stay.start if reservation.stay.start else None
     end = reservation.stay.end if reservation.stay.end else None
@@ -101,19 +76,14 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
         if "select_date" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)
             if calendar_cell_form.is_valid():
-                selected_datetime = pendulum.instance(calendar_cell_form.cleaned_data["datetime"])
+                selected_datetime = pendulum.instance(
+                    calendar_cell_form.cleaned_data["datetime"]
+                )
                 start, end = reservation.set_dates(selected_datetime)
-        # if "select_time" in request.POST:
-        #     time_form = forms.TimeSelectForm(request.POST)
-        #     if time_form.is_valid():
-        #         start_time = time_form.cleaned_data["start_time"]
-        #         end_time = time_form.cleaned_data["end_time"]
-        #         reservation.set_times(start_time, end_time)
     context = {
         "calendars": calendars,
         "today_date": today_date,
         "form": form,
-        # "time_form": time_form,
         "start": start,
         "end": end,
     }
@@ -125,18 +95,27 @@ def room_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     roomtier_queryset = reservation.get_possible_roomtier_queryset()
     roomtier_data = utils.get_roomtier_data(reservation)
-    form = forms.RoomTierChoiceForm(queryset=roomtier_queryset, initial=utils.get_form_initial_data(reservation))
+    form = forms.RoomTierChoiceForm(
+        queryset=roomtier_queryset, initial=utils.get_form_initial_data(reservation)
+    )
     if request.method == "POST":
         form = utils.get_form_with_POST_data(reservation, request)
         if form.is_valid():
-            reservation.set_room(form, roomtier_data, reservation.get_start_date(), reservation.get_end_date())
+            reservation.set_room(
+                form,
+                roomtier_data,
+                reservation.get_start_date(),
+                reservation.get_end_date(),
+            )
     context = {"form": form, "roomtier_data": roomtier_data, "reservation": reservation}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
 def times_view(request):
     datetimes = generate_interval_range(range_unit="minutes", range_amount=30)
-    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(stay__end__date="2024-1-11")
+    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(
+        stay__end__date="2024-1-11"
+    )
     return TemplateResponse(
         request,
         "reservations/times.html",
@@ -149,7 +128,9 @@ def times_view(request):
 
 def times_view(request):
     datetimes = generate_datetimes()
-    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(stay__end__date="2024-1-11")
+    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(
+        stay__end__date="2024-1-11"
+    )
     return TemplateResponse(
         request,
         "reservations/times.html",
@@ -247,10 +228,8 @@ def reservation_confirm(request: HtmxHttpRequest) -> HttpResponse:
         phone=phone,
     )
     reservation.confirm(customer=customer)
-    response = send_confirmation_email.delay(reservation.id)
-    # if response:
-    #     request.session.flush()
-    return TemplateResponse(request, RESERVATION_TEMPLATE, {})
+    result = send_confirmation_email.delay(reservation.id)
+    return TemplateResponse(request, RESERVATION_TEMPLATE, {"result": result})
 
 
 # def send_confirmation_email(request):

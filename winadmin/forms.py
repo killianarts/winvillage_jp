@@ -1,12 +1,14 @@
 from datetime import datetime
 
+from hordak.models import CURRENCY_CHOICES
 import pendulum
-from core.forms import TailwindFormMixin
+from core.forms import PendulumField, TailwindFormMixin
 from core.models import Invoice, Item, Procurement, Transaction, Vendor
 from django import forms
 from django.forms import BaseInlineFormSet, widgets
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
+from hordak.forms import accounts as account_forms
 from model_utils import Choices
 from phonenumber_field.formfields import PhoneNumberField
 from reservations.models import (
@@ -18,12 +20,13 @@ from reservations.models import (
     RoomTier,
     Stay,
 )
-from core.forms import PendulumField
 
 
 class LoginForm(TailwindFormMixin, forms.Form):
     username = forms.CharField(label=_("Username"), max_length=30)
-    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput, max_length=30)
+    password = forms.CharField(
+        label=_("Password"), widget=forms.PasswordInput, max_length=30
+    )
 
 
 class ItemCreateFormRenderer(TemplatesSetting):
@@ -315,8 +318,12 @@ class PricingTierGroupCreateForm(forms.Form):
         )
 
     name = forms.CharField(max_length=100, label=_("Name"))
-    minimum_number_of_adults = forms.IntegerField(initial=1, min_value=1, max_value=2, label=_("Minimum Adults"))
-    maximum_number_of_adults = forms.IntegerField(initial=6, min_value=4, max_value=6, label=_("Maximum Adults"))
+    minimum_number_of_adults = forms.IntegerField(
+        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
+    )
+    maximum_number_of_adults = forms.IntegerField(
+        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
+    )
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -348,8 +355,12 @@ class PricingTierGroupDetailForm(forms.ModelForm):
         )
 
     name = forms.CharField(max_length=100, label=_("Name"))
-    minimum_number_of_adults = forms.IntegerField(initial=1, min_value=1, max_value=2, label=_("Minimum Adults"))
-    maximum_number_of_adults = forms.IntegerField(initial=6, min_value=4, max_value=6, label=_("Maximum Adults"))
+    minimum_number_of_adults = forms.IntegerField(
+        initial=1, min_value=1, max_value=2, label=_("Minimum Adults")
+    )
+    maximum_number_of_adults = forms.IntegerField(
+        initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
+    )
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -404,7 +415,7 @@ class InvoiceCreateForm(forms.ModelForm):
 
 class InvoiceDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
-        models = Invoice
+        model = Invoice
         fields = ["vendor", "invoiced_on", "due_on"]
 
 
@@ -420,3 +431,22 @@ class ProcurementDetailForm(TailwindFormMixin, forms.ModelForm):
         model = Procurement
         fields = ["vendor", "product", "price_per_unit", "quantity", "procured_on"]
         widgets = {"procured_on": forms.SelectDateWidget()}
+
+
+class CompanyWiseProcurementLedgerFilter(forms.ModelForm):
+    class Meta:
+        model = Vendor
+        fields = ["name"]
+
+    name = forms.ModelChoiceField(
+        queryset=Vendor.objects.all(), initial=Vendor.objects.first()
+    )
+
+
+class AccountForm(TailwindFormMixin, account_forms.AccountForm):
+    currencies = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple, choices=CURRENCY_CHOICES
+    )
+
+    def _check_currencies_json(self):
+        pass
