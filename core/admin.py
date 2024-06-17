@@ -6,24 +6,25 @@ from core.models import (
     Invoice,
     Item,
     Procurement,
-    Transaction,
+    TransactionDetail,
+    TransactionItem,
     Vendor,
 )
 
 
-class TransactionAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "name",
-        "price_per_unit",
-        "quantity",
-        "total_price",
-        "created_at",
-        "updated_at",
-    )
+# class TransactionAdmin(admin.ModelAdmin):
+#     list_display = (
+#         "id",
+#         "name",
+#         "price_per_unit",
+#         "quantity",
+#         "total_price",
+#         "created_at",
+#         "updated_at",
+#     )
 
 
-admin.site.register(Transaction, TransactionAdmin)
+# admin.site.register(Transaction, TransactionAdmin)
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -58,3 +59,5 @@ class ProcurementAdmin(admin.ModelAdmin):
 
 admin.site.register(Procurement, ProcurementAdmin)
 admin.site.register(Invoice)
+admin.site.register(TransactionDetail)
+admin.site.register(TransactionItem)

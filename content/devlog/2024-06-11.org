@@ -1,0 +1,219 @@
+#+title: Integrating with Hordak
+* Accounts
+In accounting, you have different accounts. Some accounts are credit and some are debit accounts. The different kinds of accounts in Hordak terms are:
+1. Assets
+2. Liabilities
+3. Income
+4. Expenses
+
+The main difference between them is whether they store their transactions with positive or negative numbers.
+* Transactions
+Transactions have at minimum two legs: from and to. When a transfer from one account to another is made, one account is credited and the other is debited.
+* Ledgers
+Ledgers can show detailed information about many small transactions, like the accounts payable ledger (which shows transactions and their details, including product/service purchased, etc.), or it can show less detailed information about large groups of transactions, such as with an accounts payable aging report (which shows the age of entire invoices and how past due they are).
+
+* How to make ledgers and reports
+Some ledgers are easy. Accounts payable is simple: just show the transactions, maybe filtered by vendor.
+
+Reports like the aging report are trickier. They show:
+
+1. Invoices that are
+2. past due
+3. and how past due they are
+4. and the vendors (accounts) they are associated with.
+
+So how do I create a report?
+
+Well, it's easy to get current accounts.
+
+1. Get today's date. If the most recent invoice from this vendor has a due date later than today, then it is "current", not past due.
+
+This explanation isn't complicated by any sense of "accounts" until you ask: How much has been paid? That is the essential question for all the past due invoices.
+
+An invoice is past due if:
+
+2. There are other invoices besides the most recent invoice that are unpaid.
+
+The question is: how do you track payments on invoices? I believe that's where accounts come in.
+
+** Account setup
+Remember that there are four kinds of accounts. A vendor account holds "expenses". Thus, if I have 3 vendors I purchase from, I need three vendor expense accounts.
+
+Expenses:Supplier
+Expenses:Vendor
+Expenses:Company
+
+When I transfer to an expense account, what happens? I don't know, let's find out.
+
+#+begin_src python :session
+account = Account.objects.create()
+>>> account
+<Account: Unnamed Account [￥0]>
+#+end_src
+
+Okay, easy to create an account. Let's make an expense account.
+
+#+begin_src python :session
+account.name = "Saga Beef Boys"
+account.type = "EX" # Expenses
+account.save()
+>>> account
+<Account: Saga Beef Boys [￥0]>
+#+end_src
+
+Now, how do we transfer something to the account? We need to make a Transaction, but a transaction requires at minimum two legs: the From Account and the To Account.
+
+That means we need another account to transfer from.
+#+begin_src python :session
+>>> expense_account = account
+expense_account = account
+>>> asset_account = Account.objects.create(name="Mizuho Bank", type="AS")
+asset_account = Account.objects.create(name="Mizuho Bank", type="AS")
+>>> asset_account
+asset_account
+<Account: Mizuho Bank [￥0]>
+#+end_src
+
+Alright, now let's transfer. How? The Account model has a method called "accounting_transfer_to()". So, we can use the asset_account.
+
+#+begin_src python :sesson
+asset_account.transfer_to(expense_account, 5000)
+TypeError: amount must be of type Money
+#+end_src
+
+Oops. We need to use the Money model from the django-money package.
+
+#+begin_src python :sesson
+from djmoney.money import Money
+>>> Money(5000, "JPY")
+Money('5000', 'JPY')
+#+end_src
+
+Now let's try that transfer.
+
+#+begin_src python :session
+>>> asset_account.accounting_transfer_to(expense_account, Money(7777, "JPY"))
+asset_account.accounting_transfer_to(expense_account, Money(7777, "JPY"))
+<Transaction: Transaction object (4)>
+>>> asset_account
+asset_account
+<Account: Mizuho Bank [-￥7,777]>
+>>> expense_account
+expense_account
+<Account: Saga Beef Boys [￥7,777]>
+#+end_src
+
+But this doesn't make sense: we have just paid into the account. We don't want that. When we make a purchase from Saga Beef Boys, we need to transfer from that account. But what account do we transfer to? We're buying inventory. Should we have an inventory Account? That makes sense:
+
+Asset:Mizuho Bank
+Asset:Inventory
+Expense:Beef Boys
+
+We transfer value from the Beef Boys to our inventory.
+
+Let's look at the Account types:
+
+#+begin_src python :session
+TYPES = Choices(
+        ("AS", "asset", "Asset"),  # Eg. Cash in bank
+        (
+            "LI",
+            "liability",
+            "Liability",
+        ),  # Eg. Loans, bills paid after the fact (in arrears)
+        ("IN", "income", "Income"),  # Eg. Sales, housemate contributions
+        ("EX", "expense", "Expense"),  # Eg. Office supplies, paying bills
+        ("EQ", "equity", "Equity"),  # Eg. Money from shares
+        ("TR", "trading", "Currency Trading"),  # Used to represent currency conversions
+    )
+#+end_src
+
+*** CORRECTION
+The Beef Boys account isn't an expense account. It's a liability account.
+
+*** Understanding Assets, Liabilities, and Expenses
+Let's look at this activity.
+
+#+begin_src python :session
+>>> liability_account
+<Account: The Beef [￥0]>
+>>> asset_account
+<Account: Mizuho Bank [￥0]>
+>>> expense_account
+<Account: Saga Beef Boys [￥0]>
+>>> liability_account.accounting_transfer_to(expense_account, Money(5000, "JPY"))
+liability_account.accounting_transfer_to(expense_account, Money(5000, "JPY"))
+<Transaction: Transaction object (6)>
+>>> liability_account
+<Account: The Beef [￥5,000]>
+>>> expense_account
+<Account: Saga Beef Boys [￥5,000]>
+#+end_src
+
+What happened? I thought I moved money from my liability to my expenses, meaning that I paid off some of my expenses, but both accounts went up. Why?
+
+What happens if I transfer from an asset account to the liability account?
+
+#+begin_src python :session
+>>> asset_account
+asset_account
+<Account: Mizuho Bank [￥0]>
+>>> asset_account.accounting_transfer_to(liability_account, Money(8888, "JPY"))
+asset_account.accounting_transfer_to(liability_account, Money(8888, "JPY"))
+<Transaction: Transaction object (7)>
+>>> asset_account
+asset_account
+<Account: Mizuho Bank [-￥8,888]>
+>>> liability_account
+liability_account
+<Account: The Beef [-￥3,888]>
+#+end_src
+
+Wait, I thought the liability account was how much I have saved for paying off expenses. What gives? Shouldn't the liability account have more money in it?
+
+**** Tentative explanation
+What I think is happening is that TO ME, the owner of the liability account, transfering money from assets to liabilities PAYS DOWN the liabilities, it doesn't STORE UP money for making payments.
+
+**** What happens when I transfer from liability to expense?
+When I transfered from liability to expense, both went up.
+**** What happens when I transfer from expense to liability?
+PREDICTION: Both go down.
+
+#+begin_src python :session
+>>> liability_account
+<Account: The Beef [-￥3,888]>
+>>> expense_account
+<Account: Saga Beef Boys [￥5,000]>
+>>> expense_account.accounting_transfer_to(liability_account, Money(3888, "JPY"))
+expense_account.accounting_transfer_to(liability_account, Money(3888, "JPY"))
+>>> expense_account
+<Account: Saga Beef Boys [￥1,112]>
+>>> liability_account
+<Account: The Beef [-￥7,776]>
+#+end_src
+
+As predicted, they both went down.
+
+**** When happens when I transfer from a liability to an asset?
+PREDICTION: Liability decreases, asset increases
+#+begin_src python :session
+>>> asset_account
+asset_account
+<Account: Mizuho Bank [-￥8,888]>
+>>> liability_account
+liability_account
+<Account: The Beef [-￥7,776]>
+>>> liability_account.accounting_transfer_to(asset_account, Money(1000, "JPY"))
+liability_account.accounting_transfer_to(asset_account, Money(1000, "JPY"))
+<Transaction: Transaction object (9)>
+>>> asset_account
+asset_account
+<Account: Mizuho Bank [-￥7,888]>
+>>> liability_account
+liability_account
+<Account: The Beef [-￥6,776]>
+#+end_src
+
+They both INCREASED in value.
+
+What this means is that when you transfer from liability to asset, you inc

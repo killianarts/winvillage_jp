@@ -1,7 +1,9 @@
-from django.contrib import messages
+from core.accounting_utils import create_sales_from_order
+from core.models import Item
+from core.utils import HtmxHttpRequest, for_htmx, htmx_form_validate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.forms import modelformset_factory, formset_factory
+from django.forms import formset_factory, modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
@@ -9,16 +11,10 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
+from reservations.models import Order, OrderItem, Reservation, Room
 
 import customer.forms as forms
-from core.models import Item, Transaction
-from core.utils import (
-    HtmxHttpRequest,
-    for_htmx,
-    htmx_form_validate,
-)
-from customer.models import Customer, make_customers, TicketNote, Ticket
-from reservations.models import Reservation, Room, Order, OrderItem
+from customer.models import Customer, Ticket, TicketNote, make_customers
 
 
 @login_required(login_url="winadmin:login_page")
@@ -32,7 +28,9 @@ def customer_create(request: HtmxHttpRequest) -> HttpResponse:
                 customer = form.save()
                 messages.success(
                     request,
-                    message=_("Customer named %(customer_full_name)s created successfully!")
+                    message=_(
+                        "Customer named %(customer_full_name)s created successfully!"
+                    )
                     % {"customer_full_name": customer.full_name},
                 )
                 return HttpResponseClientRedirect(reverse("winadmin:customer_list"))
@@ -49,7 +47,12 @@ def customer_create(request: HtmxHttpRequest) -> HttpResponse:
 def customer_create_bulk(request: HtmxHttpRequest) -> HttpResponse:
     customers = make_customers(int(request.POST.get("howmany", "1")))
     if request.method == "POST":
-        return HttpResponse("".join(format_html("Created {0}<br>", customer.full_name) for customer in customers))
+        return HttpResponse(
+            "".join(
+                format_html("Created {0}<br>", customer.full_name)
+                for customer in customers
+            )
+        )
     return TemplateResponse(request, "customer/customer_create_bulk.html", {})
 
 
@@ -144,7 +147,9 @@ def ticket_create(request: HtmxHttpRequest) -> HttpResponse:
             else:
                 messages.error(request, message=_("Ticket couldn't be created!"))
                 context = {"form": form}
-    return trigger_client_event(TemplateResponse(request, "ticket/ticket_create.html", context), "getMessages")
+    return trigger_client_event(
+        TemplateResponse(request, "ticket/ticket_create.html", context), "getMessages"
+    )
 
 
 @login_required(login_url="winadmin:login_page")
@@ -208,7 +213,9 @@ def ticket_detail(request: HtmxHttpRequest, ticket_id: int) -> HttpResponse:
         "ticket": ticket,
         "notes": ticket.notes.all().order_by("created_at"),
     }
-    return trigger_client_event(TemplateResponse(request, "ticket/ticket_detail.html", context), "getMessages")
+    return trigger_client_event(
+        TemplateResponse(request, "ticket/ticket_detail.html", context), "getMessages"
+    )
 
 
 def occupied_room_list(request):
@@ -221,7 +228,9 @@ def occupied_room_list(request):
         customer = None
         if room in occupied_rooms:
             if reservations.filter(stay__status="checked_in").exists():
-                customer = reservations.get(stay__room=room, stay__status="checked_in").customer
+                customer = reservations.get(
+                    stay__room=room, stay__status="checked_in"
+                ).customer
         rooms_with_occupants[room] = customer
 
     context = {
@@ -234,16 +243,24 @@ def occupied_room_list(request):
     return TemplateResponse(request, "customer/occupied_room_list.html", context)
 
 
+# TODO: Integrate Hordak Transactions and Accounts(?)
 @for_htmx(use_block_from_params=True)
 def checked_in_customer_purchase(request, room_id, customer_id):
     customer = get_object_or_404(Customer, pk=customer_id)
     customer_information_form = forms.CustomerForm(instance=customer)
     order, created = Order.objects.get_or_create(customer=customer, ordered=False)
     room = Room.objects.get(id=room_id)
-    shop_items = Item.in_stock.with_orderitem_quantities(order).order_by("category", "name")
+    shop_items = Item.in_stock.with_orderitem_quantities(order).order_by(
+        "category", "name"
+    )
     shop_item_forms = []
     for item in shop_items:
-        initial = {"item_id": item.id, "name": item.name, "price": item.price, "quantity": item.quantity_in_order}
+        initial = {
+            "item_id": item.id,
+            "name": item.name,
+            "price": item.price,
+            "quantity": item.quantity_in_order,
+        }
         form = forms.ItemForm(initial=initial)
         shop_item_forms.append([item, form])
     if request.method == "POST":
@@ -256,13 +273,15 @@ def checked_in_customer_purchase(request, room_id, customer_id):
                 if created:
                     order.items.add(order_item)
                     order.save()
+                if not created and order_item not in order.items.all():
+                    order.items.add(order_item)
                 if quantity > 0:
                     order_item.quantity = quantity
                     order_item.save()
                 else:
                     order_item.delete()
-        if "check-out" in request.POST:
-            transactions = Transaction.sales.create_sales_from_order(order_obj=order)
+        if "check-out-cash" in request.POST:
+            detail = create_sales_from_order(order_obj=order, payment_type="cash")
             for orderitem in order.items.all():
                 orderitem.item.stock_quantity -= orderitem.quantity
                 orderitem.item.save()
@@ -270,6 +289,16 @@ def checked_in_customer_purchase(request, room_id, customer_id):
             order.save()
             messages.success(request, _("Purchase Completed."))
             return HttpResponseClientRedirect(reverse("winadmin:index"))
+        elif "check-out-card" in request.POST:
+            detail = create_sales_from_order(order_obj=order)
+            for orderitem in order.items.all():
+                orderitem.item.stock_quantity -= orderitem.quantity
+                orderitem.item.save()
+            order.ordered = True
+            order.save()
+            messages.success(request, _("Purchase Completed."))
+            return HttpResponseClientRedirect(reverse("winadmin:index"))
+
         elif "cancel" in request.POST:
             if order:
                 order.delete()
@@ -284,7 +313,9 @@ def checked_in_customer_purchase(request, room_id, customer_id):
         "shop_item_forms": shop_item_forms,
         "room": room,
     }
-    response = TemplateResponse(request, "customer/checked_in_customer_purchase.html", context)
+    response = TemplateResponse(
+        request, "customer/checked_in_customer_purchase.html", context
+    )
     return trigger_client_event(response, "getMessages")
 
 
@@ -294,10 +325,17 @@ def checked_in_customer_return(request, room_id, customer_id):
     customer_information_form = forms.CustomerForm(instance=customer)
     order, created = Order.objects.get_or_create(customer=customer, ordered=False)
     room = Room.objects.get(id=room_id)
-    shop_items = Item.in_stock.with_orderitem_quantities(order).order_by("category", "name")
+    shop_items = Item.in_stock.with_orderitem_quantities(order).order_by(
+        "category", "name"
+    )
     shop_item_forms = []
     for item in shop_items:
-        initial = {"item_id": item.id, "name": item.name, "price": item.price, "quantity": item.quantity_in_order}
+        initial = {
+            "item_id": item.id,
+            "name": item.name,
+            "price": item.price,
+            "quantity": item.quantity_in_order,
+        }
         form = forms.ItemForm(initial=initial)
         shop_item_forms.append([item, form])
     if request.method == "POST":
@@ -316,7 +354,9 @@ def checked_in_customer_return(request, room_id, customer_id):
                 else:
                     order_item.delete()
         if "check-out" in request.POST:
-            transactions = Transaction.returns.create_returns_from_order(order_obj=order)
+            transactions = Transaction.returns.create_returns_from_order(
+                order_obj=order
+            )
             for orderitem in order.items.all():
                 orderitem.item.stock_quantity += orderitem.quantity
                 orderitem.item.save()
@@ -338,5 +378,7 @@ def checked_in_customer_return(request, room_id, customer_id):
         "shop_item_forms": shop_item_forms,
         "room": room,
     }
-    response = TemplateResponse(request, "customer/checked_in_customer_return.html", context)
+    response = TemplateResponse(
+        request, "customer/checked_in_customer_return.html", context
+    )
     return trigger_client_event(response, "getMessages")

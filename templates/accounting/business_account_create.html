@@ -3,27 +3,22 @@
 {% block extra_styles %}
 {% endblock %}
 {% block subtitle %}
-    {% blocktrans %}Create Procurement{% endblocktrans %}
+    {% blocktrans %}Create Business Transaction{% endblocktrans %}
 {% endblock %}
 {% block content %}
     <div id="content-wrapper">
-        <h1 class="text-3xl">{% translate 'Create Procurement' %}</h1>
+        <h1 class="text-3xl">{% translate 'Create Business Transaction' %}</h1>
         {% block form %}
-            <form id="procurement-create-form" class="max-w-xl grid" action="." novalidate
+            <form id="business-transaction-create-form" class="max-w-xl grid" action="." novalidate
                   hx-post="."
                   hx-target="#content-wrapper"
                   hx-swap="outerHTML"
                   hx-vals='{"use_block": "content"}'>
-                <div hx-get="."
-                     hx-target="#procurement-create-form"
-                     hx-swap="morph:outerHTML"
-                     hx-trigger="change delay:100ms"
-                     hx-include="this"
-                     hx-vals='{"use_block": "form"}'>
+                <div>
                     {{ form }}
                 </div>
                 <div>
-                    {% #outline_button id="submit-button" name="create-procurement" value="create-procurement" type="submit" %}
+                    {% #outline_button id="submit-button" name="create-business-transaction" value="create-business transaction" type="submit" %}
                     {% trans "Submit" %}
                     {% /outline_button %}
                 </div>

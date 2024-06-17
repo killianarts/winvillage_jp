@@ -206,7 +206,31 @@ urlpatterns = [
         views.procurement_detail,
         name="procurement_detail",
     ),
-    path("accounting/account_create/", views.account_create, name="account_create"),
+    path(
+        "accounting/business_account/create/",
+        views.business_account_create,
+        name="business_account_create",
+    ),
+    path(
+        "accounting/business_account/list/",
+        views.business_account_list,
+        name="business_account_list",
+    ),
+    path(
+        "accounting/business_account/detail/<int:business_account_id>/",
+        views.business_account_detail,
+        name="business_account_detail",
+    ),
+    path(
+        "accounting/business_transaction/create/",
+        views.business_transaction_create,
+        name="business_transaction_create",
+    ),
+    path(
+        "accounting/business_transaction/list/",
+        views.business_transaction_list,
+        name="business_transaction_list",
+    ),
 ]
 
 urlpatterns += [

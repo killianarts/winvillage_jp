@@ -45,6 +45,7 @@ django-relativedelta = "^2.0.0"
 django-celery-results = "^2.5.1"
 pytest = "^8.2.1"
 django-hordak = "^1.15.0"
+django-money = "^3.5.2"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"

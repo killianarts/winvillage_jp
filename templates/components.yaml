@@ -14,3 +14,4 @@ components:
   four_col_image_grid_cell: "patterns/grids/four_col_image_grid_cell/four_col_image_grid_cell.html"
 
   winvillage_header: "patterns/headers/winvillage_header/winvillage_header.html"
+  form: "patterns/forms/pure/form.html"

@@ -1,9 +1,8 @@
-{% load i18n %}
-{% load widget_tweaks %}
+{% load i18n widget_tweaks field_type %}
 
 <div{% with classes=field.css_classes %} class="field is-horizontal slide-it {{ classes }}"{% endwith %}
                                          id="form-row-{{ field.name }}"
-        {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}
+                                         {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}
                                          hx-get="."
                                          hx-vals='{"_validate_field": "{{ field.name }}" }'
                                          hx-trigger="keyup from:#form-row-{{ field.name }} delay:350ms"
@@ -11,7 +10,7 @@
                                          hx-target="this"
                                          hx-ext="morph"
                                          hx-swap="morph:outerHTML transition:true"
-        {% endif %}>
+                                         {% endif %}>
   {% if field.label %}
     <div class="field-label is-normal">
       {{ field.label_tag }}
@@ -20,7 +19,7 @@
   <div class="field-body">
     {% with error_class=errors|yesno:"is-danger,yes|no," %}
       <div class="field">
-        <div class="grid control">
+        <div class="{% if field.field|field_type == "MoneyField" %}flex gap-1{% else %}grid{% endif %} control">
           {% if field|widget_type == "select" %}
             <div class="select {{ error_class }}">
               {{ field }}

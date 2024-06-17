@@ -5,7 +5,6 @@ from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
 import reservations.forms as forms
-from core.models import Transaction
 from core.utils import (
     HtmxHttpRequest,
     get_or_set_reservation_session,

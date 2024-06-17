@@ -1,0 +1,144 @@
+#+title: Working with Django Templates and HTMX
+* Custom form rendering incantations
+I have found working with form templates to be challenging when doing anything more than simple operation. If the user just needs to fill in some inputs and click submit, no problem. Adding HTMX attributes to the <form> tag is good enough.
+
+I've used Luke Plant's [[https://github.com/spookylukey/django-htmx-patterns/blob/master/form_validation.rst][custom form template solution]] for making simple forms without any moving parts. However, what if I want to update some of the fields when another field is modified? In other words, what if form fields need to interact with each other? You can add and modify form field attributes inside the form field widget, but you lose the benefit of Locality of Behavior. Now my UI code is scattered between form templates, page templates, button components, and complex Python class definitions in multiple places.
+
+What if I'm working on a form field type I don't understand well (like django-money MoneyFields that use MultiWidgets)? Now I need to modify some form field rendering logic that wasn't prepare for a form field I'm not familiar with, hoping that I don't break any other forms using this same template.
+
+Some of the complexity of working with forms in Django is a result of the complexity of HTML itself, but I find at times that the amount of indirection related to templates gets in the way.
+
+Do you want to simply type {{ form }} in your view's template to insert a form?
+
+1. Write a form renderer class inheriting from TemplateSetting (?)
+2. Write a form mixin with some __init__ incantation if you want to customize how Django renders certain parts of your form template.
+3. Add the mixin to your form definition.
+
+The code becomes more complicated if you want to modify how each field is rendered.
+
+This whole process makes working with forms very slow and inflexible when trying new things. The only reason I've done it until now is because manually writing the whole form into the view template requires adding all of the error rendering code and special rendering logic for different kinds of fields.
+
+So I'm looking for another solution.
+
+* Brainstorm
+While it's nice to simply type {{ form }} and be done with it, when I need to do small modifications to an individual field, suddenly I'm either forced to make a whole new form field rendering template, or I need to explode the {{ form }} into each individual field with error handling. But what if I could type something like {{ form.field_name }}, wrap it in a div with custom HTMX logic, and still get all of the error handling automatically inserted for me?
+#+begin_src html
+<!-- before -->
+{{ form }} <!-- please god I hope this works -->
+
+<!-- after -->
+{{ form.name }}
+{{ form.price }}
+#+end_src
+
+* Requirements for solution
+1. Must respect the form renderer and template. That means it can't rely o
+2. Must work with any arbitrary Form Field or Widget. That means it can't be a different kind of form field or widget.
+3. Must be a Locality of Behavior solution.
+
+In other words, this should act like a replacement for the Django Form widget "attrs" setting.
+
+One added feature: The ability to choose blocks to render and swap in using django-render-block.
+** Luke Plant's "validation" example.
+In Luke Plant's validation example, he does something like this:
+#+begin_src python
+class FormRenderer(TemplateSetting)
+    # form_template is based on the default django/forms/div.html template used when you do {{ form.as_div }}
+    # This variable is accessed by TemplateSetting.
+    form_template = "path/to/form_template.html"
+    # this template will be included for every field in the form
+    field_template = "path/to/field_template.html"
+
+class FormMixin
+    # Both of these variables can be overriden in the Form definition.
+    default_renderer = FormRenderer()
+    do_something = False
+    def get_context():
+        # add variable used in field_template.html to the context so that it's accessible in the template file.
+        "do_something": self.do_something,
+        # add "field_template" from FormRenderer to context so that it can be used.
+        "field_template": self.renderer.field_template
+#+end_src
+
+This allows us to easily choose which templates to use to render the form (with its error rendering logic) and the fields.
+In his form validation example, he wraps the field row body, but doesn't modify the actual {{ field }} itself.
+
+This is enough to render all fields in a form with a single field template.
+
+Can the example be extended with the following features?
+
+- Allow developers to set the field_template for individual fields?
+  #+begin_src python
+class MyForm(Form):
+    # maybe...
+    field_1 = CharField(field_template="path/to/template")
+  #+end_src
+** Template tags
+
+#+begin_src web
+<!-- Replace the whole form -->
+{% block hx_content %}
+    <!-- The attributes here don't matter -->
+    {% block form %}
+        <form method="post" id="hx_form" action=".">
+            {{ form.field_1 }}
+            <!-- Send the value of this field to the view when it changes,
+                 then replace the outerHTML of hx_form with the content of the form block.  -->
+            {% htmx form.field_2 get="." trigger="change" include="this" target="hx_form" block="form" swap="outerHTML" %}
+        </form>
+    {% endblock %}
+{% endblock %}
+#+end_src
+
+*** How will this add the attributes to the field?
+
+** Slippers + includes?
+
+#+begin_src web
+{% block hx_content %}
+    <!-- The attributes here don't matter -->
+    {% block form %}
+        <form method="post" id="hx_form" action=".">
+            <!-- Open Slippers component for form bodies -->
+            {% #form %}
+                {% for field, errors in form.fields %}
+                    {% if field.name == "myfield"}
+                        {% include "path/to/htmx/form/field.html" with field=field errors=errors %}
+                    {% else %}
+                        {% include "path/to/normal/form/field.html" with field=field errors=errors %}
+                    {% endif %}
+            {% /form %}
+        </form>
+    {% endblock %}
+{% endblock %}
+#+end_src
+
+This allows us the ability to modify which template to use for a certain field. Each field template can capture an htmx pattern, while also carrying around the error rendering logic.
+
+The main downside I see is that it has the Slippers dependency.
+
+** Locality of Behavior maximalist alternative
+
+#+begin_src web
+{% block hx_content %}
+    <!-- The attributes here don't matter -->
+    {% block form %}
+        <form method="post" id="hx_form" action=".">
+            <!-- Open Slippers component for form bodies -->
+            {% #form %}
+                {% for field, errors in form.fields %}
+                    {% if field.name == "myfield"}
+                        <!-- simply put the HTMX stuff here -->
+                        <div hx-get=".">
+                        {% include "path/to/normal/form/field.html" with field=field errors=errors %}
+                        </div>
+                    {% else %}
+                        {% include "path/to/normal/form/field.html" with field=field errors=errors %}
+                    {% endif %}
+            {% /form %}
+        </form>
+    {% endblock %}
+{% endblock %}
+#+end_src
+
+This approach is probably better for experimenting, whereas the former approach is probably better for "patterns"

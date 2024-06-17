@@ -1,0 +1,24 @@
+#+title: Navigation
+* Sales and Procurements
+There are two areas the navigation that need to be overhauled
+** Sale Management
+- 売上帳を見る
+
+Sales management navigation probably is fine, but the transaction_list_by_period needs to now use the Transaction model from Hordak
+
+** Transaction Management -> Procurement Management
+First, we need to switch from Transaction to Procurement Management.
+
+Contents should be:
+
+- Make Procurement
+- View Procurements
+- Create Vendor
+  - Probably should be 仕入先 rather than 会社
+- View Vendors
+- Remove "Create Invoice"
+- View Invoice
+  - Invoice should be 請求書 rather than インボイス
+- Accounts Payable Ledger 買掛一覧表
+- Company-wise Procurement Ledger 会社別の仕入元帳
+- Accounts Payable Aging Report 買掛残高一覧表

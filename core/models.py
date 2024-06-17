@@ -1,16 +1,21 @@
+import datetime
+
 import pendulum
 from customer.models import Customer
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models, transaction
+from django.db import models
+from django.db import transaction as db_transaction
 from django.db.models import Q, Sum
 from django.db.models.functions import Coalesce
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
+from djmoney.money import Money as DefaultMoney
+from hordak import models as accounting_models
 from phonenumber_field.modelfields import PhoneNumberField
 from winvillage import settings
-import datetime
 
 auth_user = get_user_model()
 
@@ -75,6 +80,14 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class Setting(BaseModel):
+    name = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name} - {self.value}"
+
+
 class ContactInfo(BaseModel):
     class Meta:
         verbose_name = _("Contact Info")
@@ -123,8 +136,8 @@ class Item(BaseModel):
         verbose_name_plural = _("Items")
 
     name = models.CharField(verbose_name=_("Name"), max_length=100, unique=True)
-    price = models.DecimalField(
-        verbose_name=_("Price"), max_digits=19, decimal_places=2
+    price = MoneyField(
+        max_digits=19, decimal_places=2, default_currency="JPY", verbose_name=_("Price")
     )
     category = models.ForeignKey(
         Category,
@@ -171,165 +184,165 @@ class Item(BaseModel):
         return reverse("winadmin:item_detail", args=[str(self.pk)])
 
 
-class Transaction(BaseModel):
-    class TransactionReturnsManager(models.Manager):
-        def get_queryset(self):
-            return (
-                super()
-                .get_queryset()
-                .filter(name__in=["return"])
-                .order_by("created_at")
-            )
+# class Transaction(BaseModel):
+#     class TransactionReturnsManager(models.Manager):
+#         def get_queryset(self):
+#             return (
+#                 super()
+#                 .get_queryset()
+#                 .filter(name__in=["return"])
+#                 .order_by("created_at")
+#             )
 
-        def create_returns_from_order(self, order_obj):
-            with transaction.atomic():
-                orderitem_transactions = []
-                for orderitem in order_obj.items.all():
-                    orderitem_transaction = self.create(
-                        orderitem_obj=orderitem, customer_obj=order_obj.customer
-                    )
-                    orderitem_transactions.append(orderitem_transaction)
-                return orderitem_transactions
+#         def create_returns_from_order(self, order_obj):
+#             with db_transaction.atomic():
+#                 orderitem_transactions = []
+#                 for orderitem in order_obj.items.all():
+#                     orderitem_transaction = self.create(
+#                         orderitem_obj=orderitem, customer_obj=order_obj.customer
+#                     )
+#                     orderitem_transactions.append(orderitem_transaction)
+#                 return orderitem_transactions
 
-        def create(self, orderitem_obj, customer_obj):
-            with transaction.atomic():
-                transaction_obj = self.model.objects.create(
-                    name=Transaction.TransactionType.RETURN,
-                    customer=customer_obj,
-                    product=orderitem_obj.item.name,
-                    quantity=orderitem_obj.quantity,
-                    price_per_unit=orderitem_obj.item.price,
-                    total_price=orderitem_obj.item.price * orderitem_obj.quantity,
-                )
-            return transaction_obj
+#         def create(self, orderitem_obj, customer_obj):
+#             with db_transaction.atomic():
+#                 transaction_obj = self.model.objects.create(
+#                     name=Transaction.TransactionType.RETURN,
+#                     customer=customer_obj,
+#                     product=orderitem_obj.item.name,
+#                     quantity=orderitem_obj.quantity,
+#                     price_per_unit=orderitem_obj.item.price,
+#                     total_price=orderitem_obj.item.price * orderitem_obj.quantity,
+#                 )
+#             return transaction_obj
 
-    class TransactionSalesManager(models.Manager):
-        def get_queryset(self):
-            return (
-                super().get_queryset().filter(name__in=["sale"]).order_by("created_at")
-            )
+#     class TransactionSalesManager(models.Manager):
+#         def get_queryset(self):
+#             return (
+#                 super().get_queryset().filter(name__in=["sale"]).order_by("created_at")
+#             )
 
-        def create_sales_from_order(self, order_obj):
-            with transaction.atomic():
-                orderitem_transactions = []
-                for orderitem in order_obj.items.all():
-                    orderitem_transaction = self.create(
-                        orderitem_obj=orderitem, customer_obj=order_obj.customer
-                    )
-                    orderitem_transactions.append(orderitem_transaction)
-                return orderitem_transactions
+#         def create_sales_from_order(self, order_obj):
+#             with db_transaction.atomic():
+#                 orderitem_transactions = []
+#                 for orderitem in order_obj.items.all():
+#                     orderitem_transaction = self.create(
+#                         orderitem_obj=orderitem, customer_obj=order_obj.customer
+#                     )
+#                     orderitem_transactions.append(orderitem_transaction)
+#                 return orderitem_transactions
 
-        def create(self, orderitem_obj, customer_obj):
-            with transaction.atomic():
-                transaction_obj = self.model.objects.create(
-                    name=Transaction.TransactionType.SALE,
-                    customer=customer_obj,
-                    product=orderitem_obj.item.name,
-                    quantity=orderitem_obj.quantity,
-                    price_per_unit=orderitem_obj.item.price,
-                    total_price=orderitem_obj.item.price * orderitem_obj.quantity,
-                )
-            return transaction_obj
+#         def create(self, orderitem_obj, customer_obj):
+#             with db_transaction.atomic():
+#                 transaction_obj = self.model.objects.create(
+#                     name=Transaction.TransactionType.SALE,
+#                     customer=customer_obj,
+#                     product=orderitem_obj.item.name,
+#                     quantity=orderitem_obj.quantity,
+#                     price_per_unit=orderitem_obj.item.price,
+#                     total_price=orderitem_obj.item.price * orderitem_obj.quantity,
+#                 )
+#             return transaction_obj
 
-    class TransactionReservationsManager(models.Manager):
-        def get_queryset(self):
-            return (
-                super()
-                .get_queryset()
-                .filter(name__in=["sale"])
-                .filter(product__in=_("Reservation"))
-                .order_by("created_at")
-            )
+#     class TransactionReservationsManager(models.Manager):
+#         def get_queryset(self):
+#             return (
+#                 super()
+#                 .get_queryset()
+#                 .filter(name__in=["sale"])
+#                 .filter(product__in=_("Reservation"))
+#                 .order_by("created_at")
+#             )
 
-        def create(self, reservation_obj):
-            with transaction.atomic():
-                transaction_obj = self.model.objects.create(
-                    name=Transaction.TransactionType.SALE,
-                    customer=reservation_obj.customer,
-                    product=_("Reservation"),
-                    quantity=reservation_obj.get_stay_period_in_nights(),
-                    price_per_unit=reservation_obj.get_price()
-                    / reservation_obj.get_stay_period_in_nights(),
-                    total_price=reservation_obj.get_price(),
-                )
-                return transaction_obj
+#         def create(self, reservation_obj):
+#             with db_transaction.atomic():
+#                 transaction_obj = self.model.objects.create(
+#                     name=Transaction.TransactionType.SALE,
+#                     customer=reservation_obj.customer,
+#                     product=_("Reservation"),
+#                     quantity=reservation_obj.get_stay_period_in_nights(),
+#                     price_per_unit=reservation_obj.get_price()
+#                     / reservation_obj.get_stay_period_in_nights(),
+#                     total_price=reservation_obj.get_price(),
+#                 )
+#                 return transaction_obj
 
-    class Meta:
-        verbose_name = _("Transaction")
-        verbose_name_plural = _("Transactions")
+#     class Meta:
+#         verbose_name = _("Transaction")
+#         verbose_name_plural = _("Transactions")
 
-    class TransactionType(models.TextChoices):
-        # 売上、仕入れ、返品、預金振込
-        SALE = "sale", _("Sale")
-        PROCUREMENT = "procurement", _("Procurement")
-        RETURN = "return", _("Return")
-        DEPOSIT = "deposit", _("Deposit")
+#     class TransactionType(models.TextChoices):
+#         # 売上、仕入れ、返品、預金振込
+#         SALE = "sale", _("Sale")
+#         PROCUREMENT = "procurement", _("Procurement")
+#         RETURN = "return", _("Return")
+#         DEPOSIT = "deposit", _("Deposit")
 
-    name = models.CharField(
-        max_length=30, choices=TransactionType, verbose_name=_("Name")
-    )
-    customer = models.ForeignKey(
-        Customer,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Customer"),
-    )
-    product = models.CharField(
-        max_length=50, verbose_name=_("Product")
-    )  # For Item, the name. For Reservation, "Reservation"
-    quantity = models.IntegerField(
-        default=1, verbose_name=_("Quantity")
-    )  # For Reservation, number of nights
-    price_per_unit = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit")
-    )  # Price per night
-    total_price = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit")
-    )
-    objects = models.Manager()
-    sales = TransactionSalesManager()
-    returns = TransactionReturnsManager()
-    reservations = TransactionReservationsManager()
+#     name = models.CharField(
+#         max_length=30, choices=TransactionType, verbose_name=_("Name")
+#     )
+#     customer = models.ForeignKey(
+#         Customer,
+#         null=True,
+#         blank=True,
+#         on_delete=models.SET_NULL,
+#         verbose_name=_("Customer"),
+#     )
+#     product = models.CharField(
+#         max_length=50, verbose_name=_("Product")
+#     )  # For Item, the name. For Reservation, "Reservation"
+#     quantity = models.IntegerField(
+#         default=1, verbose_name=_("Quantity")
+#     )  # For Reservation, number of nights
+#     price_per_unit = models.DecimalField(
+#         max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit")
+#     )  # Price per night
+#     total_price = models.DecimalField(
+#         max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit")
+#     )
+#     objects = models.Manager()
+#     sales = TransactionSalesManager()
+#     returns = TransactionReturnsManager()
+#     reservations = TransactionReservationsManager()
 
-    @property
-    def price_rounded(self):
-        return round(self.item.price, 2)
+#     @property
+#     def price_rounded(self):
+#         return round(self.item.price, 2)
 
-    @property
-    def total_price_rounded(self):
-        return round(self.total_price, 2)
+#     @property
+#     def total_price_rounded(self):
+#         return round(self.total_price, 2)
 
-    @property
-    def sale_amount(self):
-        if self.name == "sale":
-            return self.total_price_rounded
+#     @property
+#     def sale_amount(self):
+#         if self.name == "sale":
+#             return self.total_price_rounded
 
-    @property
-    def return_amount(self):
-        if self.name == "return":
-            return self.total_price_rounded
+#     @property
+#     def return_amount(self):
+#         if self.name == "return":
+#             return self.total_price_rounded
 
-    @property
-    def purchase_amount(self):
-        if self.name == "purchase":
-            return self.total_price_rounded
+#     @property
+#     def purchase_amount(self):
+#         if self.name == "purchase":
+#             return self.total_price_rounded
 
-    @property
-    def payment_amount(self):
-        if self.name == "deposit":
-            return self.total_price_rounded
+#     @property
+#     def payment_amount(self):
+#         if self.name == "deposit":
+#             return self.total_price_rounded
 
-    def add_total_price(self):
-        total_price = self.quantity * self.price_rounded
-        self.total_price = total_price
-        return self.total_price
+#     def add_total_price(self):
+#         total_price = self.quantity * self.price_rounded
+#         self.total_price = total_price
+#         return self.total_price
 
-    def __str__(self):
-        return f"{self.name}, {self.total_price_rounded}"
+#     def __str__(self):
+#         return f"{self.name}, {self.total_price_rounded}"
 
-    def get_absolute_url(self):
-        return reverse("winadmin:transaction_detail", args=[str(self.pk)])
+#     def get_absolute_url(self):
+#         return reverse("winadmin:transaction_detail", args=[str(self.pk)])
 
 
 class Vendor(BaseModel):
@@ -457,3 +470,43 @@ class Invoice(BaseModel):
 
     def __str__(self):
         return f"Vendor: {self.vendor}, Due On: {self.due_on}"
+
+
+class TransactionItem(BaseModel):
+    class Meta:
+        verbose_name = _("Transaction Item")
+        verbose_name_plural = _("Transaction Items")
+
+    item = models.CharField(max_length=50, verbose_name=_("Item"))
+    quantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
+    price_per_unit = MoneyField(
+        max_digits=19,
+        decimal_places=2,
+        default_currency="JPY",
+        verbose_name=_("Price Per Unit"),
+    )
+
+    def __str__(self):
+        return f"{self.item}, {self.price_per_unit}, {self.quantity}"
+
+
+class TransactionDetail(BaseModel):
+    class Meta:
+        verbose_name = _("Transaction Detail")
+        verbose_name_plural = _("Transaction Details")
+
+    summary = models.ForeignKey(
+        accounting_models.Transaction,
+        on_delete=models.CASCADE,
+        verbose_name=_("Summary"),
+    )
+    items = models.ManyToManyField(TransactionItem)
+
+    def __str__(self):
+        return f"{self.summary.date} - {[item for item in self.items.all()]}"
+
+
+class Account(accounting_models.Account):
+    class Meta:
+        verbose_name = _("Account")
+        verbose_name_plural = _("Accounts")

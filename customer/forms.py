@@ -1,13 +1,14 @@
+from core.forms import ReadOnlyFormMixin, TailwindFormMixin
+from core.models import Category, Item
 from django import forms
 from django.forms import modelformset_factory
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
+from djmoney.forms import MoneyField
 from phonenumber_field.formfields import PhoneNumberField
-
-from core.forms import TailwindFormMixin, ReadOnlyFormMixin
-from core.models import Item, Category
-from customer.models import Customer
 from reservations.models import OrderItem
+
+from customer.models import Customer
 
 
 class CustomerDetailForm(TailwindFormMixin, forms.Form):
@@ -95,11 +96,19 @@ class CustomerForm(TailwindFormMixin, forms.ModelForm):
         fields = ["first_name", "last_name", "email", "phone"]
 
 
-class ItemForm(ReadOnlyFormMixin, forms.Form):
-    item_id = forms.DecimalField(widget=forms.HiddenInput())
+class ItemForm(forms.Form):
+    item_id = forms.IntegerField(widget=forms.HiddenInput())
     name = forms.CharField(label=_("Name"))
-    price = forms.DecimalField(label=_("Price"))
-    quantity = forms.DecimalField(label=_("Quantity"), min_value=0)
+    price = MoneyField(label=_("Price"))
+    quantity = forms.IntegerField(label=_("Quantity"), min_value=0)
+
+
+# class ItemForm(TailwindFormMixin, forms.ModelForm):
+#     class Meta:
+#         model = Item
+#         fields = ["id", "name", "price"]
+
+# quantity = forms.IntegerField(label=_("Quantity"), min_value=0)
 
 
 # class ItemFormRenderer(TemplatesSetting):
@@ -157,7 +166,8 @@ class ItemForm(ReadOnlyFormMixin, forms.Form):
 
 class CategoryFilterForm(forms.Form):
     categories = forms.ChoiceField(
-        choices=[("0", "All")] + [(category.id, category.name) for category in Category.objects.all()],
+        choices=[("0", "All")]
+        + [(category.id, category.name) for category in Category.objects.all()],
         widget=forms.RadioSelect(),
         initial="0",
     )

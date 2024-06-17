@@ -4,13 +4,15 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import pendulum
+from core.accounting_utils import get_inventory_account_from_configuration
 from core.models import (
     Category,
     Customer,
     Invoice,
     Item,
     Procurement,
-    Transaction,
+    TransactionDetail,
+    TransactionItem,
     Vendor,
 )
 from core.utils import (
@@ -28,6 +30,10 @@ from django.urls import reverse
 from django.utils.timezone import activate, deactivate, get_default_timezone
 from django.utils.translation import gettext_lazy as _
 from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
+from djmoney.money import Money
+from hordak.models import Account
+from hordak.models import Account as BusinessAccount
+from hordak.models import Transaction as BusinessTransaction
 from reservations import forms
 from reservations.forms import DateForm
 from reservations.models import (
@@ -77,8 +83,8 @@ from winadmin.forms import (
     RoomTierDetailForm,
     SetLedgerPeriodForm,
     SetReservationPeriodForm,
+    SimpleTransactionForm,
     SquarePaymentTokenForm,
-    TransactionCreateForm,
     VendorCreateForm,
     VendorDetailForm,
 )
@@ -227,7 +233,7 @@ def get_current_year_and_month(request, tz=TIMEZONE):
     return year, month
 
 
-def get_balance_and_ledger(transactions: Transaction):
+def get_balance_and_ledger(transactions):
     balance = 0
     ledger = []
     for transaction in transactions:
@@ -1235,6 +1241,7 @@ def vendor_detail(request, vendor_id):
     return trigger_client_event(response, "getMessages")
 
 
+# For developers only. The Task is our normal way of making invoices.
 @for_htmx(use_block_from_params=True)
 def invoice_create(request):
     vendor = get_object_or_404(Vendor, id=1)
@@ -1303,19 +1310,60 @@ def invoice_detail(request, invoice_id):
     return trigger_client_event(response, "getMessages")
 
 
-@for_htmx(use_block_from_params=True)
+@for_htmx(use_block="form")
 def procurement_create(request):
     if request.method == "POST":
         form = ProcurementCreateForm(request.POST)
         if form.is_valid():
-            procurement = form.save()
-            item = Item.objects.get(id=procurement.product.id)
-            item.stock_quantity += procurement.quantity
-            item.save()
+            data = form.cleaned_data
+            account = data["account"]
+            item = data["item"]
+            price_per_unit = data["price_per_unit"]
+            quantity = data["quantity"]
+            total = data["total"]
+            procured_on = data["procured_on"]
+
+            inventory = get_inventory_account_from_configuration()
+            transaction = account.accounting_transfer_to(
+                to_account=inventory, amount=total, date=procured_on
+            )
+            detail = TransactionDetail.objects.create(summary=transaction)
+            transaction_item = TransactionItem.objects.create(
+                item=item.name, price_per_unit=item.price, quantity=quantity
+            )
+            detail.items.add(transaction_item)
+            detail.save()
             messages.success(request, _("Procurement created successfully"))
         else:
             messages.error(request, _("Procurement couldn't be created"))
-    else:
+    elif request.htmx:
+        q = request.GET
+        account = q.get("account", None)
+        if account:
+            account = Account.objects.get(id=account)
+        item = q.get("item", None)
+        if item:
+            item = Item.objects.get(id=item)
+        price_per_unit = q.get("price_per_unit", None)
+        if item:
+            price_per_unit = item.price
+        quantity = q.get("quantity", None)
+        if item and not quantity:
+            quantity = 1
+        total = None
+        if price_per_unit and quantity:
+            total = price_per_unit * quantity
+        procured_on = q.get("procured_on", None)
+        initial = {
+            "account": account,
+            "item": item,
+            "price_per_unit": price_per_unit,
+            "quantity": quantity,
+            "total": total,
+            "procured_on": procured_on,
+        }
+        form = ProcurementCreateForm(initial=initial)
+    elif request.method == "GET":
         form = ProcurementCreateForm()
     response = TemplateResponse(
         request, "procurement/procurement_create.html", {"form": form}
@@ -1390,7 +1438,7 @@ def accounts_payable_ledger(request):
 
 @for_htmx(use_block_from_params=True)
 def accounts_payable_aging_report(request):
-    # This requires both the "due_on" of the Vendor (to know how past due an invoice is)
+    # This requires both the "due_on" of the Vendor and the Vendor's invoices (to know how past due an invoice is)
     # Account and Transactions to determine if a transfer of funds has been made.
 
     vendors = Vendor.objects.all()
@@ -1402,7 +1450,7 @@ def accounts_payable_aging_report(request):
 
 
 @for_htmx(use_block_from_params=True)
-def account_create(request):
+def business_account_create(request):
     form = AccountForm()
     if request.method == "POST":
         form = AccountForm(request.POST)
@@ -1416,3 +1464,75 @@ def account_create(request):
 
 
 # TODO: Make views for Hordak Accounts and Transactions
+
+
+@for_htmx(use_block_from_params=True)
+def business_account_list(request):
+    business_accounts = BusinessAccount.objects.all()
+    return TemplateResponse(
+        request,
+        "accounting/account_list.html",
+        {"business_accounts": business_accounts},
+    )
+
+
+@for_htmx(use_block_from_params=True)
+def business_account_detail(request, business_account_id):
+    business_account = get_object_or_404(BusinessAccount, id=business_account_id)
+    form = AccountForm(instance=business_account)
+    if request.method == "POST":
+        form = AccountForm(request.POST, instance=business_account)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Account updated successfully")
+        else:
+            messages.error(request, f"Account couldn't be edited")
+    response = TemplateResponse(
+        request, "accounting/account_detail.html", {"form": form}
+    )
+    return trigger_client_event(response=response, name="getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def business_transaction_create(request):
+    form = SimpleTransactionForm()
+    if request.method == "POST":
+        form = SimpleTransactionForm(request.POST)
+        if form.is_valid():
+            transaction = form.save()
+            messages.success(request, f"Transaction successful")
+        else:
+            messages.error(request, f"Transaction couldn't be completed")
+    response = TemplateResponse(
+        request, "accounting/business_transaction_create.html", {"form": form}
+    )
+    return trigger_client_event(response=response, name="getMessages")
+
+
+@for_htmx(use_block_from_params=True)
+def business_transaction_list(request):
+    business_transactions = BusinessTransaction.objects.all()
+    return TemplateResponse(
+        request,
+        "accounting/business_transaction_list.html",
+        {"business_transactions": business_transactions},
+    )
+
+
+@for_htmx(use_block_from_params=True)
+def business_transaction_detail(request, business_transaction_id):
+    business_transaction = get_object_or_404(
+        BusinessTransaction, id=business_transaction_id
+    )
+    form = SimpleTransactionForm(instance=business_transaction)
+    if request.method == "POST":
+        form = SimpleTransactionForm(request.POST, instance=business_transaction)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Transaction updated successfully")
+        else:
+            messages.error(request, f"Transaction couldn't be edited")
+    response = TemplateResponse(
+        request, "accounting/business_transaction_detail.html", {"form": form}
+    )
+    return trigger_client_event(response=response, name="getMessages")

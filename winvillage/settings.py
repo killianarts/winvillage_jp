@@ -90,6 +90,7 @@ THIRD_PARTY_APPS = [
     "django_celery_results",
     "mptt",
     "hordak",
+    "djmoney",
 ]
 
 if DEBUG:

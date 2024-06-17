@@ -1,20 +1,22 @@
 import uuid
-from datetime import datetime, timedelta, time
+from datetime import datetime, time, timedelta
 from zoneinfo import ZoneInfo
 
 import pendulum
+from core.models import BaseModel, ContactInfo, Item, PendulumDateTimeField
+from customer.models import Customer
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
+from djmoney.money import Money
+from hordak import models as accounting_models
 from model_utils import Choices
-from model_utils.fields import StatusField, MonitorField
+from model_utils.fields import MonitorField, StatusField
 from recurrence.fields import RecurrenceField
-
-from core.models import Item, ContactInfo, BaseModel, PendulumDateTimeField
-from customer.models import Customer
 from winvillage.settings import TIME_ZONE
 
 # from reservations.forms import GrillOptionForm
@@ -27,7 +29,9 @@ class OrderItem(BaseModel):
         verbose_name = _("Order Item")
         verbose_name_plural = _("Order Items")
 
-    user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, verbose_name=_("User"))
+    user = models.ForeignKey(
+        auth_user, on_delete=models.CASCADE, null=True, verbose_name=_("User")
+    )
     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=1, verbose_name=_("Quantity"))
 
@@ -40,7 +44,9 @@ class Order(BaseModel):
         verbose_name = _("Order")
         verbose_name_plural = _("Orders")
 
-    user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, verbose_name=_("User"))
+    user = models.ForeignKey(
+        auth_user, on_delete=models.CASCADE, null=True, verbose_name=_("User")
+    )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     items = models.ManyToManyField(OrderItem)
     ordered = models.BooleanField(default=False, verbose_name=_("Ordered?"))
@@ -59,12 +65,14 @@ class Order(BaseModel):
         total = 0
         for order_item in self.items.all():
             total += order_item.item.price * order_item.quantity
-        return int(total)
+        return total
 
     def make_purchase(self):
         self.ordered = True
         for orderitem in self.items:
-            orderitem.item.stock_quantity = orderitem.item.stock_quantity - orderitem.quantity
+            orderitem.item.stock_quantity = (
+                orderitem.item.stock_quantity - orderitem.quantity
+            )
 
 
 class Campaign(BaseModel):
@@ -90,13 +98,23 @@ class PricingTier(BaseModel):
 
     # objects = PricingTierManager()
     ADULT_CHOICES = ((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"), (6, "6"))
-    tier_group = models.ForeignKey("PricingTierGroup", on_delete=models.CASCADE, blank=True, null=True)
-    number_of_adults = models.IntegerField(default=1, choices=ADULT_CHOICES, verbose_name=_("Number of Adults"))
-    price_overnight = models.DecimalField(max_digits=19, decimal_places=2, verbose_name=_("Price Overnight"))
-    price_short_term = models.DecimalField(max_digits=19, decimal_places=2, verbose_name=_("Price Short-term"))
+    tier_group = models.ForeignKey(
+        "PricingTierGroup", on_delete=models.CASCADE, blank=True, null=True
+    )
+    number_of_adults = models.IntegerField(
+        default=1, choices=ADULT_CHOICES, verbose_name=_("Number of Adults")
+    )
+    price_overnight = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name=_("Price Overnight")
+    )
+    price_short_term = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name=_("Price Short-term")
+    )
 
     def __str__(self):
-        return f"￥{self.get_price_overnight()}/night, ￥{self.get_price_short_term()}/hour"
+        return (
+            f"￥{self.get_price_overnight()}/night, ￥{self.get_price_short_term()}/hour"
+        )
 
     def get_price_overnight(self):
         return round(self.price_overnight, 2)
@@ -132,7 +150,11 @@ class Room(BaseModel):
                 customer = None
                 if room in occupied_rooms:
                     if reservations.filter(stay__status="checked_in").exists():
-                        customer = reservations.filter(stay__status="checked_in").first().customer
+                        customer = (
+                            reservations.filter(stay__status="checked_in")
+                            .first()
+                            .customer
+                        )
                 rooms_with_occupants[room] = customer
             return rooms_with_occupants
 
@@ -169,8 +191,12 @@ CHILDREN_CHOICES = (
 # Find
 class PricingTierGroup(BaseModel):
     name = models.CharField(max_length=255, unique=True)
-    minimum_number_of_adults = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(2)])
-    maximum_number_of_adults = models.IntegerField(validators=[MinValueValidator(4), MaxValueValidator(6)])
+    minimum_number_of_adults = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(2)]
+    )
+    maximum_number_of_adults = models.IntegerField(
+        validators=[MinValueValidator(4), MaxValueValidator(6)]
+    )
     room_tiers = models.ManyToManyField("RoomTier")
     price_overnight_child = models.DecimalField(
         max_digits=19, decimal_places=2, verbose_name=_("Price Per Child Overnight")
@@ -178,7 +204,9 @@ class PricingTierGroup(BaseModel):
     price_short_term_child = models.DecimalField(
         max_digits=19, decimal_places=2, verbose_name=_("Price Per Child Short-Term")
     )
-    campaign = models.ForeignKey("Campaign", null=True, blank=True, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(
+        "Campaign", null=True, blank=True, on_delete=models.CASCADE
+    )
     is_active = models.BooleanField(default=True)
 
     def create_group(self, form, formset):
@@ -206,8 +234,12 @@ class PricingTierGroup(BaseModel):
 
     def edit_group(self, form, formset):
         self.name = form.cleaned_data.get("name")
-        self.minimum_number_of_adults = form.cleaned_data.get("minimum_number_of_adults")
-        self.maximum_number_of_adults = form.cleaned_data.get("maximum_number_of_adults")
+        self.minimum_number_of_adults = form.cleaned_data.get(
+            "minimum_number_of_adults"
+        )
+        self.maximum_number_of_adults = form.cleaned_data.get(
+            "maximum_number_of_adults"
+        )
         room_tiers = form.cleaned_data.get("room_tiers")
         self.campaign = form.cleaned_data.get("campaign")
         for tier in room_tiers:
@@ -228,13 +260,17 @@ class Stay(BaseModel):
     class StayManager(models.Manager):
         def get_stays_for_date(self, date):
             time_zone = timezone.get_default_timezone()
-            target_date = datetime.strptime(date, "%Y-%m-%d").astimezone(time_zone).date()
+            target_date = (
+                datetime.strptime(date, "%Y-%m-%d").astimezone(time_zone).date()
+            )
             next_date = target_date + timedelta(days=1)
 
             # ex: Stay.objects.get_stays_for_date("2023-09-13")
             # returns all Stays that include the date within the range of their
             # start_datetime and end_datetime.
-            return self.filter(start_datetime__date__lt=next_date, end_datetime__date__gte=target_date)
+            return self.filter(
+                start_datetime__date__lt=next_date, end_datetime__date__gte=target_date
+            )
 
     class Meta:
         verbose_name = _("Stay")
@@ -295,7 +331,9 @@ class Reservation(BaseModel):
 
     user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True, blank=True)
     stay = models.ForeignKey(Stay, on_delete=models.CASCADE, null=True, blank=True)
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    customer = models.ForeignKey(
+        Customer, on_delete=models.SET_NULL, null=True, blank=True
+    )
     order_items = models.ManyToManyField(OrderItem, blank=True)
 
     def check_availability(self, *, start_date, end_date):
@@ -305,7 +343,9 @@ class Reservation(BaseModel):
             stay__end__gt=start_date,
         )
         reserved_rooms_ids = reservations.values_list("stay__room__id", flat=True)
-        available_rooms = self.get_possible_rooms_queryset().exclude(id__in=reserved_rooms_ids)
+        available_rooms = self.get_possible_rooms_queryset().exclude(
+            id__in=reserved_rooms_ids
+        )
         return available_rooms
 
     def check_roomtier_availability(self, available_rooms):
@@ -315,7 +355,9 @@ class Reservation(BaseModel):
     def get_possible_rooms_queryset(self):
         number_of_adults = self.get_number_of_adults()
         rooms_queryset = (
-            Room.objects.filter(room_tier__pricingtiergroup__pricingtier__number_of_adults=number_of_adults)
+            Room.objects.filter(
+                room_tier__pricingtiergroup__pricingtier__number_of_adults=number_of_adults
+            )
             .order_by("name")
             .distinct()
         )
@@ -324,7 +366,9 @@ class Reservation(BaseModel):
     def get_possible_roomtier_queryset(self):
         number_of_adults = self.get_number_of_adults()
         roomtier_queryset = (
-            RoomTier.objects.filter(pricingtiergroup__pricingtier__number_of_adults=number_of_adults)
+            RoomTier.objects.filter(
+                pricingtiergroup__pricingtier__number_of_adults=number_of_adults
+            )
             .order_by("name")
             .distinct()
         )
@@ -343,7 +387,9 @@ class Reservation(BaseModel):
         else:
             self.stay.start = selected_datetime
             self.stay.end = selected_datetime
-        if not self.check_availability(start_date=self.stay.start, end_date=self.stay.end).exists():
+        if not self.check_availability(
+            start_date=self.stay.start, end_date=self.stay.end
+        ).exists():
             self.stay.start = selected_datetime
             self.stay.end = selected_datetime
         self.stay.save()
@@ -366,7 +412,9 @@ class Reservation(BaseModel):
     def set_room(self, form, roomtier_data, start, end):
         tier = form.cleaned_data["roomtiers"]
         available_rooms = Room.objects.filter(room_tier=tier).exclude(
-            stay__status__in=["reserved", "checked_in"], stay__start__lte=end, stay__end__gt=start
+            stay__status__in=["reserved", "checked_in"],
+            stay__start__lte=end,
+            stay__end__gt=start,
         )
         self.stay.room = available_rooms.first()
         for tierprice in roomtier_data:
@@ -441,7 +489,11 @@ class Reservation(BaseModel):
         order_item.delete()
 
     def get_grills(self):
-        all_grills = Item.objects.filter(category__name="grill").filter(reservation_option=True).order_by("pk")
+        all_grills = (
+            Item.objects.filter(category__name="grill")
+            .filter(reservation_option=True)
+            .order_by("pk")
+        )
         reserved_grills_ids = self.order_items.filter(
             item__category__name="grill", item__reservation_option=True
         ).values_list("item_id", flat=True)

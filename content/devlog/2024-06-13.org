@@ -1,0 +1,95 @@
+#+title: Chart of Accounts
+* Realization
+When I began trying to replace my Transaction model with the Hordak Transaction and my TransactionDetail and TransactionItem objects, I realized that recording the sale meant not just creating a Transaction, but also applying the transaction to an Account. That means that my code must assume the presence of a certain Account to record the Transaction to.
+
+I'm beginning to see that I need to create a Chart of Accounts, and I need a way to configure which account the "register" will record Transactions to.
+
+* Default Chart of Accounts
+A Chart of Accounts (勘定科目表 かんじょうかもくひょう in Japanese) is a set of accounts. There essentially five differnt kinds of accounts:
+
+1. Asset
+2. Liability
+3. Income
+4. Expense
+5. Equity
+
+   Asset, Liability, and Equity accounts are collectively called "balance sheet" accounts, whereas Income and Expense accounts make up the income statement accounts.
+
+   A COA should probably have at least one of each type of account. However, each account type will have several sub-accounts.
+
+** Example Chart of Accounts
+- Assets:
+  - 100 - Cash
+  - 110 - Accounts Receivable
+  - 120 - Inventory
+  - 130 - Prepaid Expenses
+  - 140 - Fixed Assets
+  - 150 - Accumulated Depreciation
+- Liabilities:
+  - 200 - Accounts Payable
+  - 210 - Accrued Expenses
+  - 220 - Notes Payable
+  - 230 - Taxes Payable
+- Equity:
+  - 300 - Owner's Equity
+  - 310 - Retained Earnings
+- Revenues:
+  - 400 - Sales Revenue
+  - 410 - Other Revenue
+- Cost of Goods Sold:
+  - 500 - Cost of Goods Sold
+- Expenses:
+  - 600 - Advertising
+  - 610 - Depreciation
+  - 620 - Insurance
+  - 630 - Interest
+  - 640 - Office Supplies
+  - 650 - Payroll
+  - 660 - Professional Fees
+  - 670 - Rent
+  - 680 - Repairs & Maintenance
+  - 690 - Travel
+  - 700 - Utilities
+
+** Basic Default Chart of Accounts
+The above example is a "complete" example provided by AI.
+
+The Cost of Goods Sold (COGS) can be thought of as an expense account, but for some businesses it is popular to separate it out from the rest of expenses to make calculations easier.
+
+What, then, would a more conservative default Chart of Accounts look like?
+
+- Assets:
+  - 100 - Cash
+  - 110 - Accounts Receivable
+  - 120 - Inventory
+- Liabilities:
+  - 200 - Accounts Payable
+  - 210 - Taxes Payable
+- Equity
+  - 300 - Retained earnings?
+- Revenue:
+  - 400 - Sales Revenue
+- Expenses:
+  - 500 - Cost of Goods Sold
+
+My guess is that this is a minimum basic chart of accounts for a busines selling physical goods.
+
+A Japanese translation of this 勘定科目表 is:
+
+- 資産：
+  - １００ー現金
+  - １１０ー売掛金
+  - １２０ー棚卸資産
+- 負債
+  - ２００ー買掛金
+    - 200-01 Saga Beef
+    - 200-02
+  - 210 - 未払税金
+- 資本
+  - ３００ー留保利益
+- 利益
+  - ４００ー売上高
+- 費用
+  - ５００ー売上原価
+
+The Equity account probably isn't necessary for the work I'm doing with Winvillage, so it's basically only necessary to have the other four types of accounts.

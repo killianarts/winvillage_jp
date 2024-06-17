@@ -75,7 +75,10 @@
                          class="object-cover w-full h-full"
                          alt="">
                   </div>
-                  {{ shop_item_form }}
+                  {{ shop_item_form.item_id }}
+                  {{ shop_item_form.name }}
+                  <div>{{ shop_item_form.price }}</div>
+                  {{ shop_item_form.quantity }}
                 </div>
                 <div class="grid grid-cols-2 gap-5">
                 <button id="increment-item-{{ item_id }}" type="button"
@@ -250,8 +253,11 @@
             </svg>
           </button>
           <div class="grid place-items-center">
-            {% #outline_button name="check-out" type="submit" data-script="on click set dialog to #check-out-dialog if dialog matches @open call dialog.close() end" %}
-            {% translate 'Confirm Purchase' %}
+            {% #outline_button name="check-out-cash" type="submit" data-script="on click set dialog to #check-out-dialog if dialog matches @open call dialog.close() end" %}
+            {% translate 'Pay with Cash' %}
+            {% /outline_button %}
+            {% #outline_button name="check-out-card" type="submit" data-script="on click set dialog to #check-out-dialog if dialog matches @open call dialog.close() end" %}
+            {% translate 'Pay with Card' %}
             {% /outline_button %}
           </div>
         </form>

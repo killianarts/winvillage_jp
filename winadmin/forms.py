@@ -1,14 +1,16 @@
 from datetime import datetime
 
-from hordak.models import CURRENCY_CHOICES
 import pendulum
 from core.forms import PendulumField, TailwindFormMixin
-from core.models import Invoice, Item, Procurement, Transaction, Vendor
+from core.models import Invoice, Item, Procurement, Vendor
 from django import forms
 from django.forms import BaseInlineFormSet, widgets
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
+from djmoney.forms import MoneyField
 from hordak.forms import accounts as account_forms
+from hordak.forms import transactions as transaction_forms
+from hordak.models import CURRENCY_CHOICES, Account
 from model_utils import Choices
 from phonenumber_field.formfields import PhoneNumberField
 from reservations.models import (
@@ -131,24 +133,24 @@ class DateTimeInput(forms.DateTimeInput):
         super().__init__(**kwargs)
 
 
-class TransactionCreateForm(TailwindFormMixin, forms.ModelForm):
-    class Meta:
-        model = Transaction
-        fields = [
-            "name",
-            "customer",
-            "product",
-            "quantity",
-            "total_price",
-        ]
-        widgets = {"transaction_datetime": DateInput()}
-        labels = {
-            "name": _("Name"),
-            "customer": _("Customer"),
-            "product": _("Product"),
-            "quantity": _("Quantity"),
-            "total_price": _("Total Price"),
-        }
+# class TransactionCreateForm(TailwindFormMixin, forms.ModelForm):
+#     class Meta:
+#         model = Transaction
+#         fields = [
+#             "name",
+#             "customer",
+#             "product",
+#             "quantity",
+#             "total_price",
+#         ]
+#         widgets = {"transaction_datetime": DateInput()}
+#         labels = {
+#             "name": _("Name"),
+#             "customer": _("Customer"),
+#             "product": _("Product"),
+#             "quantity": _("Quantity"),
+#             "total_price": _("Total Price"),
+#         }
 
 
 class SetLedgerPeriodForm(forms.Form):
@@ -426,6 +428,19 @@ class ProcurementCreateForm(TailwindFormMixin, forms.ModelForm):
         widgets = {"procured_on": forms.SelectDateWidget()}
 
 
+class ProcurementCreateForm(TailwindFormMixin, forms.Form):
+    account = forms.ModelChoiceField(
+        queryset=Account.objects.filter(type="LI"), label=_("Account")
+    )
+    item = forms.ModelChoiceField(queryset=Item.objects.all(), label=_("Item"))
+    price_per_unit = MoneyField(label=_("Price Per Unit"))
+    quantity = forms.IntegerField(label=_("Quantity"))
+    total = MoneyField(label=_("Total"))
+    procured_on = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date"}), label=_("Procured On")
+    )
+
+
 class ProcurementDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Procurement
@@ -450,3 +465,20 @@ class AccountForm(TailwindFormMixin, account_forms.AccountForm):
 
     def _check_currencies_json(self):
         pass
+
+
+# TODO: Grab all of the Hordak forms.
+
+
+class SimpleTransactionForm(TailwindFormMixin, transaction_forms.SimpleTransactionForm):
+    def save(self, commit=True):
+        from_account = self.cleaned_data.get("from_account")
+        to_account = self.cleaned_data.get("to_account")
+        amount = self.cleaned_data.get("amount")
+
+        return from_account.account_transfer_to(
+            to_account=to_account,
+            amount=amount,
+            description=self.cleaned_data.get("description"),
+            date=self.cleaned_data.get("date"),
+        )

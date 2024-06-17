@@ -6,12 +6,12 @@ DEADLINE: <2024-03-01 Fri>
 *** DONE Add food images
 *** DONE Add daytime images
 *** DONE Add front images
-** TODO Add business information?
+** DONE Add business information?
 * TODO Add Admin :admin:
-** TODO Add Sales Management
-** TODO Add Room Management
-** TODO Add Reservation System
-*** TODO Optimize calendar request/queries
+** DONE Add Sales Management
+** DONE Add Room Management
+** DONE Add Reservation System
+*** DONE Optimize calendar request/queries
 ** TODO Add alternative rendering for tables and filtering on those tables
 *** TODO transaction_list_by_period
 *** TODO sale_list_by_period
@@ -20,4 +20,5 @@ DEADLINE: <2024-03-01 Fri>
 *** TODO item_list
 *** TODO pricing_tier_list
 *** TODO room_list
-
+* TODO Integrate Hordak
+** TODO

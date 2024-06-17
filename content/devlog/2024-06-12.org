@@ -1,0 +1,135 @@
+#+title: Understanding accounting and data
+* Observations
+Up until now, I've had the following kind of data.
+
+#+begin_src python
+class Item():
+    pass
+class Transaction():
+    pass
+class Vendor():
+    pass
+class Procurement():
+    pass
+class Invoice():
+    pass
+#+end_src
+
+Items contain name, price, and inventory information. This information is used for tracking inventory and showing information in the register.
+
+Transactions contain detailed information about an Item, quantity of Item, price, date of transaction, etc. This information is used for tracking detailed information about items sold (doesn't currently support Procurements).
+
+Vendors contain information about companies that supply inventory, their invoice date and due date rules, etc.
+
+Procurements contain simple information about inventory items bought from vendors, and the dates of those procurements. I currently use it to populate the Accounts Payable Ledger and Company-wise Procurement Ledger.
+
+Invoices contain information about all Procurements from a Vendor within the Vendor's invoicing schedule.
+
+Transactions actually have a "procurement" type, but the Transaction model assumes a customer, but a procurement isn't from a customer, it's from a vendor. To avoid the hassle of refactoring, I simply made a separate Procurement model that I could possibly specialize later.
+
+While these models were sufficient for simple data, as soon as I tried to figure out how to track payments on Invoices, I realized that what I had wasn't sufficient. I can create invoices, but I don't have a way to track a payment to a Vendor. I also don't have a way to track what the total payments to the Vendor are, and whether the payments to the Vendor are up-to-date, or if there are past-due invoices.
+
+I realized that I had a more challenging problem than I first imagined, so I found django-hordak. Hordak is a package that facilitates the creation of double-entry accounting systems. The three models I believe to be the most important are these:
+
+#+begin_src python
+class Account():
+    pass
+class Transaction():
+    pass
+class Leg():
+    pass
+#+end_src
+
+The Account can be assigned a certain type:
+
+- Asset
+- Income
+- Expense
+- Equity
+
+Currently, I believe the first three to be the most important types.
+
+Transactions record the flow of debits and credits between Accounts. Debits and credits are recorded in Leg objects. In double-entry accounting, every transaction has a debit and credit, and the sum total of all debits and credits in the books must equal 0.
+
+The Account object type dictates the math used to record a transaction to another Account (in Hordak).
+
+* What is a transaction?
+I think a transaction encapsulates the following concept.
+
+1. A flow of money
+2. from one account to another
+3. at a certain time
+
+** Integration #1: Combine Transactions
+My transactions don't have a concept of an Account. Hordak Transactions are typically created through Accounts, so that is a possible integration point.
+
+#+begin_src python
+from hordak import models as accounting_models
+
+class AccountingAccount(accounting_models.Account):
+
+    def accounting_transfer_to(self, to_account, amount, **transaction_kwargs):
+       # make an AccountingTransaction
+
+class AccountingTransaction(accounting_models.Transaction):
+    items = ForeignKey(TransactionItem) # simplify transaction, but preserve details when necessary
+    total_price = MoneyField() # necessary?
+#+end_src
+
+*** Pros
+All data is saved in one model.
+
+*** Cons
+Querying data could be slower for statements/ledgers
+Need to modify accounting_transfer_to
+
+** Integration #2: Separate Transactions
+If I keep the Transactions separate, there is no need to do deep integration. Instead, a slight modification to the Hordak Transaction can do the trick.
+
+#+begin_src python
+class TransactionItem():
+    product = CharField()
+    quantity = PositiveIntegerField()
+    price = MoneyField()
+class AccountingTransaction(accounting_models.Transaction):
+    items = ManyToManyField(TransactionItem)
+#+end_src
+
+Hordak Transactions already have a "description" CharField, so the TransactionItems can take the place of that field. Then, using it would be fairly straightforward.
+
+#+begin_src python
+transaction = account.accounting_transfer_to(other_account, money)
+for orderitem in orderitems:
+    transaction_item = TransactionItem(product=orderitem.item.name, quantity=orderitem.quantity, price=orderitem.item.price)
+#+end_src
+
+However, this doesn't actually fix the key problem: integrating with Accounts and the accounting_transfer_to() method.
+
+
+** Integration #3: Actually separate transactions
+
+Instead of attaching details to the Transaction, we can attach the Transaction to the details.
+
+#+begin_src python
+class TransactionDetail():
+    summary = ForeignKey(accounting_models.Transaction)
+    items = ManyToManyField(TransactionItem)
+
+transaction = account.accounting_transfer_to(other_account, money)
+details = TransactionDetail.objects.create(summary=transaction)
+for orderitem in orderitems:
+    transaction_item = TransactionItem(product=orderitem.item.name, quantity=orderitem.quantity, price=orderitem.item.price)
+    details.items.add(transaction_item)
+#+end_src
+
+*** Pros
+Simple.
+Don't need to touch Hordak model implementations
+*** Cons
+Under what conditions would I look at the TransactionDetail and then want the summary?
+
+* Another matter: Aging report
+I have a basic idea of how to integrate with Transactions, but statements are still a bother. How do I make that aging report?
+
+** Brainstorm
+Payments are simply a transfer from some Asset Account to a Liability Account, so an aging report can be updated with payments. However, I still need to figure out how to look up Invoices and their totals, then
