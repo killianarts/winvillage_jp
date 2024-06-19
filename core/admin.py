@@ -7,7 +7,6 @@ from core.models import (
     Item,
     Procurement,
     TransactionDetail,
-    TransactionItem,
     Vendor,
 )
 
@@ -60,4 +59,3 @@ class ProcurementAdmin(admin.ModelAdmin):
 admin.site.register(Procurement, ProcurementAdmin)
 admin.site.register(Invoice)
 admin.site.register(TransactionDetail)
-admin.site.register(TransactionItem)

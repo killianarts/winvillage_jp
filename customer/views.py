@@ -354,6 +354,7 @@ def checked_in_customer_return(request, room_id, customer_id):
                 else:
                     order_item.delete()
         if "check-out" in request.POST:
+            # TODO Make a "create" method for a return
             transactions = Transaction.returns.create_returns_from_order(
                 order_obj=order
             )

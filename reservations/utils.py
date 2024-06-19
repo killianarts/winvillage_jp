@@ -1,13 +1,14 @@
 import calendar
-from datetime import datetime, date, timedelta
-from typing import List, Iterable
+from datetime import date, datetime, timedelta
+from typing import Iterable, List
 
 import pendulum
 from babel.dates import format_date
 from django.utils.translation import get_language
+from djmoney.money import Money
 
 from reservations.forms import DateTimeForm, RoomTierChoiceForm
-from reservations.models import Reservation, Stay, RoomTier, Room
+from reservations.models import Reservation, Room, RoomTier, Stay
 
 
 def make_pen(dt: datetime | date) -> pendulum.DateTime:
@@ -36,19 +37,21 @@ def campaign_occurrences(reservation, campaign):
     )
 
 
-def get_roomtier_price(reservation: Reservation, roomtier: RoomTier, number_of_adults: int):
+def get_roomtier_price(
+    reservation: Reservation, roomtier: RoomTier, number_of_adults: int
+):
     def get_overnight_price(group):
         return (
             group.pricingtier_set.filter(number_of_adults=number_of_adults)
-            .values_list("price_overnight", flat=True)
             .first()
+            .price_overnight
         )
 
     def get_short_term_price(group):
         return (
             group.pricingtier_set.filter(number_of_adults=number_of_adults)
-            .values_list("price_short_term", flat=True)
             .first()
+            .price_short_term
         )
 
     def get_child_overnight_price(group):
@@ -94,7 +97,7 @@ def get_roomtier_price(reservation: Reservation, roomtier: RoomTier, number_of_a
                         "price_child": get_child_short_term_price(group),
                     }
 
-    price = 0
+    price = Money("0.00", "JPY")
     for date_, prices_ in dates_with_prices.items():
         price += prices_["price_adult"]
     for date_, prices_ in dates_with_prices.items():
@@ -113,7 +116,9 @@ def get_available_rooms(number_of_adults, start_date, end_date):
     qualifying_rooms = Room.objects.filter(room_tier__in=qualifying_roomtiers)
     # remove rooms that are in Stay's marked "reserved" or "checked_in" for the given range between start_date and end_date
     only_available_rooms = qualifying_rooms.exclude(
-        stay__status__in=["reserved", "checked_in"], stay__start__lte=end_date, stay__end__gt=start_date
+        stay__status__in=["reserved", "checked_in"],
+        stay__start__lte=end_date,
+        stay__end__gt=start_date,
     )
     return only_available_rooms
 
@@ -131,7 +136,11 @@ def get_roomtier_data(reservation):
             # Check if the period between the start and end dates falls into an active campaign.
             # First we need to know which PricingTierGroups this room is in.
             # We get that information through its RoomTier
-            price = get_roomtier_price(reservation=reservation, roomtier=tier, number_of_adults=number_of_adults)
+            price = get_roomtier_price(
+                reservation=reservation,
+                roomtier=tier,
+                number_of_adults=number_of_adults,
+            )
             roomtier_data.append(
                 {
                     "tier": tier,
@@ -145,7 +154,11 @@ def get_form_initial_data(reservation):
     roomtier_name = reservation.get_roomtier_name()
     initial = {}
     if roomtier_name:
-        if reservation.get_possible_roomtier_queryset().filter(name=roomtier_name).exists():
+        if (
+            reservation.get_possible_roomtier_queryset()
+            .filter(name=roomtier_name)
+            .exists()
+        ):
             initial = {"roomtiers": reservation.stay.room.room_tier}
         else:
             reservation.reset_rooms()
@@ -214,7 +227,9 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
     for dt in datetimes_iter:
         rooms_reserved.append({"datetime": dt, "room_ids": list()})
     possible_rooms = reservation.get_possible_roomtier_queryset()
-    possible_rooms_ids = {room_id for room_id in possible_rooms.values_list("room__id", flat=True)}
+    possible_rooms_ids = {
+        room_id for room_id in possible_rooms.values_list("room__id", flat=True)
+    }
     not_possible_stays_query = Stay.objects.filter(
         room_id__in=possible_rooms_ids,
         status__in=["reserved", "checked_in"],
@@ -237,7 +252,11 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
                 reservation.reset_dates()
             elif not room_is_available and start_date <= room["datetime"] <= end_date:
                 reservation.reset_dates()
-        form = DateTimeForm(initial={"datetime": room["datetime"]}) if room_is_available else None
+        form = (
+            DateTimeForm(initial={"datetime": room["datetime"]})
+            if room_is_available
+            else None
+        )
         dates_and_forms.append([room["datetime"], form])
     return dates_and_forms
 
@@ -249,7 +268,9 @@ class PendulumCalendar(calendar.Calendar):
     def itermonthpens(self, year, month, default_hour=10):
         pens = []
         for y, m, d in self.itermonthdays3(year, month):
-            pens.append(pendulum.datetime(year=y, month=m, day=d, hour=default_hour, tz=self.tz))
+            pens.append(
+                pendulum.datetime(year=y, month=m, day=d, hour=default_hour, tz=self.tz)
+            )
         return pens
 
     def itermonthnaivepens(self, year, month, default_hour=10):
@@ -268,7 +289,9 @@ def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
     next_month_dates = cal.itermonthpens(next_month_date.year, next_month_date.month)
 
     selected_dates_and_forms = compile_dates_information(reservation, selected_dates)
-    next_month_dates_and_forms = compile_dates_information(reservation, next_month_dates)
+    next_month_dates_and_forms = compile_dates_information(
+        reservation, next_month_dates
+    )
     current_language = get_language()
     weekdays = get_localized_day_names(cal.firstweekday, current_language)
     calendars = {
@@ -319,10 +342,18 @@ def generate_campaign_calendars(
 
     next_month_date = date_.add(months=1)
     cal = PendulumCalendar(firstweekday=calendar.MONDAY)
-    selected_month_dates = cal.itermonthnaivepens(date_.year, date_.month, default_hour=0)
-    next_month_dates = cal.itermonthnaivepens(next_month_date.year, next_month_date.month, default_hour=0)
-    selected_month_occurrences = get_occurrences(start=current_nstart, end=current_nend, dates=selected_month_dates)
-    next_month_occurrences = get_occurrences(start=next_nstart, end=next_nend, dates=next_month_dates)
+    selected_month_dates = cal.itermonthnaivepens(
+        date_.year, date_.month, default_hour=0
+    )
+    next_month_dates = cal.itermonthnaivepens(
+        next_month_date.year, next_month_date.month, default_hour=0
+    )
+    selected_month_occurrences = get_occurrences(
+        start=current_nstart, end=current_nend, dates=selected_month_dates
+    )
+    next_month_occurrences = get_occurrences(
+        start=next_nstart, end=next_nend, dates=next_month_dates
+    )
     current_language = get_language()
     weekdays = get_localized_day_names(cal.firstweekday, current_language)
     calendars = {

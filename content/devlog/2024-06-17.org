@@ -13,9 +13,11 @@ Contents should be:
 
 - Make Procurement
 - View Procurements
-- Create Vendor
+- Create Vendor - for cutoff and due dates
   - Probably should be 仕入先 rather than 会社
 - View Vendors
+- Create Account - for accounting
+- View Accounts
 - Remove "Create Invoice"
 - View Invoice
   - Invoice should be 請求書 rather than インボイス

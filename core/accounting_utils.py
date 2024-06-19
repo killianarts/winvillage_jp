@@ -4,7 +4,7 @@ from djmoney.money import Money
 from hordak.models import Account
 from winvillage import settings
 
-from core.models import TransactionDetail, TransactionItem
+from core.models import TransactionDetail
 
 
 def get_account(code):
@@ -57,24 +57,24 @@ def get_accounts_payable_account_from_configuration(code=200):
 
 def create_sales_from_order(order_obj, payment_type=None):
     with db_transaction.atomic():
+        details = []
         sales_account = get_sales_account_from_configuration()
         if payment_type == "cash":
             to_account = get_cash_account_from_configuration()
         else:
             to_account = get_accounts_receivable_account_from_configuration()
-        transaction = sales_account.accounting_transfer_to(
-            to_account, order_obj.get_total()
-        )
-        detail = TransactionDetail.objects.create(summary=transaction)
         for orderitem in order_obj.items.all():
-            transaction_item = TransactionItem.objects.create(
-                product=orderitem.item.name,
+            transaction = sales_account.accounting_transfer_to(
+                to_account, orderitem.item.price * orderitem.quantity
+            )
+            detail = TransactionDetail.objects.create(
+                summary=transaction,
+                item=orderitem.item.name,
                 quantity=orderitem.quantity,
                 price_per_unit=orderitem.item.price,
             )
-            detail.items.add(transaction_item)
-
-        return detail
+            details.append(detail)
+        return details
 
 
 def create_default_chart_of_accounts():

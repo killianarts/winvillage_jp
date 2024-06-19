@@ -6,130 +6,156 @@
         class="grid space-y-5">
     <h2 class="mb-2 pb-2 text-xl text-orange-950 sm:text-3xl">
       {% blocktrans %}Create Pricing Tiers{% endblocktrans %}</h2>
-    {% csrf_token %}
-    {% if errors %}
-      {% for error in errors %}
-        <div class="grid control">
-          {% render_field error error_class=error_class %}
-        </div>
-      {% endfor %}
-    {% endif %}
-    <div class="grid">
-      {% if form.name.errors %}
-        <p class="text-red-500 help is-danger">
-          {{ form.name.errors }}
-        </p>
-      {% else %}
-        <p class="invisible">
-          {% blocktrans %}No errors{% endblocktrans %}
-        </p>
-      {% endif %}
-      <div>{{ form.name.label_tag }}</div>
-      <div>{{ form.name }}</div>
-    </div>
-    <div class="grid">
-      {% if form.room_tiers.errors %}
-        <p class="text-red-500 help is-danger">
-          {{ form.room_tiers.errors }}
-        </p>
-      {% else %}
-        <p class="invisible">
-          {% blocktrans %}No errors{% endblocktrans %}
-        </p>
-      {% endif %}
-      <div>{{ form.room_tiers.label_tag }}</div>
-      <div>{{ form.room_tiers }}</div>
-    </div>
-    <div hx-get="."
-         hx-swap="outerHTML"
-         hx-target="#pricing-tiers-table"
-         hx-push-url="true"
-         hx-include="[name=minimum_number_of_adults], [name=maximum_number_of_adults]"
-         hx-vals='{"use_block": "pricing-tiers-table"}'
-         hx-trigger="change from:[name=minimum_number_of_adults], change from:[name=minimum_number_of_adults]"
-         hx-select="#pricing-tiers-table"
-         class="grid grid-cols-2 w-fit gap-7">
-      <div class="min-max-values">
-        {% if form.min_adults.errors %}
-          <p class="text-red-500 help is-danger">
-            {{ form.min_adults.errors }}
-          </p>
-        {% else %}
-          <p class="invisible">
-            {% blocktrans %}No errors{% endblocktrans %}
-          </p>
-        {% endif %}
-        <div>{{ form.min_adults.label_tag }}</div>
-        <div>{{ form.min_adults }}</div>
-      </div>
-      <div class="min-max-values">
-        {% if form.max_adults.errors %}
-          <p class="text-red-500 help is-danger">
-            {{ form.max_adults.errors }}
-          </p>
-        {% else %}
-          <p class="invisible">
-            {% blocktrans %}No errors{% endblocktrans %}
-          </p>
-        {% endif %}
-        <div>{{ form.max_adults.label_tag }}</div>
-        <div>{{ form.max_adults }}</div>
-      </div>
-    </div>
-    {% block pricing-tiers-table %}
-      <table id="pricing-tiers-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
-        <thead>
-        <tr class="text-left">
-          <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-            <span class="pl-6">{% translate 'Number of Adults' %}</span>
-          </th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Overnight Price' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short-term Price' %}</th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-stone-200">
-        {{ formset.management_form }}
-        {% for form in formset %}
-          <tr class="hover:bg-stone-50 odd:bg-stone-100">
-            <td class="whitespace-nowrap pr-3 pl-4 py-4 text-sm font-medium text-stone-900 sm:pl-0">
-              <span class="pl-6">
-                {{ form.number_of_adults.as_hidden }}
-                {{ form.number_of_adults.value }}
-              </span>
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-              {{ form.price_overnight }}
-              {% if form.errors %}
-                <p class="text-red-500 help is-danger">
-                  {{ form.errors }}
-                </p>
-              {% else %}
-                <p class="hidden">
-                  {% blocktrans %}No errors{% endblocktrans %}
-                </p>
-              {% endif %}
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ form.price_short_term }}</td>
-          </tr>
+      {% csrf_token %}
+      {% if errors %}
+        {% for error in errors %}
+          <div class="grid control">
+            {% render_field error error_class=error_class %}
+          </div>
         {% endfor %}
-        </tbody>
-      </table>
-    {% endblock %}
-    <div class="grid">
-      {% if form.campaigns.errors %}
-        <p class="text-red-500 help is-danger">
-          {{ form.campaigns.errors }}
-        </p>
-      {% else %}
-        <p class="invisible">
-          {% blocktrans %}No errors{% endblocktrans %}
-        </p>
       {% endif %}
-      <div>{{ form.campaigns.label_tag }}</div>
-      <div>{{ form.campaigns }}</div>
-    </div>
-    <div class="flex">
-      {% #outline_button name="submit" type="submit" %}{% translate 'Add Pricing Tier' %}{% /outline_button %}
-    </div>
+      <div class="grid">
+        {% if form.name.errors %}
+          <p class="text-red-500 help is-danger">
+            {{ form.name.errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+        <div>{{ form.name.label_tag }}</div>
+        <div>{{ form.name }}</div>
+      </div>
+      <div class="grid">
+        {% if form.room_tiers.errors %}
+          <p class="text-red-500 help is-danger">
+            {{ form.room_tiers.errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+        <div>{{ form.room_tiers.label_tag }}</div>
+        <div>{{ form.room_tiers }}</div>
+      </div>
+      <div hx-get="."
+           hx-swap="outerHTML"
+           hx-target="#pricing-tiers-table"
+           hx-push-url="true"
+           hx-include="[name=minimum_number_of_adults], [name=maximum_number_of_adults]"
+           hx-vals='{"use_block": "pricing-tiers-table"}'
+           hx-trigger="change from:[name=minimum_number_of_adults], change from:[name=minimum_number_of_adults]"
+           hx-select="#pricing-tiers-table"
+           class="grid grid-cols-2 w-fit gap-7">
+        <div class="min-max-values">
+          {% if form.minimum_number_of_adults.errors %}
+            <p class="text-red-500 help is-danger">
+              {{ form.minimum_number_of_adults.errors }}
+            </p>
+          {% else %}
+            <p class="invisible">
+              {% blocktrans %}No errors{% endblocktrans %}
+            </p>
+          {% endif %}
+          <div>{{ form.minimum_number_of_adults.label_tag }}</div>
+          <div>{{ form.minimum_number_of_adults }}</div>
+        </div>
+        <div class="min-max-values">
+          {% if form.maximum_number_of_adults.errors %}
+            <p class="text-red-500 help is-danger">
+              {{ form.maximum_number_of_adults.errors }}
+            </p>
+          {% else %}
+            <p class="invisible">
+              {% blocktrans %}No errors{% endblocktrans %}
+            </p>
+          {% endif %}
+          <div>{{ form.maximum_number_of_adults.label_tag }}</div>
+          <div>{{ form.maximum_number_of_adults }}</div>
+        </div>
+      </div>
+      <div class="price-children">
+        {% if form.price_overnight_child.errors %}
+          <p class="text-red-500 help is-danger">
+            {{ form.price_overnight_child.errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+        <div>{{ form.price_overnight_child.label_tag }}</div>
+        <div>{{ form.price_overnight_child }}</div>
+      </div>
+      <div class="price-children">
+        {% if form.price_short_term_child.errors %}
+          <p class="text-red-500 help is-danger">
+            {{ form.price_short_term_child.errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+        <div>{{ form.price_short_term_child.label_tag }}</div>
+        <div>{{ form.price_short_term_child }}</div>
+      </div>
+      {% block pricing-tiers-table %}
+        <table id="pricing-tiers-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
+          <thead>
+            <tr class="text-left">
+              <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
+                <span class="pl-6">{% translate 'Number of Adults' %}</span>
+              </th>
+              <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Overnight Price' %}</th>
+              <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short-term Price' %}</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-stone-200">
+            {{ formset.management_form }}
+            {% for form in formset %}
+              <tr class="hover:bg-stone-50 odd:bg-stone-100">
+                <td class="whitespace-nowrap pr-3 pl-4 py-4 text-sm font-medium text-stone-900 sm:pl-0">
+                  <span class="pl-6">
+                    {{ form.number_of_adults.as_hidden }}
+                    {{ form.number_of_adults.value }}
+                  </span>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                  {{ form.price_overnight }}
+                  {% if form.errors %}
+                    <p class="text-red-500 help is-danger">
+                      {{ form.errors }}
+                    </p>
+                  {% else %}
+                    <p class="hidden">
+                      {% blocktrans %}No errors{% endblocktrans %}
+                    </p>
+                  {% endif %}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ form.price_short_term }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endblock %}
+      <div class="grid">
+        {% if form.campaigns.errors %}
+          <p class="text-red-500 help is-danger">
+            {{ form.campaigns.errors }}
+          </p>
+        {% else %}
+          <p class="invisible">
+            {% blocktrans %}No errors{% endblocktrans %}
+          </p>
+        {% endif %}
+        <div>{{ form.campaigns.label_tag }}</div>
+        <div>{{ form.campaigns }}</div>
+      </div>
+      <div class="flex">
+        {% #outline_button name="submit" type="submit" %}{% translate 'Add Pricing Tier' %}{% /outline_button %}
+      </div>
   </form>
 {% endblock %}

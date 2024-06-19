@@ -104,23 +104,21 @@ class PricingTier(BaseModel):
     number_of_adults = models.IntegerField(
         default=1, choices=ADULT_CHOICES, verbose_name=_("Number of Adults")
     )
-    price_overnight = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name=_("Price Overnight")
+    price_overnight = MoneyField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name=_("Price Overnight"),
+        default_currency="JPY",
     )
-    price_short_term = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name=_("Price Short-term")
+    price_short_term = MoneyField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name=_("Price Short-term"),
+        default_currency="JPY",
     )
 
     def __str__(self):
-        return (
-            f"￥{self.get_price_overnight()}/night, ￥{self.get_price_short_term()}/hour"
-        )
-
-    def get_price_overnight(self):
-        return round(self.price_overnight, 2)
-
-    def get_price_short_term(self):
-        return round(self.price_short_term, 2)
+        return f"{self.price_overnight}/night, {self.price_short_term}/hour"
 
     def get_absolute_url(self):
         return reverse("winadmin:pricing_tier_detail", kwargs={"pk": self.pk})
@@ -188,7 +186,6 @@ CHILDREN_CHOICES = (
 )
 
 
-# Find
 class PricingTierGroup(BaseModel):
     name = models.CharField(max_length=255, unique=True)
     minimum_number_of_adults = models.IntegerField(
@@ -198,11 +195,17 @@ class PricingTierGroup(BaseModel):
         validators=[MinValueValidator(4), MaxValueValidator(6)]
     )
     room_tiers = models.ManyToManyField("RoomTier")
-    price_overnight_child = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name=_("Price Per Child Overnight")
+    price_overnight_child = MoneyField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name=_("Price Per Child Overnight"),
+        default_currency="JPY",
     )
-    price_short_term_child = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name=_("Price Per Child Short-Term")
+    price_short_term_child = MoneyField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name=_("Price Per Child Short-Term"),
+        default_currency="JPY",
     )
     campaign = models.ForeignKey(
         "Campaign", null=True, blank=True, on_delete=models.CASCADE
@@ -211,8 +214,14 @@ class PricingTierGroup(BaseModel):
 
     def create_group(self, form, formset):
         self.name = form.cleaned_data.get("name")
-        self.minimum_number_of_adults = form.cleaned_data.get("min_adults")
-        self.maximum_number_of_adults = form.cleaned_data.get("max_adults")
+        self.minimum_number_of_adults = form.cleaned_data.get(
+            "minimum_number_of_adults"
+        )
+        self.maximum_number_of_adults = form.cleaned_data.get(
+            "maximum_number_of_adults"
+        )
+        self.price_overnight_child = form.cleaned_data.get("price_overnight_child")
+        self.price_short_term_child = form.cleaned_data.get("price_short_term_child")
         room_tiers = form.cleaned_data.get("room_tiers")
         self.campaign = form.cleaned_data.get("campaigns")
         self.save()
@@ -298,8 +307,10 @@ class Stay(BaseModel):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, blank=True)
     start = PendulumDateTimeField(verbose_name=_("Start"), null=True, blank=True)
     end = PendulumDateTimeField(verbose_name=_("End"), null=True, blank=True)
-    status_changed = MonitorField(monitor="status")
-    price = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True)
+    # status_changed = MonitorField(monitor="status")
+    price = MoneyField(
+        max_digits=16, decimal_places=2, null=True, blank=True, default_currency="JPY"
+    )
 
     def get_stay_range(self):
         return (
@@ -476,7 +487,7 @@ class Reservation(BaseModel):
         self.save()
 
     def get_price(self):
-        return round(self.stay.price, 2)
+        return self.stay.price
 
     def add_order_item(self, item_id):
         item = Item.objects.get(id=item_id)

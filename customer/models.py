@@ -1,15 +1,16 @@
 import datetime
 from collections import OrderedDict
 
-from django.utils import timezone
 import pendulum
+from core.forms import PendulumField
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from faker import Faker
 from phonenumber_field.modelfields import PhoneNumberField
-from core.forms import PendulumField
+from winvillage import settings
 
 auth_user = get_user_model()
 
@@ -21,7 +22,12 @@ class PendulumDateTimeField(models.DateTimeField):
     def from_db_value(self, value, expression, connection):
         if value is None:
             return value
-        if isinstance(value, datetime.datetime):
+        if isinstance(value, datetime.datetime) and not value.tzinfo:
+            if settings.USE_TZ:
+                default_timezone = timezone.get_default_timezone()
+                value = timezone.make_aware(value, default_timezone)
+            return pendulum.instance(value)
+        if isinstance(value, datetime.datetime) and value.tzinfo:
             return pendulum.instance(value)
         return pendulum.parse(value)
 
@@ -39,11 +45,12 @@ class PendulumDateTimeField(models.DateTimeField):
             return pendulum.instance(value)
         if value is None:
             return value
-        return pendulum.parse(value, tz=timezone.get_current_timezone())
+        return pendulum.parse(value)
 
     def get_prep_value(self, value):
         if isinstance(value, pendulum.DateTime):
             return value.to_iso8601_string()
+            # return value
         if isinstance(value, datetime.datetime):
             return pendulum.instance(value)
         if isinstance(value, datetime.date):
@@ -51,21 +58,15 @@ class PendulumDateTimeField(models.DateTimeField):
         if value is None:
             return value
 
-    def value_to_string(self, obj):
-        value = self._get_val_from_obj(obj)
-        return "" if value is None else value.isoformat()
+    # def value_to_string(self, obj):
+    #     value = self._get_val_from_obj(obj)
+    #     return "" if value is None else value.isoformat()
 
-    def pre_save(self, model_instance, add):
-        value = super(PendulumField, self).pre_save(model_instance, add)
-        if isinstance(value, datetime.datetime):
-            value = pendulum.instance(value)
-            setattr(model_instance, self.attname, value)
-        return value
-
-    def formfield(self, **kwargs):
-        defaults = {"form_class": PendulumField}
-        defaults.update(kwargs)
-        return super(PendulumField, self).formfield(**defaults)
+    def db_type(self, connection):
+        if connection.vendor == "mysql":
+            return "datetime"
+        else:
+            return "timestamp"
 
 
 class BaseModel(models.Model):

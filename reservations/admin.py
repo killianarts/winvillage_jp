@@ -34,7 +34,6 @@ class StayAdmin(admin.ModelAdmin):
         "room",
         "start",
         "end",
-        "status_changed",
         "created_at",
         "updated_at",
     )

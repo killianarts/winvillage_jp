@@ -12,6 +12,7 @@ from hordak.forms import accounts as account_forms
 from hordak.forms import transactions as transaction_forms
 from hordak.models import CURRENCY_CHOICES, Account
 from model_utils import Choices
+from mptt.forms import TreeNodeChoiceField
 from phonenumber_field.formfields import PhoneNumberField
 from reservations.models import (
     Campaign,
@@ -185,7 +186,7 @@ class ReservationDetailForm(TailwindFormMixin, forms.Form):
         ("cancelled", _("Cancelled")),
     )
     status = forms.ChoiceField(choices=STATUS_CHOICES)
-    price = forms.DecimalField()
+    price = MoneyField()
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
@@ -295,13 +296,13 @@ class PricingTierDetailForm(TailwindFormMixin, forms.ModelForm):
 
 class IncrementalPricingTierFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
-        self.min_adults = kwargs.pop("min_adults", 1)
-        self.max_adults = kwargs.pop("max_adults", 6)
+        self.minimum_number_of_adults = kwargs.pop("minimum_number_of_adults", 1)
+        self.maximum_number_of_adults = kwargs.pop("maximum_number_of_adults", 6)
         super().__init__(*args, **kwargs)
 
     def get_form_kwargs(self, index):
         kwargs = super().get_form_kwargs(index)
-        initial_number_of_adults = self.min_adults + index
+        initial_number_of_adults = self.minimum_number_of_adults + index
         initial = kwargs.get("initial", {})
         initial["number_of_adults"] = initial_number_of_adults
         kwargs["initial"] = initial
@@ -326,6 +327,8 @@ class PricingTierGroupCreateForm(forms.Form):
     maximum_number_of_adults = forms.IntegerField(
         initial=6, min_value=4, max_value=6, label=_("Maximum Adults")
     )
+    price_overnight_child = MoneyField()
+    price_short_term_child = MoneyField()
     room_tiers = forms.ModelMultipleChoiceField(
         queryset=RoomTier.objects.all(),
         widget=forms.CheckboxSelectMultiple,

@@ -12,10 +12,13 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
+from djmoney.money import Money
 from djmoney.money import Money as DefaultMoney
 from hordak import models as accounting_models
+from hordak.models import Leg
 from phonenumber_field.modelfields import PhoneNumberField
 from winvillage import settings
+
 
 auth_user = get_user_model()
 
@@ -395,7 +398,8 @@ class Vendor(BaseModel):
         due_date = self.get_due_date(cutoff_date)
         amount = 0
         for procurement in procurements:
-            amount += procurement.get_total_price()
+            total = procurement.total()
+            amount += total
         invoice = Invoice.objects.create(
             vendor=self, invoiced_on=cutoff_date, due_on=due_date, amount=amount
         )
@@ -455,10 +459,15 @@ class Invoice(BaseModel):
         verbose_name_plural = _("Invoices")
 
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-    procurements = models.ManyToManyField(Procurement)
+    procurements = models.ManyToManyField("TransactionDetail")
     invoiced_on = PendulumDateTimeField(verbose_name=_("Invoiced On"))
     due_on = PendulumDateTimeField(verbose_name=_("Due On"))
-    amount = models.DecimalField(max_digits=19, decimal_places=2)
+    amount = MoneyField(
+        max_digits=19,
+        decimal_places=2,
+        default_currency="JPY",
+        verbose_name=_("Price Per Unit"),
+    )
 
     objects = models.Manager()
     current = CurrentInvoiceManager()
@@ -472,25 +481,31 @@ class Invoice(BaseModel):
         return f"Vendor: {self.vendor}, Due On: {self.due_on}"
 
 
-class TransactionItem(BaseModel):
-    class Meta:
-        verbose_name = _("Transaction Item")
-        verbose_name_plural = _("Transaction Items")
-
-    item = models.CharField(max_length=50, verbose_name=_("Item"))
-    quantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
-    price_per_unit = MoneyField(
-        max_digits=19,
-        decimal_places=2,
-        default_currency="JPY",
-        verbose_name=_("Price Per Unit"),
-    )
-
-    def __str__(self):
-        return f"{self.item}, {self.price_per_unit}, {self.quantity}"
-
-
 class TransactionDetail(BaseModel):
+    class SaleTransactionDetailManager(models.Manager):
+        def get_queryset(self):
+            from core.accounting_utils import get_sales_account_from_configuration
+
+            account = get_sales_account_from_configuration()
+            legs = Leg.objects.filter(account=account)
+            return super().get_queryset().filter(summary__legs__in=legs)
+
+        def create(self, to_account, amount, item, quantity, price_per_unit):
+            from core.accounting_utils import get_sales_account_from_configuration
+
+            if not isinstance(amount, Money):
+                amount = Money(amount, "JPY")
+            with db_transaction.atomic():
+                sales_account = get_sales_account_from_configuration()
+                transaction = sales_account.accounting_transfer_to(to_account, amount)
+                detail = super().create(
+                    summary=transaction,
+                    item=item,
+                    quantity=quantity,
+                    price_per_unit=price_per_unit,
+                )
+                return detail
+
     class Meta:
         verbose_name = _("Transaction Detail")
         verbose_name_plural = _("Transaction Details")
@@ -500,10 +515,21 @@ class TransactionDetail(BaseModel):
         on_delete=models.CASCADE,
         verbose_name=_("Summary"),
     )
-    items = models.ManyToManyField(TransactionItem)
+    item = models.CharField(max_length=50, verbose_name=_("Item"))
+    quantity = models.PositiveIntegerField(verbose_name=_("Quantity"))
+    price_per_unit = MoneyField(
+        default=0,
+        max_digits=19,
+        decimal_places=2,
+        default_currency="JPY",
+        verbose_name=_("Price Per Unit"),
+    )
 
-    def __str__(self):
-        return f"{self.summary.date} - {[item for item in self.items.all()]}"
+    objects = models.Manager()
+    sales = SaleTransactionDetailManager()
+
+    def total(self):
+        return self.quantity * self.price_per_unit
 
 
 class Account(accounting_models.Account):

@@ -4,7 +4,12 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import pendulum
-from core.accounting_utils import get_inventory_account_from_configuration
+from core.accounting_utils import (
+    get_accounts_receivable_account_from_configuration,
+    get_cash_account_from_configuration,
+    get_inventory_account_from_configuration,
+    get_sales_account_from_configuration,
+)
 from core.models import (
     Category,
     Customer,
@@ -12,7 +17,6 @@ from core.models import (
     Item,
     Procurement,
     TransactionDetail,
-    TransactionItem,
     Vendor,
 )
 from core.utils import (
@@ -33,6 +37,8 @@ from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
 from djmoney.money import Money
 from hordak.models import Account
 from hordak.models import Account as BusinessAccount
+from hordak.models import Leg
+from hordak.models import Transaction
 from hordak.models import Transaction as BusinessTransaction
 from reservations import forms
 from reservations.forms import DateForm
@@ -246,34 +252,58 @@ def get_balance_and_ledger(transactions):
 
 
 @for_htmx(use_block_from_params=True)
-def sale_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
+def sales_ledger(request: HtmxHttpRequest) -> HttpResponse:
+    account = get_sales_account_from_configuration()
+    sales_legs = Leg.objects.filter(account=account)
+    details = TransactionDetail.objects.filter(summary__legs__in=sales_legs)
     year, month = get_current_year_and_month(request)
-    deactivate()
-    if request.htmx:
+    if request.GET.get("action") == "filter":
         form = SetLedgerPeriodForm(request.GET)
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
+        details = details.filter(summary__date__year=year, summary__date__month=month)
     else:
         form = SetLedgerPeriodForm(initial={"year": year, "month": month})
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    sales = (
-        Transaction.objects.filter(created_at__year=year)
-        .filter(created_at__month=month)
-        .order_by("created_at")
-    )
-    balance, ledger = get_balance_and_ledger(sales)
     context = {
-        "ledger": ledger,
-        "final_balance": balance,
+        "account": account,
+        "details": details,
+        "year": year,
+        "month": month,
+        "form": form,
+    }
+    return TemplateResponse(request, "winadmin/sales/sales_ledger.html", context)
+
+
+@for_htmx(use_block_from_params=True)
+def accounts_receivable_ledger(request):
+    account = get_accounts_receivable_account_from_configuration()
+    receivable_legs = Leg.objects.filter(account=account)
+    details = TransactionDetail.objects.filter(summary__legs__in=receivable_legs)
+    year, month = get_current_year_and_month(request)
+    if request.GET.get("action") == "filter":
+        form = SetLedgerPeriodForm(request.GET)
+        if form.is_valid():
+            year = form.cleaned_data["year"]
+            month = form.cleaned_data["month"]
+        details = details.filter(summary__date__year=year, summary__date__month=month)
+    else:
+        form = SetLedgerPeriodForm(initial={"year": year, "month": month})
+        if form.is_valid():
+            year = form.cleaned_data["year"]
+            month = form.cleaned_data["month"]
+    context = {
+        "account": account,
+        "details": details,
         "year": year,
         "month": month,
         "form": form,
     }
     return TemplateResponse(
-        request, "winadmin/transactions/sales_list_by_period.html", context
+        request, "winadmin/sales/accounts_receivable_ledger.html", context
     )
 
 
@@ -306,7 +336,8 @@ def transaction_create(request: HtmxHttpRequest) -> HttpResponse:
 
 @for_htmx(use_block_from_params=True)
 def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
-    transactions = Transaction.objects.all()
+    account = get_sales_account_from_configuration()
+    details = TransactionDetail.objects.all()
     year, month = get_current_year_and_month(request)
     deactivate()
     if request.GET.get("action") == "filter":
@@ -319,19 +350,15 @@ def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    transactions = transactions.filter(created_at__year=year).filter(
-        created_at__month=month
-    )
-    balance, ledger = get_balance_and_ledger(transactions)
     context = {
-        "ledger": ledger,
-        "final_balance": balance,
+        "account": account,
+        "details": details,
         "year": year,
         "month": month,
         "form": form,
     }
     return TemplateResponse(
-        request, "winadmin/transactions/transaction_list_by_period.html", context
+        request, "winadmin/sales/sales_list_by_period.html", context
     )
 
 
@@ -703,9 +730,9 @@ def customer_check_in_check_out_list(request: HtmxHttpRequest):
         .order_by("stay__start")
     )
     active_timezone = activate(TIMEZONE)
-    year = request.GET.get("year", pendulum.now(tz=active_timezone).year)
-    month = request.GET.get("month", pendulum.now(tz=active_timezone).month)
-    day = request.GET.get("day", pendulum.now(tz=active_timezone).day)
+    year = request.GET.get("year", pendulum.now(tz=TIMEZONE).year)
+    month = request.GET.get("month", pendulum.now(tz=TIMEZONE).month)
+    day = request.GET.get("day", pendulum.now(tz=TIMEZONE).day)
     deactivate()
     form = SetReservationPeriodForm(initial={"year": year, "month": month, "day": day})
     reservations = reservations.filter(
@@ -727,17 +754,42 @@ def customer_check_in_check_out_list(request: HtmxHttpRequest):
 def customer_check_in_check_out_detail(request: HtmxHttpRequest, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
     if request.method == "POST":
-        if "check-in" in request.POST:
+        if "check-in-with-cash" in request.POST:
             if not reservation.stay.status == "checked_in":
                 reservation.check_in()
-                transaction = Transaction.reservations.create(
-                    reservation_obj=reservation
+                sales_account = get_sales_account_from_configuration()
+                cash_account = get_cash_account_from_configuration()
+                detail = TransactionDetail.sales.create(
+                    to_account=cash_account,
+                    amount=reservation.get_price(),
+                    item="Reservation",
+                    quantity=1,
+                    price_per_unit=reservation.get_price(),
                 )
+                detail.save()
                 messages.success(request, _(f"{reservation.customer} checked-in."))
             else:
                 messages.error(
                     request, _(f"{reservation.customer} is already checked-in.")
                 )
+        if "check-in-with-card" in request.POST:
+            if not reservation.stay.status == "checked_in":
+                reservation.check_in()
+                sales_account = get_sales_account_from_configuration()
+                cash_account = get_cash_account_from_configuration()
+                detail = TransactionDetail.sales.create(
+                    to_account=cash_account,
+                    amount=reservation.get_price(),
+                    item="Reservation",
+                    quantity=1,
+                    price_per_unit=reservation.get_price(),
+                )
+                detail.save()
+            else:
+                messages.error(
+                    request, _(f"{reservation.customer} is already checked-in.")
+                )
+
         if "check-out" in request.POST:
             if reservation.stay.status == "checked_in":
                 reservation.check_out()
@@ -976,13 +1028,17 @@ def pricing_tier_detail(request: HtmxHttpRequest, pricing_tier_id: int) -> HttpR
 
 @for_htmx(use_block_from_params=True)
 def pricing_tier_group_create(request: HtmxHttpRequest) -> HttpResponse:
-    min_adults = int(
-        request.GET.get("min_adults") or request.POST.get("min_adults") or 1
+    minimum_number_of_adults = int(
+        request.GET.get("minimum_number_of_adults")
+        or request.POST.get("minimum_number_of_adults")
+        or 1
     )
-    max_adults = int(
-        request.GET.get("max_adults") or request.POST.get("max_adults") or 6
+    maximum_number_of_adults = int(
+        request.GET.get("maximum_number_of_adults")
+        or request.POST.get("maximum_number_of_adults")
+        or 6
     )
-    num_extras = max_adults - min_adults + 1
+    num_extras = maximum_number_of_adults - minimum_number_of_adults + 1
     PricingTierFormSet = inlineformset_factory(
         parent_model=PricingTierGroup,
         model=PricingTier,
@@ -992,23 +1048,36 @@ def pricing_tier_group_create(request: HtmxHttpRequest) -> HttpResponse:
         can_delete=False,
     )
     form = PricingTierGroupCreateForm(
-        initial={"min_adults": min_adults, "max_adults": max_adults}
+        initial={
+            "minimum_number_of_adults": minimum_number_of_adults,
+            "maximum_number_of_adults": maximum_number_of_adults,
+        }
     )
-    formset = PricingTierFormSet(min_adults=min_adults, max_adults=max_adults)
+    formset = PricingTierFormSet(
+        minimum_number_of_adults=minimum_number_of_adults,
+        maximum_number_of_adults=maximum_number_of_adults,
+    )
     if request.method == "POST":
         form = PricingTierGroupCreateForm(request.POST)
         formset = PricingTierFormSet(request.POST, request.FILES)
         if "submit" in request.POST:
-            if form.is_valid() and formset.is_valid():
-                group_obj = PricingTierGroup()
-                group = group_obj.create_group(form=form, formset=formset)
-                messages.success(request, f"Group {group.name} created successfully.")
-                form = PricingTierGroupCreateForm(
-                    initial={"min_adults": min_adults, "max_adults": max_adults}
-                )
-                formset = PricingTierFormSet(
-                    min_adults=min_adults, max_adults=max_adults
-                )
+            if form.is_valid():
+                if formset.is_valid():
+                    group_obj = PricingTierGroup()
+                    group = group_obj.create_group(form=form, formset=formset)
+                    messages.success(
+                        request, f"Group {group.name} created successfully."
+                    )
+                    form = PricingTierGroupCreateForm(
+                        initial={
+                            "minimum_number_of_adults": minimum_number_of_adults,
+                            "maximum_number_of_adults": maximum_number_of_adults,
+                        }
+                    )
+                    formset = PricingTierFormSet(
+                        minimum_number_of_adults=minimum_number_of_adults,
+                        maximum_number_of_adults=maximum_number_of_adults,
+                    )
             else:
                 messages.error(request, "Error!")
     context = {"form": form, "formset": formset}
@@ -1219,6 +1288,24 @@ def vendor_create(request):
     return trigger_client_event(response, "getMessages")
 
 
+# TODO Combine vendor_create and business_account_create
+# @for_htmx(use_block_from_params=True)
+# def vendor_create(request):
+#     if request.method == "POST":
+#         form = VendorCreateForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, _("Vendor Created Successfully"))
+#         else:
+#             messages.error(request, _("Vendor Couldn't Be Created"))
+#     else:
+#         vendor_form = VendorCreateForm()
+#         account_form
+
+#     response = TemplateResponse(request, "vendor/vendor_create.html", {"form": form})
+#     return trigger_client_event(response, "getMessages")
+
+
 @for_htmx(use_block_from_params=True)
 def vendor_list(request):
     vendors = Vendor.objects.all()
@@ -1245,6 +1332,7 @@ def vendor_detail(request, vendor_id):
 @for_htmx(use_block_from_params=True)
 def invoice_create(request):
     vendor = get_object_or_404(Vendor, id=1)
+    account = Account.objects.get(name=vendor.name)
     if request.method == "POST":
         form = InvoiceCreateForm(request.POST)
         if form.is_valid():
@@ -1252,13 +1340,14 @@ def invoice_create(request):
                 pendulum.today().year, pendulum.today().month
             )
             last_month_cutoff_datetime = this_month_cutoff_datetime.subtract(months=1)
-            procurements = Procurement.objects.filter(
-                vendor=vendor,
-                procured_on__range=(
+            legs = Leg.objects.filter(
+                account=account,
+                transaction__date__range=(
                     last_month_cutoff_datetime,
                     this_month_cutoff_datetime,
                 ),
             )
+            procurements = TransactionDetail.objects.filter(summary__legs__in=legs)
             invoice = vendor.create_invoice(this_month_cutoff_datetime, procurements)
             messages.success(request, _("Invoice created successfully"))
         else:
@@ -1297,16 +1386,12 @@ def invoice_list(request):
 @for_htmx(use_block_from_params=True)
 def invoice_detail(request, invoice_id):
     invoice = get_object_or_404(Invoice, id=invoice_id)
-    if request.method == "POST":
-        form = InvoiceDetailForm(request.POST, instance=invoice)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _("Invoice successfully edited"))
-        else:
-            messages.error(request, _("Invoice couldn't be edited"))
-    else:
-        form = InvoiceDetailForm(instance=invoice)
-    response = TemplateResponse(request, "invoice/invoice_detail.html", {"form": form})
+    procurements = invoice.procurements.all().order_by("summary__date")
+    response = TemplateResponse(
+        request,
+        "invoice/invoice_detail.html",
+        {"invoice": invoice, "procurements": procurements},
+    )
     return trigger_client_event(response, "getMessages")
 
 
@@ -1327,16 +1412,16 @@ def procurement_create(request):
             transaction = account.accounting_transfer_to(
                 to_account=inventory, amount=total, date=procured_on
             )
-            detail = TransactionDetail.objects.create(summary=transaction)
-            transaction_item = TransactionItem.objects.create(
-                item=item.name, price_per_unit=item.price, quantity=quantity
+            detail = TransactionDetail.objects.create(
+                summary=transaction,
+                item=item.name,
+                quantity=quantity,
+                price_per_unit=item.price,
             )
-            detail.items.add(transaction_item)
-            detail.save()
             messages.success(request, _("Procurement created successfully"))
         else:
             messages.error(request, _("Procurement couldn't be created"))
-    elif request.htmx:
+    elif request.htmx and request.method == "GET":
         q = request.GET
         account = q.get("account", None)
         if account:
@@ -1401,18 +1486,18 @@ def procurement_detail(request, procurement_id):
 def company_wise_procurement_ledger(request):
     today = pendulum.today(tz=get_default_timezone())
     vendor = Vendor.objects.first()
+    vendor_account = Account.objects.get(name=vendor.name)
     period = vendor.get_invoice_period(today.year, today.month)
-    procurements = Procurement.objects.filter(
-        vendor=vendor, procured_on__range=(period["start"], period["end"])
-    ).order_by("procured_on")
+    procurements = Leg.objects.filter(account=vendor_account)
+    details = TransactionDetail.objects.filter(summary__legs__in=procurements).order_by(
+        "summary__date"
+    )
+
     if request.htmx:
         form = CompanyWiseProcurementLedgerFilter(request.GET)
         if form.is_valid():
             vendor = form.cleaned_data["name"]
             period = vendor.get_invoice_period(today.year, today.month)
-            procurements = Procurement.objects.filter(
-                vendor=vendor, procured_on__range=(period["start"], period["end"])
-            ).order_by("procured_on")
     else:
         form = CompanyWiseProcurementLedgerFilter()
 
@@ -1421,7 +1506,7 @@ def company_wise_procurement_ledger(request):
         "procurement/company_wise_procurement_ledger.html",
         {
             "vendor": vendor,
-            "procurements": procurements,
+            "procurements": details,
             "period": period,
             "form": form,
         },

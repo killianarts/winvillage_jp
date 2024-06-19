@@ -1,27 +1,68 @@
 {% extends 'winadmin/index.html' %}
 {% load static i18n %}
 {% block subtitle %}
-  {% blocktrans %}Edit Invoice{% endblocktrans %}
+  {% blocktrans %}View Invoice for {{ invoice.vendor }}{% endblocktrans %}
 {% endblock %}
 {% block content %}
   <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Edit Invoice' %}</h1>
-    <form class="grid max-w-xl" action="."
-          hx-post="."
-          hx-target="#content-wrapper"
-          hx-swap="morph:outerHTML"
-          hx-vals='{"use_block": "content"}'>
-      {{ form }}
-      <div class="space-y-5">
-          <div class="space-x-5">
-              {% #outline_button id="submit-button" name="edit" type="submit" %}
-              {% trans "Edit" %}
-              {% /outline_button %}
-              {% #outline_button name="delete" type="submit" variant="danger" %}
-              {% trans "Delete" %}
-              {% /outline_button %}
-          </div>
-      </div>
-    </form>
+    <h1 class="text-3xl">{% translate 'Invoice' %}</h1>
+    <p>{{ invoice.vendor }}</p>
+    <p>{{ invoice.invoiced_on|date:"Y-m-d" }}</p>
+    <div-table class="table border-collapse w-full max-w-7xl divide-y divide-stone-300 font-code">
+      <div-thead class="table-header-group">
+        <div-tr class="table-row text-left">
+          <div-td class="table-cell pr-3 pl-4 text-left font-semibold text-stone-900 py-3.5 sm:pl-0">
+            <span class="pl-6">{% translate 'Date' %}</span>
+          </div-td>
+          <div-td class="table-cell px-3 text-left font-semibold text-stone-900 py-3.5">{% translate 'Item' %}</div-td>
+          <div-td class="table-cell px-3 text-left font-semibold text-stone-900 py-3.5">{% translate 'Q' %}</div-td>
+          <div-td class="table-cell px-3 text-left font-semibold text-stone-900 py-3.5">{% translate 'Price Per Unit' %}</div-td>
+          <div-td class="table-cell px-3 text-left font-semibold text-stone-900 py-3.5">{% translate 'Total Price' %}</div-td>
+        </div-tr>
+      </div-thead>
+      <div-tbody class="table-row-group divide-y divide-stone-200">
+        {% for procurement in procurements %}
+          <div-tr id="item-{{ procurement.item }}"
+                  class="table-row">
+            <div-td class="table-cell whitespace-nowrap py-2 pr-3 pl-4  slashed-zero tabular-nums text-stone-900 sm:pl-0">
+              <span class="pl-6">{{ procurement.summary.date|date:"Y-m-d" }}</span>
+            </div-td>
+            <div-td class="table-cell whitespace-nowrap px-3 py-2  slashed-zero tabular-nums text-stone-600 text-stone-900">{{ procurement.item}}</div-td>
+            <div-td class="table-cell whitespace-nowrap px-3 py-2  slashed-zero tabular-nums text-stone-600 text-stone-900">{{ procurement.quantity }}</div-td>
+            <div-td class="table-cell whitespace-nowrap px-3 py-2  slashed-zero tabular-nums text-stone-600 text-stone-900">
+              {{ procurement.price_per_unit }}
+            </div-td>
+            <div-td class="table-cell whitespace-nowrap px-3 py-2  slashed-zero tabular-nums text-stone-600 text-stone-900">
+              {{ procurement.total }}
+            </div-td>
+          </div-tr>
+        {% empty %}
+          <div-tr id="item-none"
+                  class="table-row">
+            <div-td class="table-cell whitespace-nowrap py-2 pr-3 pl-4  slashed-zero tabular-nums text-stone-900 sm:pl-0">
+              <span class="pl-6">---</span>
+            </div-td>
+            <div-td class="table-cell whitespace-nowrap px-3 py-2 text-stone-600">---</div-td>
+            <div-td class="table-cell whitespace-nowrap px-3 py-2 text-stone-600">---</div-td>
+            <div-td class="table-cell whitespace-nowrap px-3 py-2  slashed-zero tabular-nums text-stone-600 text-stone-900">
+              ---
+            </div-td>
+          </div-tr>
+        {% endfor %}
+        <div-tr class="table-row  slashed-zero tabular-nums text-stone-900">
+          <div-td class="table-cell whitespace-nowrap px-3 py-2"></div-td>
+          <div-td class="table-cell whitespace-nowrap px-3 py-2"></div-td>
+          <div-td class="table-cell whitespace-nowrap px-3 py-2"></div-td>
+          <div-td class="table-cell whitespace-nowrap py-2 pr-3 pl-4 sm:pl-0">
+            <span class="pl-6">{% translate 'Total' %}:</span></div-td>
+          <div-td class="table-cell whitespace-nowrap px-3 py-2">{{ invoice.amount }}</div-td>
+        </div-tr>
+      </div-tbody>
+    </div-table>
+    <div class="space-y-5">
+      {% #outline_button name="delete" type="submit" variant="danger" %}
+      {% trans "Delete" %}
+      {% /outline_button %}
+    </div>
   </div>
 {% endblock %}

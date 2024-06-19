@@ -25,7 +25,8 @@
           {% if reservation.stay.status == "checked_in" %}
             {% #outline_button name="check-out" type="submit" %}{% translate 'Check Out' %}{% /outline_button %}
           {% elif reservation.stay.status == "reserved" %}
-            {% #outline_button name="check-in" type="submit" %}{% translate 'Check In' %}{% /outline_button %}
+            {% #outline_button name="check-in-with-cash" type="submit" %}{% translate 'Check In With Cash' %}{% /outline_button %}
+            {% #outline_button name="check-in-with-card" type="submit" %}{% translate 'Check In With Card' %}{% /outline_button %}
           {% else %}
             <p class="text-center text-xl text-orange-500">{% translate 'This stay has already been complete.' %}</p>
           {% endif %}
