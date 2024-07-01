@@ -137,19 +137,18 @@
                 stroke-linejoin="round"
                 d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z"/>
         </svg>
-        {% translate 'Transaction Management' %}
+        {% translate 'Procurements Management' %}
         {% /sidebar_button %}
         <ul class="indent-9 hidden opacity-0">
           <li>
-            {% #sidebar_navigation_link url='winadmin:transaction_list_by_period' %}{% translate 'View Transactions' %}{% /sidebar_navigation_link %}</li>
-          <li>
-            {% #sidebar_navigation_link url='winadmin:transaction_create' %}{% translate 'Create Transaction' %}{% /sidebar_navigation_link %}</li>
+            {% #sidebar_navigation_link url='winadmin:sales_ledger' %}{% translate 'Sales Ledger' %}{% /sidebar_navigation_link %}</li>
           <li>{% #sidebar_navigation_link url='winadmin:vendor_create' %}{% translate 'Create Vendor' %}{% /sidebar_navigation_link %}</li>
           <li>{% #sidebar_navigation_link url='winadmin:vendor_list' %}{% translate 'View Vendors' %}{% /sidebar_navigation_link %}</li>
-          <li>{% #sidebar_navigation_link url='winadmin:invoice_create'  %}{% translate 'Create Invoice' %}{% /sidebar_navigation_link %}</li>
-          <li>{% #sidebar_navigation_link url='winadmin:invoice_list' %}{% translate 'View Invoices' %}{% /sidebar_navigation_link %}</li>
           <li>{% #sidebar_navigation_link url='winadmin:procurement_create' %}{% translate 'Create Procurement' %}{% /sidebar_navigation_link %}</li>
-          <li>{% #sidebar_navigation_link url='winadmin:procurement_list' %}{% translate 'View Procurements' %}{% /sidebar_navigation_link %}</li>
+          <li>{% #sidebar_navigation_link url='winadmin:accounts_payable_ledger' %}{% translate 'Accounts Payable Ledger' %}{% /sidebar_navigation_link %}</li>
+          <li>{% #sidebar_navigation_link url='winadmin:accounts_payable_aging_report' %}{% translate 'Accounts Payable Aging Report' %}{% /sidebar_navigation_link %}</li>
+          <li>{% #sidebar_navigation_link url='winadmin:company_wise_procurement_ledger' %}{% translate 'Company-wise Procurement Ledger' %}{% /sidebar_navigation_link %}</li>
+
         </ul>
         {% /mobile_navigation_body %}
         {% #sidebar_navigation_body user=user %}
@@ -259,20 +258,20 @@
                     stroke-linejoin="round"
                     d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z"/>
             </svg>
-            {% translate 'Transaction Management' %}
+            {% translate 'Procurements Management' %}
             {% /sidebar_button %}
             <ul class="indent-9 hidden opacity-0">
               <li>
-                {% #sidebar_navigation_link url='winadmin:transaction_list_by_period' %}{% translate 'View Transactions' %}{% /sidebar_navigation_link %}</li>
-              <li>
-                {% #sidebar_navigation_link url='winadmin:transaction_create' %}{% translate 'Create Transaction' %}{% /sidebar_navigation_link %}</li>
+                {% #sidebar_navigation_link url='winadmin:sales_ledger' %}{% translate 'Sales Ledger' %}{% /sidebar_navigation_link %}</li>
               <li>{% #sidebar_navigation_link url='winadmin:vendor_create' %}{% translate 'Create Vendor' %}{% /sidebar_navigation_link %}</li>
               <li>{% #sidebar_navigation_link url='winadmin:vendor_list' %}{% translate 'View Vendors' %}{% /sidebar_navigation_link %}</li>
-              <li>{% #sidebar_navigation_link url='winadmin:invoice_create'  %}{% translate 'Create Invoice' %}{% /sidebar_navigation_link %}</li>
-              <li>{% #sidebar_navigation_link url='winadmin:invoice_list' %}{% translate 'View Invoices' %}{% /sidebar_navigation_link %}</li>
               <li>{% #sidebar_navigation_link url='winadmin:procurement_create' %}{% translate 'Create Procurement' %}{% /sidebar_navigation_link %}</li>
-              <li>{% #sidebar_navigation_link url='winadmin:procurement_list' %}{% translate 'View Procurements' %}{% /sidebar_navigation_link %}</li>
+              <li>{% #sidebar_navigation_link url='winadmin:accounts_payable_ledger' %}{% translate 'Accounts Payable Ledger' %}{% /sidebar_navigation_link %}</li>
+              <li>{% #sidebar_navigation_link url='winadmin:accounts_payable_aging_report' %}{% translate 'Accounts Payable Aging Report' %}{% /sidebar_navigation_link %}</li>
+              <li>{% #sidebar_navigation_link url='winadmin:company_wise_procurement_ledger' %}{% translate 'Company-wise Procurement Ledger' %}{% /sidebar_navigation_link %}</li>
+
             </ul>
+
           </li>
         </ul>
         {% /sidebar_navigation_body %}

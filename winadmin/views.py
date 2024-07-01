@@ -5,6 +5,7 @@ from zoneinfo import ZoneInfo
 
 import pendulum
 from core.accounting_utils import (
+    get_accounts_payable_account_from_configuration,
     get_accounts_receivable_account_from_configuration,
     get_cash_account_from_configuration,
     get_inventory_account_from_configuration,
@@ -35,11 +36,13 @@ from django.utils.timezone import activate, deactivate, get_default_timezone
 from django.utils.translation import gettext_lazy as _
 from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
 from djmoney.money import Money
+from freezegun import freeze_time
 from hordak.models import Account
 from hordak.models import Account as BusinessAccount
 from hordak.models import Leg
 from hordak.models import Transaction
 from hordak.models import Transaction as BusinessTransaction
+from hordak.utilities.currency import Balance
 from reservations import forms
 from reservations.forms import DateForm
 from reservations.models import (
@@ -1336,10 +1339,10 @@ def invoice_create(request):
     if request.method == "POST":
         form = InvoiceCreateForm(request.POST)
         if form.is_valid():
-            this_month_cutoff_datetime = vendor.get_cutoff_date(
-                pendulum.today().year, pendulum.today().month
+            this_month_cutoff_datetime = vendor.get_cutoff_date(pendulum.today())
+            last_month_cutoff_datetime = vendor.get_cutoff_date(
+                pendulum.today().subtract(months=1)
             )
-            last_month_cutoff_datetime = this_month_cutoff_datetime.subtract(months=1)
             legs = Leg.objects.filter(
                 account=account,
                 transaction__date__range=(
@@ -1353,9 +1356,7 @@ def invoice_create(request):
         else:
             messages.error(request, _("Invoice couldn't be created"))
     else:
-        this_month_cutoff_datetime = vendor.get_cutoff_date(
-            pendulum.today().year, pendulum.today().month
-        )
+        this_month_cutoff_datetime = vendor.get_cutoff_date(pendulum.today())
         due_date = vendor.get_due_date(this_month_cutoff_datetime)
         initial = {
             "vendor": vendor,
@@ -1387,6 +1388,18 @@ def invoice_list(request):
 def invoice_detail(request, invoice_id):
     invoice = get_object_or_404(Invoice, id=invoice_id)
     procurements = invoice.procurements.all().order_by("summary__date")
+    form = InvoiceDetailForm()
+    if request.method == "POST":
+        form = InvoiceDetailForm(request.POST)
+        if form.is_valid():
+            if "delete" in request.POST:
+                invoice.delete()
+                messages.success(request, _("Invoice deleted successfully"))
+                return HttpResponseClientRedirect(
+                    reverse("winadmin:accounts_payable_ledger")
+                )
+        else:
+            messages.error(request, _("Form isn't valid"))
     response = TemplateResponse(
         request,
         "invoice/invoice_detail.html",
@@ -1458,7 +1471,7 @@ def procurement_create(request):
 
 @for_htmx(use_block_from_params=True)
 def procurement_list(request):
-    procurements = Procurement.objects.all()
+    procurements = TransactionDetail.objects.all()
     return TemplateResponse(
         request, "procurement/procurement_list.html", {"procurements": procurements}
     )
@@ -1466,40 +1479,49 @@ def procurement_list(request):
 
 @for_htmx(use_block_from_params=True)
 def procurement_detail(request, procurement_id):
-    procurement = get_object_or_404(Procurement, id=procurement_id)
+    procurement = get_object_or_404(TransactionDetail, id=procurement_id)
     if request.method == "POST":
         form = ProcurementDetailForm(request.POST, instance=procurement)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _("Procurement edited successfully"))
-        else:
-            messages.error(request, _("Procurement couldn't be edited"))
+        if "delete" in request.POST:
+            if form.is_valid():
+                form.save()
+                messages.success(request, _("Procurement delete successfully"))
+                return HttpResponseClientRedirect(reverse("winadmin:procurement_list"))
+            else:
+                messages.error(request, _("Procurement couldn't be deleted"))
     else:
         form = ProcurementDetailForm(instance=procurement)
     response = TemplateResponse(
-        request, "procurement/procurement_detail.html", {"form": form}
+        request,
+        "procurement/procurement_detail.html",
+        {"form": form, "procurement": procurement},
     )
     return trigger_client_event(response, "getMessages")
 
 
 @for_htmx(use_block_from_params=True)
-def company_wise_procurement_ledger(request):
-    today = pendulum.today(tz=get_default_timezone())
+def company_wise_procurement_ledger(request: HtmxHttpRequest):
+    dt = pendulum.today(tz=get_default_timezone())
     vendor = Vendor.objects.first()
-    vendor_account = Account.objects.get(name=vendor.name)
-    period = vendor.get_invoice_period(today.year, today.month)
-    procurements = Leg.objects.filter(account=vendor_account)
-    details = TransactionDetail.objects.filter(summary__legs__in=procurements).order_by(
-        "summary__date"
-    )
-
-    if request.htmx:
+    if request.htmx and not request.htmx.boosted:
         form = CompanyWiseProcurementLedgerFilter(request.GET)
         if form.is_valid():
-            vendor = form.cleaned_data["name"]
-            period = vendor.get_invoice_period(today.year, today.month)
+            vendor = form.cleaned_data["vendor"]
+            year = form.cleaned_data["year"]
+            month = form.cleaned_data["month"]
+            dt = pendulum.date(year, month, 1)
     else:
-        form = CompanyWiseProcurementLedgerFilter()
+        initial = {"year": dt.year, "month": dt.month}
+        form = CompanyWiseProcurementLedgerFilter(initial=initial)
+
+    vendor_account = Account.objects.get(name=vendor.name)
+    period = vendor.get_invoice_period(dt)
+    procurements = Leg.objects.filter(account=vendor_account)
+    details = TransactionDetail.objects.filter(
+        summary__legs__in=procurements,
+        summary__date__range=(dt.start_of("month"), dt.end_of("month")),
+        type="PR",
+    ).order_by("summary__date")
 
     return TemplateResponse(
         request,
@@ -1515,7 +1537,7 @@ def company_wise_procurement_ledger(request):
 
 @for_htmx(use_block_from_params=True)
 def accounts_payable_ledger(request):
-    invoices = Invoice.objects.all()
+    invoices = Invoice.objects.all().order_by("vendor", "invoiced_on")
     return TemplateResponse(
         request, "procurement/accounts_payable_ledger.html", {"invoices": invoices}
     )
@@ -1523,14 +1545,66 @@ def accounts_payable_ledger(request):
 
 @for_htmx(use_block_from_params=True)
 def accounts_payable_aging_report(request):
-    # This requires both the "due_on" of the Vendor and the Vendor's invoices (to know how past due an invoice is)
-    # Account and Transactions to determine if a transfer of funds has been made.
-
+    _date = pendulum.today().date()
     vendors = Vendor.objects.all()
+    reports = []
+    for vendor in vendors:
+        amount_due = Balance(0, "JPY")
+        invoices = Invoice.objects.filter(vendor=vendor).order_by("-due_on")
+        # For building balance counter
+        latest_invoice = invoices.latest("invoiced_on")
+        balance_after_latest_invoice = latest_invoice.account_balance_after()
+        latest_payment_detail = TransactionDetail.objects.filter(
+            type="PA", summary__legs__account=vendor.account
+        ).latest("summary__date")
+        latest_payment_account_leg = latest_payment_detail.summary.legs.get(
+            account=vendor.account
+        )
+        balance_after_latest_payment = (
+            latest_payment_account_leg.account_balance_after()
+        )
+        balance = None
+        if latest_invoice.invoiced_on.date() > latest_payment_detail.summary.date:
+            balance = balance_after_latest_invoice
+        else:
+            balance = balance_after_latest_payment
+
+        report = {
+            "vendor": vendor,
+            "all_invoices": invoices,
+            "current_invoice": None,
+            "1_to_30_days_past_due_invoice": None,
+            "31_to_60_days_past_due_invoice": None,
+            "61_to_90_days_past_due_invoice": None,
+            "91_or_more_days_past_due_invoices": [],
+            "balance": balance,
+        }
+        for invoice in invoices:
+            if invoice.days_past_due_date(_date) > 0:
+                if balance > amount_due:
+                    amount_due += Balance([invoice.amount])
+                    if invoice.is_1_to_30_days_past_due(_date):
+                        report["1_to_30_days_past_due_invoice"] = invoice
+                    elif invoice.is_31_to_60_days_past_due(_date):
+                        report["31_to_60_days_past_due_invoice"] = invoice
+                    elif invoice.is_61_to_90_days_past_due(_date):
+                        report["61_to_90_days_past_due_invoice"] = invoice
+                    elif invoice.is_91_or_more_days_past_due(_date):
+                        report["91_or_more_days_past_due_invoices"].append(invoice)
+            else:
+                amount_due += Balance([invoice.amount])
+                report["current_invoice"] = invoice
+
+        # if report["current_invoice"]:
+        # report["balance"] += Balance([report["current_invoice"].amount])
+        # for key, value in report.items():
+        #     if isinstance(value, Balance):
+        #         report["balance"] += value
+        reports.append(report)
     return TemplateResponse(
         request,
         "procurement/accounts_payable_aging_report.html",
-        {"vendors": vendors},
+        {"vendor_aging_reports": reports, "invoices": Invoice.objects.all()},
     )
 
 

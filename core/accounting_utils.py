@@ -4,7 +4,7 @@ from djmoney.money import Money
 from hordak.models import Account
 from winvillage import settings
 
-from core.models import TransactionDetail
+from core.models import TransactionDetail, Vendor
 
 
 def get_account(code):
@@ -45,14 +45,6 @@ def get_accounts_payable_account_from_configuration(code=200):
     account = get_account(code=code)
     assert account.type == "LI"
     return account
-
-
-# class Money(DefaultMoney):
-#     def __init__(self, amount: object = 0, currency: str | None = None) -> None:
-#         super().__init__(
-#             amount=amount,
-#             currency=settings.DEFAULT_CURRENCY[0] if currency is None else currency,
-#         )
 
 
 def create_sales_from_order(order_obj, payment_type=None):

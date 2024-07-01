@@ -6,18 +6,6 @@
 {% block content %}
     <div id="content-wrapper" class="space-y-5">
         <h1 class="text-3xl">{% translate 'Accounts Payable Aging Report' %}</h1>
-        <div class="max-w-fit pl-2 space-y-2 divide-y">
-            <p>{% translate 'Filter' %}</p>
-            <form method="get" id="filter-form" action="."
-                  hx-get="."
-                  hx-trigger="change"
-                  hx-swap="outerHTML"
-                  hx-target="#vendor-list-table"
-                  hx-vals='{"use_block": "vendor_list_table", "action": "filter"}'
-                  hx-push-url="true">
-                {{ form }}
-            </form>
-        </div>
         {% block vendor_list_table %}
             <table id="vendor-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
                 <thead>
@@ -28,29 +16,53 @@
                         <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Current' %}</th>
                         <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate '1-30 Days' %}</th>
                         <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate '31-60 Days' %}</th>
+                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate '61-90 Days' %}</th>
+                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate '91+ Days' %}</th>
+                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Balance' %}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-stone-200">
-                    {% for vendor in vendors %}
+                    {% for report in vendor_aging_reports %}
                         <tr class="hover:bg-stone-50">
                             <td class="whitespace-nowrap py-4 pr-3 pl-4text-sm font-medium tabular-nums text-stone-900 sm:pl-0">
-                                <a hx-boost="true" class="pl-6" href="{% url 'winadmin:vendor_detail' vendor_id=vendor.id %}">
-                                    {{ vendor.name }}
+                                <a hx-boost="true" class="pl-6" href="{% url 'winadmin:vendor_detail' vendor_id=report.vendor.id %}">
+                                    {{ report.vendor.name }}
                                 </a>
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
-                                {{ vendor.get_current_invoice.amount }}
+                                {{ report.current_invoice.amount }}
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ vendor.get_one_to_thirty_day_overdue_invoice.amount }}
+                                {{ report.1_to_30_days_past_due_invoice.amount }}
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ vendor.amount }}
+                                {{ report.31_to_60_days_past_due_invoice.amount }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
+                                {{ report.61_to_90_days_past_due_invoice.amount }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
+                                {% for invoice in report.91_or_more_days_past_due_invoices %}
+                                    <p>
+                                        {{ invoice.amount }}
+                                    </p>
+                                {% endfor %}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
+                                {{ report.balance }}
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% endblock %}
+        <div class="fixed bottom-10 right-10 p-10 bg-stone-200">
+            {% if invoices %}
+                {% for invoice in invoices %}
+                    <p>{{ invoice}} | Days: {{ invoice.days_past_due_date }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
     </div>
 {% endblock %}

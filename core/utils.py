@@ -55,7 +55,9 @@ def make_new_reservation(request):
 
 def get_user_reservation(request):
     try:
-        reservation = Reservation.objects.get(user=request.user, stay__status="not_reserved")
+        reservation = Reservation.objects.get(
+            user=request.user, stay__status="not_reserved"
+        )
     except Reservation.DoesNotExist:
         stay = Stay.objects.create(status="not_reserved")
         reservation = Reservation.objects.create(user=request.user, stay=stay)
@@ -81,7 +83,7 @@ def get_or_set_reservation_session(request):
 # HTMX utilities
 
 
-# Frpm django-htmx
+# From django-htmx
 @dataclass
 class HtmxHttpRequest(HttpRequest):
     htmx: HtmxDetails
@@ -129,7 +131,9 @@ def for_htmx(
     for this decorator to be applied.
     """
     if len([p for p in [use_block, use_template, use_block_from_params] if p]) != 1:
-        raise ValueError("You must pass exactly one of 'use_template', 'use_block' or 'use_block_from_params=True'")
+        raise ValueError(
+            "You must pass exactly one of 'use_template', 'use_block' or 'use_block_from_params=True'"
+        )
 
     def decorator(view):
         @wraps(view)
@@ -140,17 +144,28 @@ def for_htmx(
             if is_hx_boosted(request):
                 return resp
             if is_htmx(request):
-                if if_hx_target is None or request.headers.get("Hx-Target", None) == if_hx_target:
+                if (
+                    if_hx_target is None
+                    or request.headers.get("Hx-Target", None) == if_hx_target
+                ):
                     blocks_to_use = use_block
                     if not hasattr(resp, "render"):
-                        raise ValueError("Cannot modify a response that isn't a TemplateResponse")
+                        raise ValueError(
+                            "Cannot modify a response that isn't a TemplateResponse"
+                        )
                     if resp.is_rendered:
-                        raise ValueError("Cannot modify a response that has already been rendered")
+                        raise ValueError(
+                            "Cannot modify a response that has already been rendered"
+                        )
 
                     if use_block_from_params:
-                        use_block_from_params_val = _get_param_from_request(request, "use_block")
+                        use_block_from_params_val = _get_param_from_request(
+                            request, "use_block"
+                        )
                         if use_block_from_params_val is None:
-                            return HttpResponse("No `use_block` in request params", status="400")
+                            return HttpResponse(
+                                "No `use_block` in request params", status="400"
+                            )
 
                         blocks_to_use = use_block_from_params_val
 
@@ -200,7 +215,9 @@ def htmx_form_validate(*, form_class: type):
             ):
                 form = form_class(request.GET)
                 form.is_valid()  # trigger validation
-                return HttpResponse(render_single_field_row(form, htmx_validation_field))
+                return HttpResponse(
+                    render_single_field_row(form, htmx_validation_field)
+                )
             return view_func(request, *args, **kwargs)
 
         return wrapper

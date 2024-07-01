@@ -295,6 +295,7 @@ LANGUAGES = (
 LOCALE_PATHS = [
     str(BASE_DIR / "locale"),
     str(BASE_DIR / "recurrence/locale"),
+    str(BASE_DIR / "hordak/locale"),
 ]
 
 PARLER_LANGUAGES = {
@@ -446,7 +447,7 @@ CELERY_RESULT_EXTENDED = True
 
 CELERY_BEAT_SCHEDULE = {
     "make_invoices_every_day": {
-        "task": "tasks.make_invoices",
+        "task": "tasks.create_invoices_task",
         "schedule": crontab(minute=0, hour=0),
     }
 }

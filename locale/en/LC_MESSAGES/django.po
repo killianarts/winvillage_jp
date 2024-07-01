@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-19 14:56+0900\n"
+"POT-Creation-Date: 2024-07-01 13:08+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,31 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: core/accounting_utils.py:81
+#: core/accounting_utils.py:73
 msgid "Cash"
 msgstr ""
 
-#: core/accounting_utils.py:83
+#: core/accounting_utils.py:75
 msgid "Accounts Receivable"
 msgstr ""
 
-#: core/accounting_utils.py:86
+#: core/accounting_utils.py:78
 msgid "Inventory"
 msgstr ""
 
-#: core/accounting_utils.py:89
+#: core/accounting_utils.py:81
 msgid "Accounts Payable"
 msgstr ""
 
-#: core/accounting_utils.py:92
+#: core/accounting_utils.py:84
 msgid "Taxes Payable"
 msgstr ""
 
-#: core/accounting_utils.py:94
+#: core/accounting_utils.py:86
 msgid "Sales"
 msgstr ""
 
-#: core/accounting_utils.py:96
+#: core/accounting_utils.py:88
 msgid "Cost of Goods Sold"
 msgstr ""
 
@@ -79,8 +79,9 @@ msgstr ""
 msgid "Category Name"
 msgstr ""
 
-#: core/models.py:138 core/models.py:517 winadmin/forms.py:438
-#: winadmin/views.py:391
+#: core/models.py:138 core/models.py:497
+#: templates/invoice/invoice_detail.html:17 winadmin/forms.py:418
+#: winadmin/views.py:394
 msgid "Item"
 msgstr ""
 
@@ -88,27 +89,25 @@ msgstr ""
 msgid "Items"
 msgstr ""
 
-#: core/models.py:141 core/models.py:356 customer/forms.py:101
+#: core/models.py:141 core/models.py:259 customer/forms.py:101
 #: reservations/models.py:83 reservations/models.py:132
 #: reservations/models.py:164 templates/campaign/campaign_list.html:32
 #: templates/winadmin/room_tier_list.html:32 winadmin/forms.py:70
-#: winadmin/forms.py:97 winadmin/forms.py:323 winadmin/forms.py:362
+#: winadmin/forms.py:97 winadmin/forms.py:303 winadmin/forms.py:342
 #: winadmin/models.py:11
 #: winadmin/templates/winadmin/inventory/item_list.html:13
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:40
-#: winadmin/views.py:388
+#: winadmin/views.py:391
 msgid "Name"
 msgstr ""
 
-#: core/models.py:143 core/models.py:438 customer/forms.py:102
+#: core/models.py:143 core/models.py:361 customer/forms.py:102
 #: reservations/templates/reservations/email/confirmation_email.txt:8
 #: reservations/templates/reservations/index.html:570
 #: templates/customer/checked_in_customer_purchase.html:129
 #: templates/customer/checked_in_customer_purchase.html:206
 #: templates/customer/checked_in_customer_return.html:124
 #: templates/customer/checked_in_customer_return.html:201
-#: templates/customer/occupant_transaction.html:126
-#: templates/customer/occupant_transaction.html:203
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:45
 #: winadmin/forms.py:71 winadmin/forms.py:98
 #: winadmin/templates/winadmin/inventory/item_list.html:16
@@ -149,62 +148,92 @@ msgstr ""
 msgid "Short Description"
 msgstr ""
 
-#: core/models.py:353
-#: templates/procurement/accounts_payable_aging_report.html:26
-#: templates/procurement/accounts_payable_ledger.html:26
+#: core/models.py:232
+#: templates/procurement/accounts_payable_aging_report.html:14
+#: templates/procurement/accounts_payable_ledger.html:14 winadmin/forms.py:436
 msgid "Vendor"
 msgstr ""
 
-#: core/models.py:354
+#: core/models.py:233
 msgid "Vendors"
 msgstr ""
 
-#: core/models.py:432
+#: core/models.py:263 templates/vendor/vendor_list.html:34
+msgid "Cutoff Day"
+msgstr ""
+
+#: core/models.py:268 templates/vendor/vendor_list.html:35
+msgid "Due Day"
+msgstr ""
+
+#: core/models.py:270 reservations/templates/reservations/index.html:566
+#: winadmin/templates/winadmin/reservations/reservation_create.html:78
+msgid "Phone"
+msgstr ""
+
+#: core/models.py:272
+msgid "Postal Code"
+msgstr ""
+
+#: core/models.py:274
+msgid "Address"
+msgstr ""
+
+#: core/models.py:275
+msgid "City"
+msgstr ""
+
+#: core/models.py:277
+msgid "Prefecture"
+msgstr ""
+
+#: core/models.py:355 core/models.py:485
 msgid "Procurement"
 msgstr ""
 
-#: core/models.py:433
+#: core/models.py:356
 msgid "Procurements"
 msgstr ""
 
-#: core/models.py:440 core/models.py:518 customer/forms.py:103
+#: core/models.py:363 core/models.py:498 customer/forms.py:103
 #: reservations/models.py:36
 #: templates/procurement/company_wise_procurement_ledger.html:29
 #: templates/procurement/procurement_list_by_vendor.html:29
-#: winadmin/company_wise_procurement_ledger.html:29 winadmin/forms.py:440
+#: winadmin/company_wise_procurement_ledger.html:29 winadmin/forms.py:420
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:41
 #: winadmin/templates/winadmin/sales/sales_ledger.html:41
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:39
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:42
-#: winadmin/views.py:392
+#: winadmin/views.py:395
 msgid "Quantity"
 msgstr ""
 
-#: core/models.py:441 templates/procurement/procurement_list.html:35
-#: winadmin/forms.py:443
+#: core/models.py:364 templates/procurement/procurement_list.html:35
+#: winadmin/forms.py:423
 msgid "Procured On"
 msgstr ""
 
-#: core/models.py:457
+#: core/models.py:380 templates/invoice/invoice_detail.html:8
 msgid "Invoice"
 msgstr ""
 
-#: core/models.py:458
+#: core/models.py:381
 msgid "Invoices"
 msgstr ""
 
-#: core/models.py:462
+#: core/models.py:385
 msgid "Invoiced On"
 msgstr ""
 
-#: core/models.py:463
+#: core/models.py:386
 msgid "Due On"
 msgstr ""
 
-#: core/models.py:468 core/models.py:524
+#: core/models.py:391 core/models.py:504
+#: templates/invoice/invoice_detail.html:19
 #: templates/procurement/company_wise_procurement_ledger.html:30
 #: templates/procurement/procurement_list_by_vendor.html:30
-#: winadmin/company_wise_procurement_ledger.html:30 winadmin/forms.py:439
+#: winadmin/company_wise_procurement_ledger.html:30 winadmin/forms.py:419
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:42
 #: winadmin/templates/winadmin/sales/sales_ledger.html:42
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:40
@@ -212,23 +241,35 @@ msgstr ""
 msgid "Price Per Unit"
 msgstr ""
 
-#: core/models.py:509
+#: core/models.py:484
+msgid "Sale"
+msgstr ""
+
+#: core/models.py:486
+msgid "Payment"
+msgstr ""
+
+#: core/models.py:489
 msgid "Transaction Detail"
 msgstr ""
 
-#: core/models.py:510
+#: core/models.py:490
 msgid "Transaction Details"
 msgstr ""
 
-#: core/models.py:515
+#: core/models.py:495
 msgid "Summary"
 msgstr ""
 
-#: core/models.py:536 winadmin/forms.py:436
+#: core/models.py:506 templates/accounting/account_list.html:34
+msgid "Type"
+msgstr ""
+
+#: core/models.py:528 winadmin/forms.py:416
 msgid "Account"
 msgstr ""
 
-#: core/models.py:537
+#: core/models.py:529
 msgid "Accounts"
 msgstr ""
 
@@ -655,7 +696,7 @@ msgstr ""
 #: reservations/templates/reservations/email/confirmation_email.txt:5
 #: reservations/templates/reservations/index.html:554
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:43
-#: winadmin/forms.py:171 winadmin/forms.py:190 winadmin/forms.py:215
+#: winadmin/forms.py:151 winadmin/forms.py:170 winadmin/forms.py:195
 #: winadmin/templates/winadmin/reservations/reservation_create.html:66
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:41
 msgid "First Name"
@@ -668,7 +709,7 @@ msgstr ""
 #: reservations/templates/reservations/email/confirmation_email.txt:6
 #: reservations/templates/reservations/index.html:558
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:42
-#: winadmin/forms.py:172 winadmin/forms.py:191 winadmin/forms.py:216
+#: winadmin/forms.py:152 winadmin/forms.py:171 winadmin/forms.py:196
 #: winadmin/templates/winadmin/reservations/reservation_create.html:70
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:40
 msgid "Last Name"
@@ -679,7 +720,7 @@ msgstr ""
 #: customer/forms.py:87 customer/templates/customer/customer_list.html:35
 #: reservations/forms.py:31 reservations/templates/reservations/index.html:562
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:44
-#: winadmin/forms.py:173 winadmin/forms.py:192 winadmin/forms.py:217
+#: winadmin/forms.py:153 winadmin/forms.py:172 winadmin/forms.py:197
 #: winadmin/templates/winadmin/reservations/reservation_create.html:74
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:42
 msgid "Email"
@@ -688,7 +729,7 @@ msgstr ""
 #: customer/forms.py:18 customer/forms.py:27 customer/forms.py:36
 #: customer/forms.py:59 customer/forms.py:69 customer/forms.py:79
 #: customer/forms.py:88 customer/templates/customer/customer_list.html:36
-#: reservations/forms.py:34 winadmin/forms.py:193
+#: reservations/forms.py:34 winadmin/forms.py:173
 msgid "Phone #"
 msgstr ""
 
@@ -696,7 +737,7 @@ msgstr ""
 msgid "Notes"
 msgstr ""
 
-#: customer/models.py:82 winadmin/views.py:389
+#: customer/models.py:82 winadmin/views.py:392
 msgid "Customer"
 msgstr ""
 
@@ -742,7 +783,7 @@ msgstr ""
 #: customer/templates/customer/customer_detail.html:24
 #: templates/accounting/account_detail.html:21
 #: templates/campaign/campaign_detail.html:41
-#: templates/invoice/invoice_detail.html:21
+#: templates/invoice/invoice_detail.html:66
 #: templates/procurement/procurement_detail.html:21
 #: templates/reservations/pricing_tier_group_campaign_test.html:135
 #: templates/reservations/pricing_tier_group_detail.html:243
@@ -768,8 +809,6 @@ msgstr ""
 #: templates/accounting/account_list.html:10
 #: templates/accounting/business_transaction_list.html:10
 #: templates/invoice/invoice_list.html:10
-#: templates/procurement/accounts_payable_aging_report.html:10
-#: templates/procurement/accounts_payable_ledger.html:10
 #: templates/procurement/company_wise_procurement_ledger.html:10
 #: templates/procurement/procurement_list.html:10
 #: templates/procurement/procurement_list_by_vendor.html:10
@@ -793,7 +832,7 @@ msgstr ""
 #: customer/templates/ticket/ticket_create.html:8
 #: customer/templates/ticket/ticket_create.html:18
 #: winadmin/templates/winadmin/index.html:53
-#: winadmin/templates/winadmin/index.html:175
+#: winadmin/templates/winadmin/index.html:174
 msgid "Create Ticket"
 msgstr ""
 
@@ -886,11 +925,11 @@ msgstr ""
 msgid "Ordered?"
 msgstr ""
 
-#: reservations/models.py:80 winadmin/forms.py:377
+#: reservations/models.py:80 winadmin/forms.py:357
 msgid "Campaign"
 msgstr ""
 
-#: reservations/models.py:81 winadmin/forms.py:340
+#: reservations/models.py:81 winadmin/forms.py:320
 msgid "Campaigns"
 msgstr ""
 
@@ -911,16 +950,16 @@ msgstr ""
 #: templates/reservations/pricing_tier_group_campaign_test.html:85
 #: templates/reservations/pricing_tier_group_create.html:110
 #: templates/reservations/pricing_tier_group_detail.html:89
-#: templates/winadmin/pricing_tier_list.html:34 winadmin/forms.py:280
-#: winadmin/forms.py:291
+#: templates/winadmin/pricing_tier_list.html:34 winadmin/forms.py:260
+#: winadmin/forms.py:271
 msgid "Number of Adults"
 msgstr ""
 
-#: reservations/models.py:110 winadmin/forms.py:292
+#: reservations/models.py:110 winadmin/forms.py:272
 msgid "Price Overnight"
 msgstr ""
 
-#: reservations/models.py:116 winadmin/forms.py:282 winadmin/forms.py:293
+#: reservations/models.py:116 winadmin/forms.py:262 winadmin/forms.py:273
 msgid "Price Short-term"
 msgstr ""
 
@@ -958,23 +997,23 @@ msgstr ""
 msgid "Stays"
 msgstr ""
 
-#: reservations/models.py:290 winadmin/forms.py:182
+#: reservations/models.py:290 winadmin/forms.py:162
 msgid "Not Reserved"
 msgstr ""
 
-#: reservations/models.py:291 winadmin/forms.py:183
+#: reservations/models.py:291 winadmin/forms.py:163
 msgid "Reserved"
 msgstr ""
 
-#: reservations/models.py:292 winadmin/forms.py:184
+#: reservations/models.py:292 winadmin/forms.py:164
 msgid "Checked In"
 msgstr ""
 
-#: reservations/models.py:293 winadmin/forms.py:185
+#: reservations/models.py:293 winadmin/forms.py:165
 msgid "Checked Out"
 msgstr ""
 
-#: reservations/models.py:294 winadmin/forms.py:186
+#: reservations/models.py:294 winadmin/forms.py:166
 msgid "Cancelled"
 msgstr ""
 
@@ -986,14 +1025,14 @@ msgstr ""
 #: reservations/models.py:308
 #: reservations/templates/reservations/email/confirmation_email.txt:10
 #: templates/winadmin/reservations/customer_check_in_check_out_detail.html:12
-#: winadmin/forms.py:194
+#: winadmin/forms.py:174
 msgid "Start"
 msgstr ""
 
 #: reservations/models.py:309
 #: reservations/templates/reservations/email/confirmation_email.txt:11
 #: templates/winadmin/reservations/customer_check_in_check_out_detail.html:13
-#: winadmin/forms.py:195
+#: winadmin/forms.py:175
 msgid "End"
 msgstr ""
 
@@ -1062,12 +1101,13 @@ msgstr ""
 #: reservations/templates/reservations/index.html:343
 #: reservations/templates/reservations/payment_page.html:393
 #: reservations/templates/reservations/reservation_form.html:208
+#: templates/invoice/invoice_detail.html:20
 #: templates/procurement/company_wise_procurement_ledger.html:31
 #: templates/procurement/procurement_list_by_vendor.html:31
 #: winadmin/company_wise_procurement_ledger.html:31
 #: winadmin/templates/winadmin/reservations/reservation_create.html:92
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:78
-#: winadmin/views.py:393
+#: winadmin/views.py:396
 msgid "Total Price"
 msgstr ""
 
@@ -1086,7 +1126,7 @@ msgid "Check-in starts at 12:00pm and checkout is at 10:00am "
 msgstr ""
 
 #: reservations/templates/reservations/index.html:7
-#: winadmin/templates/winadmin/index.html:302
+#: winadmin/templates/winadmin/index.html:301
 msgid "Make a Reservation"
 msgstr ""
 
@@ -1218,12 +1258,12 @@ msgstr ""
 msgid "hour"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:534 winadmin/forms.py:174
+#: reservations/templates/reservations/index.html:534 winadmin/forms.py:154
 #: winadmin/templates/winadmin/reservations/reservation_create.html:46
 msgid "Start Date"
 msgstr ""
 
-#: reservations/templates/reservations/index.html:539 winadmin/forms.py:175
+#: reservations/templates/reservations/index.html:539 winadmin/forms.py:155
 #: winadmin/templates/winadmin/reservations/reservation_create.html:51
 msgid "End Date"
 msgstr ""
@@ -1236,11 +1276,6 @@ msgstr ""
 #: reservations/templates/reservations/index.html:549
 #: winadmin/templates/winadmin/reservations/reservation_create.html:61
 msgid "End Time"
-msgstr ""
-
-#: reservations/templates/reservations/index.html:566
-#: winadmin/templates/winadmin/reservations/reservation_create.html:78
-msgid "Phone"
 msgstr ""
 
 #: reservations/templates/reservations/index.html:593
@@ -1355,7 +1390,6 @@ msgstr ""
 
 #: templates/accounting/account_detail.html:18
 #: templates/campaign/campaign_detail.html:38
-#: templates/invoice/invoice_detail.html:18
 #: templates/procurement/procurement_detail.html:18
 #: templates/reservations/pricing_tier_group_campaign_test.html:134
 #: templates/reservations/pricing_tier_group_detail.html:242
@@ -1380,13 +1414,10 @@ msgstr ""
 msgid "Account Name"
 msgstr ""
 
-#: templates/accounting/account_list.html:34
-msgid "Type"
-msgstr ""
-
 #: templates/accounting/account_list.html:35
+#: templates/procurement/accounts_payable_aging_report.html:21
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:43
-#: winadmin/views.py:394
+#: winadmin/views.py:397
 msgid "Balance"
 msgstr ""
 
@@ -1397,8 +1428,6 @@ msgstr ""
 
 #: templates/accounting/business_transaction_create.html:6
 #: templates/accounting/business_transaction_create.html:10
-#: winadmin/templates/winadmin/index.html:146
-#: winadmin/templates/winadmin/index.html:268
 #: winadmin/templates/winadmin/transactions/transaction_create.html:4
 #: winadmin/templates/winadmin/transactions/transaction_create.html:8
 msgid "Create Transaction"
@@ -1417,11 +1446,12 @@ msgid "ID"
 msgstr ""
 
 #: templates/accounting/business_transaction_list.html:34
+#: templates/invoice/invoice_detail.html:15
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:38
 #: winadmin/templates/winadmin/sales/sales_ledger.html:38
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:36
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:38
-#: winadmin/views.py:390
+#: winadmin/views.py:393
 msgid "Date"
 msgstr ""
 
@@ -1431,7 +1461,7 @@ msgstr ""
 
 #: templates/campaign/campaign_create.html:25
 #: winadmin/templates/winadmin/index.html:101
-#: winadmin/templates/winadmin/index.html:223
+#: winadmin/templates/winadmin/index.html:222
 msgid "Create Campaign"
 msgstr ""
 
@@ -1456,25 +1486,21 @@ msgstr ""
 
 #: templates/customer/checked_in_customer_purchase.html:90
 #: templates/customer/checked_in_customer_return.html:85
-#: templates/customer/occupant_transaction.html:87
 msgid "+"
 msgstr ""
 
 #: templates/customer/checked_in_customer_purchase.html:98
 #: templates/customer/checked_in_customer_return.html:93
-#: templates/customer/occupant_transaction.html:95
 msgid "-"
 msgstr ""
 
 #: templates/customer/checked_in_customer_purchase.html:113
 #: templates/customer/checked_in_customer_return.html:108
-#: templates/customer/occupant_transaction.html:110
 msgid "Open Cart"
 msgstr ""
 
 #: templates/customer/checked_in_customer_purchase.html:120
 #: templates/customer/checked_in_customer_return.html:115
-#: templates/customer/occupant_transaction.html:117
 msgid "Close Cart"
 msgstr ""
 
@@ -1482,8 +1508,6 @@ msgstr ""
 #: templates/customer/checked_in_customer_purchase.html:203
 #: templates/customer/checked_in_customer_return.html:121
 #: templates/customer/checked_in_customer_return.html:198
-#: templates/customer/occupant_transaction.html:123
-#: templates/customer/occupant_transaction.html:200
 #: templates/procurement/company_wise_procurement_ledger.html:28
 #: templates/procurement/procurement_list.html:34
 #: templates/procurement/procurement_list_by_vendor.html:28
@@ -1499,8 +1523,7 @@ msgstr ""
 #: templates/customer/checked_in_customer_purchase.html:205
 #: templates/customer/checked_in_customer_return.html:123
 #: templates/customer/checked_in_customer_return.html:200
-#: templates/customer/occupant_transaction.html:125
-#: templates/customer/occupant_transaction.html:202
+#: templates/invoice/invoice_detail.html:18
 msgid "Q"
 msgstr ""
 
@@ -1508,14 +1531,12 @@ msgstr ""
 #: templates/customer/checked_in_customer_purchase.html:237
 #: templates/customer/checked_in_customer_return.html:155
 #: templates/customer/checked_in_customer_return.html:232
-#: templates/customer/occupant_transaction.html:157
-#: templates/customer/occupant_transaction.html:234 winadmin/forms.py:441
+#: templates/invoice/invoice_detail.html:57 winadmin/forms.py:421
 msgid "Total"
 msgstr ""
 
 #: templates/customer/checked_in_customer_purchase.html:168
 #: templates/customer/checked_in_customer_return.html:163
-#: templates/customer/occupant_transaction.html:165
 #: templates/ticket/ticket_list.html:36
 #: templates/winadmin/reservations/customer_check_in_check_out_detail.html:14
 msgid "Customer Name"
@@ -1523,13 +1544,11 @@ msgstr ""
 
 #: templates/customer/checked_in_customer_purchase.html:171
 #: templates/customer/checked_in_customer_return.html:166
-#: templates/customer/occupant_transaction.html:168
 msgid "Checkout"
 msgstr ""
 
 #: templates/customer/checked_in_customer_purchase.html:179
 #: templates/customer/checked_in_customer_return.html:174
-#: templates/customer/occupant_transaction.html:176
 msgid "Cancel"
 msgstr ""
 
@@ -1542,7 +1561,6 @@ msgid "Pay with Card"
 msgstr ""
 
 #: templates/customer/checked_in_customer_return.html:252
-#: templates/customer/occupant_transaction.html:254
 msgid "Confirm Purchase"
 msgstr ""
 
@@ -1569,7 +1587,7 @@ msgstr ""
 
 #: templates/customer/occupied_room_list.html:5
 #: templates/winadmin/room_list.html:8
-#: winadmin/templates/winadmin/index.html:312
+#: winadmin/templates/winadmin/index.html:311
 msgid "Room List"
 msgstr ""
 
@@ -1583,14 +1601,12 @@ msgstr ""
 
 #: templates/invoice/invoice_create.html:6
 #: templates/invoice/invoice_create.html:10
-#: winadmin/templates/winadmin/index.html:149
-#: winadmin/templates/winadmin/index.html:271
 msgid "Create Invoice"
 msgstr ""
 
 #: templates/invoice/invoice_detail.html:4
-#: templates/invoice/invoice_detail.html:8
-msgid "Edit Invoice"
+#, python-format
+msgid "View Invoice for %(invoice.vendor)s"
 msgstr ""
 
 #: templates/invoice/invoice_list.html:4
@@ -1606,12 +1622,12 @@ msgid "Invoice Name"
 msgstr ""
 
 #: templates/invoice/invoice_list.html:34
-#: templates/procurement/accounts_payable_ledger.html:28
+#: templates/procurement/accounts_payable_ledger.html:16
 msgid "Invoice Date"
 msgstr ""
 
 #: templates/invoice/invoice_list.html:35
-#: templates/procurement/accounts_payable_ledger.html:29
+#: templates/procurement/accounts_payable_ledger.html:17
 msgid "Due Date"
 msgstr ""
 
@@ -1622,27 +1638,39 @@ msgstr ""
 
 #: templates/procurement/accounts_payable_aging_report.html:4
 #: templates/procurement/accounts_payable_aging_report.html:8
+#: winadmin/templates/winadmin/index.html:149
+#: winadmin/templates/winadmin/index.html:270
 msgid "Accounts Payable Aging Report"
 msgstr ""
 
-#: templates/procurement/accounts_payable_aging_report.html:28
+#: templates/procurement/accounts_payable_aging_report.html:16
 msgid "Current"
 msgstr ""
 
-#: templates/procurement/accounts_payable_aging_report.html:29
+#: templates/procurement/accounts_payable_aging_report.html:17
 msgid "1-30 Days"
 msgstr ""
 
-#: templates/procurement/accounts_payable_aging_report.html:30
+#: templates/procurement/accounts_payable_aging_report.html:18
 msgid "31-60 Days"
+msgstr ""
+
+#: templates/procurement/accounts_payable_aging_report.html:19
+msgid "61-90 Days"
+msgstr ""
+
+#: templates/procurement/accounts_payable_aging_report.html:20
+msgid "91+ Days"
 msgstr ""
 
 #: templates/procurement/accounts_payable_ledger.html:4
 #: templates/procurement/accounts_payable_ledger.html:8
+#: winadmin/templates/winadmin/index.html:148
+#: winadmin/templates/winadmin/index.html:269
 msgid "Accounts Payable Ledger"
 msgstr ""
 
-#: templates/procurement/accounts_payable_ledger.html:30
+#: templates/procurement/accounts_payable_ledger.html:18
 msgid "Amount"
 msgstr ""
 
@@ -1652,6 +1680,8 @@ msgstr ""
 #: templates/procurement/procurement_list_by_vendor.html:8
 #: winadmin/company_wise_procurement_ledger.html:4
 #: winadmin/company_wise_procurement_ledger.html:8
+#: winadmin/templates/winadmin/index.html:150
+#: winadmin/templates/winadmin/index.html:271
 msgid "Company-wise Procurement Ledger"
 msgstr ""
 
@@ -1663,8 +1693,8 @@ msgstr ""
 
 #: templates/procurement/procurement_create.html:6
 #: templates/procurement/procurement_create.html:10
-#: winadmin/templates/winadmin/index.html:151
-#: winadmin/templates/winadmin/index.html:273
+#: winadmin/templates/winadmin/index.html:147
+#: winadmin/templates/winadmin/index.html:268
 msgid "Create Procurement"
 msgstr ""
 
@@ -1709,7 +1739,7 @@ msgstr ""
 
 #: templates/reservations/pricing_tier_group_create.html:8
 #: winadmin/templates/winadmin/index.html:97
-#: winadmin/templates/winadmin/index.html:219
+#: winadmin/templates/winadmin/index.html:218
 msgid "Create Pricing Tiers"
 msgstr ""
 
@@ -1756,8 +1786,8 @@ msgid "Closed?"
 msgstr ""
 
 #: templates/vendor/vendor_create.html:6 templates/vendor/vendor_create.html:10
-#: winadmin/templates/winadmin/index.html:147
-#: winadmin/templates/winadmin/index.html:269
+#: winadmin/templates/winadmin/index.html:145
+#: winadmin/templates/winadmin/index.html:266
 msgid "Create Vendor"
 msgstr ""
 
@@ -1773,18 +1803,10 @@ msgstr ""
 msgid "Vendor List"
 msgstr ""
 
-#: templates/vendor/vendor_list.html:34
-msgid "Cutoff Day"
-msgstr ""
-
-#: templates/vendor/vendor_list.html:35
-msgid "Due Day"
-msgstr ""
-
 #: templates/winadmin/pricing_tier_create.html:5
 #: templates/winadmin/room_create.html:6 templates/winadmin/room_create.html:10
 #: winadmin/templates/winadmin/index.html:126
-#: winadmin/templates/winadmin/index.html:248
+#: winadmin/templates/winadmin/index.html:247
 msgid "Create Room"
 msgstr ""
 
@@ -1837,6 +1859,7 @@ msgid "This stay has already been complete."
 msgstr ""
 
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:20
+#: winadmin/forms.py:441
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:19
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:19
 #: winadmin/templates/winadmin/sales/sales_ledger.html:19
@@ -1846,6 +1869,7 @@ msgid "Year"
 msgstr ""
 
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:21
+#: winadmin/forms.py:444
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:20
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:20
 #: winadmin/templates/winadmin/sales/sales_ledger.html:20
@@ -1878,8 +1902,8 @@ msgstr ""
 msgid "Room List View"
 msgstr ""
 
-#: templates/winadmin/room_list.html:32 winadmin/forms.py:232
-#: winadmin/forms.py:260
+#: templates/winadmin/room_list.html:32 winadmin/forms.py:212
+#: winadmin/forms.py:240
 msgid "Room Name"
 msgstr ""
 
@@ -1889,7 +1913,7 @@ msgstr ""
 
 #: templates/winadmin/room_tier_create.html:5
 #: winadmin/templates/winadmin/index.html:130
-#: winadmin/templates/winadmin/index.html:252
+#: winadmin/templates/winadmin/index.html:251
 msgid "Create Room Tier"
 msgstr ""
 
@@ -1951,23 +1975,23 @@ msgstr ""
 msgid "Reservation Option"
 msgstr ""
 
-#: winadmin/forms.py:281
+#: winadmin/forms.py:261
 msgid "Price overnight"
 msgstr ""
 
-#: winadmin/forms.py:325 winadmin/forms.py:364
+#: winadmin/forms.py:305 winadmin/forms.py:344
 msgid "Minimum Adults"
 msgstr ""
 
-#: winadmin/forms.py:328 winadmin/forms.py:367
+#: winadmin/forms.py:308 winadmin/forms.py:347
 msgid "Maximum Adults"
 msgstr ""
 
-#: winadmin/forms.py:335 winadmin/forms.py:372
+#: winadmin/forms.py:315 winadmin/forms.py:352
 msgid "Room Tiers"
 msgstr ""
 
-#: winadmin/forms.py:399 winadmin/forms.py:410
+#: winadmin/forms.py:379 winadmin/forms.py:390
 msgid ""
 "This value is additive. Example: If the cutoff day results in a cutoff "
 "*date* of 2024-5-10, and the due day here is 10, then the due day will "
@@ -1998,113 +2022,104 @@ msgid "Dashboard"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:21
-#: winadmin/templates/winadmin/index.html:293
+#: winadmin/templates/winadmin/index.html:292
 msgid "Winvillage Admin"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:47
-#: winadmin/templates/winadmin/index.html:169
+#: winadmin/templates/winadmin/index.html:168
 msgid "Customer Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:51
-#: winadmin/templates/winadmin/index.html:173
+#: winadmin/templates/winadmin/index.html:172
 msgid "Search Customers"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:55
-#: winadmin/templates/winadmin/index.html:177
+#: winadmin/templates/winadmin/index.html:176
 msgid "View Tickets"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:65
-#: winadmin/templates/winadmin/index.html:187
+#: winadmin/templates/winadmin/index.html:186
 msgid "Inventory Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:69
-#: winadmin/templates/winadmin/index.html:191
+#: winadmin/templates/winadmin/index.html:190
 msgid "View Inventory"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:71
-#: winadmin/templates/winadmin/index.html:193
+#: winadmin/templates/winadmin/index.html:192
 #: winadmin/templates/winadmin/inventory/item_create.html:8
 msgid "Add Inventory Item"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:73
-#: winadmin/templates/winadmin/index.html:195
+#: winadmin/templates/winadmin/index.html:194
 msgid "View Categories"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:75
-#: winadmin/templates/winadmin/index.html:197
+#: winadmin/templates/winadmin/index.html:196
 msgid "Add Category"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:89
-#: winadmin/templates/winadmin/index.html:211
+#: winadmin/templates/winadmin/index.html:210
 msgid "Sales Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:93
-#: winadmin/templates/winadmin/index.html:215
+#: winadmin/templates/winadmin/index.html:214
 msgid "View Sales"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:95
-#: winadmin/templates/winadmin/index.html:217
+#: winadmin/templates/winadmin/index.html:216
 msgid "View Pricing Tiers"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:99
-#: winadmin/templates/winadmin/index.html:221
+#: winadmin/templates/winadmin/index.html:220
 msgid "View Campaigns"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:120
-#: winadmin/templates/winadmin/index.html:242
+#: winadmin/templates/winadmin/index.html:241
 msgid "Room Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:124
-#: winadmin/templates/winadmin/index.html:246
+#: winadmin/templates/winadmin/index.html:245
 msgid "View Rooms"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:128
-#: winadmin/templates/winadmin/index.html:250
+#: winadmin/templates/winadmin/index.html:249
 msgid "View Room Tiers"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:140
-#: winadmin/templates/winadmin/index.html:262
-#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:8
-msgid "Transaction Management"
+#: winadmin/templates/winadmin/index.html:261
+msgid "Procurements Management"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:144
-#: winadmin/templates/winadmin/index.html:266
-msgid "View Transactions"
+#: winadmin/templates/winadmin/index.html:265
+#: winadmin/templates/winadmin/sales/sales_ledger.html:4
+#: winadmin/templates/winadmin/sales/sales_ledger.html:8
+msgid "Sales Ledger"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:148
-#: winadmin/templates/winadmin/index.html:270
+#: winadmin/templates/winadmin/index.html:146
+#: winadmin/templates/winadmin/index.html:267
 msgid "View Vendors"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:150
-#: winadmin/templates/winadmin/index.html:272
-msgid "View Invoices"
-msgstr ""
-
-#: winadmin/templates/winadmin/index.html:152
-#: winadmin/templates/winadmin/index.html:274
-msgid "View Procurements"
-msgstr ""
-
-#: winadmin/templates/winadmin/index.html:307
+#: winadmin/templates/winadmin/index.html:306
 msgid "Customer Check In"
 msgstr ""
 
@@ -2216,11 +2231,6 @@ msgstr ""
 msgid "Remainder"
 msgstr ""
 
-#: winadmin/templates/winadmin/sales/sales_ledger.html:4
-#: winadmin/templates/winadmin/sales/sales_ledger.html:8
-msgid "Sales Ledger"
-msgstr ""
-
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:4
 msgid "Sale List View"
 msgstr ""
@@ -2245,6 +2255,10 @@ msgstr ""
 msgid "Transaction List View"
 msgstr ""
 
+#: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:8
+msgid "Transaction Management"
+msgstr ""
+
 #: winadmin/templates/winadmin/transactions/transaction_list_by_period.html:46
 msgid "Purchase Amount"
 msgstr ""
@@ -2253,132 +2267,132 @@ msgstr ""
 msgid "Bank Deposit Amount"
 msgstr ""
 
-#: winadmin/views.py:142
+#: winadmin/views.py:145
 msgid "Item Successfully Added"
 msgstr ""
 
-#: winadmin/views.py:162 winadmin/views.py:168
+#: winadmin/views.py:165 winadmin/views.py:171
 msgid "Item Successfully Edited"
 msgstr ""
 
-#: winadmin/views.py:164 winadmin/views.py:171
+#: winadmin/views.py:167 winadmin/views.py:174
 msgid "Error"
 msgstr ""
 
-#: winadmin/views.py:189
+#: winadmin/views.py:192
 msgid "Category Successfully Added"
 msgstr ""
 
-#: winadmin/views.py:192 winadmin/views.py:212
+#: winadmin/views.py:195 winadmin/views.py:215
 msgid "Input category name"
 msgstr ""
 
-#: winadmin/views.py:210
+#: winadmin/views.py:213
 msgid "Category Successfully Edited"
 msgstr ""
 
-#: winadmin/views.py:325
+#: winadmin/views.py:328
 msgid "Transaction Created Successfully"
 msgstr ""
 
-#: winadmin/views.py:327
+#: winadmin/views.py:330
 msgid "Transaction Couldn't Be Created"
 msgstr ""
 
-#: winadmin/views.py:427
+#: winadmin/views.py:430
 msgid "Transaction Edited Successfully"
 msgstr ""
 
-#: winadmin/views.py:430
+#: winadmin/views.py:433
 msgid "Transaction Deleted Successfully"
 msgstr ""
 
-#: winadmin/views.py:702
+#: winadmin/views.py:705
 msgid "Reservation successfully edited."
 msgstr ""
 
-#: winadmin/views.py:770
+#: winadmin/views.py:773
 #, python-brace-format
 msgid "{reservation.customer} checked-in."
 msgstr ""
 
-#: winadmin/views.py:773 winadmin/views.py:790
+#: winadmin/views.py:776 winadmin/views.py:793
 #, python-brace-format
 msgid "{reservation.customer} is already checked-in."
 msgstr ""
 
-#: winadmin/views.py:796
+#: winadmin/views.py:799
 #, python-brace-format
 msgid "{reservation.customer} checked-out."
 msgstr ""
 
-#: winadmin/views.py:799
+#: winadmin/views.py:802
 #, python-brace-format
 msgid "{reservation.customer} is already checked-out."
 msgstr ""
 
-#: winadmin/views.py:913
+#: winadmin/views.py:916
 msgid "Room successfully edited"
 msgstr ""
 
-#: winadmin/views.py:915
+#: winadmin/views.py:918
 msgid "Couldn't edit room"
 msgstr ""
 
-#: winadmin/views.py:918
+#: winadmin/views.py:921
 msgid "Room deleted successfully"
 msgstr ""
 
-#: winadmin/views.py:986
+#: winadmin/views.py:989
 #, python-format
 msgid "%(tier_name)s Created Successfully!"
 msgstr ""
 
-#: winadmin/views.py:1281
+#: winadmin/views.py:1284
 msgid "Vendor Created Successfully"
 msgstr ""
 
-#: winadmin/views.py:1283
+#: winadmin/views.py:1286
 msgid "Vendor Couldn't Be Created"
 msgstr ""
 
-#: winadmin/views.py:1322
+#: winadmin/views.py:1325
 msgid "Vendor updated successfully"
 msgstr ""
 
-#: winadmin/views.py:1324
+#: winadmin/views.py:1327
 msgid "Vendor couldn't be updated"
 msgstr ""
 
-#: winadmin/views.py:1351
+#: winadmin/views.py:1355
 msgid "Invoice created successfully"
 msgstr ""
 
-#: winadmin/views.py:1353
+#: winadmin/views.py:1357
 msgid "Invoice couldn't be created"
 msgstr ""
 
-#: winadmin/views.py:1392
-msgid "Invoice successfully edited"
+#: winadmin/views.py:1397
+msgid "Invoice deleted successfully"
 msgstr ""
 
-#: winadmin/views.py:1394
-msgid "Invoice couldn't be edited"
+#: winadmin/views.py:1402
+msgid "Form isn't valid"
 msgstr ""
 
-#: winadmin/views.py:1424
+#: winadmin/views.py:1434
 msgid "Procurement created successfully"
 msgstr ""
 
-#: winadmin/views.py:1426
+#: winadmin/views.py:1436
 msgid "Procurement couldn't be created"
 msgstr ""
 
-#: winadmin/views.py:1477
+#: winadmin/views.py:1487
 msgid "Procurement edited successfully"
 msgstr ""
 
-#: winadmin/views.py:1479
+#: winadmin/views.py:1489
 msgid "Procurement couldn't be edited"
 msgstr ""
 

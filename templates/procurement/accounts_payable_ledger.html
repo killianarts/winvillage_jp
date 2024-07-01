@@ -6,18 +6,6 @@
 {% block content %}
     <div id="content-wrapper" class="space-y-5">
         <h1 class="text-3xl">{% translate 'Accounts Payable Ledger' %}</h1>
-        <div class="max-w-fit pl-2 space-y-2 divide-y">
-            <p>{% translate 'Filter' %}</p>
-            <form method="get" id="filter-form" action="."
-                  hx-get="."
-                  hx-trigger="change"
-                  hx-swap="outerHTML"
-                  hx-target="#invoice-list-table"
-                  hx-vals='{"use_block": "invoice_list_table", "action": "filter"}'
-                  hx-push-url="true">
-                {{ form }}
-            </form>
-        </div>
         {% block invoice_list_table %}
             <table id="invoice-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
                 <thead>
@@ -39,10 +27,10 @@
                                 </a>
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
-                                {{ invoice.invoiced_on }}
+                                {{ invoice.invoiced_on|date:"Y-m-d" }}
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ invoice.due_on }}
+                                {{ invoice.due_on|date:"Y-m-d" }}
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
                                 {{ invoice.amount }}

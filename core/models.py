@@ -16,9 +16,9 @@ from djmoney.money import Money
 from djmoney.money import Money as DefaultMoney
 from hordak import models as accounting_models
 from hordak.models import Leg
+from hordak.utilities.currency import Balance
 from phonenumber_field.modelfields import PhoneNumberField
 from winvillage import settings
-
 
 auth_user = get_user_model()
 
@@ -187,165 +187,44 @@ class Item(BaseModel):
         return reverse("winadmin:item_detail", args=[str(self.pk)])
 
 
-# class Transaction(BaseModel):
-#     class TransactionReturnsManager(models.Manager):
-#         def get_queryset(self):
-#             return (
-#                 super()
-#                 .get_queryset()
-#                 .filter(name__in=["return"])
-#                 .order_by("created_at")
-#             )
+def get_account(code):
+    return accounting_models.Account.objects.get(code=code)
 
-#         def create_returns_from_order(self, order_obj):
-#             with db_transaction.atomic():
-#                 orderitem_transactions = []
-#                 for orderitem in order_obj.items.all():
-#                     orderitem_transaction = self.create(
-#                         orderitem_obj=orderitem, customer_obj=order_obj.customer
-#                     )
-#                     orderitem_transactions.append(orderitem_transaction)
-#                 return orderitem_transactions
 
-#         def create(self, orderitem_obj, customer_obj):
-#             with db_transaction.atomic():
-#                 transaction_obj = self.model.objects.create(
-#                     name=Transaction.TransactionType.RETURN,
-#                     customer=customer_obj,
-#                     product=orderitem_obj.item.name,
-#                     quantity=orderitem_obj.quantity,
-#                     price_per_unit=orderitem_obj.item.price,
-#                     total_price=orderitem_obj.item.price * orderitem_obj.quantity,
-#                 )
-#             return transaction_obj
+def get_sales_account_from_configuration(code=300):
+    account = get_account(code=code)
+    assert account.type == "IN"
+    return account
 
-#     class TransactionSalesManager(models.Manager):
-#         def get_queryset(self):
-#             return (
-#                 super().get_queryset().filter(name__in=["sale"]).order_by("created_at")
-#             )
 
-#         def create_sales_from_order(self, order_obj):
-#             with db_transaction.atomic():
-#                 orderitem_transactions = []
-#                 for orderitem in order_obj.items.all():
-#                     orderitem_transaction = self.create(
-#                         orderitem_obj=orderitem, customer_obj=order_obj.customer
-#                     )
-#                     orderitem_transactions.append(orderitem_transaction)
-#                 return orderitem_transactions
+def get_cash_account_from_configuration(code=100):
+    account = get_account(code=code)
+    assert account.type == "AS"
+    return account
 
-#         def create(self, orderitem_obj, customer_obj):
-#             with db_transaction.atomic():
-#                 transaction_obj = self.model.objects.create(
-#                     name=Transaction.TransactionType.SALE,
-#                     customer=customer_obj,
-#                     product=orderitem_obj.item.name,
-#                     quantity=orderitem_obj.quantity,
-#                     price_per_unit=orderitem_obj.item.price,
-#                     total_price=orderitem_obj.item.price * orderitem_obj.quantity,
-#                 )
-#             return transaction_obj
 
-#     class TransactionReservationsManager(models.Manager):
-#         def get_queryset(self):
-#             return (
-#                 super()
-#                 .get_queryset()
-#                 .filter(name__in=["sale"])
-#                 .filter(product__in=_("Reservation"))
-#                 .order_by("created_at")
-#             )
+def get_accounts_receivable_account_from_configuration(code=110):
+    account = get_account(code=code)
+    assert account.type == "AS"
+    return account
 
-#         def create(self, reservation_obj):
-#             with db_transaction.atomic():
-#                 transaction_obj = self.model.objects.create(
-#                     name=Transaction.TransactionType.SALE,
-#                     customer=reservation_obj.customer,
-#                     product=_("Reservation"),
-#                     quantity=reservation_obj.get_stay_period_in_nights(),
-#                     price_per_unit=reservation_obj.get_price()
-#                     / reservation_obj.get_stay_period_in_nights(),
-#                     total_price=reservation_obj.get_price(),
-#                 )
-#                 return transaction_obj
 
-#     class Meta:
-#         verbose_name = _("Transaction")
-#         verbose_name_plural = _("Transactions")
+def get_inventory_account_from_configuration(code=120):
+    account = get_account(code=code)
+    assert account.type == "AS"
+    return account
 
-#     class TransactionType(models.TextChoices):
-#         # 売上、仕入れ、返品、預金振込
-#         SALE = "sale", _("Sale")
-#         PROCUREMENT = "procurement", _("Procurement")
-#         RETURN = "return", _("Return")
-#         DEPOSIT = "deposit", _("Deposit")
 
-#     name = models.CharField(
-#         max_length=30, choices=TransactionType, verbose_name=_("Name")
-#     )
-#     customer = models.ForeignKey(
-#         Customer,
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         verbose_name=_("Customer"),
-#     )
-#     product = models.CharField(
-#         max_length=50, verbose_name=_("Product")
-#     )  # For Item, the name. For Reservation, "Reservation"
-#     quantity = models.IntegerField(
-#         default=1, verbose_name=_("Quantity")
-#     )  # For Reservation, number of nights
-#     price_per_unit = models.DecimalField(
-#         max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit")
-#     )  # Price per night
-#     total_price = models.DecimalField(
-#         max_digits=19, decimal_places=2, verbose_name=_("Price Per Unit")
-#     )
-#     objects = models.Manager()
-#     sales = TransactionSalesManager()
-#     returns = TransactionReturnsManager()
-#     reservations = TransactionReservationsManager()
+def get_cogs_account_from_configuration(code=400):
+    account = get_account(code=code)
+    assert account.type == "EX"
+    return account
 
-#     @property
-#     def price_rounded(self):
-#         return round(self.item.price, 2)
 
-#     @property
-#     def total_price_rounded(self):
-#         return round(self.total_price, 2)
-
-#     @property
-#     def sale_amount(self):
-#         if self.name == "sale":
-#             return self.total_price_rounded
-
-#     @property
-#     def return_amount(self):
-#         if self.name == "return":
-#             return self.total_price_rounded
-
-#     @property
-#     def purchase_amount(self):
-#         if self.name == "purchase":
-#             return self.total_price_rounded
-
-#     @property
-#     def payment_amount(self):
-#         if self.name == "deposit":
-#             return self.total_price_rounded
-
-#     def add_total_price(self):
-#         total_price = self.quantity * self.price_rounded
-#         self.total_price = total_price
-#         return self.total_price
-
-#     def __str__(self):
-#         return f"{self.name}, {self.total_price_rounded}"
-
-#     def get_absolute_url(self):
-#         return reverse("winadmin:transaction_detail", args=[str(self.pk)])
+def get_accounts_payable_account_from_configuration(code=200):
+    account = get_account(code=code)
+    assert account.type == "LI"
+    return account
 
 
 class Vendor(BaseModel):
@@ -353,29 +232,69 @@ class Vendor(BaseModel):
         verbose_name = _("Vendor")
         verbose_name_plural = _("Vendors")
 
-    name = models.CharField(max_length=50, verbose_name=_("Name"))
+    class VendorManager(models.Manager):
+        def create(self, *args, **kwargs):
+            accounts_payable = get_accounts_payable_account_from_configuration()
+            vendor_accounts = accounting_models.Account.objects.filter(
+                parent=accounts_payable
+            )
+            name = kwargs.get("name")
+            if name is None:
+                raise ValueError("A name must be provided for a Vendor.")
+            account = accounting_models.Account.objects.create(
+                name=name,
+                type="LI",
+                parent=accounts_payable,
+                code=vendor_accounts.count() + 1,
+            )
+            vendor = self.model(*args, **kwargs)
+            vendor.account = account
+            vendor.save()
+            return vendor
+
+    account = models.ForeignKey(
+        accounting_models.Account,
+        on_delete=models.CASCADE,
+    )
+    name = models.CharField(max_length=255, verbose_name=_("Name"))
     cutoff_day = models.SmallIntegerField(
-        default=30, validators=[MaxValueValidator(31), MinValueValidator(-1)]
+        default=30,
+        validators=[MaxValueValidator(31), MinValueValidator(-1)],
+        verbose_name=_("Cutoff Day"),
     )
     due_day = models.SmallIntegerField(
-        default=30, validators=[MaxValueValidator(31), MinValueValidator(-1)]
+        default=30,
+        validators=[MaxValueValidator(31), MinValueValidator(-1)],
+        verbose_name=_("Due Day"),
+    )
+    phone = PhoneNumberField(null=True, verbose_name=_("Phone"))
+    postal_code = models.CharField(
+        max_length=255, null=True, verbose_name=_("Postal Code")
+    )
+    address = models.CharField(max_length=255, null=True, verbose_name=_("Address"))
+    city = models.CharField(max_length=255, null=True, verbose_name=_("City"))
+    prefecture = models.CharField(
+        max_length=255, null=True, verbose_name=_("Prefecture")
     )
 
-    def get_cutoff_date(self, invoice_year, invoice_month):
+    objects = VendorManager()
+
+    def get_cutoff_date(self, _date):
+        invoice_year = _date.year
+        invoice_month = _date.month
         default_timezone = timezone.get_default_timezone()
         cutoff_day = self.cutoff_day
         is_end_of_month = cutoff_day == -1
         cutoff_date = None
         if is_end_of_month:
             cutoff_date = (
-                pendulum.datetime(invoice_year, invoice_month, 1, tz=default_timezone)
-                .subtract(months=1)
+                pendulum.date(invoice_year, invoice_month, 1)
                 .end_of("month")
                 .start_of("day")
             )
         else:
-            cutoff_date = pendulum.datetime(
-                invoice_year, invoice_month, cutoff_day, tz=default_timezone
+            cutoff_date = pendulum.date(
+                invoice_year, invoice_month, cutoff_day
             ).start_of("day")
         return cutoff_date
 
@@ -386,21 +305,21 @@ class Vendor(BaseModel):
         due_day_is_end_of_month = due_day == -1
         due_date = None
         if due_day_is_end_of_month and cutoff_day_is_end_of_month:
-            due_date = cutoff_date.add(months=1).end_of("month")
+            due_date = cutoff_date.add(months=1).end_of("month").start_of("day")
         elif due_day_is_end_of_month and not cutoff_day_is_end_of_month:
-            due_date = cutoff_date.end_of("month")
+            due_date = cutoff_date.end_of("month").start_of("day")
         else:
             due_date = cutoff_date.add(days=due_day)
         return due_date
 
     def create_invoice(self, _date, procurements):
-        cutoff_date = self.get_cutoff_date(_date.year, _date.month)
+        cutoff_date = self.get_cutoff_date(_date)
         due_date = self.get_due_date(cutoff_date)
         amount = 0
         for procurement in procurements:
             total = procurement.total()
             amount += total
-        invoice = Invoice.objects.create(
+        invoice, _ = Invoice.objects.get_or_create(
             vendor=self, invoiced_on=cutoff_date, due_on=due_date, amount=amount
         )
         for procurement in procurements:
@@ -408,9 +327,9 @@ class Vendor(BaseModel):
         invoice.save()
         return invoice
 
-    def get_invoice_period(self, year, month):
-        this_month_cutoff_date = self.get_cutoff_date(year, month)
-        last_month_cutoff_date = this_month_cutoff_date.subtract(months=1)
+    def get_invoice_period(self, _date):
+        this_month_cutoff_date = self.get_cutoff_date(_date)
+        last_month_cutoff_date = self.get_cutoff_date(_date.subtract(months=1))
         return {"start": last_month_cutoff_date, "end": this_month_cutoff_date}
 
     def get_current_invoice(self):
@@ -423,6 +342,9 @@ class Vendor(BaseModel):
         today = pendulum.today(tz=timezone.get_default_timezone_name())
         current_invoice = self.get_current_invoice()
         current_due_date = current_invoice.due_on
+
+    def balance(self):
+        return self.account.balance()
 
     def __str__(self):
         return self.name
@@ -477,8 +399,66 @@ class Invoice(BaseModel):
         diff = current.due_on.diff(invoice.due_on)
         return diff
 
+    def account_balance_before(self):
+        if self.procurements.exists():
+            first = self.procurements.first().summary
+            before = first.legs.get(account=self.vendor.account)
+            return before.account_balance_before()
+        else:
+            return Balance(0, "JPY")
+
+    def account_balance_after(self):
+        if self.procurements.exists():
+            first = self.procurements.last().summary
+            before = first.legs.get(account=self.vendor.account)
+            return before.account_balance_after()
+        else:
+            return Balance(0, "JPY")
+
+    def days_past_due_date(self, _date=None):
+        if _date is None:
+            _date = pendulum.now().date()
+        interval = _date - self.due_on.date()
+        days = interval.in_days()
+        return days
+
+    def is_current(self, _date=None):
+        if _date is None:
+            _date = pendulum.now().date()
+        interval = _date - self.due_on.date()
+        days = interval.in_days()
+        return days > 0
+
+    def is_1_to_30_days_past_due(self, _date=None):
+        if _date is None:
+            _date = pendulum.today().date()
+        interval = _date - self.due_on.date()
+        days = interval.in_days()
+        return 30 >= days >= 1
+
+    def is_31_to_60_days_past_due(self, _date=None):
+        if _date is None:
+            _date = pendulum.now().date()
+        interval = _date - self.due_on.date()
+        days = interval.in_days()
+        return 60 >= days >= 31
+
+    def is_61_to_90_days_past_due(self, _date=None):
+        if _date is None:
+            _date = pendulum.now().date()
+        interval = _date - self.due_on.date()
+        days = interval.in_days()
+        return 90 >= days >= 61
+
+    def is_91_or_more_days_past_due(self, _date=None):
+        if _date is None:
+            _date = pendulum.now().date()
+        interval = _date - self.due_on.date()
+        days = interval.in_days()
+        return days >= 91
+
     def __str__(self):
-        return f"Vendor: {self.vendor}, Due On: {self.due_on}"
+        return f"ID: {self.id} | {self.vendor} | {self.amount} | Inv: {self.invoiced_on.date()} | Due: {self.due_on.date()}"
 
 
 class TransactionDetail(BaseModel):
@@ -506,6 +486,11 @@ class TransactionDetail(BaseModel):
                 )
                 return detail
 
+    class TypeChoices(models.TextChoices):
+        SALE = "SA", _("Sale")
+        PROCUREMENT = "PR", _("Procurement")
+        PAYMENT = "PA", _("Payment")
+
     class Meta:
         verbose_name = _("Transaction Detail")
         verbose_name_plural = _("Transaction Details")
@@ -524,9 +509,27 @@ class TransactionDetail(BaseModel):
         default_currency="JPY",
         verbose_name=_("Price Per Unit"),
     )
-
+    type = models.CharField(choices=TypeChoices, max_length=20, verbose_name=_("Type"))
     objects = models.Manager()
     sales = SaleTransactionDetailManager()
+
+    def to_account(self):
+        account = None
+        for leg in self.summary.legs.all():
+            if leg.is_debit():
+                return leg.account.name
+
+    def from_account(self):
+        account = None
+        for leg in self.summary.legs.all():
+            if leg.is_credit():
+                return leg.account.name
+
+    def account_balance_after_payment(self, vendor):
+        account = vendor.account
+        detail = self.objects.filter(type="PA", summary__legs__account=account).latest(
+            "summary__date"
+        )
 
     def total(self):
         return self.quantity * self.price_per_unit

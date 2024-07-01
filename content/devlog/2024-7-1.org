@@ -1,0 +1,46 @@
+#+title: Completing Accounts Payable Aging Reports
+
+* Reflecting on progress so far
+What have I learned since beginning this job in September of 2023?
+
+- Building calendars with Python calendar library
+- Emacs
+  - ORG mode
+  - Markdown mode
+  - Web mode
+  - Python
+  - Lisp
+  - Evil + Emacs keyboard shortcuts
+- ORM
+  - How to make annotations
+  - How to make aggregate fields
+  - How to query objects based on date ranges
+- How to filter items in a list view using HTMX
+- How to make a store "register" interface
+- How to make a reservation system
+- How to send  emails
+- How to create tasks including automated tasks
+- How to make tests
+- Accounting
+  - Different kinds of double-entry bookkeeping accounts
+  - How to record things like sales, procurements, etc.
+- Using Hordak for double-entry bookkeeping
+- How to make an Accounts Payable Aging Report
+- How to localize a third-party library
+- How to make components with Slippers
+- How to create and export CSV files
+- How to make a multi-step form using HTMX
+- How to validate input data with HTMX
+- How to integrate third-party models that don't have all the data I want
+- How to turn on a bunch of process all at once with Honcho
+- How to store and display images using Django models
+- How to add a new foreign key field to a model (using migration files to run python code on migration)(kinda)
+- How to make a custom model manager
+- How to make a custom model field
+- How to use ModelChoice fields in forms
+- How to update one field on change from another field using HTMX
+- How to use Formsets (kinda)
+- How to fold various data together in one structure
+
+* Aging report
+A month ago, I had an Accounts Payable Ledger and Company-wise Procurement Ledger up and running, but when I started on the Aging Report, I realized that I was missing a key component: accounts. When I dug deeper on the problem, I realized that I needed to learn more about accounting, specifically the double-entry bookkeeping method of accounting. I took some time to learn the math involved, and then got to work on integrating the Hordak library into this project.

@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pendulum
 from core.forms import PendulumField, TailwindFormMixin
-from core.models import Invoice, Item, Procurement, Vendor
+from core.models import Invoice, Item, Procurement, TransactionDetail, Vendor
 from django import forms
 from django.forms import BaseInlineFormSet, widgets
 from django.forms.renderers import TemplatesSetting
@@ -132,26 +132,6 @@ class DateTimeInput(forms.DateTimeInput):
     def __init__(self, **kwargs):
         kwargs["format"] = "%Y-%m-%d"
         super().__init__(**kwargs)
-
-
-# class TransactionCreateForm(TailwindFormMixin, forms.ModelForm):
-#     class Meta:
-#         model = Transaction
-#         fields = [
-#             "name",
-#             "customer",
-#             "product",
-#             "quantity",
-#             "total_price",
-#         ]
-#         widgets = {"transaction_datetime": DateInput()}
-#         labels = {
-#             "name": _("Name"),
-#             "customer": _("Customer"),
-#             "product": _("Product"),
-#             "quantity": _("Quantity"),
-#             "total_price": _("Total Price"),
-#         }
 
 
 class SetLedgerPeriodForm(forms.Form):
@@ -393,7 +373,7 @@ class CampaignDetailForm(forms.ModelForm):
 class VendorCreateForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Vendor
-        fields = ["name", "cutoff_day", "due_day"]
+        exclude = ["account"]
         help_texts = {
             "due_day": _(
                 "This value is additive. Example: If the cutoff day results in a cutoff *date* of 2024-5-10, and the due day here is 10, then the due day will result in a due date of 2024-5-20. A value of -1 will result in 'end of the month' value. If the cutoff date is 2024-5-10 and due day here is -1, then the due date will be 2024-5-31."
@@ -404,7 +384,7 @@ class VendorCreateForm(TailwindFormMixin, forms.ModelForm):
 class VendorDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Vendor
-        fields = ["name", "cutoff_day", "due_day"]
+        exclude = []
         help_texts = {
             "due_day": _(
                 "This value is additive. Example: If the cutoff day results in a cutoff *date* of 2024-5-10, and the due day here is 10, then the due day will result in a due date of 2024-5-20. A value of -1 will result in 'end of the month' value. If the cutoff date is 2024-5-10 and due day here is -1, then the due date will be 2024-5-31."
@@ -421,7 +401,7 @@ class InvoiceCreateForm(forms.ModelForm):
 class InvoiceDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Invoice
-        fields = ["vendor", "invoiced_on", "due_on"]
+        fields = ["id"]
 
 
 class ProcurementCreateForm(TailwindFormMixin, forms.ModelForm):
@@ -446,18 +426,21 @@ class ProcurementCreateForm(TailwindFormMixin, forms.Form):
 
 class ProcurementDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
-        model = Procurement
-        fields = ["vendor", "product", "price_per_unit", "quantity", "procured_on"]
-        widgets = {"procured_on": forms.SelectDateWidget()}
+        model = TransactionDetail
+        fields = ["id"]
 
 
-class CompanyWiseProcurementLedgerFilter(forms.ModelForm):
-    class Meta:
-        model = Vendor
-        fields = ["name"]
-
-    name = forms.ModelChoiceField(
-        queryset=Vendor.objects.all(), initial=Vendor.objects.first()
+class CompanyWiseProcurementLedgerFilter(TailwindFormMixin, forms.Form):
+    vendor = forms.ModelChoiceField(
+        queryset=Vendor.objects.all(), initial=Vendor.objects.first(), label=_("Vendor")
+    )
+    current_year = datetime.today().year
+    current_month = datetime.today().month
+    year = forms.IntegerField(
+        max_value=current_year, initial=current_year, label=_("Year")
+    )
+    month = forms.IntegerField(
+        min_value=1, max_value=12, initial=current_month, label=_("Month")
     )
 
 

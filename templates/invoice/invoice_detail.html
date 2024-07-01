@@ -59,10 +59,14 @@
         </div-tr>
       </div-tbody>
     </div-table>
-    <div class="space-y-5">
-      {% #outline_button name="delete" type="submit" variant="danger" %}
-      {% trans "Delete" %}
-      {% /outline_button %}
-    </div>
+    <form hx-post="." hx-target="#content-wrapper" hx-swap="outerHTML" method="post" id="invoice-detail-form" action=".">
+      {{ form.as_hidden }}
+      <div class="space-y-5">
+        {% #outline_button name="delete" type="submit" variant="danger" %}
+        {% trans "Delete" %}
+        {% /outline_button %}
+      </div>
+    </form>
+
   </div>
 {% endblock %}
