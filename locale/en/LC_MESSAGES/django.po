@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-05 11:39+0900\n"
+"POT-Creation-Date: 2024-09-21 11:57+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,8 @@ msgstr ""
 
 #: core/models.py:232
 #: templates/procurement/accounts_payable_aging_report.html:14
-#: templates/procurement/accounts_payable_ledger.html:14 winadmin/forms.py:435
+#: templates/procurement/accounts_payable_ledger.html:14 winadmin/forms.py:438
+#: winadmin/forms.py:442
 msgid "Vendor"
 msgstr ""
 
@@ -1875,7 +1876,7 @@ msgid "This stay has already been complete."
 msgstr ""
 
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:20
-#: winadmin/forms.py:440
+#: winadmin/forms.py:447
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:19
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:19
 #: winadmin/templates/winadmin/sales/sales_ledger.html:19
@@ -1885,7 +1886,7 @@ msgid "Year"
 msgstr ""
 
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:21
-#: winadmin/forms.py:443
+#: winadmin/forms.py:450
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:20
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:20
 #: winadmin/templates/winadmin/sales/sales_ledger.html:20

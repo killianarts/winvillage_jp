@@ -430,10 +430,31 @@ class ProcurementDetailForm(TailwindFormMixin, forms.ModelForm):
         exclude = []
 
 
-class CompanyWiseProcurementLedgerFilter(TailwindFormMixin, forms.Form):
-    vendor = forms.ModelChoiceField(
-        queryset=Vendor.objects.all(), initial=Vendor.objects.first(), label=_("Vendor")
+if not Vendor.objects.all().exists():
+    dairy_peddler = "クリームとチーズ牧場"
+    DEFAULT_VENDOR = Vendor.objects.create(
+        name=dairy_peddler,
+        cutoff_day=-1,
+        due_day=-1,
+        phone=PhoneNumber.from_string("+8107043327278", region="JA"),
+        postal_code="064-0941",
+        address="2-6-2 Milky Lane",
+        city="Sapporo",
+        prefecture="Hokkaido",
     )
+
+
+class CompanyWiseProcurementLedgerFilter(TailwindFormMixin, forms.Form):
+    if Vendor.objects.all().exists():
+        vendor = forms.ModelChoiceField(
+            queryset=Vendor.objects.all(),
+            initial=Vendor.objects.first(),
+            label=_("Vendor"),
+        )
+    else:
+        vendor = forms.ModelChoiceField(
+            queryset=Vendor.objects.all(), initial=DEFAULT_VENDOR, label=_("Vendor")
+        )
     current_year = datetime.today().year
     current_month = datetime.today().month
     year = forms.IntegerField(
