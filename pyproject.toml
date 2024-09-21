@@ -47,12 +47,12 @@ pytest = "^8.2.1"
 django-hordak = "^1.15.0"
 django-money = "^3.5.2"
 django-cotton = "^0.9.28"
+freezegun = "^1.5.1"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"
 django-pattern-library = "^1.1.0"
 isort = "^5.13.2"
-freezegun = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core"]
