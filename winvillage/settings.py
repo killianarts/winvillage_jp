@@ -86,6 +86,7 @@ THIRD_PARTY_APPS = [
     "responsive_images",
     "phonenumbers",
     "slippers",
+    "django_cotton.apps.SimpleAppConfig",
     "recurrence",
     "django_celery_results",
     "mptt",
@@ -177,19 +178,23 @@ ROOT_URLCONF = "winvillage.urls"
 # See: https://nickjanetakis.com/blog/django-4-1-html-templates-are-cached-by-default-with-debug-true
 
 default_loaders = [
+    "django_cotton.cotton_loader.Loader",
     "django.template.loaders.filesystem.Loader",
     "django.template.loaders.app_directories.Loader",
 ]
 
 cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
-TEMPLATE_BUILTINS = ["slippers.templatetags.slippers"]
+TEMPLATE_BUILTINS = [
+    # "slippers.templatetags.slippers",
+    "django_cotton.templatetags.cotton",
+]
 if "pattern_library" in INSTALLED_APPS:
     TEMPLATE_BUILTINS.append("pattern_library.loader_tags")
 # APP_DIRS unnecessary if django.template.loaders.app_directories.Loader is set.
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "core/../templates/"],
+        "DIRS": [BASE_DIR / "core/../templates/", BASE_DIR / "templates"],
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -202,9 +207,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
             "loaders": default_loaders if DEBUG else cached_loaders,
-            "builtins": [
-                "slippers.templatetags.slippers",
-            ],
+            "builtins": TEMPLATE_BUILTINS,
         },
     },
 ]
@@ -218,9 +221,10 @@ PATTERN_LIBRARY = {
     # are the group titles and the values are lists of template name prefixes that will
     # be searched to populate the groups.
     "SECTIONS": (
-        ("navigations", ["patterns/navigations"]),
-        ("buttons", ["patterns/buttons"]),
-        ("pages", ["patterns/pages"]),
+        # ("navigations", ["patterns/navigations"]),
+        # ("buttons", ["patterns/buttons"]),
+        # ("pages", ["patterns/pages"]),
+        ("components", ["patterns/components"]),
     ),
     # Configure which files to detect as templates.
     "TEMPLATE_SUFFIX": ".html",
@@ -231,6 +235,8 @@ PATTERN_LIBRARY = {
     # BASE_TEMPLATE_NAMES is a "page" and will be rendered as-is without being wrapped.
     "BASE_TEMPLATE_NAMES": ["patterns/base_page.html"],
 }
+
+COTTON_DIR = "patterns/components"
 
 # FORMS
 # ------------------------------------------------------------------------------

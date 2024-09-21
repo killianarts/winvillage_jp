@@ -1,0 +1,122 @@
+#+title: Redesign Brainstorm
+* Redesign Brainstorm :@work:@winvillage:
+** Analysis
+The website is highly responsive. It works on large screens and very small screens with near feature parity. On small screens, some graphic text will be difficult to read, but critical text is all legible. On large screens, hero photos are somewhat blurry.
+
+Horizontal scrolling on MD breakpoint, but probably a fairly unusual screen size.
+
+Page includes many small illustrations with small animations. Sections are loosely delimited using headers and freeform background images resembling nature.
+*** Navigation/Header
+Navigation is a fullscreen popup. Includes links to:
+- Home
+- News
+- About
+- Map
+- Charm
+- User Guide
+- Q&A
+- Information
+- Access
+- Blog
+- Contact
+- Reservation
+- Phone number
+- Instagram
+- Facebook
+*** Hero
+Full viewport images, slider
+*** News
+Blog style news. Links news page
+*** About
+Includes a summary of what's available and message about what you can do there. Invites people to work there and do extra activities.
+*** Map
+Map is an SVG with links to popup image/caption sliders. Considerable overlap in the content of each slider.
+*** Room Info
+Includes tabs and special image sliders for three different kinds of rooms. Feature list and specifications/dimensions for each room.
+
+Banner link to outside website for the spa.
+*** "Features"
+You can BBQ.
+
+You can work.
+TABS:
+- Free wifi
+- Meeting Space
+- drink bar
+BUTTON: Workspace price (highlights that this is not an included feature)
+
+Activities. Image link grid of different activites. Links to affiliated (parent?) page with more info about each activity.
+*** User Guide
+Link to guide. Guide is a three tab page with information about how to make a reservation, checkin-checkout, food, amenities, cancellation policies, room use policies, more details about rooms.
+*** Q&A
+Link to Q&A. Q&A is ~15 accordion Q and As.
+*** Pricing
+*** Access
+Information about car and train access. Includes small custom map of the area.
+*** Blog
+Similar to News
+*** Instagram
+Two large scrolling image sliders linking to Instagram posts
+*** Footer
+Japanese language links.
+** Winvillage 1.0
+This is the current layout for the winvillage homepage.
+
+Winvillage's main selling point is its rooms. Secondarily, the ability to spend time outdoors doing BBQ and playing. It's most likely target audience is families.
+
+*** Header/Nav
+*** Mini Hero
+*** Grid with somewhat shuffled sections
+**** Room
+- Personal Reservations for Sauna
+- Kitchen
+- Onsen Water
+- Beds
+- Wifi
+- Sauna
+**** Solitude
+- Rental (grills, tents, chairs, etc.)
+- Food Purchase
+**** Camp
+- Small food orders and Breakfast
+**** Family Fun
+- Toys
+*** Room Specs
+*** Access
+*** Closing
+** Winvillage 2.0
+Unlike the reference glamping location, Winvillage doesn't have any major attractions or activities in or around their location. The primary activities at Winvillage will be resting, BBQ, outdoor play, and possibly camping. Primary target audience is families. Groups don't have a great reason to come for lack of surrounding activities or attractions. Secondarily, older couples or young couples with money.
+
+The ability to buy ingredients for BBQ and the ability to borrow toys is very nice. The sauna is also a nice, but likely niche rental option given the target audiences.
+
+Given the targets and Winvillages features, what are some possible homepage configurations?
+*** Winvillage's request
+WIN village さんからです、
+↓
+WIN VILLAGE のホームページに可能であれば取り入れてほしいと思った要素が以下の点でございます。
+
+・ホームページのトップに大きな写真があり数秒ごとに変化する。
+
+_・イラストの MAP があり、それぞれの設備のところをクリックすると写真が出てきました。_
+
+多くの画像を用いて施設の情報を、ホームページを観覧していただいているお客様にお伝えしたいのですが、同じページにいくつもの写真があると、スマホでのページのロールスピードに支障があるとも考えられるので、このような仕様になっているのかもしれないと考えました。
+
+クリックできる箇所は、押すと色が変わる仕様になっていました。
+
+・全体にイラストが使われているのですが、WIN VILLAGE もアメリカンヴィンテージ風のイラストを使った演出ができれば、施設の雰囲気とマッチするのではないかと考えました。
+
+・サイトに常にメニュー画面があり、そこをクリックすると簡潔なメニュー画面が出て、それぞれをクリックするとページ内に飛ぶ仕様になっておりました。
+これはお客様が知りたい箇所にすぐにアクセス出来るように工夫されてうるのではないかと思いました。
+
+メニュー画面は、パソコンの画面では横に、スマホの画面では上に常に表示される仕様になっていました。
+
+もし可能であれば、上記のことを参考にしていただきご検討いただければと思います。
+*** Nav
+BUTTON: Make a Reservation (sticky bottom)
+*** Fullpage hero
+*** About
+*** Room
+*** Camp
+*** Play
+*** Access
+*** Footer

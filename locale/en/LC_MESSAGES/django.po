@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-01 13:08+0900\n"
+"POT-Creation-Date: 2024-09-05 11:39+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Category Name"
 msgstr ""
 
-#: core/models.py:138 core/models.py:497
+#: core/models.py:138 core/models.py:503
 #: templates/invoice/invoice_detail.html:17 winadmin/forms.py:418
 #: winadmin/views.py:394
 msgid "Item"
@@ -150,7 +150,7 @@ msgstr ""
 
 #: core/models.py:232
 #: templates/procurement/accounts_payable_aging_report.html:14
-#: templates/procurement/accounts_payable_ledger.html:14 winadmin/forms.py:436
+#: templates/procurement/accounts_payable_ledger.html:14 winadmin/forms.py:435
 msgid "Vendor"
 msgstr ""
 
@@ -187,7 +187,7 @@ msgstr ""
 msgid "Prefecture"
 msgstr ""
 
-#: core/models.py:355 core/models.py:485
+#: core/models.py:355 core/models.py:491
 msgid "Procurement"
 msgstr ""
 
@@ -195,7 +195,7 @@ msgstr ""
 msgid "Procurements"
 msgstr ""
 
-#: core/models.py:363 core/models.py:498 customer/forms.py:103
+#: core/models.py:363 core/models.py:504 customer/forms.py:103
 #: reservations/models.py:36
 #: templates/procurement/company_wise_procurement_ledger.html:29
 #: templates/procurement/procurement_list_by_vendor.html:29
@@ -229,7 +229,7 @@ msgstr ""
 msgid "Due On"
 msgstr ""
 
-#: core/models.py:391 core/models.py:504
+#: core/models.py:391 core/models.py:510
 #: templates/invoice/invoice_detail.html:19
 #: templates/procurement/company_wise_procurement_ledger.html:30
 #: templates/procurement/procurement_list_by_vendor.html:30
@@ -241,35 +241,35 @@ msgstr ""
 msgid "Price Per Unit"
 msgstr ""
 
-#: core/models.py:484
+#: core/models.py:490
 msgid "Sale"
 msgstr ""
 
-#: core/models.py:486
+#: core/models.py:492
 msgid "Payment"
 msgstr ""
 
-#: core/models.py:489
+#: core/models.py:495
 msgid "Transaction Detail"
 msgstr ""
 
-#: core/models.py:490
+#: core/models.py:496
 msgid "Transaction Details"
 msgstr ""
 
-#: core/models.py:495
+#: core/models.py:501
 msgid "Summary"
 msgstr ""
 
-#: core/models.py:506 templates/accounting/account_list.html:34
+#: core/models.py:512 templates/accounting/account_list.html:34
 msgid "Type"
 msgstr ""
 
-#: core/models.py:528 winadmin/forms.py:416
+#: core/models.py:540 winadmin/forms.py:416
 msgid "Account"
 msgstr ""
 
-#: core/models.py:529
+#: core/models.py:541
 msgid "Accounts"
 msgstr ""
 
@@ -277,44 +277,18 @@ msgstr ""
 msgid "Glamping in Imari"
 msgstr ""
 
-#: core/templates/core/base.html:11 core/templates/core/base.html:97
+#: core/templates/core/base.html:11
 #: reservations/templates/reservations/index.html:10
 #: reservations/templates/reservations/index_old.html:8
 #: reservations/templates/reservations/option_selection.html:8
 msgid "Winvillage"
 msgstr ""
 
-#: core/templates/core/base.html:49
-msgid "Win Village"
-msgstr ""
-
-#: core/templates/core/base.html:51
-msgid "Win Village Logo"
-msgstr ""
-
-#: core/templates/core/base.html:68 core/templates/core/base.html:116
-#: core/templates/core/index.html:198
-msgid "部屋の基本スペック"
-msgstr ""
-
-#: core/templates/core/base.html:70 core/templates/core/base.html:119
-#: core/templates/core/index.html:775
-msgid "アクセス"
-msgstr ""
-
-#: core/templates/core/base.html:99
-msgid "Winvillage Logo"
-msgstr ""
-
-#: core/templates/core/base.html:104
-msgid "Close menu"
-msgstr ""
-
-#: core/templates/core/base.html:155
+#: core/templates/core/base.html:110
 msgid "Relaxation Awaits"
 msgstr ""
 
-#: core/templates/core/base.html:158
+#: core/templates/core/base.html:113
 msgid "最高のグランピングが佐世保で待っています。"
 msgstr ""
 
@@ -348,244 +322,265 @@ msgstr ""
 msgid "No errors"
 msgstr ""
 
-#: core/templates/core/index.html:51
+#: core/templates/core/index_old.html:52
 msgid "静かな空間、最高の風呂、美味しいバーベキュー。"
 msgstr ""
 
-#: core/templates/core/index.html:52
+#: core/templates/core/index_old.html:53
 msgid "佐世保でのグランピング。"
 msgstr ""
 
-#: core/templates/core/index.html:61
+#: core/templates/core/index_old.html:62
 msgid "family room"
 msgstr ""
 
-#: core/templates/core/index.html:62
+#: core/templates/core/index_old.html:63
 msgid "家族みんな快適に"
 msgstr ""
 
-#: core/templates/core/index.html:65
+#: core/templates/core/index_old.html:66
 msgid ""
 "\n"
-"            自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いス"
+"           自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いス"
 "ペース。キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ダラダ"
 "ラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶を"
 "いれて、最高の朝を向かう。\n"
-"          "
+"           "
 msgstr ""
 
-#: core/templates/core/index.html:73
+#: core/templates/core/index_old.html:74
 msgid "個人予約"
 msgstr ""
 
-#: core/templates/core/index.html:74
+#: core/templates/core/index_old.html:75
 msgid "露天風呂の予約であなたや家族だけの贅沢の風呂になる。"
 msgstr ""
 
-#: core/templates/core/index.html:81
+#: core/templates/core/index_old.html:82
 msgid "台所"
 msgstr ""
 
-#: core/templates/core/index.html:82
+#: core/templates/core/index_old.html:83
 msgid "冷蔵庫、シンクとIHコンロがついています。"
 msgstr ""
 
-#: core/templates/core/index.html:87 core/templates/core/index.html:348
-#: core/templates/core/index.html:631 core/templates/core/room_details.html:109
+#: core/templates/core/index_old.html:88 core/templates/core/index_old.html:349
+#: core/templates/core/index_old.html:632
+#: core/templates/core/room_details.html:109
 #: core/templates/core/room_details.html:313
 msgid "温泉水"
 msgstr ""
 
-#: core/templates/core/index.html:88
+#: core/templates/core/index_old.html:89
 msgid ""
 "露天風呂も部屋の風呂も温泉水を使います。お風呂のアメニティもついています。"
 msgstr ""
 
-#: core/templates/core/index.html:97
+#: core/templates/core/index_old.html:98
 msgid "ベッド"
 msgstr ""
 
-#: core/templates/core/index.html:98
+#: core/templates/core/index_old.html:99
 msgid ""
 "セミダブルベッド２台の部屋とダブルベッド１台の部屋から選ぶことができます。ソ"
 "ファベッドと布団もついています。"
 msgstr ""
 
-#: core/templates/core/index.html:105 core/templates/core/index.html:482
-#: core/templates/core/index.html:765 core/templates/core/room_details.html:207
+#: core/templates/core/index_old.html:106
+#: core/templates/core/index_old.html:483
+#: core/templates/core/index_old.html:766
+#: core/templates/core/room_details.html:207
 #: core/templates/core/room_details.html:411
 msgid "WIFI"
 msgstr ""
 
-#: core/templates/core/index.html:106
+#: core/templates/core/index_old.html:107
 msgid "無線でインターネットを無料で使えます。"
 msgstr ""
 
-#: core/templates/core/index.html:111
+#: core/templates/core/index_old.html:112
 msgid "サウナ"
 msgstr ""
 
-#: core/templates/core/index.html:112
+#: core/templates/core/index_old.html:113
 msgid "９０度のサウナの中に、砂時計で安全に疲れを取ることができます。"
 msgstr ""
 
-#: core/templates/core/index.html:119
+#: core/templates/core/index_old.html:120
 msgid "solitude"
 msgstr ""
 
-#: core/templates/core/index.html:120
+#: core/templates/core/index_old.html:121
 msgid "閉鎖空間と蒸気"
 msgstr ""
 
-#: core/templates/core/index.html:123
+#: core/templates/core/index_old.html:124
 msgid ""
 "\n"
-"            温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張っ"
-"たあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラッ"
-"クできる場所。個人でも、家族みんなと一緒にでも入れます。\n"
-"          "
+"           温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張った"
+"あなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラック"
+"できる場所。個人でも、家族みんなと一緒にでも入れます。\n"
+"           "
 msgstr ""
 
-#: core/templates/core/index.html:131
+#: core/templates/core/index_old.html:132
 msgid "レンタル"
 msgstr ""
 
-#: core/templates/core/index.html:132
+#: core/templates/core/index_old.html:133
 msgid "グリル、椅子やテントをレンタルできます。"
 msgstr ""
 
-#: core/templates/core/index.html:137
+#: core/templates/core/index_old.html:138
 msgid "飲食物の販売"
 msgstr ""
 
-#: core/templates/core/index.html:138
+#: core/templates/core/index_old.html:139
 msgid "グリルで焼く冷凍食品、肉や野菜を購入できます。"
 msgstr ""
 
-#: core/templates/core/index.html:147
+#: core/templates/core/index_old.html:148
 msgid "casual camping"
 msgstr ""
 
-#: core/templates/core/index.html:148
+#: core/templates/core/index_old.html:149
 msgid "美味しい空気と肉"
 msgstr ""
 
-#: core/templates/core/index.html:151
+#: core/templates/core/index_old.html:152
 msgid ""
 "\n"
-"            山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。"
-"ベテランのキャンパーでも、初心者でも楽しめます。\n"
-"          "
+"           山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。ベ"
+"テランのキャンパーでも、初心者でも楽しめます。\n"
+"           "
 msgstr ""
 
-#: core/templates/core/index.html:159
+#: core/templates/core/index_old.html:160
 msgid "軽食と朝食"
 msgstr ""
 
-#: core/templates/core/index.html:160
+#: core/templates/core/index_old.html:161
 msgid "夜にハンバーグや唐揚げの軽食を注文できます。朝食もついています。"
 msgstr ""
 
-#: core/templates/core/index.html:167
+#: core/templates/core/index_old.html:168
 msgid "family fun"
 msgstr ""
 
-#: core/templates/core/index.html:168
+#: core/templates/core/index_old.html:169
 msgid "自然で楽しむ"
 msgstr ""
 
-#: core/templates/core/index.html:171
+#: core/templates/core/index_old.html:172
 msgid ""
 "\n"
-"            おもちゃをレンタルして、子供達が安全で広いスペースの中に自然を楽"
-"しみながら遊びます。ママとパパはバルコニーでゆっくりご飯を作ったり飲み物を飲"
-"みます。\n"
-"          "
+"           おもちゃをレンタルして、子供達が安全で広いスペースの中に自然を楽し"
+"みながら遊びます。ママとパパはバルコニーでゆっくりご飯を作ったり飲み物を飲み"
+"ます。\n"
+"           "
 msgstr ""
 
-#: core/templates/core/index.html:183
+#: core/templates/core/index_old.html:184
 msgid "おもちゃ"
 msgstr ""
 
-#: core/templates/core/index.html:184
+#: core/templates/core/index_old.html:185
 msgid ""
 "シャボン玉、ポップアップテント、色々なリモコンかーやレゴをレンタルできます。"
 msgstr ""
 
-#: core/templates/core/index.html:196
+#: core/templates/core/index_old.html:197
 msgid "room specifications"
 msgstr ""
 
-#: core/templates/core/index.html:206 core/templates/core/room_details.html:8
+#: core/templates/core/index_old.html:199
+msgid "部屋の基本スペック"
+msgstr ""
+
+#: core/templates/core/index_old.html:207
+#: core/templates/core/room_details.html:8
 msgid "００・０１号室"
 msgstr ""
 
-#: core/templates/core/index.html:207 core/templates/core/room_details.html:9
+#: core/templates/core/index_old.html:208
+#: core/templates/core/room_details.html:9
 msgid "より広いスペースの中にセミダブルベッド２台あります。"
 msgstr ""
 
-#: core/templates/core/index.html:219 core/templates/core/room_details.html:18
+#: core/templates/core/index_old.html:220
+#: core/templates/core/room_details.html:18
 msgid "セミダブル、２台"
 msgstr ""
 
-#: core/templates/core/index.html:230
+#: core/templates/core/index_old.html:231
 msgid "最小人数２人"
 msgstr ""
 
-#: core/templates/core/index.html:241 core/templates/core/index.html:524
+#: core/templates/core/index_old.html:242
+#: core/templates/core/index_old.html:525
 #: core/templates/core/room_details.html:34
 #: core/templates/core/room_details.html:238
 msgid "ソファベッド（ダブル）、１台"
 msgstr ""
 
-#: core/templates/core/index.html:256 core/templates/core/index.html:539
+#: core/templates/core/index_old.html:257
+#: core/templates/core/index_old.html:540
 msgid "Room Details"
 msgstr ""
 
-#: core/templates/core/index.html:269 core/templates/core/index.html:552
+#: core/templates/core/index_old.html:270
+#: core/templates/core/index_old.html:553
 #: core/templates/core/room_details.html:51
 #: core/templates/core/room_details.html:255
 msgid "IHコンロ"
 msgstr ""
 
-#: core/templates/core/index.html:280 core/templates/core/index.html:563
+#: core/templates/core/index_old.html:281
+#: core/templates/core/index_old.html:564
 #: core/templates/core/room_details.html:59
 #: core/templates/core/room_details.html:263
 msgid "電子レンジ"
 msgstr ""
 
-#: core/templates/core/index.html:291 core/templates/core/index.html:574
+#: core/templates/core/index_old.html:292
+#: core/templates/core/index_old.html:575
 #: core/templates/core/room_details.html:67
 #: core/templates/core/room_details.html:271
 msgid "トースター"
 msgstr ""
 
-#: core/templates/core/index.html:302 core/templates/core/index.html:585
+#: core/templates/core/index_old.html:303
+#: core/templates/core/index_old.html:586
 #: core/templates/core/room_details.html:75
 #: core/templates/core/room_details.html:279
 msgid "冷蔵庫"
 msgstr ""
 
-#: core/templates/core/index.html:313 core/templates/core/index.html:596
+#: core/templates/core/index_old.html:314
+#: core/templates/core/index_old.html:597
 #: core/templates/core/room_details.html:83
 #: core/templates/core/room_details.html:287
 msgid "ケトル"
 msgstr ""
 
-#: core/templates/core/index.html:324 core/templates/core/index.html:607
+#: core/templates/core/index_old.html:325
+#: core/templates/core/index_old.html:608
 #: core/templates/core/room_details.html:91
 #: core/templates/core/room_details.html:295
 msgid "調理器具"
 msgstr ""
 
-#: core/templates/core/index.html:335 core/templates/core/index.html:618
+#: core/templates/core/index_old.html:336
+#: core/templates/core/index_old.html:619
 #: core/templates/core/room_details.html:99
 #: core/templates/core/room_details.html:303
 msgid "食器"
 msgstr ""
 
-#: core/templates/core/index.html:337 core/templates/core/index.html:427
-#: core/templates/core/index.html:620 core/templates/core/index.html:710
+#: core/templates/core/index_old.html:338
+#: core/templates/core/index_old.html:428
+#: core/templates/core/index_old.html:621
+#: core/templates/core/index_old.html:711
 #: core/templates/core/room_details.html:101
 #: core/templates/core/room_details.html:167
 #: core/templates/core/room_details.html:305
@@ -593,96 +588,115 @@ msgstr ""
 msgid "・・・などなど"
 msgstr ""
 
-#: core/templates/core/index.html:359 core/templates/core/index.html:642
+#: core/templates/core/index_old.html:360
+#: core/templates/core/index_old.html:643
 #: core/templates/core/room_details.html:117
 #: core/templates/core/room_details.html:321
 msgid "バスタオル"
 msgstr ""
 
-#: core/templates/core/index.html:370 core/templates/core/index.html:653
+#: core/templates/core/index_old.html:371
+#: core/templates/core/index_old.html:654
 #: core/templates/core/room_details.html:125
 #: core/templates/core/room_details.html:329
 msgid "フェイスタオル"
 msgstr ""
 
-#: core/templates/core/index.html:381 core/templates/core/index.html:664
+#: core/templates/core/index_old.html:382
+#: core/templates/core/index_old.html:665
 #: core/templates/core/room_details.html:133
 #: core/templates/core/room_details.html:337
 msgid "シャンプー"
 msgstr ""
 
-#: core/templates/core/index.html:392 core/templates/core/index.html:675
+#: core/templates/core/index_old.html:393
+#: core/templates/core/index_old.html:676
 #: core/templates/core/room_details.html:141
 #: core/templates/core/room_details.html:345
 msgid "コンディショナー"
 msgstr ""
 
-#: core/templates/core/index.html:403 core/templates/core/index.html:686
+#: core/templates/core/index_old.html:404
+#: core/templates/core/index_old.html:687
 #: core/templates/core/room_details.html:149
 #: core/templates/core/room_details.html:353
 msgid "ボディソープ"
 msgstr ""
 
-#: core/templates/core/index.html:414 core/templates/core/index.html:697
+#: core/templates/core/index_old.html:415
+#: core/templates/core/index_old.html:698
 #: core/templates/core/room_details.html:157
 #: core/templates/core/room_details.html:361
 msgid "ボディタオル"
 msgstr ""
 
-#: core/templates/core/index.html:425 core/templates/core/index.html:708
+#: core/templates/core/index_old.html:426
+#: core/templates/core/index_old.html:709
 #: core/templates/core/room_details.html:165
 #: core/templates/core/room_details.html:369
 msgid "コットン・綿棒"
 msgstr ""
 
-#: core/templates/core/index.html:428 core/templates/core/index.html:711
+#: core/templates/core/index_old.html:429
+#: core/templates/core/index_old.html:712
 #: core/templates/core/room_details.html:168
 #: core/templates/core/room_details.html:372
 msgid "その他"
 msgstr ""
 
-#: core/templates/core/index.html:438 core/templates/core/index.html:721
+#: core/templates/core/index_old.html:439
+#: core/templates/core/index_old.html:722
 #: core/templates/core/room_details.html:175
 #: core/templates/core/room_details.html:379
 msgid "トイレ"
 msgstr ""
 
-#: core/templates/core/index.html:449 core/templates/core/index.html:732
+#: core/templates/core/index_old.html:450
+#: core/templates/core/index_old.html:733
 #: core/templates/core/room_details.html:183
 #: core/templates/core/room_details.html:387
 msgid "冷暖房"
 msgstr ""
 
-#: core/templates/core/index.html:460 core/templates/core/index.html:743
+#: core/templates/core/index_old.html:461
+#: core/templates/core/index_old.html:744
 #: core/templates/core/room_details.html:191
 #: core/templates/core/room_details.html:395
 msgid "５０型テレビ"
 msgstr ""
 
-#: core/templates/core/index.html:471 core/templates/core/index.html:754
+#: core/templates/core/index_old.html:472
+#: core/templates/core/index_old.html:755
 #: core/templates/core/room_details.html:199
 #: core/templates/core/room_details.html:403
 msgid "VOD"
 msgstr ""
 
-#: core/templates/core/index.html:489 core/templates/core/room_details.html:212
+#: core/templates/core/index_old.html:490
+#: core/templates/core/room_details.html:212
 msgid "０２・０３号室"
 msgstr ""
 
-#: core/templates/core/index.html:490 core/templates/core/room_details.html:213
+#: core/templates/core/index_old.html:491
+#: core/templates/core/room_details.html:213
 msgid "００・０１号室と違ってダブルベッドが１台あります。"
 msgstr ""
 
-#: core/templates/core/index.html:502 core/templates/core/room_details.html:222
+#: core/templates/core/index_old.html:503
+#: core/templates/core/room_details.html:222
 msgid "ダブル、１台"
 msgstr ""
 
-#: core/templates/core/index.html:513
+#: core/templates/core/index_old.html:514
 msgid "最大人数４名"
 msgstr ""
 
-#: core/templates/core/index.html:774
+#: core/templates/core/index_old.html:775
 msgid "access"
+msgstr ""
+
+#: core/templates/core/index_old.html:776
+msgid "アクセス"
 msgstr ""
 
 #: core/templates/core/room_details.html:26
@@ -784,7 +798,7 @@ msgstr ""
 #: templates/accounting/account_detail.html:21
 #: templates/campaign/campaign_detail.html:41
 #: templates/invoice/invoice_detail.html:66
-#: templates/procurement/procurement_detail.html:21
+#: templates/procurement/procurement_detail.html:23
 #: templates/reservations/pricing_tier_group_campaign_test.html:135
 #: templates/reservations/pricing_tier_group_detail.html:243
 #: templates/vendor/vendor_detail.html:21
@@ -831,8 +845,8 @@ msgstr ""
 
 #: customer/templates/ticket/ticket_create.html:8
 #: customer/templates/ticket/ticket_create.html:18
-#: winadmin/templates/winadmin/index.html:53
-#: winadmin/templates/winadmin/index.html:174
+#: winadmin/templates/winadmin/index.html:51
+#: winadmin/templates/winadmin/index.html:155
 msgid "Create Ticket"
 msgstr ""
 
@@ -1126,7 +1140,7 @@ msgid "Check-in starts at 12:00pm and checkout is at 10:00am "
 msgstr ""
 
 #: reservations/templates/reservations/index.html:7
-#: winadmin/templates/winadmin/index.html:301
+#: winadmin/templates/winadmin/index.html:260
 msgid "Make a Reservation"
 msgstr ""
 
@@ -1390,7 +1404,7 @@ msgstr ""
 
 #: templates/accounting/account_detail.html:18
 #: templates/campaign/campaign_detail.html:38
-#: templates/procurement/procurement_detail.html:18
+#: templates/procurement/procurement_detail.html:20
 #: templates/reservations/pricing_tier_group_campaign_test.html:134
 #: templates/reservations/pricing_tier_group_detail.html:242
 #: templates/vendor/vendor_detail.html:18
@@ -1460,8 +1474,8 @@ msgid "Legs"
 msgstr ""
 
 #: templates/campaign/campaign_create.html:25
-#: winadmin/templates/winadmin/index.html:101
-#: winadmin/templates/winadmin/index.html:222
+#: winadmin/templates/winadmin/index.html:90
+#: winadmin/templates/winadmin/index.html:191
 msgid "Create Campaign"
 msgstr ""
 
@@ -1587,7 +1601,7 @@ msgstr ""
 
 #: templates/customer/occupied_room_list.html:5
 #: templates/winadmin/room_list.html:8
-#: winadmin/templates/winadmin/index.html:311
+#: winadmin/templates/winadmin/index.html:270
 msgid "Room List"
 msgstr ""
 
@@ -1631,6 +1645,8 @@ msgstr ""
 msgid "Due Date"
 msgstr ""
 
+#: templates/patterns/components/admin_mobile_nav.html:68
+#: templates/patterns/components/sidebar.html:20
 #: templates/patterns/navigations/mobile_navigation/mobile_navigation_body.html:68
 #: templates/patterns/navigations/sidebar_navigation/sidebar_navigation_body.html:20
 msgid "Log Out"
@@ -1638,8 +1654,8 @@ msgstr ""
 
 #: templates/procurement/accounts_payable_aging_report.html:4
 #: templates/procurement/accounts_payable_aging_report.html:8
-#: winadmin/templates/winadmin/index.html:149
-#: winadmin/templates/winadmin/index.html:270
+#: winadmin/templates/winadmin/index.html:131
+#: winadmin/templates/winadmin/index.html:230
 msgid "Accounts Payable Aging Report"
 msgstr ""
 
@@ -1665,8 +1681,8 @@ msgstr ""
 
 #: templates/procurement/accounts_payable_ledger.html:4
 #: templates/procurement/accounts_payable_ledger.html:8
-#: winadmin/templates/winadmin/index.html:148
-#: winadmin/templates/winadmin/index.html:269
+#: winadmin/templates/winadmin/index.html:130
+#: winadmin/templates/winadmin/index.html:229
 msgid "Accounts Payable Ledger"
 msgstr ""
 
@@ -1680,8 +1696,8 @@ msgstr ""
 #: templates/procurement/procurement_list_by_vendor.html:8
 #: winadmin/company_wise_procurement_ledger.html:4
 #: winadmin/company_wise_procurement_ledger.html:8
-#: winadmin/templates/winadmin/index.html:150
-#: winadmin/templates/winadmin/index.html:271
+#: winadmin/templates/winadmin/index.html:132
+#: winadmin/templates/winadmin/index.html:231
 msgid "Company-wise Procurement Ledger"
 msgstr ""
 
@@ -1693,8 +1709,8 @@ msgstr ""
 
 #: templates/procurement/procurement_create.html:6
 #: templates/procurement/procurement_create.html:10
-#: winadmin/templates/winadmin/index.html:147
-#: winadmin/templates/winadmin/index.html:268
+#: winadmin/templates/winadmin/index.html:129
+#: winadmin/templates/winadmin/index.html:228
 msgid "Create Procurement"
 msgstr ""
 
@@ -1738,8 +1754,8 @@ msgid "Short-term Price"
 msgstr ""
 
 #: templates/reservations/pricing_tier_group_create.html:8
-#: winadmin/templates/winadmin/index.html:97
-#: winadmin/templates/winadmin/index.html:218
+#: winadmin/templates/winadmin/index.html:88
+#: winadmin/templates/winadmin/index.html:189
 msgid "Create Pricing Tiers"
 msgstr ""
 
@@ -1786,8 +1802,8 @@ msgid "Closed?"
 msgstr ""
 
 #: templates/vendor/vendor_create.html:6 templates/vendor/vendor_create.html:10
-#: winadmin/templates/winadmin/index.html:145
-#: winadmin/templates/winadmin/index.html:266
+#: winadmin/templates/winadmin/index.html:127
+#: winadmin/templates/winadmin/index.html:226
 msgid "Create Vendor"
 msgstr ""
 
@@ -1805,8 +1821,8 @@ msgstr ""
 
 #: templates/winadmin/pricing_tier_create.html:5
 #: templates/winadmin/room_create.html:6 templates/winadmin/room_create.html:10
-#: winadmin/templates/winadmin/index.html:126
-#: winadmin/templates/winadmin/index.html:247
+#: winadmin/templates/winadmin/index.html:111
+#: winadmin/templates/winadmin/index.html:211
 msgid "Create Room"
 msgstr ""
 
@@ -1859,7 +1875,7 @@ msgid "This stay has already been complete."
 msgstr ""
 
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:20
-#: winadmin/forms.py:441
+#: winadmin/forms.py:440
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:19
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:19
 #: winadmin/templates/winadmin/sales/sales_ledger.html:19
@@ -1869,7 +1885,7 @@ msgid "Year"
 msgstr ""
 
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:21
-#: winadmin/forms.py:444
+#: winadmin/forms.py:443
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:20
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:20
 #: winadmin/templates/winadmin/sales/sales_ledger.html:20
@@ -1912,8 +1928,8 @@ msgid "Pricing Tiers"
 msgstr ""
 
 #: templates/winadmin/room_tier_create.html:5
-#: winadmin/templates/winadmin/index.html:130
-#: winadmin/templates/winadmin/index.html:251
+#: winadmin/templates/winadmin/index.html:113
+#: winadmin/templates/winadmin/index.html:213
 msgid "Create Room Tier"
 msgstr ""
 
@@ -2022,104 +2038,104 @@ msgid "Dashboard"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:21
-#: winadmin/templates/winadmin/index.html:292
+#: winadmin/templates/winadmin/index.html:251
 msgid "Winvillage Admin"
 msgstr ""
 
 #: winadmin/templates/winadmin/index.html:47
-#: winadmin/templates/winadmin/index.html:168
+#: winadmin/templates/winadmin/index.html:151
 msgid "Customer Management"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:51
-#: winadmin/templates/winadmin/index.html:172
+#: winadmin/templates/winadmin/index.html:50
+#: winadmin/templates/winadmin/index.html:154
 msgid "Search Customers"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:55
-#: winadmin/templates/winadmin/index.html:176
+#: winadmin/templates/winadmin/index.html:52
+#: winadmin/templates/winadmin/index.html:156
 msgid "View Tickets"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:65
-#: winadmin/templates/winadmin/index.html:186
+#: winadmin/templates/winadmin/index.html:62
+#: winadmin/templates/winadmin/index.html:165
 msgid "Inventory Management"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:69
-#: winadmin/templates/winadmin/index.html:190
+#: winadmin/templates/winadmin/index.html:66
+#: winadmin/templates/winadmin/index.html:168
 msgid "View Inventory"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:71
-#: winadmin/templates/winadmin/index.html:192
+#: winadmin/templates/winadmin/index.html:67
+#: winadmin/templates/winadmin/index.html:169
 #: winadmin/templates/winadmin/inventory/item_create.html:8
 msgid "Add Inventory Item"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:73
-#: winadmin/templates/winadmin/index.html:194
+#: winadmin/templates/winadmin/index.html:68
+#: winadmin/templates/winadmin/index.html:170
 msgid "View Categories"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:75
-#: winadmin/templates/winadmin/index.html:196
+#: winadmin/templates/winadmin/index.html:69
+#: winadmin/templates/winadmin/index.html:171
 msgid "Add Category"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:89
-#: winadmin/templates/winadmin/index.html:210
+#: winadmin/templates/winadmin/index.html:83
+#: winadmin/templates/winadmin/index.html:184
 msgid "Sales Management"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:93
-#: winadmin/templates/winadmin/index.html:214
+#: winadmin/templates/winadmin/index.html:86
+#: winadmin/templates/winadmin/index.html:187
 msgid "View Sales"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:95
-#: winadmin/templates/winadmin/index.html:216
+#: winadmin/templates/winadmin/index.html:87
+#: winadmin/templates/winadmin/index.html:188
 msgid "View Pricing Tiers"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:99
-#: winadmin/templates/winadmin/index.html:220
+#: winadmin/templates/winadmin/index.html:89
+#: winadmin/templates/winadmin/index.html:190
 msgid "View Campaigns"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:120
-#: winadmin/templates/winadmin/index.html:241
+#: winadmin/templates/winadmin/index.html:107
+#: winadmin/templates/winadmin/index.html:207
 msgid "Room Management"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:124
-#: winadmin/templates/winadmin/index.html:245
+#: winadmin/templates/winadmin/index.html:110
+#: winadmin/templates/winadmin/index.html:210
 msgid "View Rooms"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:128
-#: winadmin/templates/winadmin/index.html:249
+#: winadmin/templates/winadmin/index.html:112
+#: winadmin/templates/winadmin/index.html:212
 msgid "View Room Tiers"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:140
-#: winadmin/templates/winadmin/index.html:261
+#: winadmin/templates/winadmin/index.html:123
+#: winadmin/templates/winadmin/index.html:222
 msgid "Procurements Management"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:144
-#: winadmin/templates/winadmin/index.html:265
+#: winadmin/templates/winadmin/index.html:126
+#: winadmin/templates/winadmin/index.html:225
 #: winadmin/templates/winadmin/sales/sales_ledger.html:4
 #: winadmin/templates/winadmin/sales/sales_ledger.html:8
 msgid "Sales Ledger"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:146
-#: winadmin/templates/winadmin/index.html:267
+#: winadmin/templates/winadmin/index.html:128
+#: winadmin/templates/winadmin/index.html:227
 msgid "View Vendors"
 msgstr ""
 
-#: winadmin/templates/winadmin/index.html:306
+#: winadmin/templates/winadmin/index.html:265
 msgid "Customer Check In"
 msgstr ""
 
@@ -2388,18 +2404,18 @@ msgstr ""
 msgid "Procurement couldn't be created"
 msgstr ""
 
-#: winadmin/views.py:1487
-msgid "Procurement edited successfully"
+#: winadmin/views.py:1488
+msgid "Procurement delete successfully"
 msgstr ""
 
-#: winadmin/views.py:1489
-msgid "Procurement couldn't be edited"
+#: winadmin/views.py:1491
+msgid "Procurement couldn't be deleted"
 msgstr ""
 
-#: winvillage/settings.py:290
+#: winvillage/settings.py:296
 msgid "English"
 msgstr ""
 
-#: winvillage/settings.py:291
+#: winvillage/settings.py:297
 msgid "Japanese"
 msgstr ""

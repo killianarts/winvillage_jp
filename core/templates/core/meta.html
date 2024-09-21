@@ -20,80 +20,125 @@
 {##}
 {#        gtag('config', 'G-VY8KJ3S1CP');#}
 {#    </script>#}
-<!-- This meta tag sets the description of the webpage. The "name" attribute is set to "description" to indicate
+
+{% comment %}
+This meta tag sets the description of the webpage. The "name" attribute is set to "description" to indicate
 that the content provides a brief description of the webpage. The "content" attribute contains the actual
 description text. This description is typically used by search engines to provide a summary of the webpage's content
-in search results. It helps users understand what the webpage is about before they click on it. -->
+in search results. It helps users understand what the webpage is about before they click on it.
+{% endcomment %}
 <meta name="description"
       content="伊万里でのグランピング - ウインヴィレッジ">
-<!-- This meta tag configures the viewport settings for the webpage. The "name" attribute is set to "viewport" to
+
+{% comment %}
+This meta tag configures the viewport settings for the webpage. The "name" attribute is set to "viewport" to
 indicate that it specifies the viewport properties. The "content" attribute contains the actual settings,
 in this case, "width=device-width, initial-scale=1". This tells the browser to set the width of the viewport to the
 device's width and set the initial zoom level to 1. It ensures that the webpage is displayed properly and scales
-appropriately on different devices with varying screen sizes. -->
+appropriately on different devices with varying screen sizes.
+{% endcomment %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- This meta tag sets the Twitter card type for sharing the webpage on Twitter. The "name" attribute is set to
+
+{% comment %}
+This meta tag sets the Twitter card type for sharing the webpage on Twitter. The "name" attribute is set to
 "twitter:card" to indicate that it specifies the Twitter card type. The "content" attribute contains the actual card
 type, which is "summary_large_image". This indicates that when the webpage is shared on Twitter, it should display a
-card with a large image preview. -->
+card with a large image preview.
+{% endcomment %}
 <meta name="twitter:card" content="summary_large_image">
-<!-- This meta tag sets the title for Twitter sharing. The "name" attribute is set to "twitter:title" to indicate
+
+{% comment %}
+This meta tag sets the title for Twitter sharing. The "name" attribute is set to "twitter:title" to indicate
 that it specifies the title for Twitter sharing. The "content" attribute contains the actual title text, which in
 this case is "伊万里での大人の秘密基地ガレージ倉庫の募集ページ". This title will be displayed when the webpage is shared on
-Twitter. -->
+Twitter.
+{% endcomment %}
 <meta name="twitter:title" content="ウインヴィレッジ">
-<!-- This meta tag sets the description for Twitter sharing. The "name" attribute is set to "twitter:description" to
+
+{% comment %}
+This meta tag sets the description for Twitter sharing. The "name" attribute is set to "twitter:description" to
 indicate that it specifies the description for Twitter sharing. The "content" attribute contains the actual
 description text, which in this case is the same as the previous meta tag's description content. This description
-will be displayed when the webpage is shared on Twitter. -->
+will be displayed when the webpage is shared on Twitter.
+{% endcomment %}
 <meta name="twitter:description"
       content="伊万里でのグランピング - ウインヴィレッジ">
-<!-- This meta tag sets the image for Twitter sharing. The "name" attribute is set to "twitter:image" to indicate
+
+{% comment %}
+This meta tag sets the image for Twitter sharing. The "name" attribute is set to "twitter:image" to indicate
 that it specifies the image for Twitter sharing. The "content" attribute contains the URL or path to the image file.
 This image will be displayed as a preview when the
-webpage is shared on Twitter. -->
+webpage is shared on Twitter.
+{% endcomment %}
 <meta name="twitter:image" content="{% static 'core/img/winvillage@0.25x.jpg' %}">
-<!-- This meta tag sets the Twitter account username for the webpage. The "name" attribute is set to "twitter:site"
+
+{% comment %}
+This meta tag sets the Twitter account username for the webpage. The "name" attribute is set to "twitter:site"
 to indicate that it specifies the Twitter account username. The "content" attribute contains the actual username,
 which in this case is "@killian_arts". This associates the webpage with the specified Twitter account when it is
-shared on Twitter. -->
+shared on Twitter.
+{% endcomment %}
+
 {#<meta name="twitter:site" content="@killian_arts">#}
-<!-- This meta tag sets the title for Open Graph sharing. The "property" attribute is set to "og:title" to indicate
+{% comment %}
+This meta tag sets the title for Open Graph sharing. The "property" attribute is set to "og:title" to indicate
 that it specifies the title for Open Graph sharing. The "content" attribute contains the actual title text, which is
 the same as the previous Twitter title. This title will be displayed when the webpage is shared using Open Graph
-protocol. -->
+protocol.
+{% endcomment %}
 <meta property="og:title" content="ウインヴィレッジ">
-<!-- This meta tag sets the description for Open Graph sharing. The "property" attribute is set to "og:description"
-to indicate that it specifies the description for Open Graph sharing. The "content" attribute contains the actual
-description text, which is the same as the previous Twitter description. This description will be displayed when the
-webpage is shared using Open Graph protocol. -->
+
+{% comment %}
+This meta tag sets the description for Open Graph sharing. The "property" attribute is set to "og:description"
+     to indicate that it specifies the description for Open Graph sharing. The "content" attribute contains the actual
+     description text, which is the same as the previous Twitter description. This description will be displayed when the
+     webpage is shared using Open Graph protocol.
+      {% endcomment %}
 <meta property="og:description"
       content="伊万里でのグランピング - ウインヴィレッジ">
-<!-- This meta tag sets the image for Open Graph sharing. The "property" attribute is set to "og:image" to indicate
-that it specifies the image for Open Graph sharing. The "content" attribute contains the URL or path to the image
-file, which is the same as the previous Twitter image. This image will be displayed as a preview when the webpage is
-shared using Open Graph protocol. -->
+
+{% comment %}
+This meta tag sets the image for Open Graph sharing. The "property" attribute is set to "og:image" to indicate
+     that it specifies the image for Open Graph sharing. The "content" attribute contains the URL or path to the image
+     file, which is the same as the previous Twitter image. This image will be displayed as a preview when the webpage is
+     shared using Open Graph protocol.
+{% endcomment %}
 <meta property="og:image" content="{% static 'core/img/winvillage@0.25x.jpg' %}">
-<!-- This meta tag sets the URL for Open Graph sharing. The "property" attribute is set to "og:url" to indicate that
-it specifies the URL for Open Graph sharing. The "content" attribute contains the actual URL, which in this case is
-"http://kitasan.online". This URL will be associated with the webpage when it is shared using Open Graph protocol. -->
+
+{% comment %}
+This meta tag sets the URL for Open Graph sharing. The "property" attribute is set to "og:url" to indicate that
+     it specifies the URL for Open Graph sharing. The "content" attribute contains the actual URL, which in this case is
+     "http://kitasan.online". This URL will be associated with the webpage when it is shared using Open Graph protocol.
+{% endcomment %}
 <meta property="og:url" content="http://winvillage.jp">
-<!-- This meta tag sets the type of content for Open Graph sharing. The "property" attribute is set to "og:type" to
-indicate that it specifies the type of content for Open Graph sharing. The "content" attribute contains the actual
-content type, which is "website". This indicates that the shared content is a website. -->
+
+{% comment %}
+This meta tag sets the type of content for Open Graph sharing. The "property" attribute is set to "og:type" to
+     indicate that it specifies the type of content for Open Graph sharing. The "content" attribute contains the actual
+     content type, which is "website". This indicates that the shared content is a website.
+{% endcomment %}
 <meta property="og:type" content="website">
-<!-- This meta tag sets the name of the content item. The "itemprop" attribute is set to "name" to indicate that it
-specifies the name of the content item. The "content" attribute contains the actual name text, which is the same as
-the previous Twitter and Open Graph titles. This name will be associated with the content item. -->
+
+{% comment %}
+This meta tag sets the name of the content item. The "itemprop" attribute is set to "name" to indicate that it
+     specifies the name of the content item. The "content" attribute contains the actual name text, which is the same as
+     the previous Twitter and Open Graph titles. This name will be associated with the content item.
+{% endcomment %}
 <meta itemprop="name" content="ウインヴィレッジ">
-<!-- This meta tag sets the description of the content item. The "itemprop" attribute is set to "description" to
-indicate that it specifies the description of the content item. The "content" attribute contains the actual
-description text, which is the same as the previous Twitter and Open Graph descriptions. This description will be
-associated with the content item. -->
+
+{% comment %}
+This meta tag sets the description of the content item. The "itemprop" attribute is set to "description" to
+     indicate that it specifies the description of the content item. The "content" attribute contains the actual
+     description text, which is the same as the previous Twitter and Open Graph descriptions. This description will be
+     associated with the content item.
+{% endcomment %}
 <meta itemprop="description"
       content="伊万里でのグランピング - ウインヴィレッジ">
-<!-- This meta tag sets the image for the content item. The "itemprop" attribute is set to "image" to indicate that
-it specifies the image for the content item. The "content" attribute contains the URL or path to the image file,
-which is the same as the previous Twitter and Open Graph images. This image will be associated with the content
-item. -->
+
+{% comment %}
+This meta tag sets the image for the content item. The "itemprop" attribute is set to "image" to indicate that
+     it specifies the image for the content item. The "content" attribute contains the URL or path to the image file,
+     which is the same as the previous Twitter and Open Graph images. This image will be associated with the content
+     item.
+{% endcomment %}
 <meta itemprop="image" content="{% static 'core/img/winvillage@0.25x.jpg' %}">

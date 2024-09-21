@@ -1592,8 +1592,11 @@ def accounts_payable_aging_report(request):
                     elif invoice.is_91_or_more_days_past_due(_date):
                         report["91_or_more_days_past_due_invoices"].append(invoice)
             else:
-                amount_due += Balance([invoice.amount])
-                report["current_invoice"] = invoice
+                if balance == 0:
+                    report["current_invoice"] = {"amount": balance}
+                else:
+                    amount_due += Balance([invoice.amount])
+                    report["current_invoice"] = invoice
 
         # if report["current_invoice"]:
         # report["balance"] += Balance([report["current_invoice"].amount])

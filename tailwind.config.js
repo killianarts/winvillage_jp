@@ -52,9 +52,20 @@ module.exports = {
                 "screen-2xl": '1500px',
             },
             fontFamily: {
+                'system-ui': ["system-ui", "sans-serif"],
                 handwritten: ['"Segoe Print"', '"Bradley Hand"', "Chilanka", "TSCu_Comic", "casual", "cursive"],
-                code: ["ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"],
+                code: ["ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"], // for backwards compatibility
+                'monospace-code': ["ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"],
                 industrial: ["Bahnschrift", 'DIN Alternate', 'Franklin Gothic Medium', 'Nimbus Sans Narrow', "sans-serif-condensed", "sans-serif"],
+                antique: ["Superclarendon", 'Bookman Old Style', 'URW Bookman', 'URW Bookman L', 'Georgia Pro', "Georgia", "serif"],
+                transitional: ["Charter", 'Bitstream Charter', 'Sitka Text', "Cambria", "serif"],
+                'old-style': ['Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', "P052", "serif"],
+                humanist: ["Seravek", 'Gill Sans Nova', "Ubuntu", "Calibri", 'DejaVu Sans', "source-sans-pro", "sans-serif"],
+                'geometric-humanist': ["Avenir", "Montserrat", "Corbel", 'URW Gothic', "source-sans-pro", "sans-serif"],
+                'classical-humanist': ["Optima", "Candara", 'Noto Sans', "source-sans-pro", "sans-serif"],
+                'neo-grotesque': ["Inter", "Roboto", 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', "Arial", "sans-serif"],
+                'monospace-slab-serif': ['Nimbus Mono PS', 'Courier New', "monospace"],
+
             }
         },
         borderWidth: {
@@ -67,8 +78,8 @@ module.exports = {
             '8': '8px',
         },
         fontFamily: {
-            display: ['Superclarendon', '"Bookman Old Style"', '"URW Bookman"', '"URW Bookman L"', '"Georgia Pro"', 'Georgia', 'serif'],
             sans: ['"Hiragino Sans"', "Meiryo", 'sans-serif'],
+            serif: ['"Hiragino Mincho Pro"', '"Yu Mincho"','serif']
         }
     },
     plugins: [

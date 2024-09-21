@@ -1,0 +1,19 @@
+<c-vars variant="normal" />
+
+<button {{ attrs }}
+        class="px-5 py-2.5 text-sm font-semibold drop-shadow-hard-45-xs rounded-md ring-2
+               transition-all duration-250 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+               hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none
+               hover:ring-transparent
+
+               {% if variant == "normal" %}
+        bg-stone-100 ring-stone-900 text-stone-900 hover:bg-orange-500 hover:text-orange-100 focus-visible:outline-orange-700
+               {% elif variant == "disabled" %}
+        bg-stone-200 ring-stone-400 text-stone-400 pointer-events-none
+               {% elif variant == "danger" %}
+        bg-red-500 ring-red-900 hover:bg-red-900 text-red-100 focus-visible:outline-red-700
+               {% endif %}
+
+        ">
+    {{ slot }}
+</button>

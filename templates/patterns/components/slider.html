@@ -1,0 +1,107 @@
+{% load static %}
+<div class="image-slider mx-auto overflow-x-hidden"
+     {% comment %}
+     _="on wheel(deltaX)
+     if deltaX != 0
+     halt the event
+     end
+     increment [@data-scroll] of #images by `${deltaX * 10}px`
+     set *transform of #images to `translateX(${#images@data-scroll}px)`
+     end"
+     {% endcomment %}
+>
+    <div class="relative align-center max-w-[200px] sm:max-w-[700px] h-[133px] sm:h-[466px] mx-auto">
+        <button class="arrow-right absolute top-1/2 -translate-y-1/2 -right-5 z-30"
+                _="on click
+                       set :data_selected to <[data-selected]/> in #images 
+                       set :not_selected to the first <[data-selected='false']/> in #images 
+                       if the @data-image-current of #images < (the length of :data_selected - 1)
+                       get the *computed-width of :not_selected then set :scroll_distance to it
+                       get the *computed-row-gap of #images then increment :scroll_distance by it
+                       get :data_selected[`${@data-image-current of #images}`] then set its @data-selected to false
+                       increment @data-image-current of #images
+                       get :data_selected[`${@data-image-current of #images}`] then set its @data-selected to true
+                       decrement @data-scroll of #images by :scroll_distance
+                       transition #images's *transform to `translateX(${@data-scroll of #images}px)` over 500ms
+                       end">
+            <img src="{% static 'core/img/pointing-hand-right.svg' %}" alt="" />
+        </button>
+        <button class="arrow-left absolute top-1/2 -translate-y-1/2 -left-5 z-30"
+                _="on click
+                       set :data_selected to <[data-selected]/> in #images
+                       set :not_selected to the first <[data-selected='false']/> in #images
+                       if the @data-image-current of #images > 0
+                       get the *computed-width of :not_selected then set :scroll_distance to it
+                       get the *computed-row-gap of #images then increment :scroll_distance by it
+                       get :data_selected[`${@data-image-current of #images}`] then set its @data-selected to false
+                       decrement @data-image-current of #images
+                       get :data_selected[`${@data-image-current of #images}`] then set its @data-selected to true
+                       increment @data-scroll of #images by :scroll_distance
+                       transition #images's *transform to `translateX(${@data-scroll of #images}px)` over 500ms
+                       end">
+            <img src="{% static 'core/img/pointing-hand-left.svg' %}" alt="" />
+        </button>
+
+        <div id="images" data-scroll="0" data-image-current="0"
+             _="on load
+                 set :data_selected to <[data-selected]/> in me
+                 get :data_selected[`${my @data-image-current}`] set :current_image to it then set its @data-selected to true
+                 end
+
+                 {% comment %}
+                 on wheel from .image-slider
+                 if my @data-scroll < -700
+                 set my @data-scroll to 0
+                 get <[data-selected='true']/> then set its @data-selected to false
+                 increment my @data-image-current
+                 get :data_selected[`${my @data-image-current}`] then set its @data-selected to true end
+                 if my @data-scroll > 700
+                 set my @data-scroll to 0
+                 get <[data-selected='true']/> then set its @data-selected to false
+                 decrement my @data-image-current
+                 get :data_selected[`${my @data-image-current}`] then set its @data-selected to true end
+                 {% endcomment %}
+                 "
+             class="flex w-max h-[133px] sm:h-[466px] items-center gap-10">
+            {% for image in images %}
+                <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                    <img src="{{ image }}" data-image-counter="{{ forloop.counter0 }}"
+                         class="data-[selected=true]:w-[200px] data-[selected=false]:w-[50px] transition-all duration-500 ease-in-out
+                              sm:data-[selected=true]:w-[700px] sm:data-[selected=false]:w-[200px]" data-selected="false" alt="" />
+                </div>
+                    <dialog id="modal-{{ forloop.counter0 }}"
+                            class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
+                            _="on click
+                                measure me
+                                set is_in_me to result.top    <= event.clientY              and
+                                event.clientY <= result.top + result.height and
+                                result.left   <= event.clientX              and
+                                event.clientX <= result.left + result.width
+                                if is_in_me == false call me.close()">
+                        <div class="relative">
+                            <div class="absolute top-2 right-0 flex w-16 justify-center">
+                                <button type="button"
+                                        _="on click set dialog to the closest <dialog/>
+                                              if the dialog matches @open
+                                              call dialog.close()
+                                              end">
+                                    <span class="sr-only">Close sidebar</span>
+                                    <svg class="h-12 w-12 text-white"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke-width="1.5"
+                                         stroke="currentColor"
+                                         aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <img src="{{ image }}"
+                                 alt="" />
+                        </div>
+
+                    </dialog>
+            {% endfor %}
+        </div>
+    </div>
+</div>

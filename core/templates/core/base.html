@@ -1,179 +1,134 @@
 {% load static tailwind_cli i18n django_htmx %}
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
-<head>
-  {% include 'core/meta.html' %}
-  <link rel="canonical" href="{{ request.build_absolute_uri }}">
-  <title>
-    {% block title %}{% blocktrans %}Glamping in Imari{% endblocktrans %}{% endblock %}
-    {% block title_divider %} - {% endblock %}
-    {% block subtitle %}{% trans "Winvillage" %}{% endblock %}
-  </title>
-  {% tailwind_css %}
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'core/img/favicon/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/img/favicon/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'core/img/favicon/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'core/img/favicon/site.webmanifest' %}">
-  <!-- _hyperscript library -->
-  <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
-  {% block hyperscript_behaviors %}{% endblock %}
-  <script src="{% static 'core/js/hyperscript.js' %}"></script>
-  {#    <!-- Alpine.js library -->#}
-  {#    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>#}
-  <!-- HTMX library -->
-  <script src="{% static 'core/js/htmx.js' %}"></script>
-  <!-- This is necessary to make Google (potentially) display a picture in the search result. -->
-  {#    <script type="application/ld+json">#}
-  {#      {#}
-  {#        "@context": "https://schema.org",#}
-  {#        "@type": "Organization",#}
-  {#        "name": "農業法人キタサン",#}
-  {#        "url": "https://kitasan.online",#}
-  {#        "logo": "{% static 'core/img/mobile_hero.jpg' %}"#}
-  {#      }#}
-  {#    </script>#}
-  {% tailwind_css %}
-  {% block extra_scripts %}
-  {% endblock %}
-  {% block extra_styles %}
-  {% endblock %}
-</head>
+<html lang="{{ LANGUAGE_CODE }}" class="scroll-smooth">
+  <head>
+    {% include 'core/meta.html' %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <title>
+      {% block title %}{% blocktrans %}Glamping in Imari{% endblocktrans %}{% endblock %}
+      {% block title_divider %} - {% endblock %}
+      {% block subtitle %}{% trans "Winvillage" %}{% endblock %}
+    </title>
+    {% tailwind_css %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'core/img/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/img/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'core/img/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'core/img/favicon/site.webmanifest' %}">
+    <!-- _hyperscript library -->
+    <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
+    {% block hyperscript_behaviors %}{% endblock %}
+    <script src="{% static 'core/js/hyperscript.js' %}"></script>
+    {#    <!-- Alpine.js library -->#}
+    {#    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>#}
+    <!-- HTMX library -->
+    <script src="{% static 'core/js/htmx.js' %}"></script>
+    <!-- This is necessary to make Google (potentially) display a picture in the search result. -->
+    {#    <script type="application/ld+json">#}
+    {#      {#}
+    {#        "@context": "https://schema.org",#}
+    {#        "@type": "Organization",#}
+    {#        "name": "農業法人キタサン",#}
+    {#        "url": "https://kitasan.online",#}
+    {#        "logo": "{% static 'core/img/mobile_hero.jpg' %}"#}
+    {#      }#}
+    {#    </script>#}
+    {% tailwind_css %}
+    {% block extra_scripts %}
+      <script type="text/hyperscript">
+       init
+       set $currentCount to 0
+       end
 
-<body class="bg-stone-50" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-{% block header %}
-  <header class="absolute inset-x-0 top-0 z-50 max-w-7xl mx-auto">
-    <nav class="flex items-center justify-between p-5 md:px-20">
-      <div class="flex lg:flex-1">
-        <a href="#" class="-m-1.5 p-1.5">
-          <span class="sr-only">{% translate 'Win Village' %}</span>
-          <img src="{% static 'core/img/light_logo.svg' %}" class="max-w-[50px]"
-               alt={% trans 'Win Village Logo' %}>
-        </a>
-      </div>
-      <div class="flex lg:hidden">
-        <button type="button"
-                _="on click toggle .hidden .animation-slide-left on #mobile-menu"
-                class="inline-flex items-center justify-center text-stone-900 -m-2.5 p-2.5">
-          <span class="sr-only">Open main menu</span>
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
-          </svg>
-        </button>
-      </div>
-      <div class="hidden lg:flex">
-        <a href="#specs"
-           class="block px-6 py-2 text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:text-orange-950 hover:bg-stone-50">
-          {% translate '部屋の基本スペック' %}</a>
-        <a href="#access"
-           class="block px-6 py-2 text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:text-orange-950 hover:bg-stone-50">{% translate 'アクセス' %}</a>
-      </div>
-      <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-2">
-        <div class="text-lg text-stone-900">
-          <a href="tel:0956-30-8411"><h3 class="font-industrial uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
-          after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
-            <div class="flex justify-center gap-2">
-              <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-                <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
-                      class="stroke-stone-900 stroke-[3]"/>
-              </svg>
-              0956-30-8411
-            </div>
-          </a>
-        </div>
-      </div>
-    </nav>
-    <!-- Mobile menu, show/hide based on menu open state. -->
-    <div id="mobile-menu"
-         class="hidden transition-all animation-slide-left duration-250"
-         role="dialog"
-         aria-modal="true">
-      <!-- Background backdrop, show/hide based on slide-over state. -->
-      <div class="fixed inset-0 z-50"></div>
-      <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-stone-100 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-orange-50/10">
-        <div class="flex items-center justify-between">
-          <a href="{% url 'core:homepage' %}" class="-m-1.5 p-1.5">
-            <span class="sr-only">{% translate 'Winvillage' %}</span>
-            <img src="{% static 'core/img/light_logo.svg' %}" class="max-w-[50px]"
-                 alt={% trans 'Winvillage Logo' %}>
-          </a>
-          <button type="button"
-                  _="on click toggle .hidden .animation-slide-right on #mobile-menu"
-                  class="text-stone-900 -m-2.5 p-2.5">
-            <span class="sr-only">{% translate 'Close menu' %}</span>
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                 stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
-        </div>
-        <div class="mt-6 flow-root">
-          <div class="-my-6 divide-y divide-stone-500/25">
-            <div class="py-6 space-y-2">
-              <a href="#specs"
-                 class="-mx-3 block px-3 py-2 rounded-md text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:bg-orange-500 hover:text-stone-100">
-                {% translate '部屋の基本スペック' %}
-              </a>
-              <a href="#access"
-                 class="-mx-3 block px-3 py-2 rounded-md text-base font-semibold leading-7 text-stone-900 transition-all duration-250 hover:bg-orange-500 hover:text-stone-100">{% translate 'アクセス' %}</a>
-              <div class="text-lg text-stone-900">
-                <a href="tel:0956-30-8411"><h3 class="font-industrial uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
-          after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
-                  <div class="flex justify-center gap-2">
-                    <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-                      <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
-                            class="stroke-stone-900 stroke-[3]"/>
-                    </svg>
-                    0956-30-8411
-                  </div>
-                </a>
+       behavior SetCount
+       on scroll from window debounced at 20ms
+       set sections to <section[data-counter]/> in me
+       set offset to 0
+       for section in sections
+       get the first <a[data-counter=`${the section's @data-counter}`]/> then set sectionLink to it
+       measure the section
+       if ((result.top < offset) and ($currentCount < the section's @data-counter))
+              set $currentCount to the section's @data-counter
+         trigger newCount
+         else if ((result.bottom > offset) and ($currentCount > the section's @data-counter))
+              set $currentCount to the section's @data-counter
+
+           trigger newCount
+           else if ((result.top > offset) and ($currentCount == the section's @data-counter))
+                    if (the previous <a/> from sectionLink)
+                        set $currentCount to the @data-counter of the previous <a/> from sectionLink
+                        trigger newCount
+                    else
+                        set $currentCount to 0
+                        trigger newCount
+                    end
+            end
+          end
+        end
+      end
+
+    behavior SetActiveLink
+    init get <a[data-counter]/> in me then set :links to it end
+    on newCount from elsewhere
+        for link in :links
+            if $currentCount == the link's @data-counter
+             set the link's @data-active to "true"
+            else
+              set the link's @data-active to "false"
+
+             end
+             end
+             end
+             end
+
+      </script>
+    {% endblock %}
+    {% block extra_styles %}
+    {% endblock %}
+  </head>
+
+  <body class="bg-white" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    {% block header %}
+      <c-header initial-logo="{% static 'core/img/dark_logo.svg' %}" scroll-logo="{% static 'core/img/light_logo.svg' %}"/>
+    {% endblock %}
+    {% block pre_content %}{% endblock %}
+    {% block content %}
+
+      {% block content_top %}
+      {% endblock %}
+      {% block content_main %}
+      {% endblock %}
+      {% block content_bottom %}
+      {% endblock %}
+    {% endblock %}
+    {% block post_content %}{% endblock %}
+    {% block footer %}
+      <footer class="mx-auto max-w-fit min-h-screen grid place-items-center">
+        <div class="mx-5 md:mx-20 my-7 space-y-5 text-center">
+          <div class="mx-auto w-fit"><img src="{% static 'core/img/light_logo.svg' %}" alt="logo"/></div>
+          <h2 class="font-antique text-2xl lg:text-3xl xl:text-5xl uppercase">
+            {% translate 'Relaxation Awaits' %}
+          </h2>
+          <p class="text-balance">
+            {% translate '最高のグランピングが佐世保で待っています。' %}
+          </p>
+
+          <div class="text-lg text-stone-900">
+            <a href="tel:0956-30-8411"><h3 class="font-antique uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
+                                                  after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
+              <div class="flex justify-center gap-2">
+                <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
+                        class="stroke-stone-900 stroke-[3]"/>
+                </svg>
+                0956-30-8411
               </div>
-            </div>
+            </a>
           </div>
+
         </div>
-      </div>
-    </div>
-  </header>
-{% endblock %}
-{% block pre_content %}{% endblock %}
-{% block content %}
-
-  {% block content_top %}
-  {% endblock %}
-  {% block content_main %}
-  {% endblock %}
-  {% block content_bottom %}
-  {% endblock %}
-{% endblock %}
-{% block post_content %}{% endblock %}
-{% block footer %}
-  <footer class="mx-auto max-w-fit min-h-screen grid place-items-center">
-    <div class="mx-5 md:mx-20 my-7 space-y-5 text-center">
-      <div class="mx-auto w-fit"><img src="{% static 'core/img/light_logo.svg' %}" alt="logo"/></div>
-      <h2 class="font-industrial text-2xl lg:text-3xl xl:text-5xl uppercase">
-        {% translate 'Relaxation Awaits' %}
-      </h2>
-      <p class="text-balance">
-        {% translate '最高のグランピングが佐世保で待っています。' %}
-      </p>
-
-      <div class="text-lg text-stone-900">
-        <a href="tel:0956-30-8411"><h3 class="font-industrial uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
-          after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
-          <div class="flex justify-center gap-2">
-            <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-              <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
-                    class="stroke-stone-900 stroke-[3]"/>
-            </svg>
-            0956-30-8411
-          </div>
-        </a>
-      </div>
-
-    </div>
-  </footer>
-{% endblock %}
-</body>
-{% django_htmx_script %}
+      </footer>
+    {% endblock %}
+  </body>
+  {% django_htmx_script %}
 </html>

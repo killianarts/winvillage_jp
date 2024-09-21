@@ -427,7 +427,7 @@ class ProcurementCreateForm(TailwindFormMixin, forms.Form):
 class ProcurementDetailForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = TransactionDetail
-        fields = ["id"]
+        exclude = []
 
 
 class CompanyWiseProcurementLedgerFilter(TailwindFormMixin, forms.Form):

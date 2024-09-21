@@ -1,0 +1,14 @@
+<c-cars font="font-sans" />
+{% spaceless %}
+    <div class="grid place-items-center gap-3">
+        <div>
+            <img src="{{ icon }}" alt="{{ alt }}">
+        </div>
+        <h3 class="font-bold  {{ font }}">
+            {{ header }}
+        </h3>
+        <p>
+            {{ body }}
+        </p>
+    </div>
+{% endspaceless %}

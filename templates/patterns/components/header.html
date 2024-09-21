@@ -1,0 +1,89 @@
+<header class="w-full fixed left-1/2 -translate-x-1/2 z-40
+               "
+        _="install SetActiveLink
+               on load set offset to 0 measure #slider-hero if result.bottom < offset trigger scaleDownMenu end
+               on scroll from window
+               set hero to #slider-hero
+               set offset to 0
+               measure the hero
+               if result.bottom < offset
+               add .bg-white to me
+               trigger scaleDownMenu
+               else if result.bottom > offset
+               remove .bg-white from me
+               trigger scaleUpMenu">
+    <nav id="screen-menu" class="menu hidden md:flex flex-1 justify-between items-center gap-5 max-w-7xl px-10 mx-auto text-white stroke-white origin-bottom"
+         _="on scaleDownMenu from the closest <header/>
+             remove .text-white from me add .text-orange-950 to me
+             remove .stroke-white from <line/> in me add .stroke-orange-950 to <line/> in me
+             end
+             on scaleUpMenu from the closest <header/>
+             remove .text-orange-950 from me add .text-white to me
+             remove .stroke-orange-950 from <line/> in me add .stroke-white to <line/> in me
+             end"
+    >
+        <div _="on scaleDownMenu from the closest <header/>
+                set the @src of <img/> in me to '{{ scroll_logo }}'
+                on scaleUpMenu from the closest <header/>
+                set the @src of <img/> in me to '{{ initial_logo }}'"
+             class="w-24">
+            <img src="{{ initial_logo }}" alt="" />
+        </div>
+        <div class="flex gap-5">
+            <c-nav-link counter="1" subtext="room" text="部屋" url="#room" />
+            <c-nav-link counter="2" subtext="camping" text="キャンプ" url="#camping" />
+            <c-nav-link counter="3" subtext="play&sauna" text="遊びとサウナ" url="#play&sauna" />
+            <c-nav-link counter="4" subtext="access" text="アクセス" url="#access" />
+        </div>
+    </nav>
+    <nav id="mobile-menu"
+         class="flex md:hidden flex-1 justify-between items-center gap-5 max-w-7xl px-2 md:px-10 mx-auto text-white stroke-white">
+        <div _="on scaleDownMenu from the closest <header/>
+                set the @src of <img/> in me to '{{ scroll_logo }}'
+                on scaleUpMenu from the closest <header/>
+                set the @src of <img/> in me to '{{ initial_logo }}'"
+             class="w-12">
+            <img src="{{ initial_logo }}" alt="" />
+        </div>
+        <div id="burger" class="flex md:hidden">
+            <button type="button"
+                    class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                    _="on mousedown remove .hidden from #mobile-popup wait a tick remove .opacity-0 from #mobile-popup">
+                <span class="sr-only">Open main menu</span>
+                <svg class="h-12 w-12 text-white"
+                     _="on scaleDownMenu from the closest <header/>
+                            remove .text-white from me add .text-black to me
+                            end
+                            on scaleUpMenu from the closest <header/>
+                            remove .text-black from me add .text-white to me
+                            end"
+                     fill="none" viewBox="0 0 24 24"
+                     stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+        <div id="mobile-popup" class="hidden opacity-0 absolute inset-0 bg-orange-800 w-screen h-screen grid place-items-center text-white transition-all duration-300">
+            <div id="mobile-links" class="space-y-5" _="on click from <a/> in me add .opacity-0 to #mobile-popup wait 300ms add .hidden to #mobile-popup">
+                <c-nav-link counter="1" subtext="room" text="部屋" url="#room" />
+                <c-nav-link counter="2" subtext="camping" text="キャンプ" url="#camping" />
+                <c-nav-link counter="3" subtext="play&sauna" text="遊びとサウナ" url="#play&sauna" />
+                <c-nav-link counter="4" subtext="access" text="アクセス" url="#access" />
+            </div>
+            <div class="absolute top-0 right-0 flex w-16 justify-center">
+                <button type="button" _="on click add .opacity-0 to #mobile-popup wait 300ms add .hidden to #mobile-popup">
+                    <span class="sr-only">Close sidebar</span>
+                    <svg class="h-12 w-12 text-white"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke-width="1.5"
+                         stroke="currentColor"
+                         aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </nav>
+</header>

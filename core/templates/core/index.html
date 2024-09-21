@@ -1,798 +1,128 @@
 {% extends "core/base.html" %}
 {% load static i18n %}
-{% block extra_styles %}
-  <style>
-      /* width */
-      .scrollbar {
-          --border-radius: 4px;
-      }
-
-      .scrollbar::-webkit-scrollbar {
-          width: 1rem;
-          height: 1rem;
-      }
-
-      /* Track */
-      .scrollbar::-webkit-scrollbar-track {
-          background-color: rgba(28, 25, 23, 1);
-          border-radius: var(--border-radius);
-      }
-
-      /* Handle */
-      .scrollbar::-webkit-scrollbar-thumb {
-          background-color: rgba(245, 245, 244, .5);
-          border-radius: var(--border-radius);
-      }
-
-      /* Handle on hover */
-      .scrollbar::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(249, 115, 22, 1);
-          border-radius: var(--border-radius);
-      }
-  </style>
-{% endblock %}
 {% block content_main %}
-  <main class="pt-28 lg:pt-36 max-w-screen-2xl mx-auto">
-    <div class="grid grid-cols-4 gap-7 mx-5 md:mx-20">
-      {% static 'core/img/winvillage@0.25x.jpg' as image_url %}
-      {#% four_col_image_grid_cell variant="wide" image_url=image_url %#}
-      {% #four_col_grid_cell variant="wide" %}
-      <div class="hidden">
-        {% four_col_image_grid_cell image_url=image_url %}
-      </div>
-      <div class="grid gap-5 relative">
-        <div class="hidden sm:block max-w-[200px]">
-          <img src="{% static 'core/img/light_logo.svg' %}" alt="">
-        </div>
-        <h1 class="font-industrial text-2xl lg:text-3xl xl:text-5xl uppercase">
-          Relax and<br class="hidden 2xl:inline">
-          Light a Fire.</h1>
-        <p class="font-sans">
-          {% translate '静かな空間、最高の風呂、美味しいバーベキュー。' %}
-          {% translate '佐世保でのグランピング。' %}
-        </p>
-      </div>
+    <main _="install SetCount">
+        <c-hero class="relative"
+                opacity="opacity-40"
+                :images="['core/img/inside2@0.25x.jpg', 'core/img/outside1@0.25x.jpg', 'core/img/front1@0.25x.jpg', 'core/img/outdoor_bath@0.25x.jpg']">
+            <div class="text-white text-center font-serif">
+                <div class="flex justify-center">
+                    <img class="w-24 h-24 sm:w-[200px] sm:h-[200px]" src="{% static 'core/img/dark_logo.svg' %}" alt="" />
+                </div>
+                <p class="text-sm mb-2 sm:mb-12 xl:mb-32">長崎でグランピング</p>
+                <div class="flex flex-col items-center">
+                    <h1 class="font-antique uppercase text-balance text-xl sm:text-3xl sm:text-7xl">your weekend is waiting in nagasaki</h1>
+                    <c-divider />
+                    <p class="text-xl sm:text-3xl">火をつけてリラックしよう</p>
+                </div>
+            </div>
+        </c-hero>
+        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="0" id="introduction">
+            {% static "core/img/tent.svg" as tent %}
+            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto mb-10">
+                <div class="relative text-center w-full">
+                    <img class="absolute top-1/2 -translate-y-1/2 left-0 w-[50px] sm:w-[100px] lg:w-max -z-10" src="{% static 'core/img/tent.svg' %}" alt="" loading="lazy" />
+                    <img class="absolute top-1/2 -translate-y-1/2 right-0 h-[50px] sm:h-[100px] lg:h-max -z-10" src="{% static 'core/img/chair.svg' %}" alt="" loading="lazy" />
+                    <p class="text-xs lg:text-lg tracking-[0.5ch]">週末の秘密基地</p>
+                    <h2 class="px-[50px] text-3xl lg:text-7xl uppercase font-antique text-center">your weekend getaway</h2>
+                </div>
+                <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
+                <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
+            </div>
+            <div class="grid gap-10 sm:grid-cols-3">
+                <a href="#room" class="flex justify-center group hover:scale-110 transition-all duration-250">
+                    <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+                        <div class="w-1/2 max-h-[30px]  flex justify-center">
+                            <img src="{% static 'core/img/fried-food.svg' %}" alt="" />
+                        </div>
+                        <p class="text-xs lg:text-sm">贅沢の部屋</p>
+                        <h3 class="uppercase font-antique md:text-xl lg:text-2xl">rooms</h3>
+                        <c-divider color="bg-orange-950" size="w-full h-[1px]" />
+                        <p>このキッチンはなんでもある！</p>
+                        <img class=" group-hover:drop-shadow-md" src="{% static 'core/img/arrow.svg' %}" alt="" />
+                    </div>
+                </a>
+                <a href="#camping" class="flex justify-center group hover:scale-110 transition-all duration-250">
+                    <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+                        <div class="w-1/2 max-h-[30px]  flex justify-center">
+                            <img src="{% static 'core/img/grill.svg' %}" alt="" />
+                        </div>
+                        <p class="text-xs lg:text-sm">楽々のキャンプ</p>
+                        <h3 class="uppercase font-antique md:text-xl lg:text-2xl">camping</h3>
+                        <c-divider color="bg-orange-950" size="w-full h-[1px]" />
+                        <p>自分のキャンプ用グッズを持ってきても、こっちでレンタルしてもいい</p>
+                        <img class=" group-hover:drop-shadow-md" src="{% static 'core/img/arrow.svg' %}" alt="" />
+                    </div>
+                </a>
+                <a href="#play&sauna" class="flex justify-center group hover:scale-110 transition-all duration-250">
+                    <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+                        <div class="w-1/2 max-h-[30px]  flex justify-center">
+                            <img src="{% static 'core/img/wagon.svg' %}" alt="" />
+                        </div>
+                        <p class="text-xs lg:text-sm">色々な遊び</p>
+                        <h3 class="uppercase font-antique md:text-xl lg:text-2xl">fun</h3>
+                        <c-divider color="bg-orange-950" size="w-full h-[1px]" />
+                        <p>「最高だったよ、パパ！また行きたい！」</p>
+                        <img class=" group-hover:drop-shadow-md" src="{% static 'core/img/arrow.svg' %}" alt="" />
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section style="scrollbar-width: none;" class="my-10 sm:my-48  mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room">
+            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto
+                        px-2 sm:px-10 lg:px-20">
+                <div class="relative text-center w-full">
+                    <img class="absolute top-1/2 -translate-y-1/2 left-0 w-[50px] sm:w-[100px] lg:w-[150px] -z-10" src="{% static 'core/img/wow.svg' %}" alt="" loading="lazy" />
+                    <img class="absolute top-0 sm:-top-1/2 right-0 w-[50px] sm:w-[100px] lg:w-max -z-10" src="{% static 'core/img/paella.svg' %}" alt="" loading="lazy" />
+                    <p class="tracking-[0.5ch]">家族みんな快適</p>
+                    <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">our rooms</h2>
+                </div>
+                <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
+                <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
+            </div>
+            <div class="my-10 sm:my-48">
+                {% static 'core/img/inside1@0.25x.jpg' as image1 %}
+                {% static 'core/img/inside2@0.25x.jpg' as image2 %}
+                {% static 'core/img/inside3@0.25x.jpg' as image3 %}
+                {% static 'core/img/front1@0.25x.jpg' as image4 %}
+                {% static 'core/img/front2@0.25x.jpg' as image5 %}
+                {% static 'core/img/front3@0.25x.jpg' as image6 %}
+                <c-slider :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}']">
 
-      {% /four_col_grid_cell %}
+        </section>
+        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="2" id="camping">
+            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+                <div class="relative text-center w-full">
+                    <div class="absolute top-1/2 -translate-y-1/2 -z-10">
+                        <img class="w-[50px] sm:w-[100px] lg:w-[150px]" src="{% static 'core/img/pig.svg' %}" alt="" loading="lazy" />
+                        <img class="-translate-x-2 sm:-translate-x-10 w-[25px] sm:w-[50px] lg:w-[75px]" src="{% static 'core/img/curly-arrow.svg' %}" alt="" loading="lazy" />
+                    </div>
+                    <img class="absolute top-1/2 -translate-y-1/2 right-0 w-[50px] sm:w-[100px] lg:w-max -z-10" src="{% static 'core/img/chicken.svg' %}" alt="" loading="lazy" />
+                    <p class="tracking-[0.5ch]">美味しい空気と肉</p>
+                    <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">easy, relaxing camping!</h2>
+                </div>
+                <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
+                <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
+            </div>
+        </section>
+        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="3" id="play&sauna">
+            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+                <div class="relative text-center w-full">
+                    <img class="absolute top-1/2 -translate-y-1/2 left-0 w-[50px] sm:w-[100px]" src="{% static 'core/img/coffee-and-table.svg' %}" alt="" loading="lazy" />
+                    <div class="absolute top-1/2 right-0 -translate-y-1/2 -z-10">
+                        <img class="-translate-x-2 -translate-y-2 sm:-translate-x-5 sm:-translate-y-5 w-[50px] sm:w-[100px] -z-10" src="{% static 'core/img/tent.svg' %}" alt="" loading="lazy" />
+                        <img class="translate-x-2 sm:translate-x-5 w-[25px] sm:w-[50px] lg:w-[75px]" src="{% static 'core/img/chair.svg' %}" alt="" loading="lazy" />
+                    </div>
+                    <p class="tracking-[0.5ch]">それぞれで遊ぼう<br class="xl:hidden">一緒に遊ぼう</p>
+                    <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">fun for<br>all ages!</h2>
+                </div>
+                <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
+                <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
+            </div>
+        </section>
+        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="4" id="access">
+            <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">access</h2>
+        </section>
 
-      {% four_col_image_grid_cell variant="wide" image_url=image_url %}
-      {% #four_col_grid_cell variant="wide" %}
-      <div class="space-y-5">
-        {% translate 'family room' as subheader %}
-        {% translate '家族みんな快適に' as header %}
-        {% winvillage_header number="00" subheader=subheader header=header %}
-        <p>
-          {% blocktranslate %}
-            自然の中で大切な人たちと一緒に過ごしてから、ゆっくりできる広いスペース。キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ダラダラしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれて、最高の朝を向かう。
-          {% endblocktranslate %}
-        </p>
-      </div>
-      {% /four_col_grid_cell %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/lock.svg' as icon %}
-      {% translate '個人予約' as header %}
-      {% translate '露天風呂の予約であなたや家族だけの贅沢の風呂になる。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="lock" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% static 'core/img/inside1@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url variant="normal" %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/fridge.svg' as icon %}
-      {% translate '台所' as header %}
-      {% translate '冷蔵庫、シンクとIHコンロがついています。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="fridge" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/water.svg' as icon %}
-      {% translate '温泉水' as header %}
-      {% translate '露天風呂も部屋の風呂も温泉水を使います。お風呂のアメニティもついています。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="water" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% static 'core/img/bathroom@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url %}
-      {% static 'core/img/bathroom_storage@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url %}
-      {% #four_col_grid_cell variant="wide" %}
-      {% static 'core/img/icons/bed.svg' as icon %}
-      {% translate 'ベッド' as header %}
-      {% translate 'セミダブルベッド２台の部屋とダブルベッド１台の部屋から選ぶことができます。ソファベッドと布団もついています。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="water" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% static 'core/img/inside3@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell variant="wide" image_url=image_url %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/wifi.svg' as icon %}
-      {% translate 'WIFI' as header %}
-      {% translate '無線でインターネットを無料で使えます。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="water" header=header body=body font="font-industrial" %}
-      {% /four_col_grid_cell %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/thermometer.svg' as icon %}
-      {% translate 'サウナ' as header %}
-      {% translate '９０度のサウナの中に、砂時計で安全に疲れを取ることができます。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="thermometer" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% static 'core/img/outdoor_bath@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell variant="wide" image_url=image_url %}
-      {% #four_col_grid_cell variant="wide" %}
-      <div class="space-y-5">
-        {% translate 'solitude' as subheader %}
-        {% translate '閉鎖空間と蒸気' as header %}
-        {% winvillage_header number="01" subheader=subheader header=header %}
-        <p>
-          {% blocktranslate %}
-            温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。
-          {% endblocktranslate %}
-        </p>
-      </div>
-      {% /four_col_grid_cell %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/grill.svg' as icon %}
-      {% translate 'レンタル' as header %}
-      {% translate 'グリル、椅子やテントをレンタルできます。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="grill" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/meat.svg' as icon %}
-      {% translate '飲食物の販売' as header %}
-      {% translate 'グリルで焼く冷凍食品、肉や野菜を購入できます。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="meat" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% static 'core/img/people@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url %}
-      {% static 'core/img/grill@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url %}
-      {% #four_col_grid_cell variant="wide" %}
-      <div class="space-y-5">
-        {% translate 'casual camping' as subheader %}
-        {% translate '美味しい空気と肉' as header %}
-        {% winvillage_header number="02" subheader=subheader header=header %}
-        <p>
-          {% blocktranslate %}
-            山の空気を吸いながら、大切な人たちと一緒に美味しい肉を食べます。ベテランのキャンパーでも、初心者でも楽しめます。
-          {% endblocktranslate %}
-        </p>
-      </div>
-      {% /four_col_grid_cell %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/utensils.svg' as icon %}
-      {% translate '軽食と朝食' as header %}
-      {% translate '夜にハンバーグや唐揚げの軽食を注文できます。朝食もついています。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="meat" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% static 'core/img/outside3@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url %}
-      {% #four_col_grid_cell variant="wide" %}
-      <div class="space-y-5">
-        {% translate 'family fun' as subheader %}
-        {% translate '自然で楽しむ' as header %}
-        {% winvillage_header number="03" subheader=subheader header=header %}
-        <p>
-          {% blocktranslate %}
-            おもちゃをレンタルして、子供達が安全で広いスペースの中に自然を楽しみながら遊びます。ママとパパはバルコニーでゆっくりご飯を作ったり飲み物を飲みます。
-          {% endblocktranslate %}
-        </p>
-      </div>
-      {% /four_col_grid_cell %}
-      {% static 'core/img/kart@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url %}
-      {% static 'core/img/outside2@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url %}
-      {% #four_col_grid_cell %}
-      {% static 'core/img/icons/toy-brick.svg' as icon %}
-      {% translate 'おもちゃ' as header %}
-      {% translate 'シャボン玉、ポップアップテント、色々なリモコンかーやレゴをレンタルできます。' as body %}
-      {% four_col_grid_cell_content icon=icon alt="toys" header=header body=body %}
-      {% /four_col_grid_cell %}
-      {% static 'core/img/plates@0.25x.jpg' as image_url %}
-      {% four_col_image_grid_cell image_url=image_url %}
-    </div>
-    <div class="mt-8 mx-5 md:mx-20">
-      <div class="space-y-7">
-        <div id="specs" class="text-center space-y-2">
-          <p class="uppercase font-industrial w-fit mx-auto tracking-widest relative
-          before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
-          after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">
-            {% translate 'room specifications' %}
-          </p>
-          <h2 class="text-5xl font-black ">{% translate '部屋の基本スペック' %}</h2>
-        </div>
-        <div class="">
-          {% static 'core/img/outside1@0.25x.jpg' as image_url %}
-          {% four_col_image_grid_cell variant="wide" image_url=image_url %}
-        </div>
-        <div class="mx-auto flex flex-col justify-center sm:flex-row gap-8 lg:mx-0 relative">
-          <div class="w-full rounded-lg border-3 border-stone-900 bg-stone-100 drop-shadow-hard-45-md p-8 xl:p-10 space-y-3">
-            <h3 id="tier-00" class="text-lg font-semibold leading-8 text-gray-900">{% translate '００・０１号室' %}</h3>
-            <p class="mt-4 text-sm leading-6 text-gray-600">{% translate 'より広いスペースの中にセミダブルベッド２台あります。' %}</p>
-            <ul role="list" class="mt-8 space-y-3 text-sm leading-6 xl:mt-10 text-gray-900">
-              <h4 class="font-black">ベッド</h4>
-              <li class="flex gap-x-3 bg-orange-200 rounded-md px-3 py-2">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'セミダブル、２台' %}
-              </li>
-              <li class="flex gap-x-3 bg-orange-200 rounded-md px-3 py-2">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '最小人数２人' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ソファベッド（ダブル）、１台' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                マットレスと布団セット
-              </li>
-            </ul>
-            <details>
-              <summary class="cursor-pointer">{% trans 'Room Details' %}</summary>
-              <div>
-                <ul class="space-y-3">
-                  <h4 class="font-black">キチン</h4>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'IHコンロ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '電子レンジ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'トースター' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '冷蔵庫' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'ケトル' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '調理器具' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '食器' %}
-                  </li>
-                  <p>{% translate '・・・などなど' %}</p>
-                  <h4 class="font-black">バス</h4>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '温泉水' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'バスタオル' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'フェイスタオル' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'シャンプー' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'コンディショナー' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'ボディソープ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'ボディタオル' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'コットン・綿棒' %}
-                  </li>
-                  <h4>{% translate '・・・などなど' %}</h4>
-                  <h4 class="font-black">{% translate 'その他' %}</h4>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'トイレ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '冷暖房' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '５０型テレビ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'VOD' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'WIFI' %}
-                  </li>
-                </ul>
-              </div>
-            </details>
-          </div>
-          <div class="w-full rounded-lg border-3 border-stone-900 bg-stone-100 drop-shadow-hard-45-md p-8 xl:p-10 space-y-3">
-            <h3 id="tier-02" class="text-lg font-semibold leading-8 text-gray-900">{% translate '０２・０３号室' %}</h3>
-            <p class="mt-4 text-sm leading-6 text-gray-600">{% translate '００・０１号室と違ってダブルベッドが１台あります。' %}</p>
-            <ul role="list" class="mt-8 space-y-3 text-sm leading-6 xl:mt-10 text-gray-900">
-              <h4 class="font-black">ベッド</h4>
-              <li class="flex gap-x-3 bg-orange-200 rounded-md px-3 py-2">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ダブル、１台' %}
-              </li>
-              <li class="flex gap-x-3 bg-orange-200 rounded-md px-3 py-2">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate '最大人数４名' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                {% translate 'ソファベッド（ダブル）、１台' %}
-              </li>
-              <li class="flex gap-x-3">
-                <svg class="h-6 w-5 flex-none text-stone-900"
-                     viewBox="0 0 20 20"
-                     fill="currentColor"
-                     aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clip-rule="evenodd"/>
-                </svg>
-                マットレスと布団セット
-              </li>
-            </ul>
-            <details class="">
-              <summary class="cursor-pointer">{% trans 'Room Details' %}</summary>
-              <div>
-                <ul class="space-y-3">
-                  <h4 class="font-black">キチン</h4>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'IHコンロ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '電子レンジ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'トースター' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '冷蔵庫' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'ケトル' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '調理器具' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '食器' %}
-                  </li>
-                  <p>{% translate '・・・などなど' %}</p>
-                  <h4 class="font-black">バス</h4>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '温泉水' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'バスタオル' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'フェイスタオル' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'シャンプー' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'コンディショナー' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'ボディソープ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'ボディタオル' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'コットン・綿棒' %}
-                  </li>
-                  <h4>{% translate '・・・などなど' %}</h4>
-                  <h4 class="font-black">{% translate 'その他' %}</h4>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'トイレ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '冷暖房' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate '５０型テレビ' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'VOD' %}
-                  </li>
-                  <li class="flex gap-x-3">
-                    <svg class="h-6 w-5 flex-none text-stone-900"
-                         viewBox="0 0 20 20"
-                         fill="currentColor"
-                         aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    {% translate 'WIFI' %}
-                  </li>
-                </ul>
-              </div>
-            </details>
-          </div>
-        </div>
-        <div id="access" class="text-center space-y-2">
-          <p class="uppercase font-industrial tracking-widest">
-            <span class="align-text-bottom">+</span>{% translate 'access' %}<span class="align-text-bottom">+</span></p>
-          <h2 class="text-5xl font-black ">{% translate 'アクセス' %}</h2>
-        </div>
-        <div class="grid grid-col-2 gap-7">
-          <div class="sm:col-span-2 border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.211075605069!2d129.84148486176878!3d33.17147614231288!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356a9b308ae1c447%3A0x6dcfddfc856475e1!2sWin%20village!5e0!3m2!1sen!2sjp!4v1706585173902!5m2!1sen!2sjp"
-                    class="w-full min-h-[30dvh] rounded-md"
-                    style="border:0;"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-          {% static 'core/img/front_2024_4@0.33x.jpg' as image_url %}
-          <div style="background-image: url({{ image_url }});"
-               class="bg-cover bg-center min-h-[30dvh] border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
-          </div>
-          {% static 'core/img/front_logo@0.25x.jpg' as image_url %}
-          <div style="background-image: url({{ image_url }});"
-               class="bg-cover bg-center min-h-[30dvh] border border-3 bg-stone-50 drop-shadow-hard-45-md border-stone-900 rounded-lg">
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+    </main>
 {% endblock %}

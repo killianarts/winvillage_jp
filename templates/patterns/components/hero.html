@@ -1,0 +1,31 @@
+{% load static %}
+
+<div id="slider-hero" class="relative bg-amber-800 h-screen bg-cover bg-center grid place-items-center {{ class }} transition-all duration-300"
+     data-num-images="{{ images|length }}"
+     _="init set :count to 0
+            set :next to :count + 1
+            set images to <img/> in me
+            repeat forever
+            wait 5s
+            toggle .{{ opacity }} .opacity-0 on images[:count]
+            toggle .opacity-0 .{{ opacity }} on images[:next]
+            increment :count
+            increment :next
+            if :count > @data-num-images - 1
+            set :count to 0
+            end
+            if :next > @data-num-images - 1
+            set :next to 0
+            end
+            end
+            "
+>
+    {% for image in images %}
+        <img class="w-full h-full absolute top-0 left-0 inset-0 object-cover transition-all duration-[3000ms]
+                    {% if forloop.first %}{{ opacity }}{% else %}opacity-0{% endif %}"
+             src="{% static image %}" alt="" />
+    {% endfor %}
+    <div class="absolute inset-0 z-10 grid place-items-center">
+        {{ slot }}
+    </div>
+</div>
