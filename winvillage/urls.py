@@ -35,7 +35,9 @@ urlpatterns += i18n_patterns(
     path("", include("core.urls")),
     path("reservations/", include("reservations.urls")),
     path("users/", include("users.urls")),
-    path("winadmin/", include("winadmin.urls")),
+    # Had a mystery error involving decorator_include
+    #     path("winadmin/", include(login_required, "winadmin.urls")),
+    path("winadmin/", decorator_include(login_required, "winadmin.urls")),
     path(
         "jsi18n/recurrence/",
         JavaScriptCatalog.as_view(packages=["recurrence"]),

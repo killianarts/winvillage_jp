@@ -1,5 +1,83 @@
 {% extends "core/base.html" %}
 {% load static i18n %}
+{% block extra_scripts %}
+    <script type="text/hyperscript">
+     init
+     set $currentCount to 0
+     end
+
+     behavior SetCount
+     on scroll from window debounced at 20ms
+     set sections to <section[data-counter]/> in me
+     set offset to 250
+     for section in sections
+     get the first <a[data-counter=`${the section's @data-counter}`]/> then set sectionLink to it
+     measure the section
+     if ((result.top < offset) and ($currentCount < the section's @data-counter))
+              set $currentCount to the section's @data-counter
+         trigger newCount
+         else if ((result.bottom > offset) and ($currentCount > the section's @data-counter))
+              set $currentCount to the section's @data-counter
+
+             trigger newCount
+             else if ((result.top > offset) and ($currentCount == the section's @data-counter))
+                    if (the previous <a/> from sectionLink)
+                        set $currentCount to the @data-counter of the previous <a/> from sectionLink
+                        trigger newCount
+                    else
+                        set $currentCount to 0
+                        trigger newCount
+                    end
+            end
+          end
+        end
+      end
+
+    behavior SetActiveLink
+    init get <a[data-counter]/> in me then set :links to it end
+    on newCount from elsewhere
+        for link in :links
+            if $currentCount == the link's @data-counter
+                 set the link's @data-active to "true"
+            else
+              set the link's @data-active to "false"
+
+                 end
+                 end
+                 end
+                 end
+
+    </script>
+
+{% endblock %}
+{% block extra_scripts_bottom %}
+    <script src="https://unpkg.com/@rive-app/canvas@2.21.3"></script>
+    <script>
+     const r = new rive.Rive({
+         src: "{% static 'core/img/reservation-button.riv' %}",
+         // OR the path to a discoverable and public Rive asset
+         canvas: document.getElementById("reservation-button-light"),
+         autoplay: true,
+         artboard: "make-a-reservation", // Optional. If not supplied the default is selected
+         stateMachines: "reservation-button",
+         // onLoad: () => {
+         //     r.resizeDrawingSurfaceToCanvas();
+         // },
+     });
+
+     const darkLargeR = new rive.Rive({
+         src: "{% static 'core/img/reservation-button.riv' %}",
+         // OR the path to a discoverable and public Rive asset
+         canvas: document.getElementById("reservation-button-dark-large"),
+         autoplay: true,
+         artboard: "make-a-reservation-dark", // Optional. If not supplied the default is selected
+         stateMachines: "reservation-button-dark",
+         onLoad: () => {
+             r.resizeDrawingSurfaceToCanvas();
+         },
+     });
+    </script>
+{% endblock %}
 {% block content_main %}
     <main _="install SetCount">
         <c-hero class="relative"
@@ -15,9 +93,14 @@
                     <c-divider />
                     <p class="text-xl sm:text-3xl">火をつけてリラックしよう</p>
                 </div>
+                <canvas class="mx-auto" id="reservation-button-light" width="75" height="75"></canvas>
             </div>
         </c-hero>
-        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="0" id="introduction">
+        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="0" id="introduction"
+                 _="on intersection(intersecting) having threshold 1
+                        if intersecting
+                        add .translate-y-48 to #reservation-button-dark-large-container
+                        add .translate-y-24 to #reservation-button-dark-small-container">
             {% static "core/img/tent.svg" as tent %}
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto mb-10">
                 <div class="relative text-center w-full">
@@ -68,7 +151,14 @@
                 </a>
             </div>
         </section>
-        <section style="scrollbar-width: none;" class="my-10 sm:my-48  mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room">
+        <section class="my-10 sm:my-48 mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room"
+                 _="on intersection(intersecting) having threshold 0.5
+                        if intersecting
+                        remove .translate-y-48 from #reservation-button-dark-large-container
+                        remove .translate-y-24 from #reservation-button-dark-small-container
+                        end end
+
+                        ">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto
                         px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
@@ -80,7 +170,7 @@
                 <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
                 <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
             </div>
-            <div class="my-10 sm:my-48">
+            <div class="my-5 sm:my-10">
                 {% static 'core/img/inside1@0.25x.jpg' as image1 %}
                 {% static 'core/img/inside2@0.25x.jpg' as image2 %}
                 {% static 'core/img/inside3@0.25x.jpg' as image3 %}
@@ -88,10 +178,51 @@
                 {% static 'core/img/front2@0.25x.jpg' as image5 %}
                 {% static 'core/img/front3@0.25x.jpg' as image6 %}
                 <c-slider :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}']">
+                    <div class="-translate-y-5 font-serif font-bold mx-auto grid grid-cols-3 md:grid-cols-5 gap-5 max-w-2xl px-2 sm:px-10">
+                        <div class="col-span-3 md:col-span-2">
+                            <p>キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ゆっくりしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれて、最高の朝を向かう。</p>
+                        </div>
+                        <ul class="md:col-span-1">
+                            <h4 class="font-antique uppercase">kitchen</h4>
+                            <li>冷蔵庫</li>
+                            <li>シンク</li>
+                            <li>IHコンロ</li>
+                            <li>電子レンジ</li>
+                            <li>トースター</li>
+                            <li>ケトル</li>
+                            <li>食器</li>
+                            <li>調理器具</li>
+                            <li>・・・などなど</li>
+                        </ul>
+                        <ul class="md:col-span-1">
+                            <h4 class="font-antique uppercase">bath</h4>
+                            <li>温泉水</li>
+                            <li>バスタオル</li>
+                            <li>フェイスタオル</li>
+                            <li>シャンプー</li>
+                            <li>コンディショナー</li>
+                            <li>ボディソープ</li>
+                            <li>ボディタオル</li>
+                            <li>コットン・綿棒</li>
+                            <li>・・・などなど</li>
 
+                        </ul>
+                        <ul class="md:col-span-1">
+                            <h4 class="font-antique uppercase">other</h4>
+                            <li>トイレ</li>
+                            <li>冷暖房</li>
+                            <li>５０型テレビ</li>
+                            <li>VOD</li>
+                            <li>WIFI</li>
+                            <li>軽食の注文</li>
+                            <li>朝食</li>
+                        </ul>
+                    </div>
+                </c-slider>
+            </div>
         </section>
-        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="2" id="camping">
-            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+        <section class="my-10 sm:my-48 mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="2" id="camping">
+            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
                     <div class="absolute top-1/2 -translate-y-1/2 -z-10">
                         <img class="w-[50px] sm:w-[100px] lg:w-[150px]" src="{% static 'core/img/pig.svg' %}" alt="" loading="lazy" />
@@ -104,9 +235,46 @@
                 <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
                 <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
             </div>
+            <div class="my-5 sm:my-10">
+                {% static 'core/img/campfire.jpg' as image1 %}
+                {% static 'core/img/grill@0.25x.jpg' as image2 %}
+                {% static 'core/img/outdoors_night@0.25x.jpg' as image3 %}
+                {% static 'core/img/outside1@0.25x.jpg' as image4 %}
+                {% static 'core/img/outside2@0.25x.jpg' as image5 %}
+                {% static 'core/img/people@0.25x.jpg' as image6 %}
+                {% static 'core/img/bathroom_storage@0.25x.jpg' as image7 %}
+                <c-slider :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{image7}}']">
+                    <div class="-translate-y-5 font-serif font-bold mx-auto grid grid-cols-3 md:grid-cols-5  gap-5 max-w-2xl px-2 sm:px-10">
+                        <div class="col-span-3 md:col-span-2">
+                            <p>温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。</p>
+                        </div>
+                        <ul class="md:col-span-1">
+                            <h4 class="font-antique uppercase">rental</h4>
+                            <li>グリル</li>
+                            <li>テント</li>
+                            <li>椅子</li>
+                            <li>テーブル</li>
+                        </ul>
+                        <ul class="md:col-span-1">
+                            <h4 class="font-antique uppercase">camping</h4>
+                            <li>ライター</li>
+                            <li>炭</li>
+                            <li>ガス</li>
+                        </ul>
+                        <ul class="md:col-span-1">
+                            <h4 class="font-antique uppercase">food</h4>
+                            <li>肉</li>
+                            <li>魚</li>
+                            <li>野菜</li>
+                            <li>飲み物</li>
+                            <li>ラーメンや軽食</li>
+                        </ul>
+                    </div>
+                </c-slider>
+            </div>
         </section>
         <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="3" id="play&sauna">
-            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
                     <img class="absolute top-1/2 -translate-y-1/2 left-0 w-[50px] sm:w-[100px]" src="{% static 'core/img/coffee-and-table.svg' %}" alt="" loading="lazy" />
                     <div class="absolute top-1/2 right-0 -translate-y-1/2 -z-10">
@@ -119,10 +287,71 @@
                 <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
                 <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
             </div>
+            <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] p-5 overflow-hidden">
+                <h2 class="uppercase text-3xl text-center">toys</h2>
+            </div>
+
+            <div class="my-10 mx-auto flex justify-center">
+                <p class="text-center max-w-xs">シャボン玉、ポップアップテント、色々なリモコン・カーやレゴをレンタルできます。</p>
+            </div>
+            <div class="flex gap-5">
+                <div class="">
+                    <img src="{% static 'core/img/kart@0.25x.jpg' %}" alt="" />
+                </div>
+                <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] overflow-hidden">
+                </div>
+                <div>
+                    <img src="{% static 'core/img/outside3@0.25x.jpg' %}" alt="" />
+                </div>
+            </div>
+
+            <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] p-5 overflow-hidden">
+                <h2 class="uppercase text-3xl text-center">bath & sauna</h2>
+            </div>
+            <div class="flex gap-5">
+                <div class="">
+                    <img src="{% static 'core/img/sauna@0.25x.jpg' %}" alt="" />
+                </div>
+                <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] overflow-hidden">
+                </div>
+                <div>
+                    <img src="{% static 'core/img/outdoor_bath@0.25x.jpg' %}" alt="" />
+                </div>
+            </div>
         </section>
         <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="4" id="access">
-            <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">access</h2>
+            <div class="flex gap-5 items-center justify-between mb-10">
+                <div>
+                    <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">access</h2>
+                    <div class="flex justify-center pt-5">
+                        <img src="{% static 'core/img/arrows.svg' %}" alt="" />
+                    </div>
+                </div>
+                <div class="max-w-xl">
+                    <img src="{% static 'core/img/cows.svg' %}" alt="" />
+                </div>
+            </div>
+            <div class="grid grid-cols-3 grid-rows-2 gap-5 text-xl">
+                <div class="text-center col-span-1 row-span-1 flex justify-center flex-col">
+                    <h4 class="font-antique font-bold tracking-[0.2rem] uppercase">address</h4>
+                    <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]" margin="my-1"/>
+                    <p>859-3166<br>長崎佐世保木原町82番地 </p>
+                </div>
+                <div class="col-span-2 row-span-2 min-h-[400px]">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6679.176341284686!2d129.84207630882733!3d33.172437075996086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356a9b308ae1c447%3A0x6dcfddfc856475e1!2sWin%20village!5e0!3m2!1sen!2sjp!4v1727320724205!5m2!1sen!2sjp"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                            class="w-full h-full"></iframe>
+                </div>
+                <div class="text-center col-span-1 row-span-1 flex justify-center flex-col">
+                    <h4 class="font-antique font-bold tracking-[0.2rem] uppercase">phone</h4>
+                    <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]" margin="my-1"/>
+                    <p>0956-30-8411</p>
+                </div>
+            </div>
         </section>
-
+        <div id="reservation-button-dark-large-container" class="fixed transition-all duration-300 bottom-5 left-5 translate-y-48 rounded-full bg-white">
+            <canvas id="reservation-button-dark-large" width="150px" height="150px" class="hidden md:block"></canvas>
+        </div>
     </main>
+
 {% endblock %}

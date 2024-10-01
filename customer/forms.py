@@ -167,6 +167,8 @@ class ItemForm(forms.Form):
 class CategoryFilterForm(forms.Form):
     categories = forms.ChoiceField(
         choices=[("0", "All")],
+        # Errors when starting with a clean DB. Need to create default category
+        # + [(category.id, category.name) for category in Category.objects.all()],
         widget=forms.RadioSelect(),
         initial="0",
     )

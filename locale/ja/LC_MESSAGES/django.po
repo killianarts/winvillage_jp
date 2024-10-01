@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-21 11:57+0900\n"
+"POT-Creation-Date: 2024-10-01 11:09+0900\n"
 "PO-Revision-Date: 2024-07-01 11:46+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,8 +151,7 @@ msgstr "短い説明"
 
 #: core/models.py:232
 #: templates/procurement/accounts_payable_aging_report.html:14
-#: templates/procurement/accounts_payable_ledger.html:14 winadmin/forms.py:438
-#: winadmin/forms.py:442
+#: templates/procurement/accounts_payable_ledger.html:14
 msgid "Vendor"
 msgstr "仕入先"
 
@@ -286,11 +285,11 @@ msgstr "伊万里でのグランピング"
 msgid "Winvillage"
 msgstr "ウイン・ヴィレッジ"
 
-#: core/templates/core/base.html:110
+#: core/templates/core/base.html:68
 msgid "Relaxation Awaits"
 msgstr "Relaxation Awaits"
 
-#: core/templates/core/base.html:113
+#: core/templates/core/base.html:71
 msgid "最高のグランピングが佐世保で待っています。"
 msgstr ""
 
@@ -1895,7 +1894,7 @@ msgid "This stay has already been complete."
 msgstr "この滞在はすでに終了しました。"
 
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:20
-#: winadmin/forms.py:447
+#: winadmin/forms.py:443
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:19
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:19
 #: winadmin/templates/winadmin/sales/sales_ledger.html:19
@@ -1905,7 +1904,7 @@ msgid "Year"
 msgstr "年"
 
 #: templates/winadmin/reservations/customer_check_in_check_out_list.html:21
-#: winadmin/forms.py:450
+#: winadmin/forms.py:446
 #: winadmin/templates/winadmin/reservations/reservation_list_by_period.html:20
 #: winadmin/templates/winadmin/sales/accounts_receivable_ledger.html:20
 #: winadmin/templates/winadmin/sales/sales_ledger.html:20

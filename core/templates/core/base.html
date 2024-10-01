@@ -35,53 +35,7 @@
     {#    </script>#}
     {% tailwind_css %}
     {% block extra_scripts %}
-      <script type="text/hyperscript">
-       init
-       set $currentCount to 0
-       end
 
-       behavior SetCount
-       on scroll from window debounced at 20ms
-       set sections to <section[data-counter]/> in me
-       set offset to 0
-       for section in sections
-       get the first <a[data-counter=`${the section's @data-counter}`]/> then set sectionLink to it
-       measure the section
-       if ((result.top < offset) and ($currentCount < the section's @data-counter))
-              set $currentCount to the section's @data-counter
-         trigger newCount
-         else if ((result.bottom > offset) and ($currentCount > the section's @data-counter))
-              set $currentCount to the section's @data-counter
-
-           trigger newCount
-           else if ((result.top > offset) and ($currentCount == the section's @data-counter))
-                    if (the previous <a/> from sectionLink)
-                        set $currentCount to the @data-counter of the previous <a/> from sectionLink
-                        trigger newCount
-                    else
-                        set $currentCount to 0
-                        trigger newCount
-                    end
-            end
-          end
-        end
-      end
-
-    behavior SetActiveLink
-    init get <a[data-counter]/> in me then set :links to it end
-    on newCount from elsewhere
-        for link in :links
-            if $currentCount == the link's @data-counter
-             set the link's @data-active to "true"
-            else
-              set the link's @data-active to "false"
-
-             end
-             end
-             end
-             end
-
-      </script>
     {% endblock %}
     {% block extra_styles %}
     {% endblock %}
@@ -103,7 +57,11 @@
     {% endblock %}
     {% block post_content %}{% endblock %}
     {% block footer %}
-      <footer class="mx-auto max-w-fit min-h-screen grid place-items-center">
+      <footer class="mx-auto max-w-fit min-h-screen grid place-items-center"
+              _="on intersection(intersecting) having threshold 0.5
+                     if intersecting
+                     add .translate-y-48 to #reservation-button-dark-container
+                     end end">
         <div class="mx-5 md:mx-20 my-7 space-y-5 text-center">
           <div class="mx-auto w-fit"><img src="{% static 'core/img/light_logo.svg' %}" alt="logo"/></div>
           <h2 class="font-antique text-2xl lg:text-3xl xl:text-5xl uppercase">
@@ -128,6 +86,8 @@
 
         </div>
       </footer>
+    {% endblock %}
+    {% block extra_scripts_bottom %}
     {% endblock %}
   </body>
   {% django_htmx_script %}

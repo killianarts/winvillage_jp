@@ -147,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-DJANGO_USE_DEBUG_TOOLBAR = env.bool("DJANGO_USE_DEBUG_TOOLBAR", True)
+DJANGO_USE_DEBUG_TOOLBAR = env.bool("DJANGO_USE_DEBUG_TOOLBAR", False)
 # MIDDLEWARE
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware

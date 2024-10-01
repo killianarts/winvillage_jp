@@ -431,6 +431,7 @@ class ProcurementDetailForm(TailwindFormMixin, forms.ModelForm):
 
 
 class CompanyWiseProcurementLedgerFilter(TailwindFormMixin, forms.Form):
+    # This causes errors on clean DB. Need to make default vendor.
     # vendor = forms.ModelChoiceField(
     #     queryset=Vendor.objects.all(),
     #     initial=Vendor.objects.first(),
