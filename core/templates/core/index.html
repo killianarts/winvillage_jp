@@ -97,10 +97,11 @@
             </div>
         </c-hero>
         <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="0" id="introduction"
-                 _="on intersection(intersecting) having threshold 1
-                        if intersecting
-                        add .translate-y-48 to #reservation-button-dark-large-container
-                        add .translate-y-24 to #reservation-button-dark-small-container">
+                 _="on scroll from window set offset to window.innerHeight / 2 then set my_measure to the result then measure the next <footer/> then set footer_measure to the result
+                        if my_measure.bottom < offset and footer_measure.top > offset
+                        set #reservation-button-dark-large-container's @data-popup to true
+                        else
+                        set #reservation-button-dark-large-container's @data-popup to false">
             {% static "core/img/tent.svg" as tent %}
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto mb-10">
                 <div class="relative text-center w-full">
@@ -113,7 +114,7 @@
                 <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
             </div>
             <div class="grid gap-10 sm:grid-cols-3">
-                <a href="#room" class="flex justify-center group hover:scale-110 transition-all duration-250">
+                <a href="#room" class="flex justify-center group hover:scale-110 transition-all duration-300 hover:text-orange-700">
                     <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
                         <div class="w-1/2 max-h-[30px]  flex justify-center">
                             <img src="{% static 'core/img/fried-food.svg' %}" alt="" />
@@ -121,11 +122,11 @@
                         <p class="text-xs lg:text-sm">贅沢の部屋</p>
                         <h3 class="uppercase font-antique md:text-xl lg:text-2xl">rooms</h3>
                         <c-divider color="bg-orange-950" size="w-full h-[1px]" />
-                        <p>このキッチンはなんでもある！</p>
-                        <img class=" group-hover:drop-shadow-md" src="{% static 'core/img/arrow.svg' %}" alt="" />
+                        <p class="max-w-[20ch] sm:max-w-full">このキッチンはなんでもある！</p>
+                        <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
                 </a>
-                <a href="#camping" class="flex justify-center group hover:scale-110 transition-all duration-250">
+                <a href="#camping" class="flex justify-center group hover:scale-110 transition-all duration-300 hover:text-orange-700">
                     <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
                         <div class="w-1/2 max-h-[30px]  flex justify-center">
                             <img src="{% static 'core/img/grill.svg' %}" alt="" />
@@ -133,11 +134,11 @@
                         <p class="text-xs lg:text-sm">楽々のキャンプ</p>
                         <h3 class="uppercase font-antique md:text-xl lg:text-2xl">camping</h3>
                         <c-divider color="bg-orange-950" size="w-full h-[1px]" />
-                        <p>自分のキャンプ用グッズを持ってきても、こっちでレンタルしてもいい</p>
-                        <img class=" group-hover:drop-shadow-md" src="{% static 'core/img/arrow.svg' %}" alt="" />
+                        <p class="max-w-[20ch] sm:max-w-full">自分のキャンプ用グッズを持ってきても、こっちでレンタルしてもいい</p>
+                        <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
                 </a>
-                <a href="#play&sauna" class="flex justify-center group hover:scale-110 transition-all duration-250">
+                <a href="#play&sauna" class="flex justify-center group hover:scale-110 transition-all duration-300 hover:text-orange-700">
                     <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
                         <div class="w-1/2 max-h-[30px]  flex justify-center">
                             <img src="{% static 'core/img/wagon.svg' %}" alt="" />
@@ -145,20 +146,13 @@
                         <p class="text-xs lg:text-sm">色々な遊び</p>
                         <h3 class="uppercase font-antique md:text-xl lg:text-2xl">fun</h3>
                         <c-divider color="bg-orange-950" size="w-full h-[1px]" />
-                        <p>「最高だったよ、パパ！また行きたい！」</p>
-                        <img class=" group-hover:drop-shadow-md" src="{% static 'core/img/arrow.svg' %}" alt="" />
+                        <p class="max-w-[20ch] sm:max-w-full">「最高だったよ、パパ！また行きたい！」</p>
+                        <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
                 </a>
             </div>
         </section>
-        <section class="my-10 sm:my-48 mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room"
-                 _="on intersection(intersecting) having threshold 0.5
-                        if intersecting
-                        remove .translate-y-48 from #reservation-button-dark-large-container
-                        remove .translate-y-24 from #reservation-button-dark-small-container
-                        end end
-
-                        ">
+        <section class="my-10 sm:my-48 mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto
                         px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
@@ -296,26 +290,156 @@
             </div>
             <div class="flex gap-5">
                 <div class="">
-                    <img src="{% static 'core/img/kart@0.25x.jpg' %}" alt="" />
+                    {% static 'core/img/kart@0.25x.jpg' as image %}
+                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                        <img src="{{ image }}" alt="" />
+                    </div>
+                    <dialog class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
+                            _="on click
+                                   measure me
+                                   set is_in_me to result.top    <= event.clientY              and
+                                   event.clientY <= result.top + result.height and
+                                   result.left   <= event.clientX              and
+                                   event.clientX <= result.left + result.width
+                                   if is_in_me == false call me.close()">
+                        <div class="relative">
+                            <div class="absolute top-2 right-0 flex w-16 justify-center">
+                                <button type="button"
+                                        _="on click set dialog to the closest <dialog/>
+                                              if the dialog matches @open
+                                              call dialog.close()
+                                              end">
+                                    <span class="sr-only">Close sidebar</span>
+                                    <svg class="h-12 w-12 text-white"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke-width="1.5"
+                                         stroke="currentColor"
+                                         aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <img src="{{ image }}" alt="" />
+                        </div>
+                    </dialog>
                 </div>
                 <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] overflow-hidden">
                 </div>
                 <div>
-                    <img src="{% static 'core/img/outside3@0.25x.jpg' %}" alt="" />
+                    {% static 'core/img/outside3@0.25x.jpg' as image %}
+                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                        <img src="{{ image }}" alt="" />
+                    </div>
+                    <dialog
+                        class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
+                        _="on click
+                               measure me
+                               set is_in_me to result.top    <= event.clientY              and
+                               event.clientY <= result.top + result.height and
+                               result.left   <= event.clientX              and
+                               event.clientX <= result.left + result.width
+                               if is_in_me == false call me.close()">
+                        <div class="relative">
+                            <div class="absolute top-2 right-0 flex w-16 justify-center">
+                                <button type="button"
+                                        _="on click set dialog to the closest <dialog/>
+                                              if the dialog matches @open
+                                              call dialog.close()
+                                              end">
+                                    <span class="sr-only">Close sidebar</span>
+                                    <svg class="h-12 w-12 text-white"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke-width="1.5"
+                                         stroke="currentColor"
+                                         aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <img src="{{ image }}" alt="" />
+                        </div>
+                    </dialog>
                 </div>
             </div>
-
             <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] p-5 overflow-hidden">
                 <h2 class="uppercase text-3xl text-center">bath & sauna</h2>
             </div>
             <div class="flex gap-5">
-                <div class="">
-                    <img src="{% static 'core/img/sauna@0.25x.jpg' %}" alt="" />
+                {% static 'core/img/sauna@0.25x.jpg' as image %}
+                <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                    <img src="{{ image }}" alt="" />
                 </div>
+                <dialog
+                    class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
+                    _="on click
+                           measure me
+                           set is_in_me to result.top    <= event.clientY              and
+                           event.clientY <= result.top + result.height and
+                           result.left   <= event.clientX              and
+                           event.clientX <= result.left + result.width
+                           if is_in_me == false call me.close()">
+                    <div class="relative">
+                        <div class="absolute top-2 right-0 flex w-16 justify-center">
+                            <button type="button"
+                                    _="on click set dialog to the closest <dialog/>
+                                          if the dialog matches @open
+                                          call dialog.close()
+                                          end">
+                                <span class="sr-only">Close sidebar</span>
+                                <svg class="h-12 w-12 text-white"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke-width="1.5"
+                                     stroke="currentColor"
+                                     aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <img src="{{ image }}" alt="" />
+                    </div>
+                </dialog>
                 <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] overflow-hidden">
                 </div>
                 <div>
-                    <img src="{% static 'core/img/outdoor_bath@0.25x.jpg' %}" alt="" />
+                    {% static 'core/img/outdoor_bath@0.25x.jpg' as image %}
+                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                        <img src="{{ image }}" alt="" />
+                    </div>
+                    <dialog
+                        class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
+                        _="on click
+                               measure me
+                               set is_in_me to result.top    <= event.clientY              and
+                               event.clientY <= result.top + result.height and
+                               result.left   <= event.clientX              and
+                               event.clientX <= result.left + result.width
+                               if is_in_me == false call me.close()">
+                        <div class="relative">
+                            <div class="absolute top-2 right-0 flex w-16 justify-center">
+                                <button type="button"
+                                        _="on click set dialog to the closest <dialog/>
+                                              if the dialog matches @open
+                                              call dialog.close()
+                                              end">
+                                    <span class="sr-only">Close sidebar</span>
+                                    <svg class="h-12 w-12 text-white"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke-width="1.5"
+                                         stroke="currentColor"
+                                         aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <img src="{{ image }}" alt="" />
+                        </div>
+
+                    </dialog>
+
                 </div>
             </div>
         </section>
@@ -349,7 +473,7 @@
                 </div>
             </div>
         </section>
-        <div id="reservation-button-dark-large-container" class="fixed transition-all duration-300 bottom-5 left-5 translate-y-48 rounded-full bg-white">
+        <div id="reservation-button-dark-large-container" data-popup="false" class="fixed transition-all duration-300 bottom-5 left-5 data-[popup=true]:translate-none data-[popup=false]:translate-y-48 rounded-full bg-white">
             <canvas id="reservation-button-dark-large" width="150px" height="150px" class="hidden md:block"></canvas>
         </div>
     </main>

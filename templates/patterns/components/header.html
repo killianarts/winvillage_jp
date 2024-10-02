@@ -37,7 +37,13 @@
         </div>
     </nav>
     <nav id="mobile-menu"
-         class="flex md:hidden flex-1 justify-between items-center gap-5 max-w-7xl px-2 md:px-10 mx-auto text-white stroke-white">
+         class="flex md:hidden flex-1 justify-between items-center gap-5 max-w-7xl px-2 md:px-10 mx-auto text-white stroke-white"
+        _="on scaleDownMenu from closest <header/>
+             remove .text-white .stroke-white from me
+             add .text-orange-950 .stroke-orange-950 to me end
+             on scaleUpMenu from closest <header/>
+             remove .text-orange-950 .stroke-orange-950 from me
+             add .text-white .stroke-white to me end">
         <div _="on scaleDownMenu from the closest <header/>
                 set the @src of <img/> in me to '{{ scroll_logo }}'
                 on scaleUpMenu from the closest <header/>
@@ -45,21 +51,23 @@
              class="w-12">
             <img src="{{ initial_logo }}" alt="" />
         </div>
-        <button class="sm:hidden text-orange-950 hover:text-orange-500 hover:bg-orange-200 transition-all duration-300 px-2 py-3">予約を作る</button>
+        <div class="py-2 scale-90">
+            <c-nav-link subtext="reservation" text="予約を作る" url="#" />
+        </div>
         <div id="burger" class="flex md:hidden">
             <button type="button"
                     class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                     _="on mousedown remove .hidden from #mobile-popup wait a tick remove .opacity-0 from #mobile-popup">
                 <span class="sr-only">Open main menu</span>
                 <svg class="h-12 w-12 text-white"
-                     _="on scaleDownMenu from the closest <header/>
-                            remove .text-white from me add .text-black to me
-                            end
-                            on scaleUpMenu from the closest <header/>
-                            remove .text-black from me add .text-white to me
-                            end"
-                     fill="none" viewBox="0 0 24 24"
-                     stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    _="on scaleDownMenu from the closest <header/>
+                    remove .text-white from me add .text-black to me
+                    end
+                    on scaleUpMenu from the closest <header/>
+                    remove .text-black from me add .text-white to me
+                    end"
+                    fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
