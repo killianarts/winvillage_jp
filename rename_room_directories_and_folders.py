@@ -43,5 +43,17 @@ def rename_files_and_directories(root_dir):
                     print(f"Renamed file: {file_name} -> {new_file_name}")
 
 
+def rename_JPG_to_jpg(root_dir):
+    for dir_name, _, files in os.walk(root_dir):
+        for file_name in files:
+            if file_name.endswith(".JPG"):
+                prefix = file_name.split(".")[0]
+                new_file_name = f"{prefix}.jpg"
+                old_file_path = os.path.join(dir_name, file_name)
+                new_file_path = os.path.join(dir_name, new_file_name)
+                os.rename(old_file_path, new_file_path)
+                print(f"Renamed file: {file_name} → {new_file_name}")
+
+
 # Execute the renaming function
-rename_files_and_directories("./core/static/core/img/rooms")
+rename_JPG_to_jpg("./core/static/core/img/rooms")
