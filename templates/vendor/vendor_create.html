@@ -9,20 +9,10 @@
     <div id="content-wrapper">
         <h1 class="text-3xl">{% translate 'Create Vendor' %}</h1>
         {% block form %}
-            <form id="vendor-create-form" class="max-w-xl grid" action="." novalidate
-                  hx-post="."
-                  hx-target="#content-wrapper"
-                  hx-swap="outerHTML"
-                  hx-vals='{"use_block": "content"}'>
-                <div>
+            <c-form id="vendor-create-form" hx-target="#content-wrapper" block="content">
                     {{ form }}
-                </div>
-                <div>
-                    {% #outline_button id="submit-button" name="create-vendor" value="create-vendor" type="submit" %}
-                    {% trans "Submit" %}
-                    {% /outline_button %}
-                </div>
-            </form>
+                    <c-button id="submit-button" name="create-vendor" value="create-vendor">{% trans "Submit" %}</c-button>
+            </c-form>
         {% endblock %}
     </div>
 {% endblock %}

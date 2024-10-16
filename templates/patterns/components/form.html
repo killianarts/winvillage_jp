@@ -1,0 +1,6 @@
+<c-vars method="post" hx-swap="outerHTML" block hx-vals url="." />
+<form action="{{ url }}" method="{{ method }}" hx-{{ method }}="{{ url }}"
+      hx-swap={{ hx_swap }} hx-vals='{"use_block": "{{ block }}" {% if hx_vals %}, {{ hx_vals }}{% endif %}}' {{ attrs }}>
+    {% csrf_token %}
+    {{ slot }}
+</form>

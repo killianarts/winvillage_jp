@@ -357,11 +357,10 @@ def generate_campaign_calendars(
     current_language = get_language()
     weekdays = get_localized_day_names(cal.firstweekday, current_language)
     calendars = {
-        "weekdays": weekdays,
         "selected_month": {"date": date_, "occurrences": selected_month_occurrences},
         "next_month": {
             "date": next_month_date,
             "occurrences": next_month_occurrences,
         },
     }
-    return calendars
+    return weekdays, calendars

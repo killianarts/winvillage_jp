@@ -1,0 +1,91 @@
+{% load static %}
+<dialog class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm {{ dialog_class }}"
+        _="on click
+               measure me
+               set is_in_me to result.top    <= event.clientY              and
+               event.clientY <= result.top + result.height and
+               result.left   <= event.clientX              and
+               event.clientX <= result.left + result.width
+               if is_in_me == false call me.close()" {{ attrs }}>
+  <div class="relative overflow-y-hidden h-full w-full ">
+    <div class="absolute top-2 right-0 flex w-16 justify-center z-40">
+      <button type="button"
+              _="on click set dialog to the closest <dialog/>
+                    if the dialog matches @open
+                    call dialog.close()
+                    end" class="bg-white border-2 border-orange-950">
+        <span class="sr-only">Close sidebar</span>
+        <svg class="h-12 w-12 text-orange-950"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke-width="1.5"
+             stroke="currentColor"
+             aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="relative flex mx-auto">
+      <button class="arrow-right absolute top-1/2 -translate-y-1/2 right-5 z-30"
+              _="on load get the next .image-slider then set :image_slider to it end
+                     on click
+                     set :data_selected to <[data-selected]/> in :image_slider
+                     set :not_selected to the first <[data-selected='false']/> in :image_slider
+                     if the @data-image-current of :image_slider < (the length of :data_selected - 1)
+                     get the *computed-width of :not_selected then set :scroll_distance to it
+                     get the *computed-row-gap of :image_slider then increment :scroll_distance by it
+                     get :data_selected[`${@data-image-current of :image_slider}`] then set its @data-selected to false
+                     increment @data-image-current of :image_slider
+                     get :data_selected[`${@data-image-current of :image_slider}`] then set its @data-selected to true
+                     decrement @data-scroll of :image_slider by :scroll_distance
+                     {% comment %}
+                     {% endcomment %}
+                     end">
+        <img src="{% static 'core/img/pointing-hand-right.svg' %}" alt="" />
+      </button>
+      <button class="arrow-left absolute top-1/2 -translate-y-1/2 left-5 z-30"
+              _="on load get the next .image-slider then set :image_slider to it end
+                     on click
+                     set :data_selected to <[data-selected]/> in :image_slider
+                     set :not_selected to the first <[data-selected='false']/> in :image_slider
+                     if the @data-image-current of :image_slider > 0
+                     get the *computed-width of :not_selected then set :scroll_distance to it
+                     get the *computed-row-gap of :image_slider then increment :scroll_distance by it
+                     get :data_selected[`${@data-image-current of :image_slider}`] then set its @data-selected to false
+                     decrement @data-image-current of :image_slider
+                     get :data_selected[`${@data-image-current of :image_slider}`] then set its @data-selected to true
+                     increment @data-scroll of :image_slider by :scroll_distance
+                     end">
+        <img src="{% static 'core/img/pointing-hand-left.svg' %}" alt="" />
+      </button>
+      <div data-scroll="0" data-image-current="0"
+           _="on load
+                        set :data_selected to <[data-selected]/> in me
+                        get :data_selected[`${my @data-image-current}`] set :current_image to it then set its @data-selected to true
+                        end
+
+                        {% comment %}
+                        on wheel from .image-slider
+                        if my @data-scroll < -700
+                        set my @data-scroll to 0
+                        get <[data-selected='true']/> then set its @data-selected to false
+                        increment my @data-image-current
+                        get :data_selected[`${my @data-image-current}`] then set its @data-selected to true end
+                        if my @data-scroll > 700
+                        set my @data-scroll to 0
+                        get <[data-selected='true']/> then set its @data-selected to false
+                        decrement my @data-image-current
+                        get :data_selected[`${my @data-image-current}`] then set its @data-selected to true end
+                        {% endcomment %}
+                        "
+           class="image-slider">
+        {% for image in images %}
+          <div class="image-wrapper">
+            <img src="{{ image }}" data-image-counter="{{ forloop.counter0 }}"
+                 class="data-[selected=false]:hidden max-h-[1000px] {{ img_class }}" data-selected="false" alt="" />
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</dialog>

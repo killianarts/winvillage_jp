@@ -1,5 +1,15 @@
 {% extends "core/base.html" %}
 {% load static i18n %}
+{% block extra_styles %}
+    <style type="text/css" media="screen">
+     .corner-only {
+         --s: 50px; /* size of the corners */
+         border: 8px solid #B38184;
+         background: # content-box;
+     }
+    </style>
+
+{% endblock %}
 {% block extra_scripts %}
     <script type="text/hyperscript">
      init
@@ -113,7 +123,7 @@
                 <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
                 <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
             </div>
-            <div class="grid gap-10 sm:grid-cols-3">
+            <div class="grid gap-10 sm:grid-cols-3 mb-10">
                 <a href="#room" class="flex justify-center group hover:scale-110 transition-all duration-300 hover:text-orange-700">
                     <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
                         <div class="w-1/2 max-h-[30px]  flex justify-center">
@@ -151,6 +161,238 @@
                     </div>
                 </a>
             </div>
+            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto mb-10">
+                <div class="relative text-center w-full">
+                    <p class="text-xs lg:text-lg tracking-[0.5ch]">地図</p>
+                    <h2 class="px-[50px] text-3xl lg:text-7xl uppercase font-antique text-center">map</h2>
+                </div>
+            </div>
+            <figure class="relative w-fit md:max-w-2xl xl:max-w-5xl mx-auto">
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[640px] right-[70px]
+                           md:w-[41px] md:h-[32px] md:top-[202px] md:right-[82px]
+                           xl:w-[65px] xl:h-[50px] xl:top-[307.5px] xl:right-[122px]
+                           grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    00
+                </button>
+                {% static 'core/img/rooms/00/00.jpg' as zero %}
+                {% static 'core/img/rooms/00/01.jpg' as one %}
+                {% static 'core/img/rooms/00/02.jpg' as two %}
+                {% static 'core/img/rooms/00/03.jpg' as three %}
+                {% static 'core/img/rooms/00/04.jpg' as four %}
+                {% static 'core/img/rooms/00/05.jpg' as five %}
+                {% static 'core/img/rooms/00/06.jpg' as six %}
+                {% static 'core/img/rooms/00/07.jpg' as seven %}
+                {% static 'core/img/rooms/00/08.jpg' as eight %}
+                {% static 'core/img/rooms/00/09.jpg' as nine %}
+                {% static 'core/img/rooms/00/10.jpg' as ten %}
+                {% static 'core/img/rooms/00/11.jpg' as eleven %}
+
+
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}', '{{eight}}', '{{nine}}', '{{ten}}', '{{eleven}}']"/>
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[641px] right-[135px]
+                           md:w-[41px] md:h-[32px] md:top-[203px] md:right-[151.5px]
+                           xl:w-[67px] xl:h-[50px] xl:top-[308.5px] xl:right-[230px]
+                           grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    01
+                </button>
+                {% static 'core/img/rooms/01/00.jpg' as zero %}
+                {% static 'core/img/rooms/01/01.jpg' as one %}
+                {% static 'core/img/rooms/01/02.jpg' as two %}
+                {% static 'core/img/rooms/01/03.jpg' as three %}
+                {% static 'core/img/rooms/01/04.jpg' as four %}
+                {% static 'core/img/rooms/01/05.jpg' as five %}
+                {% static 'core/img/rooms/01/06.jpg' as six %}
+                {% static 'core/img/rooms/01/07.jpg' as seven %}
+                {% static 'core/img/rooms/01/08.jpg' as eight %}
+                {% static 'core/img/rooms/01/09.jpg' as nine %}
+                {% static 'core/img/rooms/01/10.jpg' as ten %}
+
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}', '{{eight}}', '{{nine}}', '{{ten}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[709px] right-[150px]
+                           md:w-[41px] md:h-[32px] md:top-[275px] md:right-[167.5px]
+                           xl:w-[63px] xl:h-[50px] xl:top-[419px] xl:right-[255px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    02
+                </button>
+                {% static 'core/img/rooms/02/00.jpg' as zero %}
+                {% static 'core/img/rooms/02/01.jpg' as one %}
+                {% static 'core/img/rooms/02/02.jpg' as two %}
+                {% static 'core/img/rooms/02/03.jpg' as three %}
+                {% static 'core/img/rooms/02/04.jpg' as four %}
+                {% static 'core/img/rooms/02/05.jpg' as five %}
+                {% static 'core/img/rooms/02/06.jpg' as six %}
+                {% static 'core/img/rooms/02/07.jpg' as seven %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[771px] right-[149px]
+                           md:w-[41px] md:h-[32px] md:top-[340.5px] md:right-[165px]
+                           xl:w-[63px] xl:h-[50px] xl:top-[518.5px] xl:right-[251px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    03
+                </button>
+                {% static 'core/img/rooms/03/00.jpg' as zero %}
+                {% static 'core/img/rooms/03/01.jpg' as one %}
+                {% static 'core/img/rooms/03/02.jpg' as two %}
+                {% static 'core/img/rooms/03/03.jpg' as three %}
+                {% static 'core/img/rooms/03/04.jpg' as four %}
+                {% static 'core/img/rooms/03/05.jpg' as five %}
+                {% static 'core/img/rooms/03/06.jpg' as six %}
+                {% static 'core/img/rooms/03/07.jpg' as seven %}
+                {% static 'core/img/rooms/03/08.jpg' as eight %}
+                {% static 'core/img/rooms/03/09.jpg' as nine %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}', '{{eight}}', '{{nine}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[206px] right-[240px]
+                           md:w-[41px] md:h-[32px] md:top-[218px] md:right-[579px]
+                           xl:w-[63px] xl:h-[50px] xl:top-[331.5px] xl:left-[79px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    05
+                </button>
+                {% static 'core/img/rooms/05/00.jpg' as zero %}
+                {% static 'core/img/rooms/05/01.jpg' as one %}
+                {% static 'core/img/rooms/05/02.jpg' as two %}
+                {% static 'core/img/rooms/05/03.jpg' as three %}
+                {% static 'core/img/rooms/05/04.jpg' as four %}
+                {% static 'core/img/rooms/05/05.jpg' as five %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[268px] right-[240px]
+                           md:w-[41px] md:h-[32px] md:top-[283px] md:right-[579px]
+                           xl:w-[63px] xl:h-[50px] xl:top-[431px] xl:left-[79px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    06
+                </button>
+                {% static 'core/img/rooms/06/00.jpg' as zero %}
+                {% static 'core/img/rooms/06/01.jpg' as one %}
+                {% static 'core/img/rooms/06/02.jpg' as two %}
+                {% static 'core/img/rooms/06/03.jpg' as three %}
+                {% static 'core/img/rooms/06/04.jpg' as four %}
+                {% static 'core/img/rooms/06/05.jpg' as five %}
+                {% static 'core/img/rooms/06/06.jpg' as six %}
+                {% static 'core/img/rooms/06/07.jpg' as seven %}
+                {% static 'core/img/rooms/06/08.jpg' as eight %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[294px] right-[185px]
+                           md:w-[41px] md:h-[32px] md:top-[311px] md:right-[521px]
+                           xl:w-[63px] xl:h-[50px] xl:top-[473px] xl:left-[168px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    07
+                </button>
+                {% static 'core/img/rooms/07/00.jpg' as zero %}
+                {% static 'core/img/rooms/07/01.jpg' as one %}
+                {% static 'core/img/rooms/07/02.jpg' as two %}
+                {% static 'core/img/rooms/07/03.jpg' as three %}
+                {% static 'core/img/rooms/07/04.jpg' as four %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[366px] right-[210px]
+                           md:w-[41px] md:h-[32px] md:top-[387px] md:right-[547px]
+                           xl:w-[63px] xl:h-[50px] xl:top-[590.5px] xl:left-[126px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    08
+                </button>
+                {% static 'core/img/rooms/08/00.jpg' as zero %}
+                {% static 'core/img/rooms/08/01.jpg' as one %}
+                {% static 'core/img/rooms/08/02.jpg' as two %}
+                {% static 'core/img/rooms/08/03.jpg' as three %}
+                {% static 'core/img/rooms/08/04.jpg' as four %}
+                {% static 'core/img/rooms/08/05.jpg' as five %}
+                {% static 'core/img/rooms/08/06.jpg' as six %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[366px] right-[153px]
+                           md:w-[41px] md:h-[32px] md:top-[387px] md:right-[487px]
+                           xl:w-[63px] xl:h-[50px] xl:top-[589px] xl:left-[220px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    10
+                </button>
+                {% static 'core/img/rooms/10/00.jpg' as zero %}
+                {% static 'core/img/rooms/10/01.jpg' as one %}
+                {% static 'core/img/rooms/10/02.jpg' as two %}
+                {% static 'core/img/rooms/10/03.jpg' as three %}
+                {% static 'core/img/rooms/10/04.jpg' as four %}
+                {% static 'core/img/rooms/10/05.jpg' as five %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[364.5px] right-[90px]
+                           md:w-[41px] md:h-[32px] md:top-[386px] md:right-[420px]
+                           xl:w-[63px] xl:h-[46px] xl:top-[588px] xl:left-[323px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    11
+                </button>
+                {% static 'core/img/rooms/11/00.jpg' as zero %}
+                {% static 'core/img/rooms/11/01.jpg' as one %}
+                {% static 'core/img/rooms/11/02.jpg' as two %}
+                {% static 'core/img/rooms/11/03.jpg' as three %}
+                {% static 'core/img/rooms/11/04.jpg' as four %}
+                {% static 'core/img/rooms/11/05.jpg' as five %}
+                {% static 'core/img/rooms/11/06.jpg' as six %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[40px] h-[30px] top-[284.5px] right-[98px]
+                           md:w-[41px] md:h-[32px] md:top-[301px] md:right-[428px]
+                           xl:w-[63px] xl:h-[50px] xl:top-[458px] xl:left-[309px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    12
+                </button>
+                {% static 'core/img/rooms/12/00.jpg' as zero %}
+                {% static 'core/img/rooms/12/01.jpg' as one %}
+                {% static 'core/img/rooms/12/02.jpg' as two %}
+                {% static 'core/img/rooms/12/03.jpg' as three %}
+                {% static 'core/img/rooms/12/04.jpg' as four %}
+                {% static 'core/img/rooms/12/05.jpg' as five %}
+                {% static 'core/img/rooms/12/06.jpg' as six %}
+                {% static 'core/img/rooms/12/07.jpg' as seven %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-sm sm:text-xl bg-white
+                           w-[41px] h-[32px] top-[213px] right-[97px]
+                           md:w-[44px] md:h-[34px] md:top-[225px] md:right-[427px]
+                           xl:w-[66px] xl:h-[53px] xl:top-[342.5px] xl:left-[306.5px] grid place-items-center font-antique text-4xl font-bold hover:bg-yellow-500 hover:scale-110">
+                    13
+                </button>
+                {% static 'core/img/rooms/13/00.jpg' as zero %}
+                {% static 'core/img/rooms/13/01.jpg' as one %}
+                {% static 'core/img/rooms/13/02.jpg' as two %}
+                {% static 'core/img/rooms/13/03.jpg' as three %}
+                {% static 'core/img/rooms/13/04.jpg' as four %}
+                {% static 'core/img/rooms/13/05.jpg' as five %}
+                {% static 'core/img/rooms/13/06.jpg' as six %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}']"/>
+
+                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                        class="absolute text-xs xl:text-lg flex
+                           w-[65px] h-[55px] top-[660px] right-[202px]
+                           md:w-[70px] md:h-[55px] md:top-[224px] md:right-[220px]
+                           xl:w-[108px] xl:h-[90px] xl:top-[339px] xl:left-[581px] font-antique font-bold group">
+                    <span class="bg-white leading-narrow block w-full uppercase group-hover:bg-yellow-400 group-hover:scale-110">
+                        front
+                    </span>
+                </button>
+                {% static 'core/img/front_logo@0.25x.jpg' as zero %}
+                {% static 'core/img/front_2024_4@0.33x.jpg' as one %}
+                <c-modal-slider :images="['{{ zero }}', '{{one}}']"/>
+
+                <img src="{% static 'core/img/map.png' %}" class="hidden md:block" alt="" />
+                <img src="{% static 'core/img/map-left.jpg' %}" class="max-w-[320px] mx-auto md:hidden" alt="" />
+                <img src="{% static 'core/img/map-right.jpg' %}" class="max-w-[320px] mx-auto md:hidden" alt="" />
+            </figure>
         </section>
         <section class="my-10 sm:my-48 mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto
@@ -164,13 +406,14 @@
                 <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
                 <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
             </div>
-            <div class="my-5 sm:my-10">
+            <div class="map my-5 sm:my-10">
                 {% static 'core/img/inside1@0.25x.jpg' as image1 %}
                 {% static 'core/img/inside2@0.25x.jpg' as image2 %}
                 {% static 'core/img/inside3@0.25x.jpg' as image3 %}
                 {% static 'core/img/front1@0.25x.jpg' as image4 %}
                 {% static 'core/img/front2@0.25x.jpg' as image5 %}
                 {% static 'core/img/front3@0.25x.jpg' as image6 %}
+
                 <c-slider :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}']">
                     <div class="-translate-y-5 font-serif font-bold mx-auto grid grid-cols-3 md:grid-cols-5 gap-5 max-w-2xl px-2 sm:px-10">
                         <div class="col-span-3 md:col-span-2">

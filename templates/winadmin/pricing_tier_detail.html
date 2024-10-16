@@ -6,19 +6,18 @@
 {% block content %}
   <div id="content-wrapper">
     <h1 class="text-3xl">{% translate 'Edit Pricing Tier' %}</h1>
-    <form class="grid max-w-xl" action="." method="post" novalidate
-          hx-post="."
-          hx-target="#content-wrapper"
-          hx-swap="morph:outerHTML"
-          hx-vals='{"use_block": "content"}'>
+    <c-form class="grid max-w-xl"
+            hx-target="#content-wrapper"
+            hx-swap="morph:outerHTML"
+            block="content">
       {{ form }}
       <div class="space-x-5">
-        {% #outline_button name="edit" type="submit" %}
-        {% trans "Edit" %}
-        {% /outline_button %}
-        {% #outline_button name="delete" type="submit" variant="danger" %}
-        {% trans "Delete" %}
-        {% /outline_button %}
+        <c-button>
+          {% trans "Edit" %}
+        </c-button>
+        <c-button>
+          {% trans "Delete" %}
+        </c-button>
       </div>
     </form>
   </div>

@@ -11,18 +11,22 @@
             <p>{{ room }} - {{ customer }}</p>
             <div id="actions"
                  class="flex gap-5">
-              {% #outline_button %}
-              <a href="{% url "winadmin:checked_in_customer_purchase" room_id=room.id customer_id=customer.id %}"
-                 hx-boost="true">
-                {% translate 'Purchase' %}
-              </a>
-              {% /outline_button %}
-              {% #outline_button %}
-              <a href="{% url "winadmin:checked_in_customer_return" room_id=room.id customer_id=customer.id %}"
-                 hx-boost="true">
-                {% translate 'Return' %}
-              </a>
-              {% /outline_button %}
+
+              <c-button>
+                <a href="{% url "winadmin:checked_in_customer_purchase" room_id=room.id customer_id=customer.id %}"
+                   hx-boost="true">
+                  {% translate 'Purchase' %}
+                </a>
+              </c-button>
+
+
+              <c-button>
+                <a href="{% url "winadmin:checked_in_customer_return" room_id=room.id customer_id=customer.id %}"
+                   hx-boost="true">
+                  {% translate 'Return' %}
+                </a>
+              </c-button>
+
             </div>
           </div>
         {% else %}

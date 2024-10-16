@@ -85,7 +85,6 @@ THIRD_PARTY_APPS = [
     "rosetta",
     "responsive_images",
     "phonenumbers",
-    "slippers",
     "django_cotton.apps.SimpleAppConfig",
     "recurrence",
     "django_celery_results",

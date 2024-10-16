@@ -2,149 +2,144 @@
 {% load i18n widget_tweaks %}
 {% block content %}
   <div id="pricing-tier-group-detail-wrapper" class="space-y-5">
-    <form id="pricing-tier-group-detail-form" action="."
-          method="POST"
-          hx-post="."
-          hx-swap="outerHTML"
-          hx-target="#pricing-tier-group-detail-wrapper"
-          hx-vals='{"use_block": "content"}'
-          class="grid space-y-5">
+    <c-form id="pricing-tier-group-detail-form"
+            hx-target="#pricing-tier-group-detail-wrapper"
+            block="content"
+            class="grid space-y-5">
       <h2 class="mb-2 pb-2 text-xl text-orange-950 sm:text-3xl">
         {% blocktrans %}Edit Pricing Tiers{% endblocktrans %}</h2>
-      {% csrf_token %}
-      {% if errors %}
-        {% for error in errors %}
-          <div class="grid control">
-            {% render_field error error_class=error_class %}
-          </div>
-        {% endfor %}
-      {% endif %}
-      <div class="grid">
-        {% if form.name.errors %}
-          <p class="text-red-500 help is-danger">
-            {{ form.name.errors }}
-          </p>
-        {% else %}
-          <p class="invisible">
-            {% blocktrans %}No errors{% endblocktrans %}
-          </p>
-        {% endif %}
-        <div>{{ form.name.label_tag }}</div>
-        <div>{{ form.name }}</div>
-      </div>
-      <div class="grid">
-        {% if form.room_tiers.errors %}
-          <p class="text-red-500 help is-danger">
-            {{ form.room_tiers.errors }}
-          </p>
-        {% else %}
-          <p class="invisible">
-            {% blocktrans %}No errors{% endblocktrans %}
-          </p>
-        {% endif %}
-        <div>{{ form.room_tiers.label_tag }}</div>
-        <div>{{ form.room_tiers }}</div>
-      </div>
-      <div hx-get="."
-           hx-swap="outerHTML"
-           hx-target="#pricing-tiers-table"
-           hx-push-url="true"
-           hx-include="[name=minimum_number_of_adults], [name=maximum_number_of_adults]"
-           hx-vals='{"use_block": "pricing-tiers-table"}'
-           hx-trigger="change from:[name=minimum_number_of_adults], change from:[name=maximum_number_of_adults]"
-           hx-select="#pricing-tiers-table"
-           class="grid grid-cols-2 w-fit gap-7">
-        <div class="min-max-values">
-          {% if form.minimum_number_of_adults.errors %}
-            <p class="text-red-500 help is-danger">
-              {{ form.minimum_number_of_adults.errors }}
-            </p>
-          {% else %}
-            <p class="invisible">
-              {% blocktrans %}No errors{% endblocktrans %}
-            </p>
-          {% endif %}
-          <div>{{ form.minimum_number_of_adults.label_tag }}</div>
-          <div>{{ form.minimum_number_of_adults }}</div>
-        </div>
-        <div class="min-max-values">
-          {% if form.maximum_number_of_adults.errors %}
-            <p class="text-red-500 help is-danger">
-              {{ form.maximum_number_of_adults.errors }}
-            </p>
-          {% else %}
-            <p class="invisible">
-              {% blocktrans %}No errors{% endblocktrans %}
-            </p>
-          {% endif %}
-          <div>{{ form.maximum_number_of_adults.label_tag }}</div>
-          <div>{{ form.maximum_number_of_adults }}</div>
-        </div>
-      </div>
-      {% block pricing-tiers-table %}
-        <table id="pricing-tiers-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
-          <thead>
-          <tr class="text-left">
-            <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-              <span class="pl-6">{% translate 'Number of Adults' %}</span>
-            </th>
-            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Overnight Price' %}</th>
-            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short-term Price' %}</th>
-          </tr>
-          </thead>
-          <tbody class="divide-y divide-stone-200">
-          {{ formset.management_form }}
-          {% for form in formset %}
-            <tr class="hover:bg-stone-50 odd:bg-stone-100">
-              <td class="whitespace-nowrap pr-3 pl-4 py-4 text-sm font-medium text-stone-900 sm:pl-0">
-              <span class="pl-6">
-                {{ form.id.as_hidden }}
-                {{ form.number_of_adults.as_hidden }}
-                {{ form.number_of_adults.value }}
-              </span>
-              </td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-                {{ form.price_overnight }}
-                {% if form.errors %}
-                  <p class="text-red-500 help is-danger">
-                    {{ form.errors }}
-                  </p>
-                {% else %}
-                  <p class="hidden">
-                    {% blocktrans %}No errors{% endblocktrans %}
-                  </p>
-                {% endif %}
-              </td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ form.price_short_term }}</td>
-            </tr>
+        {% csrf_token %}
+        {% if errors %}
+          {% for error in errors %}
+            <div class="grid control">
+              {% render_field error error_class=error_class %}
+            </div>
           {% endfor %}
-          </tbody>
-        </table>
-      {% endblock %}
-      <div class="grid" hx-trigger="">
-        {% if form.campaign.errors %}
-          <p class="text-red-500 help is-danger">
-            {{ form.campaign.errors }}
-          </p>
-        {% else %}
-          <p class="invisible">
-            {% blocktrans %}No errors{% endblocktrans %}
-          </p>
         {% endif %}
-        <div>{{ form.campaign.label_tag }}</div>
-        <div>{{ form.campaign }}</div>
-      </div>
-    </form>
+        <div class="grid">
+          {% if form.name.errors %}
+            <p class="text-red-500 help is-danger">
+              {{ form.name.errors }}
+            </p>
+          {% else %}
+            <p class="invisible">
+              {% blocktrans %}No errors{% endblocktrans %}
+            </p>
+          {% endif %}
+          <div>{{ form.name.label_tag }}</div>
+          <div>{{ form.name }}</div>
+        </div>
+        <div class="grid">
+          {% if form.room_tiers.errors %}
+            <p class="text-red-500 help is-danger">
+              {{ form.room_tiers.errors }}
+            </p>
+          {% else %}
+            <p class="invisible">
+              {% blocktrans %}No errors{% endblocktrans %}
+            </p>
+          {% endif %}
+          <div>{{ form.room_tiers.label_tag }}</div>
+          <div>{{ form.room_tiers }}</div>
+        </div>
+        <div hx-get="."
+             hx-swap="outerHTML"
+             hx-target="#pricing-tiers-table"
+             hx-push-url="true"
+             hx-include="[name=minimum_number_of_adults], [name=maximum_number_of_adults]"
+             hx-vals='{"use_block": "pricing-tiers-table"}'
+             hx-trigger="change from:[name=minimum_number_of_adults], change from:[name=maximum_number_of_adults]"
+             hx-select="#pricing-tiers-table"
+             class="grid grid-cols-2 w-fit gap-7">
+          <div class="min-max-values">
+            {% if form.minimum_number_of_adults.errors %}
+              <p class="text-red-500 help is-danger">
+                {{ form.minimum_number_of_adults.errors }}
+              </p>
+            {% else %}
+              <p class="invisible">
+                {% blocktrans %}No errors{% endblocktrans %}
+              </p>
+            {% endif %}
+            <div>{{ form.minimum_number_of_adults.label_tag }}</div>
+            <div>{{ form.minimum_number_of_adults }}</div>
+          </div>
+          <div class="min-max-values">
+            {% if form.maximum_number_of_adults.errors %}
+              <p class="text-red-500 help is-danger">
+                {{ form.maximum_number_of_adults.errors }}
+              </p>
+            {% else %}
+              <p class="invisible">
+                {% blocktrans %}No errors{% endblocktrans %}
+              </p>
+            {% endif %}
+            <div>{{ form.maximum_number_of_adults.label_tag }}</div>
+            <div>{{ form.maximum_number_of_adults }}</div>
+          </div>
+        </div>
+        {% block pricing-tiers-table %}
+          <table id="pricing-tiers-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
+            <thead>
+              <tr class="text-left">
+                <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
+                  <span class="pl-6">{% translate 'Number of Adults' %}</span>
+                </th>
+                <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Overnight Price' %}</th>
+                <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short-term Price' %}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-stone-200">
+              {{ formset.management_form }}
+              {% for form in formset %}
+                <tr class="hover:bg-stone-50 odd:bg-stone-100">
+                  <td class="whitespace-nowrap pr-3 pl-4 py-4 text-sm font-medium text-stone-900 sm:pl-0">
+                    <span class="pl-6">
+                      {{ form.id.as_hidden }}
+                      {{ form.number_of_adults.as_hidden }}
+                      {{ form.number_of_adults.value }}
+                    </span>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                    {{ form.price_overnight }}
+                    {% if form.errors %}
+                      <p class="text-red-500 help is-danger">
+                        {{ form.errors }}
+                      </p>
+                    {% else %}
+                      <p class="hidden">
+                        {% blocktrans %}No errors{% endblocktrans %}
+                      </p>
+                    {% endif %}
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ form.price_short_term }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endblock %}
+        <div class="grid" hx-trigger="">
+          {% if form.campaign.errors %}
+            <p class="text-red-500 help is-danger">
+              {{ form.campaign.errors }}
+            </p>
+          {% else %}
+            <p class="invisible">
+              {% blocktrans %}No errors{% endblocktrans %}
+            </p>
+          {% endif %}
+          <div>{{ form.campaign.label_tag }}</div>
+          <div>{{ form.campaign }}</div>
+        </div>
+    </c-form>
 
     {% block calendars %}
       <div id="calendars" class="max-w-3xl p-5 shadow-sm border border-stone-100">
         <h3 class="text-3xl text-center pb-5">{% translate 'Effective Campaign Days' %}</h3>
         <div id="month-switcher" class="flex items-center">
-          <form action="." method="get" class="grid grid-cols-2 w-full"
-                hx-get="."
-                hx-target="#calendars"
-                hx-swap="outerHTML"
-                hx-vals='{"use_block": "calendars"}'>
+          <c-form method="get" class="grid grid-cols-2 w-full"
+                  hx-target="#calendars"
+                  block="calendars">
             {{ date_filter_form }}
             <button name="get_previous_month" type="submit"
                     class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
@@ -154,17 +149,17 @@
                       d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
                       clip-rule="evenodd"/>
               </svg>
-              </outline_button>
-              <button name="get_next_month" type="submit"
-                      class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
-                <span class="sr-only">Next month</span>
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                        clip-rule="evenodd"/>
-                </svg>
-                </outline_button>
-          </form>
+            </button>
+            <button name="get_next_month" type="submit"
+                    class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
+              <span class="sr-only">Next month</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </button>
+          </c-form>
         </div>
         <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:flex-1 gap-10">
           <div id="selected-month">
@@ -178,24 +173,25 @@
             </div>
             <div id="selected-month-body" class="mt-2 grid grid-cols-7 text-sm">
               <!--
-                Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
-                Is selected, include: "text-white"
-                Is not selected and is today, include: "text-orange-600"
-                Is not selected and is not today and is current month, include: "text-stone-900"
-                Is not selected and is not today and is not current month, include: "text-stone-400"
-                Is selected and is today, include: "bg-orange-600"
-                Is selected and is not today, include: "bg-stone-900"
-                Is not selected, include: "hover:bg-stone-200"
-                Is selected or is today, include: "font-semibold"
+                   Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+                   Is selected, include: "text-white"
+                   Is not selected and is today, include: "text-orange-600"
+                   Is not selected and is not today and is current month, include: "text-stone-900"
+                   Is not selected and is not today and is not current month, include: "text-stone-400"
+                   Is selected and is today, include: "bg-orange-600"
+                   Is selected and is not today, include: "bg-stone-900"
+                   Is not selected, include: "hover:bg-stone-200"
+                   Is selected or is today, include: "font-semibold"
               -->
               {% for dt, is_occurrence in calendars.selected_month.occurrences.items %}
                 <div class="p-2">
                   {% if is_occurrence %}
-                    {% calendar_cell_button datetime=dt name="select_date" type="submit" class="text-stone-900 bg-green-500 hover:bg-stone-400" %}
+                    <c-calendar-cell-button :datetime=dt name="select_date" class="text-stone-900 bg-green-500 hover:bg-stone-400" />
                   {% elif dt.month != calendars.selected_month.date.month %}
                     {# show nothing #}
                   {% else %}
-                    {% calendar_cell_button datetime=dt name="select_date" type="submit" class="text-stone-900 hover:bg-stone-400" %}
+                    <c-calendar-cell-button :datetime=dt name="select_date" class="text-stone-900 hover:bg-stone-400" />
+
                   {% endif %}
                 </div>
               {% endfor %}
@@ -212,24 +208,24 @@
             </div>
             <div id="next-month-body" class="mt-2 grid grid-cols-7 text-sm">
               <!--
-                Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
-                Is selected, include: "text-white"
-                Is not selected and is today, include: "text-orange-600"
-                Is not selected and is not today and is current month, include: "text-stone-900"
-                Is not selected and is not today and is not current month, include: "text-stone-400"
-                Is selected and is today, include: "bg-orange-600"
-                Is selected and is not today, include: "bg-stone-900"
-                Is not selected, include: "hover:bg-stone-200"
-                Is selected or is today, include: "font-semibold"
+                   Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+                   Is selected, include: "text-white"
+                   Is not selected and is today, include: "text-orange-600"
+                   Is not selected and is not today and is current month, include: "text-stone-900"
+                   Is not selected and is not today and is not current month, include: "text-stone-400"
+                   Is selected and is today, include: "bg-orange-600"
+                   Is selected and is not today, include: "bg-stone-900"
+                   Is not selected, include: "hover:bg-stone-200"
+                   Is selected or is today, include: "font-semibold"
               -->
               {% for dt, is_occurrence in calendars.next_month.occurrences.items %}
                 <div class="p-2">
                   {% if is_occurrence %}
-                    {% calendar_cell_button datetime=dt name="select_date" type="submit" class="text-stone-900 bg-green-500 hover:bg-stone-400" %}
+                    <c-calendar-cell-button :datetime=dt name="select_date" class="text-stone-900 bg-green-500 hover:bg-stone-400" />
                   {% elif dt.month != calendars.next_month.date.month %}
                     {# show nothing #}
                   {% else %}
-                    {% calendar_cell_button datetime=dt name="select_date" type="submit" class="text-stone-900 hover:bg-stone-400" %}
+                    <c-calendar-cell-button :datetime=dt name="select_date" class="text-stone-900 hover:bg-stone-400" />
                   {% endif %}
                 </div>
               {% endfor %}
@@ -239,8 +235,8 @@
       </div>
     {% endblock %}
     <div class="space-x-5">
-      {% #outline_button name="edit" type="submit" form="pricing-tier-group-detail-form" %}{% translate 'Edit' %}{% /outline_button %}
-      {% #outline_button name="delete" type="submit" form="pricing-tier-group-detail-form" variant="danger" %}{% translate 'Delete' %}{% /outline_button %}
+      <c-button name="edit" form="pricing-tier-group-detail-form">{% translate 'Edit' %}</c-button>
+      <c-button name="delete" form="pricing-tier-group-detail-form">{% translate 'Delete' %}</c-button>
     </div>
   </div>
 {% endblock %}

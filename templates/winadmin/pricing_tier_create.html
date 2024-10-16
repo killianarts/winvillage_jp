@@ -2,18 +2,15 @@
 {% load i18n %}
 {% block content %}
   <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Create Room' %}</h1>
-    {% block form %}
-      <form class="grid gap-5" action="." method="dialog" novalidate
-            hx-post="{% url 'winadmin:pricing_tier_create' %}"
+    <h1 class="text-3xl">{% translate 'Create Pricing Tier' %}</h1>
+    <c-form class="grid gap-5" method="dialog" novalidate
             hx-target="#content-wrapper"
             hx-swap="morph:outerHTML"
-            hx-vals='{"use_block": "content"}'>
-        {{ form }}
-        {% #outline_button name="submit" type="dialog" %}
+            block="content">
+      {{ form }}
+      <c-button type="dialog">
         {% trans "Submit" %}
-        {% /outline_button %}
-      </form>
-    {% endblock %}
+      </c-button>
+    </c-form>
   </div>
 {% endblock %}

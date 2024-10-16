@@ -83,7 +83,7 @@ def get_or_set_reservation_session(request):
 # HTMX utilities
 
 
-# From django-htmx
+# Frpm django-htmx
 @dataclass
 class HtmxHttpRequest(HttpRequest):
     htmx: HtmxDetails

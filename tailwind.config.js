@@ -33,7 +33,7 @@ const getTemplateFiles = () => {
 };
 
 module.exports = {
-    content: [].concat(getTemplateFiles()),
+    content: ['./templates/**/*.html'].concat(getTemplateFiles()),
     theme: {
         extend: {
             dropShadow: {
@@ -54,8 +54,8 @@ module.exports = {
             fontFamily: {
                 'system-ui': ["system-ui", "sans-serif"],
                 handwritten: ['"Segoe Print"', '"Bradley Hand"', "Chilanka", "TSCu_Comic", "casual", "cursive"],
-                code: ["ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"], // for backwards compatibility
-                'monospace-code': ["ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"],
+                code: ['"Berkeley Mono"', "ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"], // for backwards compatibility
+                'monospace-code': [ "ui-monospace", '"Cascadia Code"', '"Source Code Pro"', "Menlo", "Consolas", '"DejaVu Sans Mono"', "monospace"],
                 industrial: ["Bahnschrift", 'DIN Alternate', 'Franklin Gothic Medium', 'Nimbus Sans Narrow', "sans-serif-condensed", "sans-serif"],
                 antique: ["Superclarendon", 'Bookman Old Style', 'URW Bookman', 'URW Bookman L', 'Georgia Pro', "Georgia", "serif"],
                 transitional: ["Charter", 'Bitstream Charter', 'Sitka Text', "Cambria", "serif"],

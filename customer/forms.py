@@ -1,4 +1,4 @@
-from core.forms import ReadOnlyFormMixin, TailwindFormMixin
+from core.forms import ReadOnlyFormMixin, ShisoFormMixin
 from core.models import Category, Item
 from django import forms
 from django.forms import modelformset_factory
@@ -11,7 +11,7 @@ from reservations.models import OrderItem
 from customer.models import Customer
 
 
-class CustomerDetailForm(TailwindFormMixin, forms.Form):
+class CustomerDetailForm(ShisoFormMixin, forms.Form):
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
@@ -20,7 +20,7 @@ class CustomerDetailForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = True
 
 
-class CustomerCreateForm(TailwindFormMixin, forms.Form):
+class CustomerCreateForm(ShisoFormMixin, forms.Form):
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.CharField(label=_("Email"))
@@ -29,7 +29,7 @@ class CustomerCreateForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = False
 
 
-class CustomerFilterForm(TailwindFormMixin, forms.Form):
+class CustomerFilterForm(ShisoFormMixin, forms.Form):
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.CharField(label=_("Email"))
@@ -39,8 +39,8 @@ class CustomerFilterForm(TailwindFormMixin, forms.Form):
 
 
 class TicketFormRenderer(TemplatesSetting):
-    form_template_name = "ticket/forms/tailwind/div.html"
-    single_field_row_template = "ticket/forms/tailwind/field_row.html"
+    form_template_name = "core/forms/shiso/div.html"
+    single_field_row_template = "core/forms/shiso/field_row.html"
 
 
 class TicketFormMixin:
@@ -53,7 +53,9 @@ class TicketFormMixin:
 
 
 class TicketCreateForm(TicketFormMixin, forms.Form):
-    first_name = forms.CharField(label=_("First Name"))
+    first_name = forms.CharField(
+        label=_("First Name"), help_text=_("The first name is not your family name")
+    )
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
     phone = PhoneNumberField(label=_("Phone #"))
@@ -81,7 +83,7 @@ class TicketReopenForm(TicketFormMixin, forms.Form):
     do_htmx_validation = False
 
 
-class CustomerCheckInForm(TailwindFormMixin, forms.Form):
+class CustomerCheckInForm(ShisoFormMixin, forms.Form):
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
@@ -90,7 +92,7 @@ class CustomerCheckInForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = False
 
 
-class CustomerForm(TailwindFormMixin, forms.ModelForm):
+class CustomerForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Customer
         fields = ["first_name", "last_name", "email", "phone"]
@@ -103,7 +105,7 @@ class ItemForm(forms.Form):
     quantity = forms.IntegerField(label=_("Quantity"), min_value=0)
 
 
-# class ItemForm(TailwindFormMixin, forms.ModelForm):
+# class ItemForm(ShisoFormMixin, forms.ModelForm):
 #     class Meta:
 #         model = Item
 #         fields = ["id", "name", "price"]

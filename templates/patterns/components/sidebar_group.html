@@ -1,0 +1,12 @@
+<c-vars header-class span-class />
+<header {{ attrs }}
+        class="overflow-hidden whitespace-nowrap text-blue-400 text-xs
+               pl-[2ch] {{ header_class }}">
+    <span class="relative px-[1ch]
+                 before:content-['░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░']
+                 before:absolute
+                 before:right-full
+                 after:left-full
+                 after:content-['░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░']
+                 after:absolute {{ span_class }}">{{ slot }}</span>
+</header>

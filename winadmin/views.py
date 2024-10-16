@@ -132,7 +132,7 @@ def sale_management_page(request: HtmxHttpRequest) -> HttpResponse:
 def item_list(request: HtmxHttpRequest) -> HttpResponse:
     items = Item.objects.all().order_by("name")
     context = {"items": items}
-    return TemplateResponse(request, "winadmin/inventory/item_list.html", context)
+    return TemplateResponse(request, "winadmin/inventory/item_list2.html", context)
 
 
 @for_htmx(use_block_from_params=True)
@@ -1239,7 +1239,7 @@ def campaign_detail(request: HtmxHttpRequest, campaign_id: int) -> HttpResponse:
                 datetime = make_pen(form.cleaned_data["datetime"])
                 datetime = get_previous_month(datetime)
                 date_filter_form = forms.DateTimeForm(initial={"datetime": datetime})
-                calendars = generate_campaign_calendars(
+                weekdays, calendars = generate_campaign_calendars(
                     campaign=campaign, date_=datetime
                 )
         elif "get_next_month" in request.GET:
@@ -1248,11 +1248,13 @@ def campaign_detail(request: HtmxHttpRequest, campaign_id: int) -> HttpResponse:
                 datetime = make_pen(form.cleaned_data["datetime"])
                 datetime = get_next_month(datetime)
                 date_filter_form = forms.DateTimeForm(initial={"datetime": datetime})
-                calendars = generate_campaign_calendars(
+                weekdays, calendars = generate_campaign_calendars(
                     campaign=campaign, date_=datetime
                 )
         else:
-            calendars = generate_campaign_calendars(campaign=campaign, date_=today_date)
+            weekdays, calendars = generate_campaign_calendars(
+                campaign=campaign, date_=today_date
+            )
 
     if request.method == "POST":
         form = CampaignDetailForm(request.POST, instance=campaign)
@@ -1269,6 +1271,7 @@ def campaign_detail(request: HtmxHttpRequest, campaign_id: int) -> HttpResponse:
     context = {
         "form": form,
         "date_filter_form": date_filter_form,
+        "weekdays": weekdays,
         "calendars": calendars,
     }
     response = TemplateResponse(request, "campaign/campaign_detail.html", context)

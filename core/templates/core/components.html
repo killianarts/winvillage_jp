@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+
+{% block header %}
+{% endblock %}
+{% block content %}
+    <main class="bg-blue-700 text-white px-2 sm:px-10 pt-2 sm:pt-10 divide-y-2 divide-blue-50">
+        <c-h1>コンポーネント</c-h1>
+        <section class="mx-auto max-w-7xl">
+            <c-h2 class="text-center">Headers</c-h2>
+        </section>
+        <section class="mx-auto max-w-7xl bg-white text-blue-700 flex flex-col items-center gap-5">
+            <c-h2 class="text-center">Buttons</c-h2>
+            <hr class="border-blue-700" />
+            <button class="bg-blue-700 text-blue-50 px-5 py-2
+                           -translate-y-1 -translate-x-1 drop-shadow-hard-45-xs
+                           hover:bg-blue-600 hover:translate-y-0 hover:translate-x-0 hover:drop-shadow-none">Click Me</button>
+        </section>
+        <section class="mx-auto max-w-7xl bg-white text-blue-700 flex flex-col items-center gap-5">
+            <c-h2 class="text-center">Forms</c-h2>
+            <hr class="border-blue-700" />
+            <input class="text-blue-950 border-blue-900 placeholder-blue-950/30 border-l-4 border-double shadow-inner drop-shadow-hard-45-xs" type="text" name="" value="" placeholder="text goes here" />
+            <input class="text-rose-600 border-rose-600 placeholder-rose-950/30 border-l-4 border-double shadow-inner drop-shadow-hard-45-xs" type="text" name="" value="There's text in here" placeholder="text goes here" />
+            <input class="text-teal-600 border-teal-600 placeholder-teal-950/30 border-l-4 border-double shadow-inner drop-shadow-hard-45-xs" type="text" name="" value="There's text in here" placeholder="text goes here" />
+            <c-form-field field="name" label="Name" />
+            <c-form-field field="very-long-field" label="This is a very long field label" />
+        </section>
+    </main>
+{% endblock %}
+{% block footer %}
+{% endblock %}

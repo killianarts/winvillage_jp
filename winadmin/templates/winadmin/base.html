@@ -75,13 +75,18 @@
   {% endblock %}
 </head>
 
-<body hx-ext="morph" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body hx-ext="morph" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="font-code">
 {% block body %}
-  <main id="admin-main-wrapper" class="grid">
+  <main id="admin-main-wrapper"
+        class="grid
+            [grid-template-columns:auto_12fr]
+            [grid-template-rows:auto_12fr]
+            [grid-template-areas:'menu_menu''content_content'] lg:[grid-template-areas:'menu_content''menu_content']
+            h-screen">
     {% block header %}
     {% endblock %}
     {# Margin makes room for sidebar. #}
-    <div id="dashboard-content" class="relative pt-10 xl:ml-72">
+    <div id="dashboard-content" class="relative overflow-auto pt-10 [grid-area:content]">
       <div class="px-4 sm:px-6 lg:px-8">
         {% block messages %}
           <div id="messages" class="fixed bottom-10 right-10"

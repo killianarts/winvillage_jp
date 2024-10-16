@@ -34,9 +34,9 @@ class PendulumField(DateTimeField):
     #     return pendulum.from_format(value, format, timezone.get_current_timezone())
 
 
-class TailwindFormRenderer(TemplatesSetting):
-    form_template_name = "core/forms/tailwind/div.html"
-    single_field_row_template = "core/forms/tailwind/field_row.html"
+class ShisoFormRenderer(TemplatesSetting):
+    form_template_name = "core/forms/shiso/div.html"
+    single_field_row_template = "core/forms/shiso/field_row.html"
 
 
 class ReadOnlyFormRenderer(TemplatesSetting):
@@ -46,8 +46,8 @@ class ReadOnlyFormRenderer(TemplatesSetting):
     field_template_name = "core/forms/tailwind/field_row_read_only.html"
 
 
-class TailwindFormMixin:
-    default_renderer = TailwindFormRenderer()
+class ShisoFormMixin:
+    default_renderer = ShisoFormRenderer()
     do_htmx_validation = False
 
     # def __init__(self, *args, **kwargs) -> None:

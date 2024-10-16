@@ -12,7 +12,7 @@ from faker import Faker
 from phonenumber_field.modelfields import PhoneNumberField
 from winvillage import settings
 
-# auth_user = get_user_model()
+auth_user = get_user_model()
 
 
 class PendulumDateTimeField(models.DateTimeField):
@@ -134,7 +134,7 @@ class TicketNote(BaseModel):
         verbose_name = _("Ticket Note")
         verbose_name_plural = _("Ticket Notes")
 
-    # user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(auth_user, on_delete=models.CASCADE, null=True)
     text = models.TextField(null=False, blank=False)
 
     def __str__(self):

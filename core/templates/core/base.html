@@ -57,12 +57,7 @@
     {% endblock %}
     {% block post_content %}{% endblock %}
     {% block footer %}
-      <footer class="mx-auto max-w-fit min-h-screen grid place-items-center"
-              _="on scroll from window set offset to 0 then measure me
-                     if result.top < offset
-                     add .translate-y-48 to #reservation-button-dark-large-container
-                     else if result.top > offset
-                     remove .translate-y-48 from #reservation-button-dark-large-container">
+      <footer class="mx-auto max-w-fit min-h-screen grid place-items-center">
         <div class="mx-5 md:mx-20 my-7 space-y-5 text-center">
           <div class="mx-auto w-fit"><img src="{% static 'core/img/light_logo.svg' %}" alt="logo"/></div>
           <h2 class="font-antique text-2xl lg:text-3xl xl:text-5xl uppercase">

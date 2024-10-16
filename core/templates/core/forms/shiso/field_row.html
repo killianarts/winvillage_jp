@@ -1,0 +1,39 @@
+{% load i18n widget_tweaks field_type %}
+
+<div{% with classes=field.css_classes %} class="field is-horizontal{{ classes }}"{% endwith %}
+                                         id="form-row-{{ field.name }}"
+                                         {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}
+                                         hx-get="."
+                                         hx-vals='{"_validate_field": "{{ field.name }}" }'
+                                         hx-trigger="keyup from:#form-row-{{ field.name }} delay:350ms"
+                                         hx-include="#form-row-{{ field.name }}"
+                                         hx-target="this"
+                                         hx-ext="morph"
+                                         hx-swap="morph:outerHTML transition:true"
+                                         {% endif %}>
+    {% if field.label %}
+        <label class="field-body font-code">
+    {% endif %}
+    <div class="field-and-help-text @container grid lg:grid-cols-2{% if field.help_text %}{% else %}{% endif %}">
+        <div class="field grid grid-rows-subgrid row-span-3">
+            <c-form-field-top text={{ field.label }} />
+            <c-form-field-content left-char="▷" class="control {% if field.field|field_type == "MoneyField" %}[grid-template-columns:1ch_2fr_1fr_1ch]{% else %}grid{% endif %} [grid-template-columns:1ch_1fr_1ch] items-center space-x-2">
+                {% render_field field class="border-none font-code focus:ring-blue-500 focus:ring-2 m-none focus:border-blue-950 border-blue-950" %}
+            </c-form-field-content>
+            <c-form-field-bottom text={{ field.error }} />
+        </div>
+        {% if field.help_text %}
+            <div class="help-text grid grid-rows-subgrid items-center row-span-3">
+                <c-form-field-top />
+                <c-form-field-content class="help items-center space-x-2" left-char="?" right-char="?">
+                    <p class="text-center">{{ field.help_text }}</p>
+                </c-form-field-content>
+                <c-form-field-bottom />
+            </div>
+        {% endif %}
+
+    </div>
+    {% if field.label %}
+        </label>
+    {% endif %}
+</div>

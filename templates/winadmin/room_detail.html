@@ -6,20 +6,14 @@
 {% block content %}
   <div id="content-wrapper">
     <h1 class="text-3xl">{% translate 'Edit Room' %}</h1>
-    <form class="grid max-w-xl" action="."
-          hx-post="."
-          hx-target="#content-wrapper"
-          hx-swap="morph:outerHTML"
-          hx-vals='{"use_block": "content"}'>
+    <c-form class="grid max-w-xl"
+            hx-target="#content-wrapper"
+            block="content">
       {{ form }}
       <div class="space-y-5">
         <div class="space-x-5">
-          {% #outline_button id="submit-button" name="edit" type="submit" %}
-          {% trans "Edit" %}
-          {% /outline_button %}
-          {% #outline_button name="delete" type="submit" variant="danger" %}
-        {% trans "Delete" %}
-        {% /outline_button %}
+          <c-button id="submit-button" name="edit" data-action="edit">{% trans "Edit" %}</c-button>
+          <c-button name="delete" data-action="delete">{% trans "Delete" %}</c-button>
         </div>
       </div>
     </form>

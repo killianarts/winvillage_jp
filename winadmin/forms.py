@@ -1,13 +1,14 @@
 from datetime import datetime
 
 import pendulum
-from core.forms import PendulumField, TailwindFormMixin
+from core.forms import PendulumField, ShisoFormMixin
 from core.models import Invoice, Item, Procurement, TransactionDetail, Vendor
 from django import forms
 from django.forms import BaseInlineFormSet, widgets
 from django.forms.renderers import TemplatesSetting
 from django.utils.translation import gettext_lazy as _
 from djmoney.forms import MoneyField
+from djmoney.forms import MoneyWidget
 from hordak.forms import accounts as account_forms
 from hordak.forms import transactions as transaction_forms
 from hordak.models import CURRENCY_CHOICES, Account
@@ -25,7 +26,7 @@ from reservations.models import (
 )
 
 
-class LoginForm(TailwindFormMixin, forms.Form):
+class LoginForm(ShisoFormMixin, forms.Form):
     username = forms.CharField(label=_("Username"), max_length=30)
     password = forms.CharField(
         label=_("Password"), widget=forms.PasswordInput, max_length=30
@@ -52,7 +53,7 @@ class ItemCreateFormMixin:
         }
 
 
-class ItemCreateForm(ItemCreateFormMixin, forms.ModelForm):
+class ItemCreateForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Item
         fields = [
@@ -79,7 +80,7 @@ class ItemCreateForm(ItemCreateFormMixin, forms.ModelForm):
         }
 
 
-class ItemEditForm(TailwindFormMixin, forms.ModelForm):
+class ItemEditForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Item
         fields = [
@@ -108,12 +109,12 @@ class ItemEditForm(TailwindFormMixin, forms.ModelForm):
     do_htmx_validation = True
 
 
-class CategoryCreateForm(TailwindFormMixin, forms.Form):
+class CategoryCreateForm(ShisoFormMixin, forms.Form):
     name = forms.CharField(label=_("Category Name"))
     do_htmx_validation = False
 
 
-class CategoryDetailForm(TailwindFormMixin, forms.Form):
+class CategoryDetailForm(ShisoFormMixin, forms.Form):
     name = forms.CharField(label=_("Category Name"))
     do_htmx_validation = False
 
@@ -134,7 +135,7 @@ class DateTimeInput(forms.DateTimeInput):
         super().__init__(**kwargs)
 
 
-class SetLedgerPeriodForm(forms.Form):
+class SetLedgerPeriodForm(ShisoFormMixin, forms.Form):
     current_year = datetime.today().year
     current_month = datetime.today().month
     year = forms.IntegerField(max_value=current_year)
@@ -147,7 +148,7 @@ class SetReservationPeriodForm(forms.Form):
     day = forms.IntegerField()
 
 
-class ReservationCreateForm(TailwindFormMixin, forms.Form):
+class ReservationCreateForm(ShisoFormMixin, forms.Form):
     first_name = forms.CharField(label=_("First Name"))
     last_name = forms.CharField(label=_("Last Name"))
     email = forms.EmailField(label=_("Email"))
@@ -157,7 +158,7 @@ class ReservationCreateForm(TailwindFormMixin, forms.Form):
     do_htmx_validation = True
 
 
-class ReservationDetailForm(TailwindFormMixin, forms.Form):
+class ReservationDetailForm(ShisoFormMixin, forms.Form):
     STATUS_CHOICES = Choices(
         ("not_reserved", _("Not Reserved")),
         ("reserved", _("Reserved")),
@@ -175,7 +176,7 @@ class ReservationDetailForm(TailwindFormMixin, forms.Form):
     end = forms.DateTimeField(widget=DateInput, label=_("End"))
 
 
-class StayForm(TailwindFormMixin, forms.ModelForm):
+class StayForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Stay
         fields = [
@@ -187,7 +188,7 @@ class StayForm(TailwindFormMixin, forms.ModelForm):
     do_htmx_validation = True
 
 
-class ContactInfoForm(TailwindFormMixin, forms.ModelForm):
+class ContactInfoForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = ContactInfo
         fields = ["first_name", "last_name", "email"]
@@ -200,11 +201,11 @@ class ContactInfoForm(TailwindFormMixin, forms.ModelForm):
     do_htmx_validation = True
 
 
-class SquarePaymentTokenForm(TailwindFormMixin, forms.Form):
+class SquarePaymentTokenForm(ShisoFormMixin, forms.Form):
     token = forms.CharField(widget=forms.HiddenInput())
 
 
-class RoomCreateForm(TailwindFormMixin, forms.ModelForm):
+class RoomCreateForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Room
         fields = ["name", "room_tier"]
@@ -232,7 +233,7 @@ class RoomCreateForm(TailwindFormMixin, forms.ModelForm):
     #     ]
 
 
-class RoomDetailForm(TailwindFormMixin, forms.ModelForm):
+class RoomDetailForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Room
         fields = ["name", "room_tier"]
@@ -240,19 +241,19 @@ class RoomDetailForm(TailwindFormMixin, forms.ModelForm):
     name = forms.CharField(label=_("Room Name"), max_length=255)
 
 
-class RoomTierCreateForm(TailwindFormMixin, forms.ModelForm):
+class RoomTierCreateForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = RoomTier
         fields = ["name"]
 
 
-class RoomTierDetailForm(TailwindFormMixin, forms.ModelForm):
+class RoomTierDetailForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = RoomTier
         fields = ["name"]
 
 
-class PricingTierCreateForm(forms.ModelForm):
+class PricingTierCreateForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = PricingTier
         fields = ["number_of_adults", "price_overnight", "price_short_term"]
@@ -263,7 +264,7 @@ class PricingTierCreateForm(forms.ModelForm):
         }
 
 
-class PricingTierDetailForm(TailwindFormMixin, forms.ModelForm):
+class PricingTierDetailForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = PricingTier
         fields = ["number_of_adults", "price_overnight", "price_short_term"]
@@ -289,7 +290,7 @@ class IncrementalPricingTierFormSet(BaseInlineFormSet):
         return kwargs
 
 
-class PricingTierGroupCreateForm(forms.Form):
+class PricingTierGroupCreateForm(ShisoFormMixin, forms.Form):
     class Meta:
         model = PricingTierGroup
         fields = (
@@ -370,7 +371,7 @@ class CampaignDetailForm(forms.ModelForm):
         fields = ["name", "recurrences"]
 
 
-class VendorCreateForm(TailwindFormMixin, forms.ModelForm):
+class VendorCreateForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Vendor
         exclude = ["account"]
@@ -381,7 +382,7 @@ class VendorCreateForm(TailwindFormMixin, forms.ModelForm):
         }
 
 
-class VendorDetailForm(TailwindFormMixin, forms.ModelForm):
+class VendorDetailForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Vendor
         exclude = []
@@ -398,39 +399,39 @@ class InvoiceCreateForm(forms.ModelForm):
         fields = ["vendor", "invoiced_on", "due_on"]
 
 
-class InvoiceDetailForm(TailwindFormMixin, forms.ModelForm):
+class InvoiceDetailForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Invoice
         fields = ["id"]
 
 
-class ProcurementCreateForm(TailwindFormMixin, forms.ModelForm):
+class ProcurementCreateForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Procurement
         fields = ["vendor", "product", "price_per_unit", "quantity", "procured_on"]
         widgets = {"procured_on": forms.SelectDateWidget()}
 
 
-class ProcurementCreateForm(TailwindFormMixin, forms.Form):
+class ProcurementCreateForm(ShisoFormMixin, forms.Form):
     account = forms.ModelChoiceField(
         queryset=Account.objects.filter(type="LI"), label=_("Account")
     )
     item = forms.ModelChoiceField(queryset=Item.objects.all(), label=_("Item"))
     price_per_unit = MoneyField(label=_("Price Per Unit"))
     quantity = forms.IntegerField(label=_("Quantity"))
-    total = MoneyField(label=_("Total"))
+    total = MoneyField(widget=MoneyWidget(attrs={"id": "total"}), label=_("Total"))
     procured_on = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}), label=_("Procured On")
     )
 
 
-class ProcurementDetailForm(TailwindFormMixin, forms.ModelForm):
+class ProcurementDetailForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = TransactionDetail
         exclude = []
 
 
-class CompanyWiseProcurementLedgerFilter(TailwindFormMixin, forms.Form):
+class CompanyWiseProcurementLedgerFilter(ShisoFormMixin, forms.Form):
     # This causes errors on clean DB. Need to make default vendor.
     # vendor = forms.ModelChoiceField(
     #     queryset=Vendor.objects.all(),
@@ -447,7 +448,7 @@ class CompanyWiseProcurementLedgerFilter(TailwindFormMixin, forms.Form):
     )
 
 
-class AccountForm(TailwindFormMixin, account_forms.AccountForm):
+class AccountForm(ShisoFormMixin, account_forms.AccountForm):
     currencies = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple, choices=CURRENCY_CHOICES
     )
@@ -456,10 +457,7 @@ class AccountForm(TailwindFormMixin, account_forms.AccountForm):
         pass
 
 
-# TODO: Grab all of the Hordak forms.
-
-
-class SimpleTransactionForm(TailwindFormMixin, transaction_forms.SimpleTransactionForm):
+class SimpleTransactionForm(ShisoFormMixin, transaction_forms.SimpleTransactionForm):
     def save(self, commit=True):
         from_account = self.cleaned_data.get("from_account")
         to_account = self.cleaned_data.get("to_account")

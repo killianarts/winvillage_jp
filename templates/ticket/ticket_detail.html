@@ -19,22 +19,18 @@
       </div>
       {% if ticket.is_closed %}
         <div class="space-y-5 grid">
-          <button type="submit"
-                  name="reopen-ticket"
-                  class="bg-green-700 px-5 py-3 text-xl text-green-50 transition-all duration-250 hover:bg-green-600">
+          <c-button name="reopen-ticket">
             {% trans "Reopen Ticket" %}
-          </button>
+          </c-button>
         </div>
       {% else %}
         <div class="space-y-5 grid">
-          <button type="submit" name="add-note"
-                  class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
+          <c-button name="add-note">
             {% trans "Add Note" %}
-          </button>
-          <button type="submit" name="close-ticket"
-                  class="bg-red-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-red-600">
+          </c-button>
+          <c-button name="close-ticket">
             {% trans "Close Ticket" %}
-          </button>
+          </c-button>
         </div>
       {% endif %}
       {% block notes %}

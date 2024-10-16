@@ -100,7 +100,7 @@
           </p>
         {% endif %}
         <div>{{ form.price_short_term_child.label_tag }}</div>
-        <div>{{ form.price_short_term_child }}</div>
+        <div>{{ form.price_short_term_chil }}</div>
       </div>
       {% block pricing-tiers-table %}
         <table id="pricing-tiers-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
@@ -155,7 +155,7 @@
         <div>{{ form.campaigns }}</div>
       </div>
       <div class="flex">
-        {% #outline_button name="submit" type="submit" %}{% translate 'Add Pricing Tier' %}{% /outline_button %}
+        <c-button>{% translate 'Add Pricing Tier' %}</c-button>
       </div>
   </form>
 {% endblock %}

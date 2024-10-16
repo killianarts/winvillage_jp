@@ -1,0 +1,32 @@
+<label for="name" class="font-code grid text-blue-950" style="font-family: 'Berkeley Mono'">
+    <div class="grid col-span-1" style="grid-template-columns: 1ch 1fr 1ch">
+        <div>
+            ┌
+        </div>
+        <div class="whitespace-nowrap overflow-hidden">
+            ─
+            <span class="">{{ label }}</span>
+            ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        </div>
+        <div>
+            ┐
+        </div>
+    </div>
+    <div class="grid items-center space-x-2" style="grid-template-columns: 1ch 1fr 1ch">
+        <span>
+            ▷
+        </span>
+        {{ slot }}
+    </div>
+    <div class="grid col-span-1 overflow-hidden" style="grid-template-columns: 1ch 1fr 1ch">
+        <div>
+            └
+        </div>
+        <div class="whitespace-nowrap overflow-hidden">
+            ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        </div>
+        <div>
+            ┘
+        </div>
+    </div>
+</label>

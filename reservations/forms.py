@@ -4,7 +4,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.formfields import PhoneNumberField
 
-from core.forms import ReservationsContactInformationFormMixin, TailwindFormMixin
+from core.forms import ReservationsContactInformationFormMixin, ShisoFormMixin
 from reservations.models import Stay
 
 
@@ -63,7 +63,7 @@ class DateTimeForm(forms.Form):
     datetime = forms.DateTimeField(widget=forms.HiddenInput)
 
 
-class TravelerForm(TailwindFormMixin, forms.ModelForm):
+class TravelerForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Stay
         fields = ("number_of_adults", "number_of_children")

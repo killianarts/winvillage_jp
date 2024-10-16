@@ -12,6 +12,7 @@ urlpatterns = [
     path("get-messages/", views.get_messages, name="get_messages"),
     path("flush-session/", views.flush_session, name="flush_session"),
     path("test/", views.test, name="test"),
+    path("components/", views.components, name="components"),
     path(
         "sitemap.xml",
         sitemap,

@@ -1,0 +1,7 @@
+<c-vars datetime url />
+<c-form class="mx-auto" url="{% url 'reservations:date_select' %}" hx-target="#reservation-form-wrapper" block="date-select">
+    {{ slot }}
+    <button {{ attrs }}>
+        <time class="mx-auto flex h-8 w-8 items-center justify-center tabular-nums {{ class }}" datetime="{{ datetime|date:"Y-m-d h:m:s" }}">{{ datetime.day }}</time>
+    </button>
+</c-form>

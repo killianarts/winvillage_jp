@@ -8,15 +8,13 @@
         <h1 class="text-3xl">{% translate 'Company-wise Procurement Ledger' %}</h1>
         <div class="max-w-fit pl-2 space-y-2 divide-y">
             <p>{% translate 'Filter' %}</p>
-            <form method="get" id="filter-form" action="."
-                  hx-get="."
-                  hx-trigger="change"
-                  hx-swap="outerHTML"
-                  hx-target="#procurement-list-table"
-                  hx-vals='{"use_block": "procurement_list_table", "action": "filter"}'
-                  hx-push-url="true">
+            <c-form method="get" id="filter-form" hx-trigger="change"
+                    hx-target="#procurement-list-table"
+                    block="procurement_list_table"
+                    hx-vals='{"action": "filter"}'
+                    hx-push-url="true">
                 {{ form }}
-            </form>
+            </c-form>
         </div>
         {% block procurement_list_table %}
             <table id="procurement-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
