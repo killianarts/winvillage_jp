@@ -132,7 +132,7 @@ def sale_management_page(request: HtmxHttpRequest) -> HttpResponse:
 def item_list(request: HtmxHttpRequest) -> HttpResponse:
     items = Item.objects.all().order_by("name")
     context = {"items": items}
-    return TemplateResponse(request, "winadmin/inventory/item_list2.html", context)
+    return TemplateResponse(request, "winadmin/inventory/item_list.html", context)
 
 
 @for_htmx(use_block_from_params=True)
@@ -505,11 +505,11 @@ def datetime_select(request: HtmxHttpRequest) -> HttpResponse:
     else:
         initial = None
     time_form = forms.TimeSelectForm(initial=initial)
-    calendars = generate_calendars(today_date)
-    start_date = reservation.stay.start_date if reservation.stay.start_date else None
-    end_date = reservation.stay.end_date if reservation.stay.end_date else None
-    start_time = reservation.stay.start_time if reservation.stay.start_time else None
-    end_time = reservation.stay.end_time if reservation.stay.end_time else None
+    weekdays, calendars = generate_calendars(reservation)
+    start_date = reservation.stay.start_date if reservation.stay.start else None
+    end_date = reservation.stay.end_date if reservation.stay.end else None
+    start_time = reservation.stay.start.time if reservation.stay.start else None
+    end_time = reservation.stay.end.time if reservation.stay.end else None
     if request.method == "GET":
         if "get_previous_month" in request.GET:
             form = DateForm(request.GET)
@@ -541,6 +541,7 @@ def datetime_select(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.set_times(start_time, end_time)
     context = {
         "calendars": calendars,
+        "weekdays": weekdays,
         "today_date": today_date,
         "calendar_form": form,
         "time_form": time_form,
@@ -1330,7 +1331,7 @@ def vendor_detail(request, vendor_id):
             messages.error(request, _("Vendor couldn't be updated"))
     else:
         form = VendorCreateForm(instance=vendor)
-    response = TemplateResponse(request, "vendor/vendor_create.html", {"form": form})
+    response = TemplateResponse(request, "vendor/vendor_detail.html", {"form": form})
     return trigger_client_event(response, "getMessages")
 
 

@@ -3,9 +3,12 @@
 {% block subtitle %}
   {% translate 'Edit Inventory Item' %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Inventory Management' %}"
+                       subheader="{% trans 'Edit Inventory Item' %}"/>
+{% endblock %}
 {% block content %}
   <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Edit Inventory Item' %}</h1>
     <c-form action="." method="post" enctype="multipart/form-data"
           hx-post="."
           hx-target="#content-wrapper"

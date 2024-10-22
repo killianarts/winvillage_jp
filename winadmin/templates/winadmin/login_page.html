@@ -4,33 +4,9 @@
   <div id="login-form-wrapper" class="mx-auto max-w-xl px-5">
     <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
       {% translate 'Winvillage Admin Login' %}</h2>
-    <form action="." method="post" class="grid" hx-post="." hx-swap="outerHTML" hx-target="#login-form-wrapper">
-      {% csrf_token %}
-      {% if request.GET.next %}
-        <input type="hidden" name="next" value="{{ request.GET.next }}">
-      {% endif %}
-      {#      <fieldset>#}
-      {#        <legend class="sr-only">{% translate 'Contact Information' %}</legend>#}
-      {#        <div class="grid grid-cols-1">#}
-      {#          {{ form.non_field_errors }}#}
-      {#          {% for field in form %}#}
-      {#            <label class="mb-2 grid grid-cols-1 items-center gap-x-2 text-xl" for="{{ field.id_for_label }}">#}
-      {#              {{ field.label }}#}
-      {#              {% render_field field class="" %}#}
-      {#              {% if field.errors %}#}
-      {#                {% for error in field.errors %}#}
-      {#                  <div class="flex gap-2">#}
-      {#                    <img class="inline-block" src="{% static 'core/warning_icon.svg' %}">#}
-      {#                    <p class="text-lg font-thin text-red-500 font-body">{{ error|escape }}</p>#}
-      {#                  </div>#}
-      {#                {% endfor %}#}
-      {#              {% endif %}#}
-      {#            </label>#}
-      {#          {% endfor %}#}
-      {#        </div>#}
-      {#      </fieldset>#}
+    <c-form hx-target="#login-form-wrapper">
       {{ form }}
-      <c-outline-button name="submit" type="submit">{% trans 'Login' %}</c-outline-button>
-    </form>
+      <c-button name="submit" type="submit">{% trans 'Login' %}</c-outline-button>
+    </c-form>
   </div>
 {% endblock %}

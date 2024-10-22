@@ -36,12 +36,6 @@
       {% block title %}Title{% endblock %}
     </title>
     {% tailwind_css %}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;800&display=swap"
-          rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
     <!-- _hyperscript library -->
     <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
     {% block hyperscript_behaviors %}{% endblock %}
@@ -53,6 +47,8 @@
     <!-- HTMX library -->
     {% block htmx_src %}
       <script src="{% static 'core/js/htmx.js' %}"></script>
+      <script src="{% static 'core/js/htmx-preload.js' %}"></script>
+
       {% block idiomorph_src %}
         <script src="{% static 'core/js/idiomorph-ext.js' %}"></script>
       {% endblock %}
@@ -75,19 +71,28 @@
     {% endblock %}
   </head>
 
-  <body hx-ext="morph" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="font-code">
+  <body hx-ext="morph preload" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="font-code">
     {% block body %}
-      <main id="admin-main-wrapper"
-            class="grid
-                [grid-template-columns:auto_12fr]
-                [grid-template-rows:auto_12fr]
-                [grid-template-areas:'menu_menu''content_content'] lg:[grid-template-areas:'menu_content''menu_content']
-                h-screen">
-        {% block header %}
+      <div id="admin-layout-wrapper"
+           class="grid relative
+               [grid-template-columns:auto_auto]
+               [grid-template-rows:min-content_min-content_auto]
+               [grid-template-areas:'menu_menu''header_header''content_content']
+               lg:[grid-template-areas:'menu_header''menu_content''menu_content']
+               h-screen">
+        {% block menu %}
         {% endblock %}
-        {# Margin makes room for sidebar. #}
-        <div id="dashboard-content" class="relative overflow-auto pt-10 [grid-area:content]">
-          <div class="px-4 sm:px-6 lg:px-8">
+        {% block main %}
+          {# Margin makes room for sidebar. #}
+          <main class="p-5 space-y-5">
+            <div id="page-header" class=" grid gap-x-3 [grid-area:header] [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
+              {% block page_header %}{% endblock %}
+            </div>
+            {% block pre_content %}{% endblock %}
+            <div id="dashboard-content" class="relative @container lg:overflow-auto [grid-area:content]">
+              {% block content %}{% endblock %}
+            </div>
+            {% block post_content %}{% endblock %}
             {% block messages %}
               <div id="messages" class="fixed bottom-10 right-10"
                    hx-get="{% url 'core:get_messages' %}"
@@ -95,16 +100,9 @@
                    hx-swap="morph:outerHTML"
                    hx-trigger="getMessages from:body">{% include 'core/messages.html' %}</div>
             {% endblock %}
-            {% block main %}
-              {% block top_content %}
-              {% endblock %}
-              {% block pre_content %}{% endblock %}
-              {% block content %}{% endblock %}
-              {% block post_content %}{% endblock %}
-            {% endblock %}
-          </div>
-        </div>
-      </main>
+          </main>
+        {% endblock %}
+      </div>
       {% block footer %}
       {% endblock %}
     {% endblock %}

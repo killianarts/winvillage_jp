@@ -3,58 +3,59 @@
 {% block subtitle %}
     {% translate 'Company-wise Procurement Ledger' %}
 {% endblock %}
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Procurements Management' %}"
+                         subheader="{% trans 'Company-wise Procurement Ledger' %}"/>
+{% endblock %}
 {% block content %}
-    <div id="content-wrapper" class="space-y-5">
-        <h1 class="text-3xl">{% translate 'Company-wise Procurement Ledger' %}</h1>
-        <div class="max-w-fit pl-2 space-y-2 divide-y">
-            <p>{% translate 'Filter' %}</p>
-            <form method="get" id="filter-form" action="."
-                  hx-get="."
-                  hx-trigger="change"
-                  hx-swap="outerHTML"
-                  hx-target="#procurement-list-table"
-                  hx-vals='{"use_block": "procurement_list_table", "action": "filter"}'
-                  hx-push-url="true">
-                {{ form }}
-            </form>
-        </div>
-        {% block procurement_list_table %}
-            <table id="procurement-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
-                <thead>
-                    <tr class="text-left">
-                        <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-                            <span class="pl-6">{% translate 'Procurement Date' %}</span>
-                        </th>
-                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Product' %}</th>
-                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Quantity' %}</th>
-                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Unit' %}</th>
-                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Total Price' %}</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-stone-200">
-                    {% for procurement in procurements %}
-                        <tr class="hover:bg-stone-50">
-                            <td class="whitespace-nowrap py-4 pr-3 pl-4text-sm font-medium tabular-nums text-stone-900 sm:pl-0">
-                                <a hx-boost="true" class="pl-6" href="{% url 'winadmin:procurement_detail' procurement_id=procurement.id %}">
-                                    {{ procurement.summary.date|date:"Y-m-d" }}
-                                </a>
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
-                                {{ procurement.item }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ procurement.quantity }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ procurement.price_per_unit }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ procurement.total }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endblock %}
+    <div class="max-w-fit pl-2 space-y-2 divide-y">
+        <p>{% translate 'Filter' %}</p>
+        <form method="get" id="filter-form" action="."
+              hx-get="."
+              hx-trigger="change"
+              hx-swap="outerHTML"
+              hx-target="#procurement-list-table"
+              hx-vals='{"use_block": "procurement_list_table", "action": "filter"}'
+              hx-push-url="true">
+            {{ form }}
+        </form>
     </div>
+    {% block procurement_list_table %}
+        <table id="procurement-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
+            <thead>
+                <tr class="text-left">
+                    <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
+                        <span class="pl-6">{% translate 'Procurement Date' %}</span>
+                    </th>
+                    <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Product' %}</th>
+                    <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Quantity' %}</th>
+                    <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Unit' %}</th>
+                    <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Total Price' %}</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-stone-200">
+                {% for procurement in procurements %}
+                    <tr class="hover:bg-stone-50">
+                        <td class="whitespace-nowrap py-4 pr-3 pl-4text-sm font-medium tabular-nums text-stone-900 sm:pl-0">
+                            <a hx-boost="true" class="pl-6" href="{% url 'winadmin:procurement_detail' procurement_id=procurement.id %}">
+                                {{ procurement.summary.date|date:"Y-m-d" }}
+                            </a>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
+                            {{ procurement.item }}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
+                            {{ procurement.quantity }}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
+                            {{ procurement.price_per_unit }}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
+                            {{ procurement.total }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endblock %}
 {% endblock %}

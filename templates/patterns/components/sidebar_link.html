@@ -5,23 +5,27 @@
 <a href={{ the_url }}
    hx-boost="true">
     <div class="text-xs text-pretty text-blue-50 group overflow-hidden whitespace-nowrap flex pl-[2ch]">
-        <span class="whitespace-nowrap px-[1ch]
-                     relative
-                     before:content-['>>']
-                     before:absolute
-                     before:right-full
-                     before:opacity-0
-                     before:hover:opacity-100
-                     before:text-orange-300
-                     after:left-full
-                     after:content-['░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░']
-                     after:absolute
-                     after:opacity-0
-                     after:hover:opacity-100
-                     after:text-orange-300
-                     {% if request.path == the_url %}
-                     before:opacity-100
-                     after:opacity-100
-                     {% endif %}">{{ slot }}</span>
+       <span class="whitespace-nowrap px-[1ch]
+                    relative
+                    before:content-['⇢']
+                    before:text-xl
+                    before:leading-tight
+                    before:align-text-top
+                    before:absolute
+                    before:-top-[0.5ch]
+                    before:right-full
+                    before:opacity-0
+                    before:hover:opacity-100
+                    before:text-orange-400
+                    after:left-full
+                    after:content-['░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░']
+                    after:absolute
+                    after:opacity-0
+                    after:hover:opacity-100
+                    after:text-orange-300
+                    {% if request.path == the_url %}
+                    before:opacity-100
+                    after:opacity-100
+                    {% endif %}">{{ slot }}</span>
     </div>
 </a>

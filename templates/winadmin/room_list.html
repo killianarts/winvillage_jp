@@ -3,40 +3,22 @@
 {% block subtitle %}
   {% translate 'Room List View' %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Room Management' %}"
+                       subheader="{% trans 'Room List' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper" class="space-y-5">
-    <h1 class="text-3xl">{% translate 'Room List' %}</h1>
-
-    {% block room_list_table %}
-      <table id="room-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
-        <thead>
-        <tr class="text-left">
-          <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-            <span class="pl-6">{% translate 'Room Name' %}</span>
-          </th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Pricing Tiers' %}</th>
-          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Hour' %}</th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-stone-200">
-        {% for room in rooms %}
-          <tr class="hover:bg-stone-50">
-            <td class="whitespace-nowrap py-4 pr-3 pl-4text-sm font-medium tabular-nums text-stone-900 sm:pl-0">
-              <a hx-boost="true" class="pl-6" href="{% url 'winadmin:room_detail' room.id %}">
-                {{ room.name }}
-              </a>
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
-              {% for tier in room.pricing_tiers.all %}
-                <a class="hover:underline" href="{% url 'winadmin:pricing_tier_detail' tier.pk %}">
-                  {{ tier.name }}: ￥{{ tier.get_price_per_night }},</a>
-              {% endfor %}
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">{{ room.price_per_hour }}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    {% endblock %}
-  </div>
+  {% block room_list_table %}
+    <c-table :columns="['{% trans 'Room Name' %}', '{% trans 'Room Tier' %}']">
+      {% for room in rooms %}
+        <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
+          <c-table-column :col-num="1" url="{% url 'winadmin:room_detail' room.pk %}">{{ room.name }}</c-table-column>
+          <c-table-column :col-num="2">{{ room.room_tier }}</c-table-column>
+          <a href="{% url 'winadmin:room_detail' room.pk %}" hx-boost="true">
+            <c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Room' %}</c-button>
+          </a>
+        </c-table-row>
+      {% endfor %}
+    </c-table>
+  {% endblock %}
 {% endblock %}

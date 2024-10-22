@@ -19,124 +19,129 @@
 {% block extra_styles %}
   <link rel="stylesheet" href="{% static 'recurrence/css/recurrence.css' %}">
 {% endblock %}
+{% block subtitle %}
+  {% blocktrans %}Create Campaign{% endblocktrans %}
+{% endblock %}
+
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Sales Management' %}"
+                       subheader="{% trans 'Create Campaign' %}"/>
+{% endblock %}
 {% block content %}
   {{ form.media }}
-  <div id="content-wrapper" class="space-y-5">
-    <h1 class="text-3xl text-orange-950">{% translate 'Create Campaign' %}</h1>
-    <c-form id="recurrence-form"
-            hx-target="#content-wrapper"
-            block="content">
-      {% csrf_token %}
-      <div id="container" class="max-w-lg space-y-5">
-        {{ form }}
-        <div class="space-x-5">
-          <c-button id="submit-button">{% trans "Submit" %}</c-button>
+  <c-form id="recurrence-form"
+          hx-target="#content-wrapper"
+          block="content">
+    {% csrf_token %}
+    <div id="container" class="max-w-xl space-y-5">
+      {{ form }}
+      <div class="space-x-5">
+        <c-button id="submit-button">{% trans "Submit" %}</c-button>
+      </div>
+    </div>
+  </c-form>
+  {% block calendars %}
+    {% if calendars %}
+      <div id="calendars" class="max-w-3xl p-5 shadow-sm border border-stone-100">
+        <h3 class="text-3xl text-center pb-5">{% translate 'Effective Campaign Days' %}</h3>
+        <div id="month-switcher" class="flex items-center">
+          <c-form method="get"
+                  class="grid grid-cols-2 w-full"
+                  hx-target="#calendars"
+                  hx-trigger="keyup from:#recurrence-form, mouseup from:#recurrence-form"
+                  block="calendars">
+            {{ date_filter_form }}
+            <c-button name="get_previous_month"
+                      class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
+              <span class="sr-only">Previous month</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </c-button>
+            <c-button name="get_next_month"
+                      class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
+              <span class="sr-only">Next month</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </c-button>
+          </c-form>
+        </div>
+        <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:flex-1 gap-10">
+          <div id="selected-month">
+            <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.selected_month.date|date:"Y-m" }}</h2>
+            <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
+              {% for day in calendars.weekdays %}
+                <div class="p-2">
+                  <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
+                </div>
+              {% endfor %}
+            </div>
+            <div id="selected-month-body" class="mt-2 grid grid-cols-7 text-sm">
+              <!--
+                   Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+                   Is selected, include: "text-white"
+                   Is not selected and is today, include: "text-orange-600"
+                   Is not selected and is not today and is current month, include: "text-stone-900"
+                   Is not selected and is not today and is not current month, include: "text-stone-400"
+                   Is selected and is today, include: "bg-orange-600"
+                   Is selected and is not today, include: "bg-stone-900"
+                   Is not selected, include: "hover:bg-stone-200"
+                   Is selected or is today, include: "font-semibold"
+              -->
+              {% for dt, is_occurrence in calendars.selected_month.occurrences.items %}
+                <div class="p-2">
+                  {% if is_occurrence %}
+                    <c-calendar-cell-button datetime=dt name="select_date" class="text-stone-900 bg-green-500 hover:bg-stone-400" />
+                  {% elif dt.month != calendars.selected_month.date.month %}
+                    {# show nothing #}
+                  {% else %}
+                    <c-calendar-cell-button datetime=dt name="select_date" class="text-stone-900 hover:bg-stone-400" />
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div id="next-month">
+            <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.next_month.date|date:"Y-m" }}</h2>
+            <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
+              {% for day in calendars.weekdays %}
+                <div class="p-2">
+                  <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
+                </div>
+              {% endfor %}
+            </div>
+            <div id="next-month-body" class="mt-2 grid grid-cols-7 text-sm">
+              <!--
+                   Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+                   Is selected, include: "text-white"
+                   Is not selected and is today, include: "text-orange-600"
+                   Is not selected and is not today and is current month, include: "text-stone-900"
+                   Is not selected and is not today and is not current month, include: "text-stone-400"
+                   Is selected and is today, include: "bg-orange-600"
+                   Is selected and is not today, include: "bg-stone-900"
+                   Is not selected, include: "hover:bg-stone-200"
+                   Is selected or is today, include: "font-semibold"
+              -->
+              {% for dt, is_occurrence in calendars.next_month.occurrences.items %}
+                <div class="p-2">
+                  {% if is_occurrence %}
+                    <c-calendar-cell-button datetime=dt name="select_date" class="text-stone-900 bg-green-500 hover:bg-stone-400" />
+                  {% elif dt.month != calendars.next_month.date.month %}
+                    {# show nothing #}
+                  {% else %}
+                    <c-calendar-cell-button datetime=dt name="select_date" class="text-stone-900 hover:bg-stone-400" />
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
         </div>
       </div>
-    </c-form>
-    {% block calendars %}
-      {% if calendars %}
-        <div id="calendars" class="max-w-3xl p-5 shadow-sm border border-stone-100">
-          <h3 class="text-3xl text-center pb-5">{% translate 'Effective Campaign Days' %}</h3>
-          <div id="month-switcher" class="flex items-center">
-            <c-form method="get"
-                    class="grid grid-cols-2 w-full"
-                    hx-target="#calendars"
-                    hx-trigger="keyup from:#recurrence-form, mouseup from:#recurrence-form"
-                    block="calendars">
-              {{ date_filter_form }}
-              <c-button name="get_previous_month"
-                        class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
-                <span class="sr-only">Previous month</span>
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                        clip-rule="evenodd"/>
-                </svg>
-              </c-button>
-              <c-button name="get_next_month"
-                        class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
-                <span class="sr-only">Next month</span>
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                        clip-rule="evenodd"/>
-                </svg>
-              </c-button>
-            </c-form>
-          </div>
-          <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:flex-1 gap-10">
-            <div id="selected-month">
-              <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.selected_month.date|date:"Y-m" }}</h2>
-              <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
-                {% for day in calendars.weekdays %}
-                  <div class="p-2">
-                    <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
-                  </div>
-                {% endfor %}
-              </div>
-              <div id="selected-month-body" class="mt-2 grid grid-cols-7 text-sm">
-                <!--
-                     Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
-                     Is selected, include: "text-white"
-                     Is not selected and is today, include: "text-orange-600"
-                     Is not selected and is not today and is current month, include: "text-stone-900"
-                     Is not selected and is not today and is not current month, include: "text-stone-400"
-                     Is selected and is today, include: "bg-orange-600"
-                     Is selected and is not today, include: "bg-stone-900"
-                     Is not selected, include: "hover:bg-stone-200"
-                     Is selected or is today, include: "font-semibold"
-                -->
-                {% for dt, is_occurrence in calendars.selected_month.occurrences.items %}
-                  <div class="p-2">
-                    {% if is_occurrence %}
-                      <c-calendar-cell-button datetime=dt name="select_date" class="text-stone-900 bg-green-500 hover:bg-stone-400" />
-                    {% elif dt.month != calendars.selected_month.date.month %}
-                      {# show nothing #}
-                    {% else %}
-                      <c-calendar-cell-button datetime=dt name="select_date" class="text-stone-900 hover:bg-stone-400" />
-                    {% endif %}
-                  </div>
-                {% endfor %}
-              </div>
-            </div>
-            <div id="next-month">
-              <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.next_month.date|date:"Y-m" }}</h2>
-              <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
-                {% for day in calendars.weekdays %}
-                  <div class="p-2">
-                    <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
-                  </div>
-                {% endfor %}
-              </div>
-              <div id="next-month-body" class="mt-2 grid grid-cols-7 text-sm">
-                <!--
-                     Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
-                     Is selected, include: "text-white"
-                     Is not selected and is today, include: "text-orange-600"
-                     Is not selected and is not today and is current month, include: "text-stone-900"
-                     Is not selected and is not today and is not current month, include: "text-stone-400"
-                     Is selected and is today, include: "bg-orange-600"
-                     Is selected and is not today, include: "bg-stone-900"
-                     Is not selected, include: "hover:bg-stone-200"
-                     Is selected or is today, include: "font-semibold"
-                -->
-                {% for dt, is_occurrence in calendars.next_month.occurrences.items %}
-                  <div class="p-2">
-                    {% if is_occurrence %}
-                      <c-calendar-cell-button datetime=dt name="select_date" class="text-stone-900 bg-green-500 hover:bg-stone-400" />
-                    {% elif dt.month != calendars.next_month.date.month %}
-                      {# show nothing #}
-                    {% else %}
-                      <c-calendar-cell-button datetime=dt name="select_date" class="text-stone-900 hover:bg-stone-400" />
-                    {% endif %}
-                  </div>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-        </div>
-      {% endif %}
-    {% endblock %}
-  </div>
+    {% endif %}
+  {% endblock %}
 {% endblock %}

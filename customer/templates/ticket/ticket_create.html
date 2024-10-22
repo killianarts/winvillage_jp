@@ -4,16 +4,17 @@
     {% blocktrans %}Create a ticket{% endblocktrans %}
 {% endblock %}
 
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Customer Management' %}"
+                         subheader="{% trans 'Create Ticket' %}"/>
+{% endblock %}
 {% block content %}
-    <div id="content-wrapper" class="space-y-5">
-        <h1 class="text-3xl">{% translate 'Create Ticket' %}</h1>
-        <c-form hx-target="#dashboard-content" block="content" class="space-y-5">
-            {{ form }}
-            <c-button>
-                {% trans 'Create Ticket' %}
-            </c-button>
-        </c-form>
-    </div>
+    <c-form hx-target="#dashboard-content" block="content" class="space-y-5">
+        {{ form }}
+        <c-button>
+            {% trans 'Create Ticket' %}
+        </c-button>
+    </c-form>
 {% endblock %}
 
 {% block created %}

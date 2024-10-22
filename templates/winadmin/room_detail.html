@@ -3,19 +3,18 @@
 {% block subtitle %}
   {% blocktrans %}Edit Room{% endblocktrans %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Sales Management' %}"
+                       subheader="{% trans 'Edit Room' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Edit Room' %}</h1>
-    <c-form class="grid max-w-xl"
-            hx-target="#content-wrapper"
-            block="content">
-      {{ form }}
-      <div class="space-y-5">
-        <div class="space-x-5">
-          <c-button id="submit-button" name="edit" data-action="edit">{% trans "Edit" %}</c-button>
-          <c-button name="delete" data-action="delete">{% trans "Delete" %}</c-button>
-        </div>
-      </div>
-    </form>
-  </div>
+  <c-form class="grid max-w-xl"
+          hx-target="#content-wrapper"
+          block="content">
+    {{ form }}
+    <div class="mb-2 space-y-5">
+      <c-button name="edit" data-action="edit">{% trans "Edit" %}</c-button>
+      <c-button name="delete" data-action="delete">{% trans "Delete" %}</c-button>
+    </div>
+  </c-form>
 {% endblock %}

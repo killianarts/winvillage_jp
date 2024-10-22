@@ -37,6 +37,7 @@ module.exports = {
     theme: {
         extend: {
             dropShadow: {
+                'hard-45-none': 'none',
                 'hard-45-2xs': '1px 1px 0 rgba(0, 0, 0, 0.2)',
                 'hard-45-xs': '3px 3px 0 rgba(0, 0, 0, 0.2)',
                 'hard-45-sm': '5px 5px 0 rgba(0, 0, 0, 0.2)',

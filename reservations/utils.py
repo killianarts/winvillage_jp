@@ -295,14 +295,13 @@ def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
     current_language = get_language()
     weekdays = get_localized_day_names(cal.firstweekday, current_language)
     calendars = {
-        "weekdays": weekdays,
         "selected_month": {"date": date_, "datetimes": selected_dates_and_forms},
         "next_month": {
             "date": next_month_date,
             "datetimes": next_month_dates_and_forms,
         },
     }
-    return calendars
+    return weekdays, calendars
 
 
 def generate_campaign_calendars(

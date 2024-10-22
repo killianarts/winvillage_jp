@@ -1,4 +1,4 @@
-<c-vars month weekdays />
+<c-vars month-data weekdays />
 <div {{ attrs }}>
     <h2 class="text-center text-sm font-semibold text-stone-900">{{ month.date|date:"Y-m" }}</h2>
     <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
@@ -18,15 +18,18 @@
              Is not selected, include: "hover:bg-stone-200"
              Is selected or is today, include: "font-semibold"
         -->
-        {% for dt, is_occurrence in month.occurrences.items %}
-            {% if is_occurrence %}
-                <c-calendar-cell-button :datetime=dt name="select_date" class="text-stone-900 bg-green-500 hover:bg-stone-400" />
-            {% elif dt.month != month.date.month %}
-                <div></div>
-                {# show nothing #}
-            {% else %}
-                <c-calendar-cell-button :datetime=dt name="select_date" class="text-stone-900 hover:bg-stone-400" />
-            {% endif %}
+        {% for dt, occurrences in month_data.items %}
+            {% for datetime, is_occurrence in occurrences.items %}
+                <c-calendar-cell-button :datetime={{ datetime }} />
+            {% endfor %}
+            {#% if dt.month != month_data.date.month %#}
+            <!-- <c-calendar-cell-button :datetime={{ dt }} name="select_date" class="text-stone-900 bg-green-500 hover:bg-stone-400" /> -->
+            {#% elif date.month != month_data.date.month %#}
+            <!-- <div></div> -->
+            {# show nothing #}
+            {#% else %#}
+            <!-- <c-calendar-cell-button :datetime={{ dt }} name="select_date" class="text-stone-900 hover:bg-stone-400" /> -->
+            {#% endif %#}
         {% endfor %}
     </div>
 </div>

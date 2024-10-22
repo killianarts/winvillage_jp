@@ -1,13 +1,17 @@
 {% extends 'winadmin/index.html' %}
 {% load i18n %}
+{% block subtitle %}
+  {% trans 'Create Room Tier' %}
+{% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Room Management' %}"
+                       subheader="{% trans 'Create Room Tier' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Create Room Tier' %}</h1>
-    {% block form %}
-      <c-form hx-target="#content-wrapper" block="content">
-        {{ form }}
-        <c-button>{% trans "Submit" %}</c-button>
-      </c-form>
-    {% endblock %}
-  </div>
+  {% block form %}
+    <c-form hx-target="#content-wrapper" block="content">
+      {{ form }}
+      <c-button>{% trans "Submit" %}</c-button>
+    </c-form>
+  {% endblock %}
 {% endblock %}

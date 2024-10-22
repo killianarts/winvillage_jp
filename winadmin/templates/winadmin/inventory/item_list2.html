@@ -7,40 +7,40 @@
   <div class="overflow-hidden">
     <h1 class="mb-5 text-3xl">{% translate 'Inventory Management' %}</h1>
     <div class>
-      <c-button>Add Inventory Item</c-button>
-      <c-button>Add Category</c-button>
+      <a href="{% url 'winadmin:item_create' %}">{% trans 'Add Inventory Item' %}</a>
+      <c-button>{% trans 'Add Category' %}</c-button>
     </div>
     <table class="w-full max-w-7xl table-auto divide-y divide-stone-300">
       <thead>
-      <tr class="text-left">
-        <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-          <span class="pl-6">{% translate 'Name' %}</span>
-        </th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Category' %}</th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price' %}</th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Stock' %}</th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Stock Value' %}</th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short Description' %}</th>
-      </tr>
+        <tr class="text-left">
+          <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
+            <span class="pl-6">{% translate 'Name' %}</span>
+          </th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Category' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Stock' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Stock Value' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short Description' %}</th>
+        </tr>
       </thead>
       <tbody class="divide-y divide-stone-200">
-      {% for item in items %}
-        <tr class="{% if item.stock_quantity == 0 %}bg-red-200 hover:bg-red-300{% else %} hover:bg-stone-50 {% endif %} ">
-          <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
-            <a hx-boost="true" class="pl-6"
-               href="{% url 'winadmin:item_detail' item.pk %}">
-              {{ item.name }}
-            </a>
-          </td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.category }}</td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.price_rounded }}</td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.stock_quantity }}</td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-            {{ item.get_stock_value }}
-          </td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.short_description }}</td>
-        </tr>
-      {% endfor %}
+        {% for item in items %}
+          <tr class="{% if item.stock_quantity == 0 %}bg-red-200 hover:bg-red-300{% else %} hover:bg-stone-50 {% endif %} ">
+            <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
+              <a hx-boost="true" class="pl-6"
+                 href="{% url 'winadmin:item_detail' item.pk %}">
+                {{ item.name }}
+              </a>
+            </td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.category }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.price_rounded }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.stock_quantity }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+              {{ item.get_stock_value }}
+            </td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.short_description }}</td>
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>

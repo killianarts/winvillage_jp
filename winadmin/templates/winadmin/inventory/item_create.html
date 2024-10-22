@@ -3,14 +3,15 @@
 {% block subtitle %}
   {% blocktrans %}Create Item{% endblocktrans %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Inventory Management' %}"
+                       subheader="{% trans 'Add Inventory Item' %}"/>
+{% endblock %}
+
 {% block content %}
-  <div id="content-wrapper">
-  <h1 class="text-3xl">{% translate 'Add Inventory Item' %}</h1>
-  <c-form class="grid max-w-xl" enctype="multipart/form-data"
-        hx-target="#content-wrapper"
-       block="content">
+  <c-form class="grid max-w-xl" novalidate enctype="multipart/form-data"
+          hx-target="#dashboard-content" block="content">
     {{ form }}
     <c-button>{% trans "Submit" %}</c-button>
   </c-form>
-  </div>
 {% endblock %}

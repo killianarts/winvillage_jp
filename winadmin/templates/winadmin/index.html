@@ -6,70 +6,7 @@
 {% block subtitle %}
   {% translate 'Winvillage Admin' %}
 {% endblock %}
-{% block header %}
-  <!--
-       This example requires updating your template:
-       ```
-       <html class="h-full bg-white">
-       <body class="h-full">
-       ```
-  -->
-  <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-  {% comment %}
-  <c-admin-mobile-nav user=user>
-  <ul>
-  <li>
-  <c-sidebar-group>{% translate 'Customer Management' %}</c-sidebar-button>
-  <ul>
-  <li><c-sidebar-link url='winadmin:customer_list'>{% trans 'Search Customers' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:ticket_create'>{% trans 'Create Ticket' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:ticket_list'>{% trans 'View Tickets' %}</c-sidebar-link></li>
-  </ul>
-  </li>
-  <li>
-  <c-sidebar-group >{% translate 'Inventory Management' %}</c-sidebar-button>
-  <li>
-  <ul>
-  <li><c-sidebar-link url='winadmin:item_list'>{% trans 'View Inventory' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:item_create'>{% trans 'Add Inventory Item' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:category_list'>{% trans 'View Categories' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:category_create'>{% trans 'Add Category' %}</c-sidebar-link></li>
-  </ul>
-  </li>
-  <li>
-  <c-sidebar-group >{% translate 'Sales Management' %}</c-sidebar-button>
-  <ul>
-  <li><c-sidebar-link url='winadmin:sales_ledger'>{% trans 'Sales Ledger' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:pricing_tier_group_list'>{% trans 'View Pricing Tiers' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:pricing_tier_group_create'>{% trans 'Create Pricing Tiers' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:campaign_list'>{% trans 'View Campaigns' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:campaign_create'>{% trans 'Create Campaign' %}</c-sidebar-link></li>
-  </ul>
-  </li>
-  <li>
-  <c-sidebar-group >{% translate 'Room Management' %}</c-sidebar-button>
-  <ul>
-  <li><c-sidebar-link url='winadmin:room_list'>{% trans 'View Rooms' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:room_create'>{% trans 'Create Room' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:room_tier_list'>{% trans 'View Room Tiers' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:room_tier_create'>{% trans 'Create Room Tier' %}</c-sidebar-link></li>
-  </ul>
-  </li>
-  <li>
-  <c-sidebar-group >{% translate 'Procurements Management' %}</c-sidebar-button>
-  <ul>
-  <li><c-sidebar-link url='winadmin:vendor_create'>{% trans 'Create Vendor' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:vendor_list'>{% trans 'View Vendors' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:procurement_create'>{% trans 'Create Procurement' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:accounts_payable_ledger'>{% trans 'Accounts Payable Ledger' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:accounts_payable_aging_report'>{% trans 'Accounts Payable Aging Report' %}</c-sidebar-link></li>
-  <li><c-sidebar-link url='winadmin:company_wise_procurement_ledger'>{% trans 'Company-wise Procurement Ledger' %}</c-sidebar-link></li>
-  </ul>
-  </li>
-  </li>
-  </ul>
-  </c-admin-mobile-nav>
-  {% endcomment %}
+{% block menu %}
   <c-sidebar :user=user
              logo-url="winadmin:index"
              :navigation='{
@@ -112,7 +49,6 @@
                    },
 
                    }' />
-
 {% endblock %}
 {% block content %}
   <div class="grid grid-cols-2 [grid-area:content] max-w-4xl gap-7">

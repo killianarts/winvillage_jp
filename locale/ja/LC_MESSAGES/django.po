@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-11 16:09+0900\n"
+"POT-Creation-Date: 2024-10-17 11:52+0900\n"
 "PO-Revision-Date: 2024-07-01 11:46+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,7 +153,7 @@ msgstr "短い説明"
 msgid "Short Description"
 msgstr "短い説明"
 
-#: core/models.py:232
+#: core/models.py:232 templates/patterns/components/table.html:5
 #: templates/procurement/accounts_payable_aging_report.html:18
 #: templates/procurement/accounts_payable_ledger.html:14
 msgid "Vendor"
@@ -1445,6 +1445,7 @@ msgid "Account Name"
 msgstr ""
 
 #: templates/accounting/account_list.html:35
+#: templates/patterns/components/table.html:12
 #: templates/procurement/accounts_payable_aging_report.html:25
 #: winadmin/templates/winadmin/transactions/sales_list_by_period.html:43
 #: winadmin/views.py:397
@@ -1675,31 +1676,36 @@ msgstr "支払日"
 msgid "Log Out"
 msgstr "ログアウト"
 
+#: templates/patterns/components/table.html:7
+#: templates/procurement/accounts_payable_aging_report.html:20
+msgid "Current"
+msgstr "現在残高"
+
+#: templates/patterns/components/table.html:8
+#: templates/procurement/accounts_payable_aging_report.html:21
+msgid "1-30 Days"
+msgstr "1−30日"
+
+#: templates/patterns/components/table.html:9
+#: templates/procurement/accounts_payable_aging_report.html:22
+msgid "31-60 Days"
+msgstr "31-60日"
+
+#: templates/patterns/components/table.html:10
+#: templates/procurement/accounts_payable_aging_report.html:23
+msgid "61-90 Days"
+msgstr "61-90日"
+
+#: templates/patterns/components/table.html:11
+#: templates/procurement/accounts_payable_aging_report.html:24
+msgid "91+ Days"
+msgstr "91日以降"
+
 #: templates/procurement/accounts_payable_aging_report.html:4
 #: templates/procurement/accounts_payable_aging_report.html:8
 #: winadmin/templates/winadmin/index.html:111
 msgid "Accounts Payable Aging Report"
 msgstr "買掛残高一覧表"
-
-#: templates/procurement/accounts_payable_aging_report.html:20
-msgid "Current"
-msgstr "現在残高"
-
-#: templates/procurement/accounts_payable_aging_report.html:21
-msgid "1-30 Days"
-msgstr "1−30日"
-
-#: templates/procurement/accounts_payable_aging_report.html:22
-msgid "31-60 Days"
-msgstr "31-60日"
-
-#: templates/procurement/accounts_payable_aging_report.html:23
-msgid "61-90 Days"
-msgstr "61-90日"
-
-#: templates/procurement/accounts_payable_aging_report.html:24
-msgid "91+ Days"
-msgstr "91日以降"
 
 #: templates/procurement/accounts_payable_ledger.html:4
 #: templates/procurement/accounts_payable_ledger.html:8

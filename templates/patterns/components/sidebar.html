@@ -14,7 +14,7 @@
             {% for group, links in navigation.items %}
               <li>
                 <c-sidebar-group header-class="py-[0.5ch] lg:py-0">{{ group }}</c-sidebar-group>
-                <ul class="hidden opacity-0 lg:inline lg:opacity-100 transition-all duration-300" _="on click from the previous <header/> toggle .hidden on me wait a tick then toggle .opacity-0 on me">
+                <ul preload="preload:init" class="hidden opacity-0 lg:inline lg:opacity-100 transition-all duration-300" _="on mousedown from the previous <header/> toggle .hidden on me wait a tick then toggle .opacity-0 on me">
                   {% for text, url in links.items %}
                     <li>
                       <c-sidebar-link url='{{ url }}'>{{ text }}</c-sidebar-link>
@@ -35,7 +35,7 @@
         </a>
       </div>
     {% endif %}
-    <div _="on click toggle .hidden on the previous <nav/>" class="w-full text-xl text-center text-white order-4 sm:hidden mx-auto">
+    <div _="on mousedown toggle .hidden on the previous <nav/>" class="w-full text-xl text-center text-white order-4 sm:hidden mx-auto">
       ⇅
     </div>
   </div>

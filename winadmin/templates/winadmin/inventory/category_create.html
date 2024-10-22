@@ -3,14 +3,15 @@
 {% block subtitle %}
   {% blocktrans %}Create Category{% endblocktrans %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Inventory Management' %}"
+                       subheader="{% trans 'Category Create View' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <h1 class="mb-5 text-3xl">{% translate 'Category Create View' %}</h1>
-    <c-form class="grid max-w-xl space-y-2"
-            hx-target="#content-wrapper"
-            block="content">
-      {{ form }}
-      <c-button>{% trans "Submit" %}</c-button>
-    </c-form>
-  </div>
+  <c-form class="grid max-w-xl space-y-2"
+          hx-target="#content-wrapper"
+          block="content">
+    {{ form }}
+    <c-button>{% trans "Submit" %}</c-button>
+  </c-form>
 {% endblock %}

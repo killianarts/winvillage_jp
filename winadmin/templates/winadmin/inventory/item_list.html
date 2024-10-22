@@ -1,44 +1,74 @@
 {% extends 'winadmin/index.html' %}
 {% load i18n %}
 {% block subtitle %}
-  {% translate 'Inventory Item List View' %}
+  {% translate 'Inventory Management' %}
+{% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Inventory Management' %}"
+                       subheader="{% trans 'Inventory List' %}"/>
 {% endblock %}
 {% block content %}
-  <div class="overflow-hidden">
-    <h1 class="mb-5 text-3xl">{% translate 'Inventory Item List View' %}</h1>
+  <div class="my-2 hidden">
+    <c-link url="{% url 'winadmin:item_create' %}">{% trans 'Add Inventory Item' %}</c-link>
+    <c-link url="{% url 'winadmin:category_create' %}">{% trans 'Add Category' %}</c-link>
+  </div>
+  <c-table :columns="['{% trans 'Name' %}', '{% trans 'Category' %}', '{% trans 'Price' %}', '{% trans 'Stock' %}', '{% trans 'Stock Value' %}', '{% trans 'Short Description' %}']">
+    {% for item in items %}
+      <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
+        <c-table-column :col-num="1" url="{% url 'winadmin:item_detail' item.pk %}">{{item.name}}</c-table-column>
+        <c-table-column :col-num="2">{{item.category}}</c-table-column>
+        <c-table-column :col-num="3">{{item.price_rounded}}</c-table-column>
+        <c-table-column :col-num="4">{{item.stock_quantity}}</c-table-column>
+        <c-table-column :col-num="5">{{item.get_stock_value}}</c-table-column>
+        <c-table-column :col-num="6">{{item.short_description}}</c-table-column>
+        <a href="{% url 'winadmin:item_detail' item.pk %}" class="contents" hx-boost="true">
+          <c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Item' %}</c-button>
+        </a>
+      </c-table-row>
+    {% endfor %}
+  </c-table>
+  {% comment %}
+
     <table class="w-full max-w-7xl table-auto divide-y divide-stone-300">
       <thead>
-      <tr class="text-left">
-        <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-          <span class="pl-6">{% translate 'Name' %}</span>
-        </th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Category' %}</th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price' %}</th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Stock' %}</th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Stock Value' %}</th>
-        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short Description' %}</th>
-      </tr>
+        <tr class="text-left">
+          <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
+            <span class="pl-6">{% translate 'Name' %}</span>
+          </th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Category' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Stock' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Stock Value' %}</th>
+          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Short Description' %}</th>
+        </tr>
       </thead>
       <tbody class="divide-y divide-stone-200">
-      {% for item in items %}
-        <tr class="{% if item.stock_quantity == 0 %}bg-red-200 hover:bg-red-300{% else %} hover:bg-stone-50 {% endif %} ">
-          <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
-            <a hx-boost="true" class="pl-6"
-               href="{% url 'winadmin:item_detail' item.pk %}">
-              {{ item.name }}
-            </a>
-          </td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.category }}</td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.price_rounded }}</td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.stock_quantity }}</td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-            {{ item.get_stock_value }}
-          </td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.short_description }}</td>
-        </tr>
-      {% endfor %}
+        {% for item in items %}
+          {% for col in item %}
+            {{ col }}
+          {% endfor %}
+
+          <tr class="{% if item.stock_quantity == 0 %}bg-red-200 hover:bg-red-300{% else %} hover:bg-stone-50 {% endif %} ">
+            <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
+              <a hx-boost="true" class="pl-6"
+                 href="{% url 'winadmin:item_detail' item.pk %}">
+                {{ item.name }}
+              </a>
+            </td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.category }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.price_rounded }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.stock_quantity }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+              {{ item.get_stock_value }}
+            </td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{{ item.short_description }}</td>
+          </tr>
+
+        {% endfor %}
       </tbody>
+  {% endcomment %}
+
     </table>
-  </div>
+
   </main>
 {% endblock %}

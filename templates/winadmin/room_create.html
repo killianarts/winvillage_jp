@@ -5,21 +5,19 @@
 {% block subtitle %}
   {% blocktrans %}Create Room{% endblocktrans %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Room Management' %}"
+                       subheader="{% trans 'Create Room' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Create Room' %}</h1>
-    {% block form %}
-      <c-form id="room-create-form" class="max-w-xl grid"
-              hx-target="#content-wrapper"
-              block="content">
-        <div _="on htmx:afterSettle from #content-wrapper set input to the last <input/> in me then add @checked to the input">
-          {{ room_create_form }}
-        </div>
-        <div>
-          <c-button id="submit-button" name="create-room" value="create-room">{% trans "Submit" %}</c-button>
-        </div>
-      </c-form>
-    {% endblock %}
-
-  </div>
+    <c-form id="room-create-form" class="max-w-xl grid"
+            hx-target="#content-wrapper"
+            block="content">
+      <div _="on htmx:afterSettle from #content-wrapper set input to the last <input/> in me then add @checked to the input">
+        {{ room_create_form }}
+      </div>
+      <div>
+        <c-button id="submit-button" name="create-room" value="create-room">{% trans "Submit" %}</c-button>
+      </div>
+    </c-form>
 {% endblock %}

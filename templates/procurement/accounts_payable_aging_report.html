@@ -3,63 +3,23 @@
 {% block subtitle %}
     {% translate 'Accounts Payable Aging Report' %}
 {% endblock %}
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Procurements Management' %}"
+                         subheader="{% trans 'Accounts Payable Aging Report' %}"/>
+{% endblock %}
 {% block content %}
-    <div id="content-wrapper" class="space-y-5">
-        <h1 class="text-3xl">{% translate 'Accounts Payable Aging Report' %}</h1>
-        {% block vendor_list_table %}
-            <c-table columns="['ABC', 'DEF', 'GHI']" table-data={{ vendor_aging_reports }}>
-                <c-th position="0">Hello</c-th><c-th>Hello</c-th><c-th>Hello</c-th><c-th>Hello</c-th>
-                <c-hd position="0"></c-hd>
-            </c-table>
-            <table id="vendor-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300 text-xs xl:text-sm">
-                <thead>
-                    <tr class="text-left">
-                        <th class="pr-3 pl-4 text-left font-semibold text-stone-900 py-3.5 sm:pl-0 whitespace-nowrap">
-                            <span class="pl-6">{% translate 'Vendor' %}</span>
-                        </th>
-                        <th class="px-3 text-left font-semibold text-stone-900 py-3.5 whitespace-nowrap">{% translate 'Current' %}</th>
-                        <th class="px-3 text-left font-semibold text-stone-900 py-3.5 whitespace-nowrap">{% translate '1-30 Days' %}</th>
-                        <th class="px-3 text-left font-semibold text-stone-900 py-3.5 whitespace-nowrap">{% translate '31-60 Days' %}</th>
-                        <th class="px-3 text-left font-semibold text-stone-900 py-3.5 whitespace-nowrap">{% translate '61-90 Days' %}</th>
-                        <th class="px-3 text-left font-semibold text-stone-900 py-3.5 whitespace-nowrap">{% translate '91+ Days' %}</th>
-                        <th class="px-3 text-left font-semibold text-stone-900 py-3.5 whitespace-nowrap">{% translate 'Balance' %}</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-stone-200">
-                    {% for report in vendor_aging_reports %}
-                        <tr class="hover:bg-stone-50">
-                            <td class="whitespace-nowrap py-4 pr-3 pl-4font-medium tabular-nums text-stone-900 sm:pl-0">
-                                <a hx-boost="true" class="pl-6" href="{% url 'winadmin:vendor_detail' vendor_id=report.vendor.id %}">
-                                    {{ report.vendor.name }}
-                                </a>
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 font-code font-medium slashed-zero tabular-nums text-stone-900">
-                                {{ report.current_invoice.amount }}
-                                {{ report.current_invoice.days_past_due_date }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ report.1_to_30_days_past_due_invoice.amount }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ report.31_to_60_days_past_due_invoice.amount }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ report.61_to_90_days_past_due_invoice.amount }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {% for invoice in report.91_or_more_days_past_due_invoices %}
-                                    <p>
-                                        {{ invoice.amount }}
-                                    </p>
-                                {% endfor %}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ report.balance }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endblock %}
-    </div>
+    <c-table :columns="['{% trans 'Vendor' %}', '{% trans 'Current' %}', '{% trans '1-30 Days' %}', '{% trans '31-60 Days' %}', '{% trans '61-90 Days' %}', '{% trans '91+ Days' %}', '{% trans 'Balance' %}']">
+    {% for report in vendor_aging_reports %}
+      <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
+        <c-table-column :col-num="1" url="{% url 'winadmin:vendor_detail' vendor_id=report.vendor.id %}">{{ report.vendor.name }}</c-table-column>
+        <c-table-column :col-num="2">{{ report.current_invoice.amount }}</c-table-column>
+        <c-table-column :col-num="3">{{ report.1_to_30_days_past_due_invoice.amount }}</c-table-column>
+        <c-table-column :col-num="4">{{ report.31_to_60_days_past_due_invoice.amount }}</c-table-column>
+        <c-table-column :col-num="5">{{ report.61_to_90_days_past_due_invoice.amount }}</c-table-column>
+        <c-table-column :col-num="6">{% for invoice in report.91_or_more_days_past_due_invoices %}<p>{{ invoice.amount }}</p>{% endfor %}</c-table-column>
+        <c-table-column :col-num="7">{{ report.balance }}</c-table-column>
+        <c-button class="sm:hidden col-span-2 drop-shadow-none"><a href="{% url 'winadmin:vendor_detail' vendor_id=report.vendor.id %}" hx-boost="true">{% trans 'Edit Vendor' %}</a></c-button>
+      </c-table-row>
+    {% endfor %}
+    </c-table>
 {% endblock %}

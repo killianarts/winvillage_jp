@@ -3,42 +3,20 @@
 {% block subtitle %}
   {% translate 'Category List View' %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Inventory Management' %}"
+                       subheader="{% trans 'Category List' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <div class="overflow-hidden">
-      <h1 class="mb-5 text-3xl">{% translate 'Categories' %}</h1>
-      <table class="w-full max-w-7xl table-auto divide-y divide-stone-300">
-        <thead>
-        <tr class="text-left">
-          <th class="pr-3 pl-4 text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-            <span class="pl-6">{% translate 'Category' %}</span>
-          </th>
-          <th class="pr-3 pl-4 text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">{% translate 'Items in Category' %}</th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-stone-200">
-        {% for category in categories %}
-          <tr class="hover:bg-stone-50">
-            <td class="whitespace-nowrap py-4 pr-3 text-sm font-medium text-stone-900 sm:pl-0">
-              <a hx-get="{% url 'winadmin:category_detail' category.pk %}"
-                 hx-target="#content-wrapper"
-                 hx-swap="morph:outerHTML"
-                 hx-push-url="{% url 'winadmin:category_detail' category.pk %}"
-                 hx-vals='{"use_block":"content"}'
-                 class="pl-6"
-                 href="{% url 'winadmin:category_detail' category.pk %}">
-                {{ category.name }}
-              </a>
-            </td>
-              <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
-            {% for item in category.item_set.all %}
-                {{ item }}{% if category.item_set.all.count > 1 and not forloop.last %}, {% endif %} 
-            {% endfor %}
-              </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <c-table :columns="['{% trans 'Category' %}', '{% trans 'Items in Category' %}']">
+    {% for category in categories %}
+      <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
+        <c-table-column :col-num="1" url="{% url 'winadmin:category_detail' category.pk %}">{{category.name}}</c-table-column>
+        <c-table-column :col-num="2">{% for category in category.item_set.all %}{% if not forloop.last %}{{category}}, {% else %}{{category}}{% endif %}{% endfor %}</c-table-column>
+        <a href="{% url 'winadmin:category_detail' category.pk %}" hx-boost="true">
+          <c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Category' %}</c-button>
+        </a>
+      </c-table-row>
+    {% endfor %}
+  </c-table>
 {% endblock %}

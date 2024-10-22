@@ -88,7 +88,8 @@
      });
     </script>
 {% endblock %}
-{% block content_main %}
+{% comment %}
+    {% block content_main %}
     <main _="install SetCount">
         <c-hero class="relative"
                 opacity="opacity-40"
@@ -721,4 +722,8 @@
         </div>
     </main>
 
+    {% endblock %}
+{% endcomment %}
+
+{% block header %}
 {% endblock %}

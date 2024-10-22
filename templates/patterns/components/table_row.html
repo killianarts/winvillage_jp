@@ -1,0 +1,24 @@
+<div-tr class="grid [grid-template-columns:max-content_1fr] text-blue-950 border border-blue-950 sm:border-none drop-shadow-hard-45-xs sm:drop-shadow-none
+               hover:border-orange-500 active:bg-blue-500
+               sm:table-row {{ vertical_stripes }} {{ class }}"
+        _="on mousedown
+               toggle .{{ vertical_stripes }} .bg-blue-300 on me" {{ attrs }}>
+    {% if not slot %}
+        {% for col in columns %}
+            {% if forloop.first %}
+                <div-td class="grid grid-cols-2 gap-2 text-white bg-blue-700 whitespace-nowrap tabular-nums px-2 py-2
+                               sm:table-cell sm:text-inherit sm:bg-inherit sm:border sm:border-blue-300 sm:pl-6">
+                    <span class="sm:hidden" _="on load get <input[name='{{ forloop.counter }}']/> then set my innerHTML to its value"></span><span>{{ col }}</span>
+                </div-td>
+            {% else %}
+                <div-td class="grid grid-cols-2 gap-2 px-2 py-2 whitespace-nowrap tabular-nums
+                               sm:table-cell sm:border sm:border-blue-200 sm:px-3">
+                    <span class="sm:hidden" _="on load get <input[name='{{ forloop.counter }}']/> then set my innerHTML to its value"></span><span>{{ col }}</span>
+                </div-td>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {{ slot }}
+    {% endif %}
+
+</div-tr>

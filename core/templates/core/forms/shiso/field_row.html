@@ -14,12 +14,19 @@
     {% if field.label %}
         <label class="field-body font-code">
     {% endif %}
-    <div class="field-and-help-text @container grid lg:grid-cols-2{% if field.help_text %}{% else %}{% endif %}">
+    <div class="field-and-help-text @container grid{% if field.help_text %}lg:grid-cols-2{% else %}{% endif %}">
         <div class="field grid grid-rows-subgrid row-span-3">
             <c-form-field-top text={{ field.label }} />
-            <c-form-field-content left-char="▷" class="control {% if field.field|field_type == "MoneyField" %}[grid-template-columns:1ch_2fr_1fr_1ch]{% else %}grid{% endif %} [grid-template-columns:1ch_1fr_1ch] items-center space-x-2">
-                {% render_field field class="border-none font-code focus:ring-blue-500 focus:ring-2 m-none focus:border-blue-950 border-blue-950" %}
-            </c-form-field-content>
+            {% if field.field|field_type == "MoneyField" %}
+                <c-form-field-content left-char="▷" class="control items-center space-x-2"
+                                      grid-layout="[grid-template-columns:1ch_2fr_1fr_1ch]">
+                    {% render_field field class="border-none font-code focus:ring-blue-500 focus:ring-2 m-none focus:border-blue-950 border-blue-950" %}
+                </c-form-field-content>
+            {% else %}
+                <c-form-field-content left-char="▷" class="control items-center space-x-2">
+                    {% render_field field class="border-none font-code focus:ring-blue-500 focus:ring-2 m-none focus:border-blue-950 border-blue-950" %}
+                </c-form-field-content>
+            {% endif %}
             <c-form-field-bottom text={{ field.error }} />
         </div>
         {% if field.help_text %}

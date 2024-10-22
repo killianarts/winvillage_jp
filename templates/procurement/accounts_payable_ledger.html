@@ -3,42 +3,22 @@
 {% block subtitle %}
     {% translate 'Accounts Payable Ledger' %}
 {% endblock %}
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Procurements Management' %}"
+                         subheader="{% trans 'Accounts Payable Ledger' %}"/>
+{% endblock %}
 {% block content %}
-    <div id="content-wrapper" class="space-y-5">
-        <h1 class="text-3xl">{% translate 'Accounts Payable Ledger' %}</h1>
-        {% block invoice_list_table %}
-            <table id="invoice-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
-                <thead>
-                    <tr class="text-left">
-                        <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-                            <span class="pl-6">{% translate 'Vendor' %}</span>
-                        </th>
-                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Invoice Date' %}</th>
-                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Due Date' %}</th>
-                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Amount' %}</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-stone-200">
-                    {% for invoice in invoices %}
-                        <tr class="hover:bg-stone-50">
-                            <td class="whitespace-nowrap py-4 pr-3 pl-4text-sm font-medium tabular-nums text-stone-900 sm:pl-0">
-                                <a hx-boost="true" class="pl-6" href="{% url 'winadmin:invoice_detail' invoice_id=invoice.id %}">
-                                    {{ invoice.vendor }}
-                                </a>
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
-                                {{ invoice.invoiced_on|date:"Y-m-d" }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ invoice.due_on|date:"Y-m-d" }}
-                            </td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                                {{ invoice.amount }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endblock %}
-    </div>
+    {% block invoice_list_table %}
+        <c-table :columns="['{% trans 'Vendor' %}', '{% trans 'Invoice Date' %}', '{% trans 'Due Date' %}', '{% trans 'Amount' %}']">
+            {% for invoice in invoices %}
+                <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
+                    <c-table-column :col-num="1" url="{% url 'winadmin:invoice_detail' invoice_id=invoice.id %}">{{ invoice.vendor }}</c-table-column>
+                    <c-table-column :col-num="2">{{ invoice.invoiced_on|date:"Y-m-d" }}</c-table-column>
+                    <c-table-column :col-num="3">{{ invoice.due_on|date:"Y-m-d" }}</c-table-column>
+                    <c-table-column :col-num="4">{{ invoice.amount }}</c-table-column>
+                    <a href="{% url 'winadmin:invoice_detail' invoice_id=invoice.id %}" hx-boost="true"><c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Vendor' %}</c-button></a>
+                </c-table-row>
+            {% endfor %}
+        </c-table>
+    {% endblock %}
 {% endblock %}

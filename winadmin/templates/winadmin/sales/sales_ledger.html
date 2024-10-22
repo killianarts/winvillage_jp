@@ -3,73 +3,87 @@
 {% block subtitle %}
     {% translate 'Sales Ledger' %}
 {% endblock %}
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Sales Management' %}"
+                         subheader="{% trans 'Sales Ledger' %}"/>
+{% endblock %}
+
 {% block content %}
-    <div class="overflow-hidden">
-        <h1 class="mb-5 text-3xl">{% translate 'Sales Ledger' %}</h1>
-        <c-form method="get"
-                hx-trigger="change delay:0ms"
-                hx-target="#sales-table-wrapper"
-                hx-push-url="true"
-                block="sales_tables" hx-vals='{"action": "filter"}'
-                class="max-w-7xl">
-            <div class="mb-5">
-                <p>{% translate 'Filter' %}</p>
-                {{ form }}
-            </div>
-        </c-form>
+    <c-form method="get"
+            hx-trigger="change delay:0ms"
+            hx-target="#sales-table-wrapper"
+            hx-push-url="true"
+            block="sales_tables" hx-vals='{"action": "filter"}'
+            class="max-w-7xl">
+        <div class="mb-5">
+            <p>{% translate 'Filter' %}</p>
+            {{ form }}
+        </div>
+    </c-form>
+    {% block sales_table %}
+        <div id="sales-table-wrapper">
+            <c-form action="{% url 'winadmin:transaction_export_csv_by_period' %}" method="get" class="mb-5">
+                <input type="hidden" name="year" value="{{ form.year.value }}">
+                <input type="hidden" name="month" value="{{ form.month.value }}">
+                <c-button name="export">{% trans 'Export CSV' %}</c-button>
+            </c-form>
+            <c-table :columns="['{% trans 'Date' %}', '{% trans 'Product' %}', '{% trans 'Quantity' %}', '{% trans 'Price Per Unit' %}', '{% trans 'Sale Amount' %}', '{% trans 'Remainder' %}']">
+                {% for detail in details %}
+                    <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
+                        <c-table-column :col-num="1" url="{% url 'winadmin:detail_detail' detail.pk %}">{{ detail.created_at|date:"Y-m-d" }}</c-table-column>
+                        <c-table-column :col-num="2" url="{% url 'winadmin:detail_detail' detail.pk %}">{{ detail.item }}</c-table-column>
+                        <c-table-column :col-num="3" url="{% url 'winadmin:detail_detail' detail.pk %}">{{ detail.quantity }}</c-table-column>
+                        <c-table-column :col-num="4" url="{% url 'winadmin:detail_detail' detail.pk %}">{{ detail.price_per_unity }}</c-table-column>
+                        <c-table-column :col-num="5" url="{% url 'winadmin:detail_detail' detail.pk %}">{{ detail.total }}</c-table-column>
+                        <c-table-column :col-num="6" url="{% url 'winadmin:detail_detail' detail.pk %}">{% for leg in detail.summary.legs.all %}{% if leg.account == account %}{{ leg.account_balance_after }}{% endif %}{% endfor %}</c-table-column>
+                        <c-button class="sm:hidden col-span-2 drop-shadow-none"><a href="{% url 'winadmin:detail_detail' detail.pk %}" hx-boost="true">{% trans 'Edit Detail' %}</a></c-button>
+                    </c-table-row>
+                {% endfor %}
+            </c-table>
 
-
-        {% block sales_table %}
-            <div id="sales-table-wrapper">
-                <form action="{% url 'winadmin:transaction_export_csv_by_period' %}" method="get">
-                    <input type="hidden" name="year" value="{{ form.year.value }}">
-                    <input type="hidden" name="month" value="{{ form.month.value }}">
-                    <c-button name="export" class="ml-5">{% trans 'Export CSV' %}</c-button>
-                </form>
-                <table id="sales-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300 font-code">
-                    <thead>
-                        <tr class="text-left">
-                            <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-                                <span class="pl-6">{% translate 'Date' %}</span>
-                            </th>
-                            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Product' %}</th>
-                            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Quantity' %}</th>
-                            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Unit' %}</th>
-                            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Sale Amount' %}</th>
-                            <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Remainder' %}</th>
+            <table id="sales-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300 font-code">
+                <thead>
+                    <tr class="text-left">
+                        <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
+                            <span class="pl-6">{% translate 'Date' %}</span>
+                        </th>
+                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Product' %}</th>
+                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Quantity' %}</th>
+                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Unit' %}</th>
+                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Sale Amount' %}</th>
+                        <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Remainder' %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-200">
+                    {% for detail in details %}
+                        <tr class="hover:bg-stone-50">
+                            <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
+                                {{ detail.created_at|date:"Y-m-d" }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                                {{ detail.item }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                                {{ detail.quantity }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                                {{ detail.price_per_unit }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                                {{ detail.total }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
+                                {% for leg in detail.summary.legs.all %}
+                                    {% if leg.account == account %}
+                                        {{ leg.account_balance_after }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody class="divide-y divide-stone-200">
-                        {% for detail in details %}
-                            <tr class="hover:bg-stone-50">
-                                <td class="whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-stone-900 sm:pl-0">
-                                    {{ detail.created_at|date:"Y-m-d" }}
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-                                    {{ detail.item }}
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-                                    {{ detail.quantity }}
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-                                    {{ detail.price_per_unit }}
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-                                    {{ detail.total }}
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-stone-600">
-                                    {% for leg in detail.summary.legs.all %}
-                                        {% if leg.account == account %}
-                                            {{ leg.account_balance_after }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% endblock %}
-    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
   </main>
 {% endblock %}

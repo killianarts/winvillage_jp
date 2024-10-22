@@ -5,14 +5,13 @@
 {% block subtitle %}
     {% blocktrans %}Create Vendor{% endblocktrans %}
 {% endblock %}
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Procurements Management' %}"
+                         subheader="{% trans 'Create Vendor' %}"/>
+{% endblock %}
 {% block content %}
-    <div id="content-wrapper">
-        <h1 class="text-3xl">{% translate 'Create Vendor' %}</h1>
-        {% block form %}
-            <c-form id="vendor-create-form" hx-target="#content-wrapper" block="content">
-                    {{ form }}
-                    <c-button id="submit-button" name="create-vendor" value="create-vendor">{% trans "Submit" %}</c-button>
-            </c-form>
-        {% endblock %}
-    </div>
+    <c-form id="vendor-create-form" class="p-2" hx-target="#content-wrapper" block="content">
+        {{ form }}
+        <c-button name="create-vendor" value="create-vendor">{% trans "Submit" %}</c-button>
+    </c-form>
 {% endblock %}
