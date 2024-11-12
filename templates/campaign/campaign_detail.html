@@ -30,7 +30,7 @@
   {{ form.media }}
   <c-form class="grid max-w-xl"
           hx-target="#content-wrapper"
-          block="content">
+          dj-block="content">
     <div id="container" class="space-y-5">
       {{ form }}
       <div class="space-x-5">
@@ -46,7 +46,7 @@
       <div id="month-switcher" class="flex items-center">
         <c-form method="get" class="grid grid-cols-2 w-full"
                 hx-target="#calendars"
-                block="calendars">
+                dj-block="calendars">
           {{ date_filter_form }}
           <button name="get_previous_month" class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
             <span class="sr-only">Previous month</span>

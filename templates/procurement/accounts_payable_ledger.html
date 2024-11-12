@@ -16,7 +16,7 @@
                     <c-table-column :col-num="2">{{ invoice.invoiced_on|date:"Y-m-d" }}</c-table-column>
                     <c-table-column :col-num="3">{{ invoice.due_on|date:"Y-m-d" }}</c-table-column>
                     <c-table-column :col-num="4">{{ invoice.amount }}</c-table-column>
-                    <a href="{% url 'winadmin:invoice_detail' invoice_id=invoice.id %}" hx-boost="true"><c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Vendor' %}</c-button></a>
+                    <c-table-card-button url="{% url 'winadmin:invoice_detail' invoice_id=invoice.id %}">{% trans 'Edit Invoice' %}</c-table-card-button>
                 </c-table-row>
             {% endfor %}
         </c-table>

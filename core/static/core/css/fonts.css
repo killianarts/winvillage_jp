@@ -5,6 +5,7 @@
 @layer base {
 @font-face {
       font-family: 'Berkeley Mono';
+      font-variant-ligatures:"contextual";
       src: url('{% static "core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff2" %}') format('woff2'),
       url('{% static "core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff" %}') format('woff');
       font-weight: 400;

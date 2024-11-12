@@ -4,7 +4,7 @@
         <c-table-row class="hidden bg-blue-700 text-white">
             {% for col in columns %}
                 {% if forloop.first %}
-                    <c-table-column class="border-none">
+                    <c-table-column class="border-none" decoration="▚▚">
                         {{ col }} <input type="hidden" name="{{forloop.counter}}" value="{{col}}" />
                     </c-table-column>
                 {% else %}
@@ -15,7 +15,7 @@
             {% endfor %}
         </c-table-row>
     </div-thead>
-    <div-tbody class="flex flex-wrap @container gap-5 min-[450px]:grid-cols-2 sm:table-row-group">
+    <div-tbody class="flex flex-wrap gap-5 min-[450px]:grid-cols-2 sm:table-row-group">
         {% if not slot %}
             {% for row in table_data %}
                 <c-table-row _="on mousedown toggle .bg-blue-300 on me">

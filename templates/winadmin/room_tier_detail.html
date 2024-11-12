@@ -8,7 +8,7 @@
                        subheader="{% trans 'Edit Room Tier' %}"/>
 {% endblock %}
 {% block content %}
-  <c-form hx-target="this" block="content">
+  <c-form hx-target="this" dj-block="content">
     {{ form }}
     <div class="mb-2 space-x-5">
       <c-button>{% trans "Edit" %}</c-button>

@@ -406,6 +406,35 @@ class Reservation(BaseModel):
         self.stay.save()
         return self.stay.start, self.stay.end
 
+
+    def set_shortterm_date(self, selected_datetime: pendulum.DateTime):
+        self.stay.start = selected_datetime
+        self.stay.end = selected_datetime
+        self.stay.save()
+        return self.stay.start, self.stay.end
+
+    def set_shortterm_time(self, selected_datetime: pendulum.DateTime):
+        if not self.stay.start or not self.stay.end:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+
+        START_AND_END_ARE_THE_SAME = self.stay.start == self.stay.end
+        NEW_DATE_AFTER_END = selected_datetime > self.stay.end
+
+        if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
+            self.stay.end = selected_datetime
+        else:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        if not self.check_availability(
+            start_date=self.stay.start, end_date=self.stay.end
+        ).exists():
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        self.stay.save()
+        return self.stay.start, self.stay.end
+
+
     def reset_dates(self):
         self.stay.start = None
         self.stay.end = None

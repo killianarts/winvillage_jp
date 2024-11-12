@@ -1,6 +1,11 @@
-<c-vars method="post" block hx-vals url="." />
-<form action="{{ url }}" method="{{ method }}" hx-{{ method }}="{{ url }}"
-      hx-vals='{"use_block": "{{ block }}" {% if hx_vals %}, {{ hx_vals }}{% endif %}}' {{ attrs }}>
+<c-vars method="post" dj-block hx-swap="outerHTML" url="." />
+<div class="form-dj-block-designator" hx-vals='{"use_block": "{{ dj_block }}"}'>
+  <form action="{{ url }}" method="{{ method }}" hx-{{ method }}="{{ url }}" hx-swap="{{ hx_swap }}" {{ attrs }}>
     {% csrf_token %}
-    {{ slot }}
-</form>
+    {% if dj_block %}
+      {{ slot }}
+    {% else %}
+      {{ slot }}
+    {% endif %}
+  </form>
+</div>

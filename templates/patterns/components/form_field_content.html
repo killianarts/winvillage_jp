@@ -1,6 +1,6 @@
-<c-vars left-char right-char class grid-layout="[grid-template-columns:1ch_1fr_2ch]" />
-<div class="grid col-span-1 {{ grid_layout }} text-pretty {{ class }}">
+<c-vars left-char right-char class color="text-blue-950 has-[:focus]:text-orange-600" grid-layout="[grid-template-columns:2ch_1fr_3ch]" />
+<div class="grid col-span-1 {{ grid_layout }} bg-transparent text-pretty {{ class }}">
     <span>{{ left_char }}</span>
     {{ slot }}
-    <span>{{ right_char }}</span>
+    <span class="hover:bg-lime-600 hover:text-lime-50 pointer-cursor text-center" _="on click toggle .hidden on the next .help-text">{% if field.help_text %}?{% endif %}</span>
 </div>

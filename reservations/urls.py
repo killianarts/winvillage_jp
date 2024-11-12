@@ -7,8 +7,9 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("date-select", views.date_select, name="date_select"),
     path("room-select", views.room_select, name="room_select"),
+    path("stay-type-select/", views.stay_type_select, name="stay_type_select"),
     path("option-select/", views.option_select, name="option_select"),
-    path("times/", views.times_view, name="times_view"),
+    path("time-select/", views.time_select, name="time_select"),
     path(
         "contact-information-input/",
         views.contact_information_input,

@@ -1,9 +1,9 @@
-<c-vars text-size="text-xl" header-color="text-blue-700" subheader-color="text-orange-500" decoration-color="text-blue-700/40" />
-<span class="[grid-area:mainleft] overflow-hidden {{ text_size }} {{ decoration_color }}">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</span>
-<h1 class="overflow-hidden [grid-area:mainheader]
+<c-vars text-size="text-sm sm:text-lg" header-color="text-blue-700" subheader-color="text-orange-500" decoration-color="text-blue-700/40" />
+<div class="[grid-area:mainleft] overflow-hidden flex items-center {{ text_size }} {{ decoration_color }}">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</div>
+<header class="overflow-hidden [grid-area:mainheader]
            {{ text_size }} {{ header_color }}">
-    {{ header }}
-    <span class="{{ subheader_color }} {{ text_size }} align-top leading-tight">⇢</span>
-    <span class="{{ text_size }} align-top {{ subheader_color }}">{{ subheader }}</span>
-</h1>
-<span class="[grid-area:mainright] overflow-hidden {{ text_size }} text-orange-500/40">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</span>
+    <h1 class="inline-block">{{ header }}</h1>
+    <span class="{{ subheader_color }} {{ text_size }}"> -> </span>
+    <h2 class="inline-block {{ text_size }} {{ subheader_color }}">{{ subheader }}</h2>
+</header>
+<div class="[grid-area:mainright] flex items-center overflow-hidden {{ text_size }} text-orange-500/40">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</div>

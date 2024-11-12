@@ -15,6 +15,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/img/favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'core/img/favicon/favicon-16x16.png' %}">
     <link rel="manifest" href="{% static 'core/img/favicon/site.webmanifest' %}">
+    <link rel="preload"
+          as="font"
+          type="font/woff"
+          href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff' %}">
+    <link rel="preload"
+          as="font"
+          type="font/woff2"
+          href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff2' %}">
     <!-- _hyperscript library -->
     <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
     {% block hyperscript_behaviors %}{% endblock %}
@@ -41,7 +49,7 @@
     {% endblock %}
   </head>
 
-  <body class="bg-white" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <body class="bg-white font-code" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block header %}
       <c-header initial-logo="{% static 'core/img/dark_logo.svg' %}" scroll-logo="{% static 'core/img/light_logo.svg' %}"/>
     {% endblock %}

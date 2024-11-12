@@ -1,0 +1,45 @@
+<c-vars url dj-block="time-select" month-data pendulum start end weekdays />
+{% if not url %}
+    {% url 'reservations:time_select' as url %}
+{% endif %}
+<div {{ attrs }}>
+    <h2 class="text-center text-sm font-semibold text-stone-900">{{ month_data.date|date:"Y-m" }}</h2>
+    <div class="calendar-days mt-10 grid grid-cols-7 gap-2 text-center text-xs leading-6 text-stone-500">
+        {% for day in weekdays %}
+            <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
+        {% endfor %}
+    </div>
+    <div class="mt-2 grid grid-cols-7 gap-2 place-items-center text-sm">
+        {% for day in month_data.days %}
+            {% if day.datetime.month != month_data.date.month %}
+                {% comment %}
+                Python's `calendar` library includes a 'full' calendar month,
+                including either days before the month begins, or after the month ends.
+                If one day in a particular week is rendered, then all of the days
+                in that week are rendered.
+
+                The effect is that every row of a calendar month has 7 days rendered,
+                whether they appear in the current month or a neighboring month.
+
+                In our case, we don't want those neighboring month-days to be rendered,
+                but we want to keep the grid balanced, so we render a filler div
+                {% endcomment %}
+                <div class="invisible"></div>
+            {% elif day.datetime.date == today_dt.date %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="today" />
+            {% elif day.datetime.date < today_dt.date %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="past" />
+            {% elif start and start.date == day.datetime.date  %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="start" />
+            {% elif start and start.date < day.datetime.date and end and day.datetime.date < end.date %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="middle" />
+            {% elif end and end.date == day.datetime.date %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="end" />
+            {% elif not day.available_date %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="unavailable" />
+            {% else %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="available" />
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

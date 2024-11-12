@@ -4,53 +4,48 @@
   {% blocktrans %}Ticket Details{% endblocktrans %}
 {% endblock %}
 
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Customer Management' %}"
+                       subheader="{% trans 'Ticket Details' %}"/>
+{% endblock %}
+
 {% block content %}
-  <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Ticket Details' %}</h1>
-    <form action="." method="post" novalidate
-          hx-post="."
-          hx-target="#content-wrapper"
-          hx-vals='{"use_block": "content"}'
-          hx-swap="morph:outerHTML"
-          class="max-w-sm">
-      {{ form.non_field_errors }}
-      <div class="grid">
-        {{ form }}
+  <c-form method="post" hx-target="#content-wrapper" dj-block="content">
+    {{ form.non_field_errors }}
+    <div class="grid">
+      {{ form }}
+    </div>
+    {% if ticket.is_closed %}
+      <div class="space-y-5 grid">
+        <c-button name="reopen-ticket">
+          {% trans "Reopen Ticket" %}
+        </c-button>
       </div>
-      {% if ticket.is_closed %}
-        <div class="space-y-5 grid">
-          <c-button name="reopen-ticket">
-            {% trans "Reopen Ticket" %}
-          </c-button>
-        </div>
-      {% else %}
-        <div class="space-y-5 grid">
-          <c-button name="add-note">
-            {% trans "Add Note" %}
-          </c-button>
-          <c-button name="close-ticket">
-            {% trans "Close Ticket" %}
-          </c-button>
-        </div>
-      {% endif %}
-      {% block notes %}
-        {% for note in notes %}
-          <div class="mt-5 pointer-events-auto flex w-full max-w-md rounded-lg bg-stone-50 shadow-lg ring-1 ring-black ring-opacity-5">
-            <div class="w-0 flex-1 p-4">
-              <div class="flex items-start">
-                <div class="ml-3 w-0 flex-1">
-                  <p class="text-sm font-medium text-gray-900">
-                    {{ note.user }} - {{ note.created_at|date:"Y-m-d" }} {{ note.created_at|time:"H:i" }}
-                  </p>
-                  <p class="mt-1 text-sm text-gray-500">{{ note.text }}</p>
-                </div>
+    {% else %}
+      <c-button name="add-note">
+        {% trans "Add Note" %}
+      </c-button>
+      <c-button name="close-ticket" data-action="delete">
+        {% trans "Close Ticket" %}
+      </c-button>
+    {% endif %}
+    {% block notes %}
+      {% for note in notes %}
+        <div class="mt-5 pointer-events-auto flex w-full max-w-md rounded-lg bg-stone-50 shadow-lg ring-1 ring-black ring-opacity-5">
+          <div class="w-0 flex-1 p-4">
+            <div class="flex items-start">
+              <div class="ml-3 w-0 flex-1">
+                <p class="text-sm font-medium text-gray-900">
+                  {{ note.user }} - {{ note.created_at|date:"Y-m-d" }} {{ note.created_at|time:"H:i" }}
+                </p>
+                <p class="mt-1 text-sm text-gray-500">{{ note.text }}</p>
               </div>
             </div>
           </div>
-        {% endfor %}
-      {% endblock %}
-    </form>
-  </div>
+        </div>
+      {% endfor %}
+    {% endblock %}
+  </c-form>
 {% endblock %}
 
 {% block deleted %}

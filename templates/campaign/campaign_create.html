@@ -31,7 +31,7 @@
   {{ form.media }}
   <c-form id="recurrence-form"
           hx-target="#content-wrapper"
-          block="content">
+          dj-block="content">
     {% csrf_token %}
     <div id="container" class="max-w-xl space-y-5">
       {{ form }}

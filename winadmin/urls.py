@@ -63,9 +63,9 @@ urlpatterns = [
         name="contact_information_input",
     ),
     path(
-        "reservations/create/datetime-select/",
-        views.datetime_select,
-        name="datetime_select",
+        "reservations/create/time-select/",
+        views.time_select,
+        name="time_select",
     ),
     path(
         "reservations/create/option-select/", views.option_select, name="option_select"

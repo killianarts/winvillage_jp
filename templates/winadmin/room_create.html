@@ -12,7 +12,7 @@
 {% block content %}
     <c-form id="room-create-form" class="max-w-xl grid"
             hx-target="#content-wrapper"
-            block="content">
+            dj-block="content">
       <div _="on htmx:afterSettle from #content-wrapper set input to the last <input/> in me then add @checked to the input">
         {{ room_create_form }}
       </div>

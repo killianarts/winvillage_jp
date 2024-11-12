@@ -1,4 +1,13 @@
-<c-vars name="submit" type="submit" data-action="submit" />
-<button class="bg-blue-600 data-[action=delete]:bg-rose-500 text-blue-50 px-5 py-2 drop-shadow-hard-45-xs
-               hover:bg-orange-600 data-[action=delete]:hover:bg-rose-600 {{ class }}"
-        name="{{ name }}" type="{{ type }}" data-action="{{ data_action }}" {{ attrs }}>{{ slot }}</button>
+<c-vars name="submit" type="submit" data-action="submit" dj-block="content" />
+<div class="button-dj-block-designator" hx-vals='{"use_block": "{{ dj_block }}"}'>
+    <button class="bg-blue-600 text-blue-50 px-[3ch] py-[1ch] drop-shadow-hard-45-xs
+                   hover:bg-orange-600
+                   data-[action=delete]:bg-rose-500 data-[action=delete]:text-rose-50
+                   data-[action=delete]:hover:bg-rose-600
+                   data-[action=disabled]:bg-stone-200 data-[action=disabled]:text-stone-400
+                   data-[action=disabled]:hover:bg-stone-200 data-[action=disabled]:hover:cursor-not-allowed
+                   {{ class }}"
+            name="{{ name }}" type="{{ type }}" data-action="{{ data_action }}" {{ attrs }}>
+            {{ slot }}
+    </button>
+</div>

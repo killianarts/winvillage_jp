@@ -10,7 +10,7 @@
                          subheader="{% trans 'Create Vendor' %}"/>
 {% endblock %}
 {% block content %}
-    <c-form id="vendor-create-form" class="p-2" hx-target="#content-wrapper" block="content">
+    <c-form id="vendor-create-form" class="p-2" hx-target="#content-wrapper" dj-block="content">
         {{ form }}
         <c-button name="create-vendor" value="create-vendor">{% trans "Submit" %}</c-button>
     </c-form>

@@ -21,9 +21,7 @@
         <c-table-column :col-num="4">{{item.stock_quantity}}</c-table-column>
         <c-table-column :col-num="5">{{item.get_stock_value}}</c-table-column>
         <c-table-column :col-num="6">{{item.short_description}}</c-table-column>
-        <a href="{% url 'winadmin:item_detail' item.pk %}" class="contents" hx-boost="true">
-          <c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Item' %}</c-button>
-        </a>
+        <c-table-card-button url="{% url 'winadmin:item_detail' item.pk %}">{% trans 'Edit Item' %}</c-table-card-button>
       </c-table-row>
     {% endfor %}
   </c-table>

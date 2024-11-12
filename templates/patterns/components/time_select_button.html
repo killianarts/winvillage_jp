@@ -1,17 +1,17 @@
-<c-vars day status="available" hx-target="#reservation-form-wrapper" hx-swap="outerHTML" dj-block="date-select" />
-<c-form class="mx-auto" url="{{ url }}" hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}" dj-block="{{ dj_block }}">
+<c-vars time_data status="available" hx-target="#reservation-form-wrapper" hx-swap="outerHTML" dj-block="time-select" />
+<c-form class="w-full h-full" url="{{ url }}" hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}" dj-block="{{ dj_block }}" {{ attrs }} >
     {{ slot }}
-    {{ day.available_date }}
+    {{ time_data.available_date }}
     {% if status != "unavailable" %}
-        <button class="h-8 w-8
+        <button name="{{ name }}" type="submit"
+                class="w-full h-full hover:bg-blue-700
                        data-[status=today]:bg-lime-600 data-[status=today]:text-lime-50
                        data-[status=past]:text-stone-300 data-[status=past]:pointer-events-none
                        data-[status=start]:bg-blue-700 data-[status=start]:text-blue-50
                        data-[status=end]:bg-blue-700 data-[status=end]:text-blue-50
                        data-[status=middle]:bg-orange-500 data-[status=middle]:text-orange-50
                        {{ class }}"
-                data-status={{ status }} {{ attrs }}>
-            <time day="{{ day.datetime|date:"Y-m-d h:m:s" }}">{{ day.datetime.day }}</time>
+                data-status={{ status }}>
         </button>
     {% else %}
         <span class="text-rose-500 cursor-not-allowed">X</span>

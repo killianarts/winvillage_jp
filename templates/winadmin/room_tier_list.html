@@ -26,14 +26,11 @@
   {#    </div>#}
   {% block room_tier_table %}
     <div id="room-tier-table" class="max-w-7xl">
-      {#        <h2 class="mb-5 text-2xl">{{ year }}-{{ month }}</h2>#}
       <c-table :columns="['{% trans 'Name' %}']">
         {% for tier in room_tiers %}
           <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
             <c-table-column :col-num="1" url="{% url 'winadmin:room_tier_detail' tier.pk %}">{{ tier.name }}</c-table-column>
-            <a href="{% url 'winadmin:room_tier_detail' tier.pk %}" hx-boost="true">
-              <c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Room Tier' %}</c-button>
-            </a>
+            <c-table-card-button url="{% url 'winadmin:room_tier_detail' tier.pk %}">{% trans 'Edit Room Tier' %}</c-table-card-button>
           </c-table-row>
         {% endfor %}
       </c-table>

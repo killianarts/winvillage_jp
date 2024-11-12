@@ -50,7 +50,7 @@
       <script src="{% static 'core/js/htmx-preload.js' %}"></script>
 
       {% block idiomorph_src %}
-        <script src="{% static 'core/js/idiomorph-ext.js' %}"></script>
+          <script src="{% static 'core/js/idiomorph-ext.js' %}"></script>
       {% endblock %}
     {% endblock %}
     <!-- This is necessary to make Google (potentially) display a picture in the search result. -->
@@ -65,17 +65,48 @@
     {#    </script>#}
     {% block extra_scripts %}
     {% endblock %}
-    <link rel="stylesheet" href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff' %}">
-    <link rel="stylesheet" href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff2' %}">
+    <link rel="preload"
+          as="font"
+          type="font/woff"
+          href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff' %}">
+    <link rel="preload"
+          as="font"
+          type="font/woff2"
+          href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff2' %}">
     {% block extra_styles %}
     {% endblock %}
+    <style type="text/css">
+     .scroll-bar::-webkit-scrollbar {
+       width: 1ch;
+       height: 1ch;
+     }
+
+     /* Track */
+     .scroll-bar::-webkit-scrollbar-track {
+       background: rgb(29 78 216);
+       border-radius: 10px;
+     }
+
+     /* Handle */
+     .scroll-bar::-webkit-scrollbar-thumb {
+       background-image: radial-gradient(56.98% 121.15% at 21.35% 25.79%, #FFA800 0%, #F97316 100%);
+       border-radius: 10px;
+     }
+
+     /* Handle on hover */
+     .scroll-bar::-webkit-scrollbar-thumb:hover {
+       background-image: radial-gradient(113.83% 120.07% at 78.13% 20.29%,rgb(191 219 254) 0%, rgb(96 165 250) 100%);
+       border-radius: 10px;
+     }
+    </style>
+
   </head>
 
   <body hx-ext="morph preload" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="font-code">
     {% block body %}
       <div id="admin-layout-wrapper"
            class="grid relative
-               [grid-template-columns:auto_auto]
+               [grid-template-columns:auto_1fr]
                [grid-template-rows:min-content_min-content_auto]
                [grid-template-areas:'menu_menu''header_header''content_content']
                lg:[grid-template-areas:'menu_header''menu_content''menu_content']
@@ -89,7 +120,7 @@
               {% block page_header %}{% endblock %}
             </div>
             {% block pre_content %}{% endblock %}
-            <div id="dashboard-content" class="relative @container lg:overflow-auto [grid-area:content]">
+            <div id="dashboard-content" class="scroll-bar relative overflow-auto [grid-area:content]">
               {% block content %}{% endblock %}
             </div>
             {% block post_content %}{% endblock %}

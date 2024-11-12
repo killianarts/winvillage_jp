@@ -9,7 +9,7 @@
                          subheader="{% trans 'Create Ticket' %}"/>
 {% endblock %}
 {% block content %}
-    <c-form hx-target="#dashboard-content" block="content" class="space-y-5">
+    <c-form hx-target="#dashboard-content" dj-block="content" class="space-y-5">
         {{ form }}
         <c-button>
             {% trans 'Create Ticket' %}

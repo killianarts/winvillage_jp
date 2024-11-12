@@ -8,7 +8,7 @@
                        subheader="{% trans 'Edit Vendor' %}"/>
 {% endblock %}
 {% block content %}
-  <c-form class="p-2" hx-target="#content-wrapper" block="content">
+  <c-form class="p-2" hx-target="#content-wrapper" dj-block="content">
     {{ form }}
     <c-button name="edit" data-action="edit">{% trans "Edit" %}</c-button>
     <c-button name="delete" data-action="delete">{% trans "Delete" %}</c-button>

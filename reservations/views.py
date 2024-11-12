@@ -1,5 +1,5 @@
 from itertools import product
-
+from zoneinfo import ZoneInfo
 import pendulum
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
@@ -13,12 +13,15 @@ from core.utils import (
 )
 from customer.models import Customer
 from reservations.utils import (
+    generate_weekday_names,
     get_previous_month,
     get_next_month,
     generate_calendars,
+    generate_calendar,
+    generate_times_for_date,
     make_pen,
 )
-from reservations.forms import DateForm, TravelerForm
+from reservations.forms import DateForm, TimeSelectForm, TravelerForm
 from reservations.models import (
     Item,
     Reservation,
@@ -29,7 +32,7 @@ from . import utils
 from .time_utils import generate_datetimes, generate_interval_range
 
 RESERVATION_TEMPLATE = "reservations/index.html"
-
+TIME_ZONE = "Asia/Tokyo"
 
 @htmx_form_validate(form_class=TravelerForm)
 @for_htmx(use_block_from_params=True)
@@ -53,7 +56,8 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     today_date = pendulum.today()
     form = forms.DateTimeForm(initial={"datetime": today_date})
-    calendars = generate_calendars(reservation, today_date)
+    calendars = generate_calendars(reservation, today_date, number_of_calendars=2)
+    weekdays = generate_weekday_names()
     start = reservation.stay.start if reservation.stay.start else None
     end = reservation.stay.end if reservation.stay.end else None
     if request.method == "GET":
@@ -63,14 +67,14 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
                 datetime = make_pen(form.cleaned_data["datetime"])
                 datetime = get_previous_month(datetime)
                 form = forms.DateTimeForm(initial={"datetime": datetime})
-                calendars = generate_calendars(reservation, datetime)
+                calendars = generate_calendars(reservation, datetime, number_of_calendars=2)
         elif "get_next_month" in request.GET:
             form = forms.DateTimeForm(request.GET)
             if form.is_valid():
                 datetime = make_pen(form.cleaned_data["datetime"])
                 datetime = get_next_month(datetime)
                 form = forms.DateTimeForm(initial={"datetime": datetime})
-                calendars = generate_calendars(reservation, datetime)
+                calendars = generate_calendars(reservation, datetime, number_of_calendars=2)
     if request.method == "POST":
         if "select_date" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)
@@ -81,6 +85,8 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
                 start, end = reservation.set_dates(selected_datetime)
     context = {
         "calendars": calendars,
+        "weekdays": weekdays,
+        "pendulum": pendulum,
         "today_date": today_date,
         "form": form,
         "start": start,
@@ -109,35 +115,68 @@ def room_select(request: HtmxHttpRequest) -> HttpResponse:
     context = {"form": form, "roomtier_data": roomtier_data, "reservation": reservation}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
+@for_htmx(use_block_from_params=True)
+def time_select(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    today_dt = pendulum.today()
+    form = forms.DateTimeForm(initial={"datetime": today_dt})
+    time_form = TimeSelectForm()
+    calendar = generate_calendar(reservation, today_dt)
+    start = reservation.stay.start if reservation.stay.start else None
+    end = reservation.stay.end if reservation.stay.end else None
+    times = generate_times_for_date(reservation, reservation.stay.start)
+    weekdays = generate_weekday_names()
+    if request.method == "GET":
+        if "get_previous_month" in request.GET:
+            form = forms.DateTimeForm(request.GET)
+            if form.is_valid():
+                datetime = make_pen(form.cleaned_data["datetime"])
+                datetime = get_previous_month(datetime)
+                form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendar = generate_calendar(reservation, datetime)
+                times = generate_times_for_date(reservation, datetime)
+        elif "get_next_month" in request.GET:
+            form = forms.DateTimeForm(request.GET)
+            if form.is_valid():
+                datetime = make_pen(form.cleaned_data["datetime"])
+                datetime = get_next_month(datetime)
+                form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendar = generate_calendar(reservation, datetime)
+                times = generate_times_for_date(reservation, datetime)
+    if request.method == "POST":
+        if "select_date" in request.POST:
+            calendar_cell_form = forms.DateTimeForm(request.POST)
+            if calendar_cell_form.is_valid():
+                selected_datetime = pendulum.instance(
+                    calendar_cell_form.cleaned_data["datetime"]
+                )
+                start, end = reservation.set_shortterm_date(selected_datetime)
+                times = generate_times_for_date(reservation, selected_datetime)
+        if "select-time" in request.POST:
+            calendar_cell_form = forms.DateTimeForm(request.POST)
+            if calendar_cell_form.is_valid():
+                selected_datetime = pendulum.instance(
+                    calendar_cell_form.cleaned_data["datetime"]
+                )
+                start, end = reservation.set_shortterm_time(selected_datetime)
+                times = generate_times_for_date(reservation, selected_datetime)
 
-def times_view(request):
-    datetimes = generate_interval_range(range_unit="minutes", range_amount=30)
-    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(
-        stay__end__date="2024-1-11"
-    )
-    return TemplateResponse(
-        request,
-        "reservations/times.html",
-        {
-            "datetimes": datetimes,
-            "reservations": reservations,
-        },
-    )
+    context = {"form": form,
+               "time_form": time_form,
+               "reservation": reservation,
+               "today_dt": today_dt,
+               "weekdays": weekdays,
+               "calendar": calendar,
+               "times": times,
+               "start": start,
+               "end": end}
+    return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
+@for_htmx(use_block_from_params=True)
+def stay_type_select(request: HtmxHttpRequest) -> HttpResponse:
+    context = {}
+    return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
-def times_view(request):
-    datetimes = generate_datetimes()
-    reservations = Reservation.objects.filter(stay__start__date="2024-1-11").filter(
-        stay__end__date="2024-1-11"
-    )
-    return TemplateResponse(
-        request,
-        "reservations/times.html",
-        {
-            "datetimes": datetimes,
-            "reservations": reservations,
-        },
-    )
 
 
 @for_htmx(use_block_from_params=True)

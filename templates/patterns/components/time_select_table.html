@@ -1,0 +1,37 @@
+<c-vars times />
+<div class="flex flex-auto flex-col">
+    <div class="flex w-full flex-auto">
+        <div class="w-32 flex-none bg-white ring-1 ring-gray-100"></div>
+        <div class="grid flex-auto grid-cols-1" style="grid-template-rows: repeat(48, minmax(3.5rem, 1fr))">
+            <!-- Horizontal lines -->
+            <div class="col-start-1 col-end-2 row-start-1 row-end-[50] grid grid-rows-subgrid divide-y ">
+                {% for time in times %}
+                    {% if forloop.last %}
+                        <div>
+                            <div class="-ml-32 -mt-2.5 w-32 pr-2 space-x-[2ch] text-right text-xs/5 text-gray-400"><span>{{ time.datetime|date:"Y-m-d" }}</span><span>{{ time.datetime|date:"G:i" }}</span></div>
+                        </div>
+                    {% else %}
+                        <div>
+                            <div class="-ml-14 -mt-2.5 w-14 pr-2 text-right text-xs/5 text-gray-400">{{ time.datetime|date:"G:i" }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Events -->
+            <div class="col-start-1 col-end-2 row-start-1 row-end-[49] grid grid-rows-subgrid border border-t-gray-300 overflow-hidden">
+                {% for time in times %}
+                    {% if start and time.datetime.time == start.time %}
+                        <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="start" />
+                    {% elif start and time.datetime.time > start.time and end and time.datetime.time < end.time %}
+                        <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="middle" />
+                    {% elif end and time.datetime.time == end.time %}
+                        <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="end" />
+                    {% else %}
+                        <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="available" />
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

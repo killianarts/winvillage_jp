@@ -14,26 +14,30 @@
     {% if field.label %}
         <label class="field-body font-code">
     {% endif %}
-    <div class="field-and-help-text @container grid{% if field.help_text %}lg:grid-cols-2{% else %}{% endif %}">
-        <div class="field grid grid-rows-subgrid row-span-3">
-            <c-form-field-top text={{ field.label }} />
-            {% if field.field|field_type == "MoneyField" %}
-                <c-form-field-content left-char="▷" class="control items-center space-x-2"
-                                      grid-layout="[grid-template-columns:1ch_2fr_1fr_1ch]">
-                    {% render_field field class="border-none font-code focus:ring-blue-500 focus:ring-2 m-none focus:border-blue-950 border-blue-950" %}
-                </c-form-field-content>
+    <div class="field-and-help-text grid">
+        <div class="field grid row-span-3 text-blue-950 has-[:focus]:text-blue-700 max-w-auto">
+            {% if field.widget_type == 'checkbox' %}
+                <div class="flex items-center space-x-[1ch] p-2"><span>{{ field.label }}</span><span>-|</span>{% render_field field class="border-4 border-double text-lime-600 checked:size-[2ch] border-blue-950" %}</div>
             {% else %}
-                <c-form-field-content left-char="▷" class="control items-center space-x-2">
-                    {% render_field field class="border-none font-code focus:ring-blue-500 focus:ring-2 m-none focus:border-blue-950 border-blue-950" %}
-                </c-form-field-content>
+                <c-form-field-top text={{ field.label }} />
+                {% if field.field|field_type == "MoneyField" %}
+                    <c-form-field-content left-char="▷" :field="{{ field }}" class="control items-center"
+                                          grid-layout="[grid-template-columns:1ch_1fr_min-content_3ch]">
+                        {% render_field field class="border-none -my-[1.2ch] font-code focus:ring-transparent" %}
+                    </c-form-field-content>
+                {% else %}
+                    <c-form-field-content left-char="▷" :field="{{ field }}" class="control items-center relative">
+                        {% render_field field class="border-none -my-[1.2ch] font-code focus:ring-transparent" %}
+                    </c-form-field-content>
+                {% endif %}
+                <c-form-field-bottom text={{ field.error }} />
             {% endif %}
-            <c-form-field-bottom text={{ field.error }} />
         </div>
         {% if field.help_text %}
-            <div class="help-text grid grid-rows-subgrid items-center row-span-3">
+            <div class="help-text hidden text-lime-600 grid grid-rows-subgrid items-center row-span-3">
                 <c-form-field-top />
-                <c-form-field-content class="help items-center space-x-2" left-char="?" right-char="?">
-                    <p class="text-center">{{ field.help_text }}</p>
+                <c-form-field-content class="help items-center space-x-2 my-1" left-char="?" right-char="?">
+                    <p class="text-justify">{{ field.help_text }}</p>
                 </c-form-field-content>
                 <c-form-field-bottom />
             </div>

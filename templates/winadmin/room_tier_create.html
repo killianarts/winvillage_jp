@@ -9,7 +9,7 @@
 {% endblock %}
 {% block content %}
   {% block form %}
-    <c-form hx-target="#content-wrapper" block="content">
+    <c-form hx-target="#content-wrapper" dj-block="content">
       {{ form }}
       <c-button>{% trans "Submit" %}</c-button>
     </c-form>

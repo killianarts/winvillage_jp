@@ -6,123 +6,122 @@
 {% block subtitle %}
   {% translate 'Create Reservation' %}
 {% endblock %}
-{% block content %}
-  <div id="content-wrapper" class="grid max-w-4xl space-y-10">
-    <h1 class="mb-2 border-b-2 border-neutral-100 pb-2 text-xl text-orange-950 sm:text-3xl">
-      {% blocktrans %}Create Reservation{% endblocktrans %}</h1>
-      <div id="contact-information-form"
-           hx-get="{% url 'winadmin:contact_information_input' %}"
-           hx-swap="outerHTML"
-           hx-target="this"
-           hx-trigger="load"
-           hx-vals='{"use_block": "contact-information-input"}'>
-      </div>
-      <div id="datetime-form-wrapper"
-           hx-get="{% url 'winadmin:datetime_select' %}"
-           hx-swap="outerHTML"
-           hx-trigger="load"
-           hx-target="this"
-           hx-vals='{"use_block": "datetime-form"}'>
-      </div>
-      <div id="option-select-wrapper"
-           hx-get="{% url 'winadmin:option_select' %}"
-           hx-swap="outerHTML"
-           hx-target="this"
-           hx-trigger="load"
-           hx-vals='{"use_block": "option-select"}'>
-      </div>
-      {% block update-price %}
-        <div id="price"
-             hx-get="{% url 'winadmin:update_price' %}"
-             hx-target="this"
-             hx-swap="outerHTML"
-             hx-trigger="updateReservationDetails from:body"
-             hx-vals='{"use_block": "update-price"}'>
-          <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-            {% translate 'Confirm Details' %}</h2>
-          <div class="space-y-5">
-            <div class="grid grid-cols-1 divide-y-2 divide-stone-50">
-              <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                <span>{% blocktrans %}Start Date{% endblocktrans %}:</span>
-                <span>{{ reservation.start }}</span>
-              </div>
-              {% if reservation.end %}
-                <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                  <span>{% blocktrans %}End Date{% endblocktrans %}:</span>
-                  <span>{{ reservation.end }}</span>
-                </div>
-              {% endif %}
-              {% if reservation.start_time and reservation.end_time and not reservation.stay.end_date %}
-                <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                  <span>{% blocktrans %}Start Time{% endblocktrans %}:</span>
-                  <span>{{ reservation.start_time }}</span>
-                </div>
-                <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                  <span>{% blocktrans %}End Time{% endblocktrans %}:</span>
-                  <span>{{ reservation.end_time }}</span>
-                </div>
-              {% endif %}
-              <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                <span>{% blocktrans %}First Name{% endblocktrans %}:</span>
-                <span>{{ reservation.first_name }}</span>
-              </div>
-              <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                <span>{% blocktrans %}Last Name{% endblocktrans %}:</span>
-                <span>{{ reservation.last_name }}</span>
-              </div>
-              <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                <span>{% blocktrans %}Email{% endblocktrans %}:</span>
-                <span>{{ reservation.email }}</span>
-              </div>
-              <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                <span>{% blocktrans %}Phone{% endblocktrans %}:</span>
-                <span>{{ reservation.phone.as_national }}</span>
-              </div>
-              {% for order_item in reservation.order_items.all %}
-                <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                  <span>{{ order_item.item.name }}</span>
-                  <span>￥{{ order_item.item.price_fully_rounded }}</span>
-                </div>
-              {% endfor %}
-              <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                <span>{% translate 'Stay Price' %}:</span>
-                <span>￥{{ reservation.stay.price }}</span>
-              </div>
-              <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-                <span>{% translate 'Total Price' %}:</span>
-                <span>￥{{ reservation.price }}</span>
-              </div>
-            </div>
-          </div>
-      {% endblock %}
-      <div id="create-reservation-button-wrapper"
-           hx-post="."
-           hx-swap="outerHTML"
-           hx-target="#content-wrapper"
-           hx-trigger="click from:find button"
-           hx-vals='{"use_block": "confirm-reservation"}'
-           hx-include="this">
-        <input type="hidden" name="confirm-reservation" value="true" required>
-        <c-button>{% translate 'Create Reservation' %}</c-button>
-      </div>
-
-        </div>
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Sales Management' %}"
+                       subheader="{% trans 'Create Reservation' %}"/>
 {% endblock %}
+{% block content %}
+  <div id="contact-information-form"
+       hx-get="{% url 'winadmin:contact_information_input' %}"
+       hx-swap="outerHTML"
+       hx-target="this"
+       hx-trigger="load"
+       hx-vals='{"use_block": "contact-information-input"}'>
+  </div>
+  <div id="time-form-wrapper"
+       hx-get="{% url 'winadmin:time_select' %}"
+       hx-swap="outerHTML"
+       hx-trigger="load"
+       hx-target="this"
+       hx-vals='{"use_block": "time_select"}'>
+  </div>
+  <div id="option-select-wrapper"
+       hx-get="{% url 'winadmin:option_select' %}"
+       hx-swap="outerHTML"
+       hx-target="this"
+       hx-trigger="load"
+       hx-vals='{"use_block": "option-select"}'>
+  </div>
+  {% block update-price %}
+    <div id="price"
+         hx-get="{% url 'winadmin:update_price' %}"
+         hx-target="this"
+         hx-swap="outerHTML"
+         hx-trigger="updateReservationDetails from:body"
+         hx-vals='{"use_block": "update-price"}'>
+      <div class="space-y-5">
+        <div class="grid grid-cols-1 divide-y-2 divide-stone-50">
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Start Date{% endblocktrans %}:</span>
+            <span>{{ reservation.start }}</span>
+          </div>
+          {% if reservation.end %}
+            <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+              <span>{% blocktrans %}End Date{% endblocktrans %}:</span>
+              <span>{{ reservation.end }}</span>
+            </div>
+          {% endif %}
+          {% if reservation.start_time and reservation.end_time and not reservation.stay.end_date %}
+            <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+              <span>{% blocktrans %}Start Time{% endblocktrans %}:</span>
+              <span>{{ reservation.start_time }}</span>
+            </div>
+            <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+              <span>{% blocktrans %}End Time{% endblocktrans %}:</span>
+              <span>{{ reservation.end_time }}</span>
+            </div>
+          {% endif %}
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}First Name{% endblocktrans %}:</span>
+            <span>{{ reservation.first_name }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Last Name{% endblocktrans %}:</span>
+            <span>{{ reservation.last_name }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Email{% endblocktrans %}:</span>
+            <span>{{ reservation.email }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% blocktrans %}Phone{% endblocktrans %}:</span>
+            <span>{{ reservation.phone.as_national }}</span>
+          </div>
+          {% for order_item in reservation.order_items.all %}
+            <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+              <span>{{ order_item.item.name }}</span>
+              <span>￥{{ order_item.item.price_fully_rounded }}</span>
+            </div>
+          {% endfor %}
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% translate 'Stay Price' %}:</span>
+            <span>￥{{ reservation.stay.price }}</span>
+          </div>
+          <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
+            <span>{% translate 'Total Price' %}:</span>
+            <span>￥{{ reservation.price }}</span>
+          </div>
+        </div>
+      </div>
+  {% endblock %}
+  <div id="create-reservation-button-wrapper"
+       hx-post="."
+       hx-swap="outerHTML"
+       hx-target="#content-wrapper"
+       hx-trigger="click from:find button"
+       hx-vals='{"use_block": "confirm-reservation"}'
+       hx-include="this">
+    <input type="hidden" name="confirm-reservation" value="true" required>
+    <c-button>{% translate 'Create Reservation' %}</c-button>
+  </div>
+
+    </div>
+{% endblock %}
+
 {% block contact-information-input %}
   <div id="contact-information-form-wrapper">
-    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-xl text-orange-950 sm:text-3xl">
+    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-xl text-blue-700">
       {% blocktrans %}Contact Information{% endblocktrans %}</h2>
-      <form id="contact-information-form"
-            class="space-y-5"
-            hx-post="{% url 'winadmin:contact_information_input' %}"
-            hx-target="#contact-information-form-wrapper"
-            hx-swap="outerHTML"
-            hx-vals='{"use_block": "contact-information-input"}'
-            hx-trigger="validateInput">
+      <c-form id="contact-information-form"
+              class="space-y-5"
+              hx-post="{% url 'winadmin:contact_information_input' %}"
+              hx-target="#contact-information-form-wrapper"
+              hx-swap="outerHTML"
+              hx-vals='{"use_block": "contact-information-input"}'
+              hx-trigger="validateInput">
         <fieldset>
           <legend class="sr-only">{% translate 'Contact Information' %}</legend>
-          <div id="validateInput-sender" class="grid grid-cols-1"
-               _="on keyup from <input/> in me debounced at 750ms
+          <div id="validateInput-sender" _="on keyup from <input/> in me debounced at 750ms
                    set :inputs to value of <input/> in me then
                    if :inputs does not include '' and :inputs does not include null
                    trigger validateInput end end
@@ -133,7 +132,7 @@
             {{ contact_information_form }}
           </div>
         </fieldset>
-      </form>
+      </c-form>
   </div>
 
 {% endblock %}
@@ -143,12 +142,11 @@
       {% blocktrans %}Choose the date{% endblocktrans %}</h2>
       {% block calendars %}
         <div id="calendars" class="p-5 shadow-sm border border-stone-100">
-          <div id="month-switcher" class="flex items-center">
-            <form action="{% url 'winadmin:datetime_select' %}" method="get" class="grid grid-cols-2 w-full"
-                  hx-get="{% url 'winadmin:datetime_select' %}"
-                  hx-target="#datetime-form-wrapper"
-                  hx-swap="outerHTML"
-                  hx-vals='{"use_block": "datetime-form"}'>
+          <div id="month-switcher">
+            <c-form method="get" class="flex justify-center"
+                    url="{% url 'winadmin:datetime_select' %}"
+                    hx-target="#datetime-form-wrapper"
+                    dj-block="datetime-form">
               {{ calendar_form }}
               {# No reservations in the past. #}
               {# First Load: date == today. Users can only increment date. #}
@@ -171,52 +169,27 @@
                         clip-rule="evenodd"/>
                 </svg>
               </button>
-            </form>
+            </c-form>
           </div>
-          <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:flex-1 lg:justify-center gap-10">
-            <div id="selected-month">
-              <h2 class="text-center text-sm font-semibold text-stone-900">{{ calendars.selected_month.date|date:"Y-m" }}</h2>
-              <div class="calendar-days mt-10 grid grid-cols-7 text-center text-xs leading-6 text-stone-500">
-                {% for day in calendars.weekdays %}
-                  <div class="p-2">
-                    <span class="h-8 w-8 flex items-center justify-center mx-auto">{{ day }}</span>
-                  </div>
-                {% endfor %}
-              </div>
-              <div id="months" class="mt-2 grid gap-5 grid-cols-7 text-sm">
-                <!--
-                     Always include: "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
-                     Is selected, include: "text-white"
-                     Is not selected and is today, include: "text-orange-600"
-                     Is not selected and is not today and is current month, include: "text-stone-900"
-                     Is not selected and is not today and is not current month, include: "text-stone-400"
-                     Is selected and is today, include: "bg-orange-600"
-                     Is selected and is not today, include: "bg-stone-900"
-                     Is not selected, include: "hover:bg-stone-200"
-                     Is selected or is today, include: "font-semibold"
-                -->
-                {% for month, month_data in calendars.items %}
-                  <div id="month">
-                    <c-reservation-calendar :month-data={{ month_data }} :weekdays={{ weekdays }} />
-                  </div>
-                {% endfor %}
-              </div>
-            </div>
+          <div id="months" class="flex gap-5 justify-center">
+            {% for month, month_data in calendars.items %}
+              <c-reservation-calendar :month-data={{ month_data }} :weekdays={{ weekdays }} />
+            {% endfor %}
           </div>
         </div>
         {% if start_date and not end_date %}
           <div id="time-select-wrapper" class="mb-5">
             <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-xl text-orange-950 sm:text-3xl">
               {% blocktrans %}Select Start and End Times{% endblocktrans %}</h2>
-              <form id="time-select-form" action="{% url 'winadmin:datetime_select' %}" method="post"
-                    hx-post="{% url 'winadmin:datetime_select' %}"
-                    hx-target="#datetime-form-wrapper"
-                    hx-vals='{"use_block": "datetime-form"}'
-                    hx-trigger="change from:select"
-                    class="grid space-y-5 w-fit">
+              <c-form id="time-select-form" action="{% url 'winadmin:datetime_select' %}" method="post"
+                      hx-post="{% url 'winadmin:datetime_select' %}"
+                      hx-target="#datetime-form-wrapper"
+                      hx-vals='{"use_block": "datetime-form"}'
+                      hx-trigger="change from:select"
+                      class="grid space-y-5 w-fit">
                 <input type="hidden" name="select_time" value="set">
                 {{ time_form }}
-              </form>
+              </c-form>
           </div>
         {% endif %}
       {% endblock %}
@@ -230,10 +203,10 @@
       <legend class="sr-only">{% translate 'Option Types' %}</legend>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
         {% for grill, form, is_reserved in grills %}
-          <form id="option-select-form" hx-post="{% url 'winadmin:option_select' %}"
-                hx-target="#option-select-wrapper"
-                hx-vals='{"use_block": "option-select"}'
-                action="{% url 'winadmin:option_select' %}" method="post" novalidate>
+          <c-form id="option-select-form" hx-post="{% url 'winadmin:option_select' %}"
+                  hx-target="#option-select-wrapper"
+                  hx-vals='{"use_block": "option-select"}'
+                  action="{% url 'winadmin:option_select' %}" method="post" novalidate>
             {{ form }}
             <div class="grid grid-cols-1 space-y-2">
               <div class="bg-white shadow sm:rounded-lg">
@@ -263,11 +236,10 @@
                 </div>
               </div>
             </div>
-          </form>
+          </c-form>
         {% endfor %}
       </div>
     </fieldset>
-  </div>
 {% endblock %}
 {% block confirm-reservation %}
   <h1 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">

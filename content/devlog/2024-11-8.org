@@ -1,0 +1,93 @@
+#+title: 2024 11 8
+
+While trying to make a time selection interface for short-term stays, I realized that both the backend and front-end code for creating calendars and displaying them are different enough that it justifies considering a major refactor of the backend code.
+
+* Current Backend Code
+
+#+begin_src python :session
+def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
+    if not date_:
+        date_ = pendulum.now()
+    next_month_date = date_.add(months=1)
+    cal = PendulumCalendar(firstweekday=calendar.MONDAY)
+    selected_dates = cal.itermonthpens(date_.year, date_.month)
+    next_month_dates = cal.itermonthpens(next_month_date.year, next_month_date.month)
+
+    selected_dates_and_forms = compile_dates_information(reservation, selected_dates)
+    next_month_dates_and_forms = compile_dates_information(
+        reservation, next_month_dates
+    )
+    current_language = get_language()
+    weekdays = get_localized_day_names(cal.firstweekday, current_language)
+    cal = {
+        "selected_month": {"date": date_, "days": selected_dates_and_forms},
+        "next_month": {
+            "date": next_month_date,
+            "days": next_month_dates_and_forms,
+        },
+    }
+    return weekdays, cal
+
+# Reservation model
+def set_dates(self, selected_datetime: pendulum.DateTime):
+        if not self.stay.start or not self.stay.end:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+
+        START_AND_END_ARE_THE_SAME = self.stay.start == self.stay.end
+        NEW_DATE_AFTER_END = selected_datetime > self.stay.end
+
+        if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
+            self.stay.end = selected_datetime
+        else:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        if not self.check_availability(
+            start_date=self.stay.start, end_date=self.stay.end
+        ).exists():
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        self.stay.save()
+        return self.stay.start, self.stay.end
+#+end_src
+
+This code makes a few notable assumptions:
+** Two calendars will be generated
+#+begin_src python :session
+def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
+    if not date_:
+        date_ = pendulum.now()
+    next_month_date = date_.add(months=1)
+    cal = PendulumCalendar(firstweekday=calendar.MONDAY)
+    selected_dates = cal.itermonthpens(date_.year, date_.month)
+    next_month_dates = cal.itermonthpens(next_month_date.year, next_month_date.month)
+    ...
+#+end_src
+
+** It's possible to set start and end dates that are on different days
+#+begin_src python :session
+def set_dates(self, selected_datetime: pendulum.DateTime):
+        if not self.stay.start or not self.stay.end:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+
+        START_AND_END_ARE_THE_SAME = self.stay.start == self.stay.end
+        NEW_DATE_AFTER_END = selected_datetime > self.stay.end
+
+        if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
+            self.stay.end = selected_datetime
+        else:
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        if not self.check_availability(
+            start_date=self.stay.start, end_date=self.stay.end
+        ).exists():
+            self.stay.start = selected_datetime
+            self.stay.end = selected_datetime
+        self.stay.save()
+        return self.stay.start, self.stay.end
+#+end_src
+
+I need to make a ~generate_calendar~ function to make one calendar, and then use it in ~generate_calendars~. Maybe I should make it possible to make an arbitrary number of calendars?
+
+I also need to add ~set_shortterm_date~ and ~set_shortterm_time~ methods to the Reservation model.

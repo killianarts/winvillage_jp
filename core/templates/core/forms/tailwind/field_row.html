@@ -1,6 +1,6 @@
 {% load i18n widget_tweaks field_type %}
 
-<div{% with classes=field.css_classes %} class="field is-horizontal slide-it {{ classes }}"{% endwith %}
+<div{% with classes=field.css_classes %} class="field {{ classes }}"{% endwith %}
                                          id="form-row-{{ field.name }}"
                                          {% if do_htmx_validation and field|widget_type != "fileinput" and field|widget_type != "checkboxinput" %}
                                          hx-get="."

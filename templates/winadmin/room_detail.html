@@ -10,7 +10,7 @@
 {% block content %}
   <c-form class="grid max-w-xl"
           hx-target="#content-wrapper"
-          block="content">
+          dj-block="content">
     {{ form }}
     <div class="mb-2 space-y-5">
       <c-button name="edit" data-action="edit">{% trans "Edit" %}</c-button>

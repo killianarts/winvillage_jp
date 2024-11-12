@@ -1,0 +1,5 @@
+#+title: 2024 11 1
+
+Today I worked on the calendar for the homepage reservation form. I refactored the calendar to make it more understandable. I also added a pricing tier group to all the reservation process to continue. I need to work on the next page, the room select page, to update the design to the current design of the admin backend.
+
+I tried having the backend serve two different kinds of data: a DateTime and an "X" if a room was unavailable for a certain day. However, after trying it, I realized that the DateTime form I was producing used a hidden input. All of the rendering logic is handled in the template. I'm considering the possibility of later simplifying the template and component and moving the logic for different return values to the backend, but I'll consider that when I do an eventual refactor of the reservation backend logic.

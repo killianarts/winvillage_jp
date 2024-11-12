@@ -36,9 +36,7 @@
           <c-table-column :col-num="1" url="{% url 'winadmin:ticket_detail' ticket.pk %}">{{ticket.id}}</c-table-column>
           <c-table-column :col-num="2">{{ticket.user.first_name}}</c-table-column>
           <c-table-column :col-num="3">{{ticket.is_closed}}</c-table-column>
-          <a href="{% url 'winadmin:ticket_detail' ticket.pk %}" hx-boost="true">
-            <c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Ticket' %}</c-button>
-          </a>
+          <c-table-card-button url="{% url 'winadmin:ticket_detail' ticket.pk %}">{% trans 'Edit Ticket' %}</c-table-card-button>
         </c-table-row>
       {% endfor %}
     </c-table>

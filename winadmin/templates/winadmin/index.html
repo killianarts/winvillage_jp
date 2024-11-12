@@ -1,71 +1,89 @@
 {% extends 'winadmin/base.html' %}
 {% load i18n static %}
 {% block title %}
-  {% translate 'Dashboard' %}
+    {% translate 'Dashboard' %}
 {% endblock %}
 {% block subtitle %}
-  {% translate 'Winvillage Admin' %}
+    {% translate 'Winvillage Admin' %}
+{% endblock %}
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Winadmin' %}"
+                         subheader="{% trans 'Dashboard' %}"/>
 {% endblock %}
 {% block menu %}
-  <c-sidebar :user=user
-             logo-url="winadmin:index"
-             :navigation='{
+    <c-sidebar :user=user
+               logo-url="winadmin:index"
+               :navigation='{
 
-                   "{% trans "Customer Management" %}": {
-                   "{% trans "Search Customers" %}": "winadmin:customer_list",
-                   "{% trans "Create Ticket" %}": "winadmin:ticket_create",
-                   "{% trans "View Tickets" %}": "winadmin:ticket_list"
-                   },
+                     "{% trans "Customer Management" %}": {
+                     "{% trans "Search Customers" %}": "winadmin:customer_list",
+                     "{% trans "Create Ticket" %}": "winadmin:ticket_create",
+                     "{% trans "View Tickets" %}": "winadmin:ticket_list"
+                     },
 
-                   "{% trans "Inventory Management" %}": {
-                   "{% trans "View Inventory" %}": "winadmin:item_list",
-                   "{% trans "Add Inventory Item" %}": "winadmin:item_create",
-                   "{% trans "View Categories" %}": "winadmin:category_list",
-                   "{% trans "Add Category" %}": "winadmin:category_create"
-                   },
+                     "{% trans "Inventory Management" %}": {
+                     "{% trans "View Inventory" %}": "winadmin:item_list",
+                     "{% trans "Add Inventory Item" %}": "winadmin:item_create",
+                     "{% trans "View Categories" %}": "winadmin:category_list",
+                     "{% trans "Add Category" %}": "winadmin:category_create"
+                     },
 
-                   "{% trans "Sales Management" %}": {
-                   "{% trans "Sales Ledger" %}": "winadmin:sales_ledger",
-                   "{% trans "View Pricing Tiers" %}": "winadmin:pricing_tier_group_list",
-                   "{% trans "Create Pricing Tiers" %}": "winadmin:pricing_tier_group_create",
-                   "{% trans "View Campaigns" %}": "winadmin:campaign_list",
-                   "{% trans "Create Campaign" %}": "winadmin:campaign_create",
-                   },
+                     "{% trans "Sales Management" %}": {
+                     "{% trans "Create Reservation" %}": "winadmin:reservation_create",
+                     "{% trans "Sales Ledger" %}": "winadmin:sales_ledger",
+                     "{% trans "View Pricing Tiers" %}": "winadmin:pricing_tier_group_list",
+                     "{% trans "Create Pricing Tiers" %}": "winadmin:pricing_tier_group_create",
+                     "{% trans "View Campaigns" %}": "winadmin:campaign_list",
+                     "{% trans "Create Campaign" %}": "winadmin:campaign_create",
+                     },
 
-                   "{% trans "Room Management" %}": {
-                   "{% trans "View Rooms" %}": "winadmin:room_list",
-                   "{% trans "Create Room" %}": "winadmin:room_create",
-                   "{% trans "View Room Tiers" %}": "winadmin:room_tier_list",
-                   "{% trans "Create Room Tier" %}": "winadmin:room_tier_create",
-                   },
+                     "{% trans "Room Management" %}": {
+                     "{% trans "View Rooms" %}": "winadmin:room_list",
+                     "{% trans "Create Room" %}": "winadmin:room_create",
+                     "{% trans "View Room Tiers" %}": "winadmin:room_tier_list",
+                     "{% trans "Create Room Tier" %}": "winadmin:room_tier_create",
+                     },
 
-                   "{% trans "Procurements Management" %}": {
-                   "{% trans "View Vendors" %}": "winadmin:vendor_list",
-                   "{% trans "Create Vendor" %}": "winadmin:vendor_create",
-                   "{% trans "Create Procurement" %}": "winadmin:procurement_create",
-                   "{% trans "Accounts Payable Ledger" %}": "winadmin:accounts_payable_ledger",
-                   "{% trans "Accounts Payable Aging Report" %}": "winadmin:accounts_payable_aging_report",
-                   "{% trans "Company-wise Procurement Ledger" %}": "winadmin:company_wise_procurement_ledger",
-                   },
+                     "{% trans "Procurements Management" %}": {
+                     "{% trans "View Vendors" %}": "winadmin:vendor_list",
+                     "{% trans "Create Vendor" %}": "winadmin:vendor_create",
+                     "{% trans "Create Procurement" %}": "winadmin:procurement_create",
+                     "{% trans "Accounts Payable Ledger" %}": "winadmin:accounts_payable_ledger",
+                     "{% trans "Accounts Payable Aging Report" %}": "winadmin:accounts_payable_aging_report",
+                     "{% trans "Company-wise Procurement Ledger" %}": "winadmin:company_wise_procurement_ledger",
+                     },
 
-                   }' />
+                     }' />
 {% endblock %}
 {% block content %}
-  <div class="grid grid-cols-2 [grid-area:content] max-w-4xl gap-7">
-    <a href="{% url 'winadmin:reservation_create' %}" hx-boost="true" class="grid place-items-center px-5 py-[50%] text-xl font-semibold rounded-md
-             transition-all duration-250 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-             bg-stone-100 text-stone-900 hover:scale-105 hover:ring-2 hover:ring-stone-500 focus-visible:outline-orange-700">
-      <p>{% translate 'Make a Reservation' %}</p>
+    {% comment %}
+    <a href="{% url 'winadmin:reservation_create' %}" hx-boost="true">
+        <p>{% translate 'Make a Reservation' %}</p>
     </a>
-    <a href="{% url 'winadmin:customer_check_in_check_out_list' %}" hx-boost="true" class="grid place-items-center px-5 py-[50%] text-xl font-semibold rounded-md
-             transition-all duration-250 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-             bg-stone-100 text-stone-900 hover:scale-105 hover:ring-2 hover:ring-stone-500 focus-visible:outline-orange-700">
-      <p>{% translate 'Customer Check In' %}</p>
+    <a href="{% url 'winadmin:customer_check_in_check_out_list' %}" hx-boost="true" >
+        <p>{% translate 'Customer Check In' %}</p>
     </a>
-    <a href="{% url 'winadmin:occupied_room_list' %}" hx-boost="true" class="grid place-items-center px-5 py-[50%] text-xl font-semibold rounded-md
-             transition-all duration-250 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-             bg-stone-100 text-stone-900 hover:scale-105 hover:ring-2 hover:ring-stone-500 focus-visible:outline-orange-700">
-      <p>{% translate 'Room List' %}</p>
+    <a href="{% url 'winadmin:occupied_room_list' %}" hx-boost="true" >
+        <p>{% translate 'Room List' %}</p>
     </a>
-  </div>
+    {% endcomment %}
+    <c-table :columns="['{% trans 'Customer' %}', '{% trans 'Room' %}']">
+        {% for room, customer in rooms_with_occupants.items %}
+            {% for r in rooms %}
+                {% if room in occupied_rooms %}
+                    <c-table-row class="bg-lime-600">
+                        <c-table-column :col-num="1" url="{% url 'winadmin:checked_in_customer_purchase' room_id=room.id customer_id=customer.id %}">{{ customer }}</c-table-column>
+                        <c-table-column :col-num="2">{{ room }}</c-table-column>
+                        <c-table-card-button url="{% url 'winadmin:checked_in_customer_purchase' room_id=room.id customer_id=customer.id %}">{% trans 'Purchase' %}</c-table-card-button>
+                    </c-table-row>
+                {% else %}
+                    <c-table-row class="bg-white">
+                        <c-table-column :col-num="1" url="{% url 'winadmin:reservation_create' %}">{% trans 'Unoccupied' %}</c-table-column>
+                        <c-table-column :col-num="2">{{ r }}</c-table-column>
+                        <c-table-card-button>{% trans 'Rent Room' %}</c-table-card-button>
+                    </c-table-row>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </c-table>
 {% endblock %}

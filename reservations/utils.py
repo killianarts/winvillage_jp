@@ -10,6 +10,8 @@ from djmoney.money import Money
 from reservations.forms import DateTimeForm, RoomTierChoiceForm
 from reservations.models import Reservation, Room, RoomTier, Stay
 
+from winvillage.settings import TIME_ZONE
+
 
 def make_pen(dt: datetime | date) -> pendulum.DateTime:
     return pendulum.local(dt.year, dt.month, dt.day)
@@ -210,7 +212,8 @@ def get_localized_month_name(date_: date, locale="en"):
     return format_date(date_, "MMMM", locale=locale)
 
 
-def get_localized_day_names(firstweekday, locale="en"):
+def get_localized_day_names(firstweekday):
+    locale = get_language()
     # Create a date object for the first day of current week
     now = date.today()
     start = now - timedelta(days=now.weekday()) + timedelta(days=firstweekday)
@@ -252,20 +255,26 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
                 reservation.reset_dates()
             elif not room_is_available and start_date <= room["datetime"] <= end_date:
                 reservation.reset_dates()
-        form = (
-            DateTimeForm(initial={"datetime": room["datetime"]})
+        # return a form if available, otherwise return "X" to be rendered in the template
+        available_date = (
+            DateTimeForm(
+                initial={"datetime": room["datetime"]},
+                datetime_widget_id=f"id-date-{room["datetime"].time()}",
+            )
             if room_is_available
             else None
         )
-        dates_and_forms.append([room["datetime"], form])
+        dates_and_forms.append(
+            {"datetime": room["datetime"], "available_date": available_date}
+        )
     return dates_and_forms
 
 
 # We avoid serializing standard datetime objects into Pendulum DateTimes by initializing them correctly here.
 class PendulumCalendar(calendar.Calendar):
-    tz = "Asia/Tokyo"
+    tz = TIME_ZONE
 
-    def itermonthpens(self, year, month, default_hour=10):
+    def itermonthpens(self, year, month, default_hour=0):
         pens = []
         for y, m, d in self.itermonthdays3(year, month):
             pens.append(
@@ -273,35 +282,71 @@ class PendulumCalendar(calendar.Calendar):
             )
         return pens
 
-    def itermonthnaivepens(self, year, month, default_hour=10):
+    def itermonthnaivepens(self, year, month, default_hour=0):
         pens = []
         for y, m, d in self.itermonthdays3(year, month):
             pens.append(pendulum.naive(year=y, month=m, day=d, hour=default_hour))
         return pens
 
+def generate_weekday_names():
+    cal = PendulumCalendar(firstweekday=calendar.MONDAY)
+    current_locale = get_language()
+    weekday_names = get_localized_day_names(cal.firstweekday)
+    return weekday_names
 
-def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
+def generate_calendar(reservation: Reservation, date_: pendulum.Date = None):
     if not date_:
         date_ = pendulum.now()
-    next_month_date = date_.add(months=1)
     cal = PendulumCalendar(firstweekday=calendar.MONDAY)
-    selected_dates = cal.itermonthpens(date_.year, date_.month)
-    next_month_dates = cal.itermonthpens(next_month_date.year, next_month_date.month)
+    calendar_dates = cal.itermonthpens(date_.year, date_.month)
+    calendar_dates_and_forms = compile_dates_information(reservation, calendar_dates)
+    month_data = {"date": date_, "days": calendar_dates_and_forms}
+    return month_data
 
-    selected_dates_and_forms = compile_dates_information(reservation, selected_dates)
-    next_month_dates_and_forms = compile_dates_information(
-        reservation, next_month_dates
-    )
-    current_language = get_language()
-    weekdays = get_localized_day_names(cal.firstweekday, current_language)
-    calendars = {
-        "selected_month": {"date": date_, "datetimes": selected_dates_and_forms},
-        "next_month": {
-            "date": next_month_date,
-            "datetimes": next_month_dates_and_forms,
-        },
-    }
-    return weekdays, calendars
+def generate_times_for_date(reservation: Reservation, date_: pendulum.Date = None):
+    if not date_:
+        date_ = pendulum.now()
+    hour = 0 # 12AM in 24 hour clock
+    day_start_pen = pendulum.datetime(date_.year, date_.month, date_.day, hour, tz=TIME_ZONE)
+    day_end_pen = pendulum.datetime(date_.year, date_.month, date_.add(days=1).day, hour, tz=TIME_ZONE)
+    interval = day_end_pen - day_start_pen
+    day_times = []
+    for time_block in interval.range("minutes", 30):
+        day_times.append(time_block)
+    calendar_dates_and_forms = compile_dates_information(reservation, day_times)
+    return calendar_dates_and_forms
+
+def generate_calendars(reservation: Reservation, date_: pendulum.Date, number_of_calendars = 1):
+    if not date_:
+        date_ = pendulum.now()
+    calendars = []
+    for c in range(number_of_calendars):
+        calendars.append(generate_calendar(reservation, date_))
+        if c != number_of_calendars:
+            date_ = date_.add(months=1)
+    return calendars
+
+# def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
+#     if not date_:
+#         date_ = pendulum.now()
+#     next_month_date = date_.add(months=1)
+#     cal = PendulumCalendar(firstweekday=calendar.MONDAY)
+#     selected_dates = cal.itermonthpens(date_.year, date_.month)
+#     next_month_dates = cal.itermonthpens(next_month_date.year, next_month_date.month)
+
+#     selected_dates_and_forms = compile_dates_information(reservation, selected_dates)
+#     next_month_dates_and_forms = compile_dates_information(
+#         reservation, next_month_dates
+#     )
+#     weekdays = get_localized_day_names(cal.firstweekday)
+#     cal = {
+#         "selected_month": {"date": date_, "days": selected_dates_and_forms},
+#         "next_month": {
+#             "date": next_month_date,
+#             "days": next_month_dates_and_forms,
+#         },
+#     }
+#     return weekdays, cal
 
 
 def generate_campaign_calendars(
@@ -353,8 +398,7 @@ def generate_campaign_calendars(
     next_month_occurrences = get_occurrences(
         start=next_nstart, end=next_nend, dates=next_month_dates
     )
-    current_language = get_language()
-    weekdays = get_localized_day_names(cal.firstweekday, current_language)
+    weekdays = get_localized_day_names(cal.firstweekday)
     calendars = {
         "selected_month": {"date": date_, "occurrences": selected_month_occurrences},
         "next_month": {

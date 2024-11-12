@@ -13,9 +13,7 @@
       <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
         <c-table-column :col-num="1" url="{% url 'winadmin:category_detail' category.pk %}">{{category.name}}</c-table-column>
         <c-table-column :col-num="2">{% for category in category.item_set.all %}{% if not forloop.last %}{{category}}, {% else %}{{category}}{% endif %}{% endfor %}</c-table-column>
-        <a href="{% url 'winadmin:category_detail' category.pk %}" hx-boost="true">
-          <c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Category' %}</c-button>
-        </a>
+        <c-table-card-button url="{% url 'winadmin:category_detail' category.pk %}">{% trans 'Edit Category' %}</c-table-card-button>
       </c-table-row>
     {% endfor %}
   </c-table>

@@ -12,7 +12,7 @@
         <p>{% translate 'Filter' %}</p>
         <c-form method="get" id="filter-form" hx-trigger="change"
                 hx-target="#procurement-list-table"
-                block="procurement_list_table"
+                dj-block="procurement_list_table"
                 hx-vals='{"action": "filter"}'
                 hx-push-url="true">
             {{ form }}

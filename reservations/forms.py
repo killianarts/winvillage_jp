@@ -4,7 +4,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.formfields import PhoneNumberField
 
-from core.forms import ReservationsContactInformationFormMixin, ShisoFormMixin
+from core.forms import ShisoFormMixin
 from reservations.models import Stay
 
 
@@ -20,7 +20,7 @@ class DateInput(forms.DateInput):
         super().__init__(**kwargs)
 
 
-class ContactInfoForm(ReservationsContactInformationFormMixin, forms.Form):
+class ContactInfoForm(ShisoFormMixin, forms.Form):
     first_name = forms.CharField(
         label=_("First Name"),
     )
@@ -41,9 +41,18 @@ class DateForm(forms.Form):
     date = forms.DateTimeField(widget=forms.HiddenInput)
 
 
+class StayTypeSelectForm(ShisoFormMixin, forms.Form):
+    CHOICES = [("", "---"),
+               ("ST", _("Short-term")),
+               ("ON", _("Overnight"))]
+    type = forms.ChoiceField(choices=CHOICES)
+
 class TimeSelectForm(forms.Form):
     DEFAULT_CHOICE = [("", "---")]
-    HOURS = [(dt.time(hour=h), "{:02d}:00".format(h)) for h in range(9, 23)]
+    HOURS = []
+    for h in range(9, 23):
+        HOURS.append((dt.time(hour=h), f"{h}:00"))
+        HOURS.append((dt.time(hour=h, minute=30), f"{h}:30"))
     CHOICES = DEFAULT_CHOICE + HOURS
     start_time = forms.ChoiceField(choices=CHOICES)
     end_time = forms.ChoiceField(choices=CHOICES)
@@ -61,6 +70,13 @@ class TimeSelectForm(forms.Form):
 
 class DateTimeForm(forms.Form):
     datetime = forms.DateTimeField(widget=forms.HiddenInput)
+
+    def __init__(self, *args, **kwargs):
+        datetime_widget_id = kwargs.pop("datetime_widget_id", None)
+        super().__init__(*args, **kwargs)
+
+        if datetime_widget_id:
+            self.fields["datetime"].widget.attrs["id"] = datetime_widget_id
 
 
 class TravelerForm(ShisoFormMixin, forms.ModelForm):

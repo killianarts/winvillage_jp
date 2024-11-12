@@ -1,11 +1,15 @@
-<c-vars col-num />
-<div-td class="contents border border-blue-950
-               sm:table-cell sm:text-inherit sm:bg-inherit {{ class }}"
+<c-vars col-num decoration />
+<div-td class="contents whitespace-nowrap
+               sm:table-cell sm:border sm:border-blue-950 sm:align-top {{ class }}"
         {{ attrs }}>
-    <span class="sm:hidden text-white px-3 py-1 bg-blue-700 text-right" _="on load get <input[name='{{ col_num }}']/> then set my innerHTML to its value"></span>
-    {% if not url %}
-        <span class="inline-block px-3 py-1">{{ slot }}</span>
+    {% if col_num == 1 %}
+        <span class="sm:hidden text-white px-3 py-1 bg-blue-700 text-right" _="on load get <input[name='{{ col_num }}']/> then append its value to my innerHTML">▚▚ </span>
     {% else %}
-        <c-link url="{{ url }}" class="text-blue-950 px-3">{{ slot }}</c-link>
+        <span class="sm:hidden text-white px-3 py-1 bg-blue-700 text-right" _="on load get <input[name='{{ col_num }}']/> then append its value to my innerHTML"></span>
+    {% endif %}
+    {% if not url %}
+        <span class="inline-block px-3 py-1">{% if decoration %}{{ decoration }}{% endif %}{{ slot }}</span>
+    {% else %}
+        <c-link url="{{ url }}" class="text-blue-950 inline-block px-3 py-1">{{ slot }}</c-link>
     {% endif %}
 </div-td>
