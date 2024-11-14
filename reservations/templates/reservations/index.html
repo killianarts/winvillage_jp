@@ -28,9 +28,9 @@
     </nav>
     {% block reservation-form %}
       <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto flex flex-col justify-center">
-        <h2 class="mb-2 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-          {% blocktrans %}Number of travelers?{% endblocktrans %}
-        </h2>
+        <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
+          <c-admin-page-header header="{% trans 'Reservations' %}" subheader="{% trans 'Number of travelers?' %}"></c-admin-page-header>
+        </div>
         <div id="travelers">
           <c-form id="traveler-form"
                   action="{% url 'reservations:index' %}"
@@ -82,78 +82,79 @@
 
 {% block date-select %}
   <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto flex flex-col justify-center">
-    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-      {% blocktrans %}Choose the date{% endblocktrans %}</h2>
-      <div id="calendars" class="p-5 mx-auto shadow-sm border border-stone-100">
-        <div id="month-switcher">
-          <c-form url="{% url 'reservations:date_select' %}" method="get"
-                  hx-target="#reservation-form-wrapper" hx-swap="outerHTML"
-                  dj-block="date-select">
-            {{ form }}
-            {# No reservations in the past. #}
-            {# First Load: date == today. Users can only increment date. #}
-            {# If date incremented: date > today #}
-            <div class="flex justify-between">
-              <button name="get_previous_month" type="submit"
-                      class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
-                <span class="sr-only">Previous month</span>
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                        clip-rule="evenodd"/>
-                </svg>
-              </button>
-              <button name="get_next_month" type="submit"
-                      class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
-                <span class="sr-only">Next month</span>
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                        clip-rule="evenodd"/>
-                </svg>
-              </button>
-            </div>
-          </c-form>
-        </div>
-        <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:justify-center gap-10">
-          {% for month in calendars %}
-            <c-overnight-reservation-calendar :month-data=month :weekdays=weekdays :pendulum=pendulum :start=start :end=end />
-          {% endfor %}
-        </div>
+    <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
+      <c-admin-page-header header="{% trans 'Reservations' %}" subheader="{% trans 'Choose the date' %}"></c-admin-page-header>
+    </div>
+    <div id="calendars" class="p-5 mx-auto shadow-sm border border-stone-100">
+      <div id="month-switcher">
+        <c-form url="{% url 'reservations:date_select' %}" method="get"
+                hx-target="#reservation-form-wrapper" hx-swap="outerHTML"
+                dj-block="date-select">
+          {{ form }}
+          {# No reservations in the past. #}
+          {# First Load: date == today. Users can only increment date. #}
+          {# If date incremented: date > today #}
+          <div class="flex justify-between">
+            <button name="get_previous_month" type="submit"
+                    class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
+              <span class="sr-only">Previous month</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </button>
+            <button name="get_next_month" type="submit"
+                    class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
+              <span class="sr-only">Next month</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                      clip-rule="evenodd"/>
+              </svg>
+            </button>
+          </div>
+        </c-form>
       </div>
-      <div class="flex justify-center gap-7">
-        <c-button hx-get="{% url 'reservations:stay_type_select' %}"
+      <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:justify-center gap-10">
+        {% for month in calendars %}
+          <c-overnight-reservation-calendar :month-data=month :weekdays=weekdays :pendulum=pendulum :start=start :end=end />
+        {% endfor %}
+      </div>
+    </div>
+    <div class="flex justify-center gap-7">
+      <c-button hx-get="{% url 'reservations:stay_type_select' %}"
+                hx-target="#reservation-form-wrapper"
+                hx-swap="outerHTML"
+                dj-block="stay-type-select">
+        {% blocktrans %}Go Back{% endblocktrans %}
+      </c-button>
+      {% if start.date and end.date and start.date != end.date %}
+        <c-button hx-get="{% url 'reservations:room_select' %}"
                   hx-target="#reservation-form-wrapper"
                   hx-swap="outerHTML"
-                  dj-block="stay-type-select">
-          {% blocktrans %}Go Back{% endblocktrans %}
+                  dj-block="room-select">
+          {% blocktrans %}Continue, Choose Room{% endblocktrans %}
         </c-button>
-        {% if start.date and end.date and start.date != end.date %}
-          <c-button hx-get="{% url 'reservations:room_select' %}"
-                    hx-target="#reservation-form-wrapper"
-                    hx-swap="outerHTML"
-                    dj-block="room-select">
-            {% blocktrans %}Continue, Choose Room{% endblocktrans %}
-          </c-button>
-        {% else %}
-          <c-button hx-get="{% url 'reservations:stay_type_select' %}" hx-swap="outerHTML" hx-target="#reservation-form-wrapper" hx-vals='{"use_block": "stay-type-select"}'>
-            {% blocktrans %}Continue{% endblocktrans %}
-          </c-button>
-        {% endif %}
-      </div>
-      {% if debug %}
-        <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg"
-                  hx-post="{% url 'core:flush_session' %}"
-                  hx-target="this"
-                  hx-swap="innerHTML">
-          <legend class="bg-red-100 border-red-200 border-2 border-dotted rounded-lg px-2 py-1 text-red-700">
-            DEBUG
-          </legend>
-          <c-button name="delete-session" data-action="delete">
-            {% blocktrans %}Delete Session{% endblocktrans %}
-          </c-button>
-        </fieldset>
+      {% else %}
+        <c-button hx-get="{% url 'reservations:stay_type_select' %}" hx-swap="outerHTML" hx-target="#reservation-form-wrapper" hx-vals='{"use_block": "stay-type-select"}'>
+          {% blocktrans %}Continue{% endblocktrans %}
+        </c-button>
       {% endif %}
+    </div>
+    {% if debug %}
+      <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg"
+                hx-post="{% url 'core:flush_session' %}"
+                hx-target="this"
+                hx-swap="innerHTML">
+        <legend class="bg-red-100 border-red-200 border-2 border-dotted rounded-lg px-2 py-1 text-red-700">
+          DEBUG
+        </legend>
+        <c-button name="delete-session" data-action="delete">
+          {% blocktrans %}Delete Session{% endblocktrans %}
+        </c-button>
+      </fieldset>
+    {% endif %}
   </div>
 {% endblock %}
 
@@ -161,106 +162,122 @@
 {% block room-select %}
   <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto flex flex-col justify-center">
     <div>
-      <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-        {% blocktrans %}Select Room{% endblocktrans %}</h2>
-        <div>
-          <c-form
-            url="{% url 'reservations:room_select' %}"
-            hx-target="#reservation-form-wrapper"
-            {# delay added to give the browser time to select the input before sending the request #}
-            hx-trigger="change from:input[type='radio'], mousedown from:label:has(input[type='radio']) delay:10ms"
-            dj-block="room-select"
-            class="space-y-5">
-            <div class="grid grid-cols-2 gap-7">
-              {% for item in roomtier_data %}
-                {% for radio in form.roomtiers %}
-                  {% if item.tier.name == radio.choice_label %}
-                    <label for="{{ radio.id_for_label }}" tabindex="0" class="block p-5 border-3 border-stone-900 bg-stone-100 text-stone-900 hover:bg-orange-500 hover:text-orange-100 focus-visible:border-orange-700 hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none
-                                hover:border-transparent drop-shadow-hard-45-md rounded-lg has-[:checked]:bg-orange-500 has-[:checked]:active:bg-orange-600 active:bg-orange-600 has-[:checked]:border-transparent has-[:checked]:text-stone-100 transition-all duration-300 cursor-pointer">
-                      <h3>{{ item.tier.name }}</h3>
-                      <p>{% translate 'Total Price' %}:{{ item.price }}</p>
-                      <div class="hidden">{{ radio.tag }}</div>
-                    </label>
-                  {% endif %}
-                {% endfor %}
+      <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
+        <c-admin-page-header header="{% trans 'Reservations' %}" subheader="{% trans 'Select Room' %}"></c-admin-page-header>
+      </div>
+      <div>
+        <c-form
+          url="{% url 'reservations:room_select' %}"
+          hx-target="#reservation-form-wrapper"
+          {# delay added to give the browser time to select the input before sending the request #}
+          hx-trigger="change from:input[type='radio'], mousedown from:label:has(input[type='radio']) delay:10ms"
+          dj-block="room-select"
+          class="space-y-5">
+          <div class="grid grid-cols-2 gap-7">
+            {% for item in roomtier_data %}
+              {% for radio in form.roomtiers %}
+                {% if item.tier.name == radio.choice_label %}
+                  <label for="{{ radio.id_for_label }}" tabindex="0" class="block p-5 border-3 border-stone-900 bg-stone-100 text-stone-900 hover:bg-orange-500 hover:text-orange-100 focus-visible:border-orange-700 hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none
+                              hover:border-transparent drop-shadow-hard-45-md rounded-lg has-[:checked]:bg-orange-500 has-[:checked]:active:bg-orange-600 active:bg-orange-600 has-[:checked]:border-transparent has-[:checked]:text-stone-100 transition-all duration-300 cursor-pointer">
+                    <h3>{{ item.tier.name }}</h3>
+                    <p>{% translate 'Total Price' %}:{{ item.price }}</p>
+                    <div class="hidden">{{ radio.tag }}</div>
+                  </label>
+                {% endif %}
               {% endfor %}
-              <div class="col-span-2 flex justify-center gap-7">
-                <c-button hx-get="{% url 'reservations:date_select' %}"
+            {% endfor %}
+            <div class="col-span-2 flex justify-center gap-7">
+              <c-button hx-get="{% url 'reservations:date_select' %}"
+                        hx-target="#reservation-form-wrapper"
+                        hx-swap="outerHTML"
+                        dj-block="date-select">
+                {% blocktrans %}Go Back{% endblocktrans %}
+              </c-button>
+              {% if reservation.stay.room %}
+                <c-button hx-get="{% url 'reservations:contact_information_input' %}"
                           hx-target="#reservation-form-wrapper"
                           hx-swap="outerHTML"
-                          dj-block="date-select">
-                  {% blocktrans %}Go Back{% endblocktrans %}
+                          dj-block="contact-information-input">
+                  {% translate 'Continue' %}
                 </c-button>
-                {% if reservation.stay.room %}
-                  <c-button hx-get="{% url 'reservations:contact_information_input' %}"
-                            hx-target="#reservation-form-wrapper"
-                            hx-swap="outerHTML"
-                            dj-block="contact-information-input">
-                    {% translate 'Continue' %}
-                  </c-button>
-                {% else %}
-                  <c-button data-action="disabled">{% translate 'Select a Room' %}</c-button>
-                {% endif %}
-              </div>
+              {% else %}
+                <c-button data-action="disabled">{% translate 'Select a Room' %}</c-button>
+              {% endif %}
             </div>
-          </c-form>
-        </div>
+          </div>
+        </c-form>
+      </div>
     </div>
   </div>
 {% endblock %}
 
 {% block time-select %}
   <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto flex flex-col justify-center">
-    <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-      {% blocktrans %}Select Start and End Times {{ datetime }}{% endblocktrans %}</h2>
-      <div class="flex h-full flex-col">
-        <div class="isolate flex flex-auto bg-white">
-          <c-time-select-table :pendulums=pendulums ></c-time-select-table>
-          <div id="calendars" class="p-5 mx-auto shadow-sm border border-stone-100">
-            <div id="month-switcher">
-              <c-form url="{% url 'reservations:time_select' %}" method="get"
-                      hx-target="#reservation-form-wrapper" hx-swap="outerHTML"
-                      dj-block="time-select">
-                {{ form }}
-                {# No reservations in the past. #}
-                {# First Load: date == today. Users can only increment date. #}
-                {# If date incremented: date > today #}
-                <div class="flex justify-between">
-                  <button name="get_previous_month" type="submit"
-                          class="{% if calendar.month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
-                    <span class="sr-only">Previous month</span>
-                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                  <button name="get_next_month" type="submit"
-                          class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
-                    <span class="sr-only">Next month</span>
-                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                  </button>
-                </div>
-              </c-form>
+    <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
+      <c-admin-page-header header="{% trans 'Reservations' %}" subheader="{% trans 'Select Start and End Times' %}"></c-admin-page-header>
+    </div>
+    <div class="flex h-full flex-col">
+      <div class="isolate flex flex-auto bg-white">
+        <c-time-select-table :is_time_selected=is_time_selected :pendulums=pendulums ></c-time-select-table>
+        <div id="calendars" class="p-5 mx-auto shadow-sm border border-stone-100">
+          <div id="month-switcher">
+            <c-form url="{% url 'reservations:time_select' %}" method="get"
+                    hx-target="#reservation-form-wrapper" hx-swap="outerHTML"
+                    dj-block="time-select">
+              {{ form }}
+              {# No reservations in the past. #}
+              {# First Load: date == today. Users can only increment date. #}
+              {# If date incremented: date > today #}
+              <div class="flex justify-between">
+                <button name="get_previous_month" type="submit"
+                        class="{% if calendar.date.date <= today_dt.date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">
+                  <span class="sr-only">Previous month</span>
+                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                          d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                          clip-rule="evenodd"/>
+                  </svg>
+                </button>
+                <button name="get_next_month" type="submit"
+                        class="ml-2 flex flex-none items-center justify-end text-stone-400 -my-1.5 -mr-1.5 p-1.5 hover:text-stone-500">
+                  <span class="sr-only">Next month</span>
+                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                          d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                          clip-rule="evenodd"/>
+                  </svg>
+                </button>
+              </div>
+            </c-form>
+          </div>
+
+          <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:justify-center gap-10">
+            {% url 'reservations:time_select' as url %}
+            <c-shortterm-reservation-calendar
+              url="{{ url }}"
+              dj-block="time-select"
+              :month-data=calendar
+              :weekdays=weekdays
+              :today_dt=today_dt
+              :selected_datetime=selected_datetime
+            />
+          </div>
+          <div class="mt-5 space-y-2">
+            <p>{% trans 'Selected Stay Period' %}:</p>
+            <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright'] max-w-[400px]">
+              {% with start_pen|date:"Y-m-d G:iA" as pen %}
+                <c-admin-page-header header="{% trans 'From' %}" :subheader=pen />
+              {% endwith %}
             </div>
-            <div id="months" class="space-y-5 lg:space-y-0 lg:flex lg:justify-center gap-10">
-              {% url 'reservations:time_select' as url %}
-              <c-shortterm-reservation-calendar
-                url="{{ url }}"
-                dj-block="time-select"
-                :month-data=calendar
-                :weekdays=weekdays
-                :pendulum=pendulum
-                :start=start
-                :end=end />
+            <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright'] max-w-[400px]">
+              {% with end_pen|date:"Y-m-d G:iA" as pen %}
+                <c-admin-page-header header="{% trans 'To' %}" :subheader=pen />
+              {% endwith %}
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 {% endblock %}
 
@@ -318,8 +335,9 @@
 {% block contact-information-input %}
   <div id="reservation-form-wrapper" class="p-5 sm:px-20 space-y-5 mx-auto flex flex-col justify-center">
     <div>
-      <h2 class="mb-2 border-b-2 border-neutral-100 pb-2 text-center text-xl text-orange-950 sm:text-3xl">
-        {% translate 'Contact Information' %}</h2>
+      <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
+        <c-admin-page-header header="{% trans 'Reservations' %}" subheader="{% trans 'Contact Information' %}"></c-admin-page-header>
+      </div>
       <c-form id="contact-information-form"
               class="space-y-5"
               url="{% url 'reservations:contact_information_input' %}"

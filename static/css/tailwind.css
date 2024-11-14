@@ -1082,6 +1082,10 @@ select {
   grid-row-end: 50;
 }
 
+.row-end-\[51\] {
+  grid-row-end: 51;
+}
+
 .-m-2 {
   margin: -0.5rem;
 }
@@ -1605,6 +1609,26 @@ select {
 
 .max-w-xs {
   max-width: 20rem;
+}
+
+.max-w-\[25ch\] {
+  max-width: 25ch;
+}
+
+.max-w-\[100px\] {
+  max-width: 100px;
+}
+
+.max-w-full {
+  max-width: 100%;
+}
+
+.max-w-\[30ch\] {
+  max-width: 30ch;
+}
+
+.max-w-\[400px\] {
+  max-width: 400px;
 }
 
 .flex-1 {
@@ -3759,6 +3783,15 @@ select {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.data-\[status\=selected\]\:border-2[data-status=selected] {
+  border-width: 2px;
+}
+
+.data-\[status\=selected\]\:border-blue-500[data-status=selected] {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+
 .data-\[action\=delete\]\:bg-rose-500[data-action=delete] {
   --tw-bg-opacity: 1;
   background-color: rgb(244 63 94 / var(--tw-bg-opacity));
@@ -3787,6 +3820,16 @@ select {
 .data-\[status\=today\]\:bg-lime-600[data-status=today] {
   --tw-bg-opacity: 1;
   background-color: rgb(101 163 13 / var(--tw-bg-opacity));
+}
+
+.data-\[status\=middle\]\:bg-blue-700[data-status=middle] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
+.data-\[status\=day-with-reservation\]\:bg-blue-700[data-status=day-with-reservation] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
 .data-\[action\=delete\]\:text-rose-50[data-action=delete] {
@@ -3827,6 +3870,26 @@ select {
 .data-\[status\=today\]\:text-lime-50[data-status=today] {
   --tw-text-opacity: 1;
   color: rgb(247 254 231 / var(--tw-text-opacity));
+}
+
+.data-\[status\=middle\]\:text-blue-50[data-status=middle] {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity));
+}
+
+.data-\[status\=end\]\:text-blue-500[data-status=end] {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity));
+}
+
+.data-\[status\=day-with-reservation\]\:text-blue-50[data-status=day-with-reservation] {
+  --tw-text-opacity: 1;
+  color: rgb(239 246 255 / var(--tw-text-opacity));
+}
+
+.data-\[status\=selected\]\:text-blue-500[data-status=selected] {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity));
 }
 
 .data-\[action\=disabled\]\:hover\:cursor-not-allowed:hover[data-action=disabled] {

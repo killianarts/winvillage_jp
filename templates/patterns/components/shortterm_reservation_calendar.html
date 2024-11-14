@@ -1,4 +1,4 @@
-<c-vars url dj-block="time-select" month-data pendulum start end weekdays />
+<c-vars url dj-block="time-select" month-data weekdays />
 {% if not url %}
     {% url 'reservations:time_select' as url %}
 {% endif %}
@@ -29,12 +29,10 @@
                 <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="today" />
             {% elif day.datetime.date < today_dt.date %}
                 <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="past" />
-            {% elif start and start.date == day.datetime.date  %}
-                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="start" />
-            {% elif start and start.date < day.datetime.date and end and day.datetime.date < end.date %}
-                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="middle" />
-            {% elif end and end.date == day.datetime.date %}
-                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="end" />
+            {% elif day.datetime.date == start_pen.date %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="day-with-reservation" />
+            {% elif selected_datetime and selected_datetime.date == day.datetime.date %}
+                <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="selected" />
             {% elif not day.available_date %}
                 <c-calendar-cell-button :url=url dj-block="{{ dj_block }}" :day=day name="select_date" status="unavailable" />
             {% else %}

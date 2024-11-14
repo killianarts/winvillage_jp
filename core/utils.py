@@ -46,14 +46,14 @@ def get_or_set_order_session(request):
         return order
 
 
-def make_new_reservation(request):
+def make_new_reservation(request) -> Reservation:
     stay = Stay.objects.create()
     reservation = Reservation.objects.create(stay=stay)
     request.session["reservation_id"] = reservation.id
     return reservation
 
 
-def get_user_reservation(request):
+def get_user_reservation(request) -> Reservation:
     try:
         reservation = Reservation.objects.get(
             user=request.user, stay__status="not_reserved"
@@ -65,7 +65,7 @@ def get_user_reservation(request):
     return reservation
 
 
-def get_or_set_reservation_session(request):
+def get_or_set_reservation_session(request) -> Reservation:
     reservation_id = request.session.get("reservation_id", None)
 
     if not request.user.is_authenticated and reservation_id is None:

@@ -119,30 +119,27 @@ def room_select(request: HtmxHttpRequest) -> HttpResponse:
 def time_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     today_dt = pendulum.today()
-    form = forms.DateTimeForm(initial={"datetime": today_dt})
     time_form = TimeSelectForm()
-    calendar = generate_calendar(reservation, today_dt)
-    start = reservation.stay.start if reservation.stay.start else None
-    end = reservation.stay.end if reservation.stay.end else None
-    times = generate_times_for_date(reservation, reservation.stay.start)
+    start_pen = reservation.stay.start if reservation.stay.start else today_dt
+    end_pen = reservation.stay.end if reservation.stay.end else today_dt
+    form = forms.DateTimeForm(initial={"datetime": start_pen or today_dt})
+    calendar = generate_calendar(reservation, start_pen or today_dt)
+    selected_datetime = start_pen.start_of("day")
+    times = generate_times_for_date(reservation, start_pen)
     weekdays = generate_weekday_names()
     if request.method == "GET":
         if "get_previous_month" in request.GET:
             form = forms.DateTimeForm(request.GET)
             if form.is_valid():
-                datetime = make_pen(form.cleaned_data["datetime"])
-                datetime = get_previous_month(datetime)
-                form = forms.DateTimeForm(initial={"datetime": datetime})
-                calendar = generate_calendar(reservation, datetime)
-                times = generate_times_for_date(reservation, datetime)
+                dt = get_previous_month(make_pen(form.cleaned_data["datetime"]))
+                form = forms.DateTimeForm(initial={"datetime": dt})
+                calendar = generate_calendar(reservation, dt)
         elif "get_next_month" in request.GET:
             form = forms.DateTimeForm(request.GET)
             if form.is_valid():
-                datetime = make_pen(form.cleaned_data["datetime"])
-                datetime = get_next_month(datetime)
-                form = forms.DateTimeForm(initial={"datetime": datetime})
-                calendar = generate_calendar(reservation, datetime)
-                times = generate_times_for_date(reservation, datetime)
+                dt = get_next_month(make_pen(form.cleaned_data["datetime"]))
+                form = forms.DateTimeForm(initial={"datetime": dt})
+                calendar = generate_calendar(reservation, dt)
     if request.method == "POST":
         if "select_date" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)
@@ -150,7 +147,7 @@ def time_select(request: HtmxHttpRequest) -> HttpResponse:
                 selected_datetime = pendulum.instance(
                     calendar_cell_form.cleaned_data["datetime"]
                 )
-                start, end = reservation.set_shortterm_date(selected_datetime)
+                calendar = generate_calendar(reservation, selected_datetime)
                 times = generate_times_for_date(reservation, selected_datetime)
         if "select-time" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)
@@ -158,7 +155,8 @@ def time_select(request: HtmxHttpRequest) -> HttpResponse:
                 selected_datetime = pendulum.instance(
                     calendar_cell_form.cleaned_data["datetime"]
                 )
-                start, end = reservation.set_shortterm_time(selected_datetime)
+                calendar = generate_calendar(reservation, selected_datetime)
+                start_pen, end_pen = reservation.set_shortterm_time(selected_datetime)
                 times = generate_times_for_date(reservation, selected_datetime)
 
     context = {"form": form,
@@ -168,8 +166,9 @@ def time_select(request: HtmxHttpRequest) -> HttpResponse:
                "weekdays": weekdays,
                "calendar": calendar,
                "times": times,
-               "start": start,
-               "end": end}
+               "selected_datetime": selected_datetime,
+               "start_pen": start_pen,
+               "end_pen": end_pen}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 @for_htmx(use_block_from_params=True)
