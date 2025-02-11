@@ -2,141 +2,149 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
+    <head>
+        <meta charset="UTF-8">
 
-    {#    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VY8KJ3S1CP"></script>#}
-    {#    <script>#}
-    {#        window.dataLayer = window.dataLayer || [];#}
-    {##}
-    {#        function gtag() {#}
-    {#            dataLayer.push(arguments);#}
-    {#        }#}
-    {##}
-    {#        gtag('js', new Date());#}
-    {##}
-    {#        gtag('config', 'G-VY8KJ3S1CP');#}
-    {#    </script>#}
-    <!-- This meta tag sets the description of the webpage. The "name" attribute is set to "description" to indicate
-         that the content provides a brief description of the webpage. The "content" attribute contains the actual
-         description text. This description is typically used by search engines to provide a summary of the webpage's content
-         in search results. It helps users understand what the webpage is about before they click on it. -->
-    <meta name="description"
-          content="{% translate 'Winvillage Administration Dashboard' %}">
-    <!-- This meta tag configures the viewport settings for the webpage. The "name" attribute is set to "viewport" to
-         indicate that it specifies the viewport properties. The "content" attribute contains the actual settings,
-         in this case, "width=device-width, initial-scale=1". This tells the browser to set the width of the viewport to the
-         device's width and set the initial zoom level to 1. It ensures that the webpage is displayed properly and scales
-         appropriately on different devices with varying screen sizes. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        {#    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VY8KJ3S1CP"></script>#}
+        {#    <script>#}
+        {#        window.dataLayer = window.dataLayer || [];#}
+        {##}
+        {#        function gtag() {#}
+        {#            dataLayer.push(arguments);#}
+        {#        }#}
+        {##}
+        {#        gtag('js', new Date());#}
+        {##}
+        {#        gtag('config', 'G-VY8KJ3S1CP');#}
+        {#    </script>#}
+        <!-- This meta tag sets the description of the webpage. The "name" attribute is set to "description" to indicate
+             that the content provides a brief description of the webpage. The "content" attribute contains the actual
+             description text. This description is typically used by search engines to provide a summary of the webpage's content
+             in search results. It helps users understand what the webpage is about before they click on it. -->
+        <meta name="description"
+              content="{% translate 'Winvillage Administration Dashboard' %}">
+        <!-- This meta tag configures the viewport settings for the webpage. The "name" attribute is set to "viewport" to
+             indicate that it specifies the viewport properties. The "content" attribute contains the actual settings,
+             in this case, "width=device-width, initial-scale=1". This tells the browser to set the width of the viewport to the
+             device's width and set the initial zoom level to 1. It ensures that the webpage is displayed properly and scales
+             appropriately on different devices with varying screen sizes. -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>
-      {% block subtitle %}Subtitle{% endblock %}
-      {% block title_divider %} - {% endblock %}
-      {% block title %}Title{% endblock %}
-    </title>
-    {% tailwind_css %}
-    <!-- _hyperscript library -->
-    <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
-    {% block hyperscript_behaviors %}{% endblock %}
-    {% block hyperscript_src %}
-      <script src="{% static 'core/js/hyperscript.js' %}"></script>
-    {% endblock %}
-    {#    <!-- Alpine.js library -->#}
-    {#    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>#}
-    <!-- HTMX library -->
-    {% block htmx_src %}
-      <script src="{% static 'core/js/htmx.js' %}"></script>
-      <script src="{% static 'core/js/htmx-preload.js' %}"></script>
+        <title>
+            {% block subtitle %}Subtitle{% endblock %}
+            {% block title_divider %} - {% endblock %}
+            {% block title %}Title{% endblock %}
+        </title>
+        {% tailwind_css %}
+        <link rel="stylesheet" href="url" type="text/css" media="screen" />
+        <!-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
 
-      {% block idiomorph_src %}
-          <script src="{% static 'core/js/idiomorph-ext.js' %}"></script>
-      {% endblock %}
-    {% endblock %}
-    <!-- This is necessary to make Google (potentially) display a picture in the search result. -->
-    {#    <script type="application/ld+json">#}
-    {#      {#}
-    {#        "@context": "https://schema.org",#}
-    {#        "@type": "Organization",#}
-    {#        "name": "農業法人キタサン",#}
-    {#        "url": "https://kitasan.online",#}
-    {#        "logo": "{% static 'core/img/mobile_hero.jpg' %}"#}
-    {#      }#}
-    {#    </script>#}
-    {% block extra_scripts %}
-    {% endblock %}
-    <link rel="preload"
-          as="font"
-          type="font/woff"
-          href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff' %}">
-    <link rel="preload"
-          as="font"
-          type="font/woff2"
-          href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff2' %}">
-    {% block extra_styles %}
-    {% endblock %}
-    <style type="text/css">
-     .scroll-bar::-webkit-scrollbar {
-       width: 1ch;
-       height: 1ch;
-     }
-
-     /* Track */
-     .scroll-bar::-webkit-scrollbar-track {
-       background: rgb(29 78 216);
-       border-radius: 10px;
-     }
-
-     /* Handle */
-     .scroll-bar::-webkit-scrollbar-thumb {
-       background-image: radial-gradient(56.98% 121.15% at 21.35% 25.79%, #FFA800 0%, #F97316 100%);
-       border-radius: 10px;
-     }
-
-     /* Handle on hover */
-     .scroll-bar::-webkit-scrollbar-thumb:hover {
-       background-image: radial-gradient(113.83% 120.07% at 78.13% 20.29%,rgb(191 219 254) 0%, rgb(96 165 250) 100%);
-       border-radius: 10px;
-     }
-    </style>
-
-  </head>
-
-  <body hx-ext="morph preload" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="font-code">
-    {% block body %}
-      <div id="admin-layout-wrapper"
-           class="grid relative
-               [grid-template-columns:auto_1fr]
-               [grid-template-rows:min-content_min-content_auto]
-               [grid-template-areas:'menu_menu''header_header''content_content']
-               lg:[grid-template-areas:'menu_header''menu_content''menu_content']
-               h-screen">
-        {% block menu %}
+        <!-- _hyperscript library -->
+        <!-- _hyperscript behaviors need to be defined before importing _hyperscript -->
+        {% block hyperscript_behaviors %}{% endblock %}
+        {% block hyperscript_src %}
+            <script src="{% static 'core/js/hyperscript.js' %}"></script>
         {% endblock %}
-        {% block main %}
-          {# Margin makes room for sidebar. #}
-          <main class="p-5 space-y-5">
-            <div id="page-header" class=" grid gap-x-3 [grid-area:header] [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
-              {% block page_header %}{% endblock %}
-            </div>
-            {% block pre_content %}{% endblock %}
-            <div id="dashboard-content" class="scroll-bar relative overflow-auto [grid-area:content]">
-              {% block content %}{% endblock %}
-            </div>
-            {% block post_content %}{% endblock %}
-            {% block messages %}
-              <div id="messages" class="fixed bottom-10 right-10"
-                   hx-get="{% url 'core:get_messages' %}"
-                   hx-target="this"
-                   hx-swap="morph:outerHTML"
-                   hx-trigger="getMessages from:body">{% include 'core/messages.html' %}</div>
+        {#    <!-- Alpine.js library -->#}
+        {#    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>#}
+        <!-- HTMX library -->
+        {% block htmx_src %}
+            <script src="{% static 'core/js/htmx.js' %}"></script>
+            <script src="{% static 'core/js/htmx-preload.js' %}"></script>
+
+            {% block idiomorph_src %}
+                <script src="{% static 'core/js/idiomorph-ext.js' %}"></script>
             {% endblock %}
-          </main>
         {% endblock %}
-      </div>
-      {% block footer %}
-      {% endblock %}
-    {% endblock %}
-  </body>
+        <!-- This is necessary to make Google (potentially) display a picture in the search result. -->
+        {#    <script type="application/ld+json">#}
+        {#      {#}
+        {#        "@context": "https://schema.org",#}
+        {#        "@type": "Organization",#}
+        {#        "name": "農業法人キタサン",#}
+        {#        "url": "https://kitasan.online",#}
+        {#        "logo": "{% static 'core/img/mobile_hero.jpg' %}"#}
+        {#      }#}
+        {#    </script>#}
+        {% block extra_scripts %}
+        {% endblock %}
+        <link rel="preload"
+              as="font"
+              type="font/woff"
+              href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff' %}">
+        <link rel="preload"
+              as="font"
+              type="font/woff2"
+              href="{% static 'core/fonts/berkeley-mono-variable/WEB/BerkeleyMonoVariable-Regular.woff2' %}">
+        {% block extra_styles %}
+        {% endblock %}
+        <style type="text/css">
+         .scroll-bar::-webkit-scrollbar {
+             width: 1ch;
+             height: 1ch;
+         }
+
+         /* Track */
+         .scroll-bar::-webkit-scrollbar-track {
+             background: rgb(29 78 216);
+             border-radius: 10px;
+         }
+
+         /* Handle */
+         .scroll-bar::-webkit-scrollbar-thumb {
+             background-image: radial-gradient(56.98% 121.15% at 21.35% 25.79%, #FFA800 0%, #F97316 100%);
+             border-radius: 10px;
+         }
+
+         /* Handle on hover */
+         .scroll-bar::-webkit-scrollbar-thumb:hover {
+             background-image: radial-gradient(113.83% 120.07% at 78.13% 20.29%,rgb(191 219 254) 0%, rgb(96 165 250) 100%);
+             border-radius: 10px;
+         }
+        </style>
+
+    </head>
+
+    <body hx-ext="morph preload" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="font-berkeley-uc">
+        {% block body %}
+            <div id="admin-layout-wrapper"
+                 class="grid relative
+                     [grid-template-columns:auto_1fr]
+                     [grid-template-rows:min-content_min-content_auto]
+                     [grid-template-areas:'menu_menu''header_header''content_content']
+                     lg:[grid-template-areas:'menu_header''menu_content''menu_content']
+                     h-screen">
+                {% block menu %}
+                {% endblock %}
+                {% block main %}
+                    {# Margin makes room for sidebar. #}
+                    <main class="p-5 space-y-5">
+                        <div id="page-header"
+                             class="grid gap-x-3
+                                 [grid-area:header]
+                                 [grid-template-columns:1ch_auto_1fr]
+                                 sm:[grid-template-columns:4ch_auto_1fr]
+                                 [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
+                            {% block page_header %}{% endblock %}
+                        </div>
+                        {% block pre_content %}{% endblock %}
+                        <div id="dashboard-content" class="scroll-bar relative overflow-auto [grid-area:content]">
+                            {% block content %}{% endblock %}
+                        </div>
+                        {% block post_content %}{% endblock %}
+                        {% block messages %}
+                            <div id="messages" class="fixed bottom-10 right-10"
+                                 hx-get="{% url 'core:get_messages' %}"
+                                 hx-target="this"
+                                 hx-swap="morph:outerHTML"
+                                 hx-trigger="getMessages from:body">{% include 'core/messages.html' %}</div>
+                        {% endblock %}
+                    </main>
+                {% endblock %}
+            </div>
+            {% block footer %}
+            {% endblock %}
+        {% endblock %}
+    </body>
 
 </html>

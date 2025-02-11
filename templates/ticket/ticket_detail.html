@@ -1,20 +1,18 @@
 {% extends 'winadmin/index.html' %}
 {% load i18n %}
-{% block title %}
-  {% blocktrans %}Ticket Details{% endblocktrans %}
+{% block subtitle %}
+  {% blocktrans %}Create a customer{% endblocktrans %}
 {% endblock %}
-
 {% block page_header %}
   <c-admin-page-header header="{% translate 'Customer Management' %}"
-                       subheader="{% trans 'Ticket Details' %}"/>
+                       subheader="{% trans 'Customer Create' %}"/>
 {% endblock %}
-
 {% block content %}
-  <c-form method="post" hx-target="#content-wrapper" dj-block="content">
-    {{ form.non_field_errors }}
-    <div class="grid">
-      {{ form }}
-    </div>
+  <c-form>
+    {{ form }}
+    <c-crud-button-container>
+      <c-button name="submit" type="submit">{% trans "Create Customer" %}</c-button>
+    </c-crud-button-container>
     {% if ticket.is_closed %}
       <div class="space-y-5 grid">
         <c-button name="reopen-ticket">
@@ -22,16 +20,18 @@
         </c-button>
       </div>
     {% else %}
-      <c-button name="add-note">
-        {% trans "Add Note" %}
-      </c-button>
-      <c-button name="close-ticket" data-action="delete">
-        {% trans "Close Ticket" %}
-      </c-button>
+      <c-crud-button-container>
+        <c-button name="add-note">
+          {% trans "Add Note" %}
+        </c-button>
+        <c-button name="close-ticket" data-action="delete">
+          {% trans "Close Ticket" %}
+        </c-button>
+      </c-crud-button-container>
     {% endif %}
     {% block notes %}
       {% for note in notes %}
-        <div class="mt-5 pointer-events-auto flex w-full max-w-md rounded-lg bg-stone-50 shadow-lg ring-1 ring-black ring-opacity-5">
+        <div class="mt-5 pointer-events-auto flex w-full max-w-md">
           <div class="w-0 flex-1 p-4">
             <div class="flex items-start">
               <div class="ml-3 w-0 flex-1">
@@ -46,12 +46,4 @@
       {% endfor %}
     {% endblock %}
   </c-form>
-{% endblock %}
-
-{% block deleted %}
-  <div hx-get="{% url 'winadmin:ticket_list' %}"
-       hx-replace-url="{% url 'winadmin:ticket_list' %}"
-       hx-target="this"
-       hx-trigger="load"
-       hx-swap="outerHTML"></div>
 {% endblock %}

@@ -29,15 +29,13 @@
 {% endblock %}
 {% block content %}
   {{ form.media }}
-  <c-form id="recurrence-form"
-          hx-target="#content-wrapper"
-          dj-block="content">
+  <c-form id="recurrence-form">
     {% csrf_token %}
     <div id="container" class="max-w-xl space-y-5">
       {{ form }}
-      <div class="space-x-5">
+      <c-crud-button-container>
         <c-button id="submit-button">{% trans "Submit" %}</c-button>
-      </div>
+      </c-crud-button-container>
     </div>
   </c-form>
   {% block calendars %}
@@ -49,7 +47,7 @@
                   class="grid grid-cols-2 w-full"
                   hx-target="#calendars"
                   hx-trigger="keyup from:#recurrence-form, mouseup from:#recurrence-form"
-                  block="calendars">
+                  dj-block="calendars">
             {{ date_filter_form }}
             <c-button name="get_previous_month"
                       class="{% if calendars.selected_month.date == today_date %} invisible {% endif %}flex flex-none items-center text-stone-400 -my-1.5 p-1.5 hover:text-stone-500">

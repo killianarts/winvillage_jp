@@ -12,7 +12,7 @@
                                          hx-swap="morph:outerHTML transition:true"
                                          {% endif %}>
     {% if field.label %}
-        <label class="field-body font-code">
+        <label class="field-body">
     {% endif %}
     <div class="field-and-help-text grid">
         <div class="field grid row-span-3 text-blue-950 has-[:focus]:text-blue-700 max-w-auto">
@@ -23,11 +23,11 @@
                 {% if field.field|field_type == "MoneyField" %}
                     <c-form-field-content left-char="▷" :field="{{ field }}" class="control items-center"
                                           grid-layout="[grid-template-columns:1ch_1fr_min-content_3ch]">
-                        {% render_field field class="border-none -my-[1.2ch] font-code focus:ring-transparent" %}
+                        {% render_field field class="border-none -my-[1.2ch] ml-[1.5ch] focus:ring-transparent" %}
                     </c-form-field-content>
                 {% else %}
                     <c-form-field-content left-char="▷" :field="{{ field }}" class="control items-center relative">
-                        {% render_field field class="border-none -my-[1.2ch] font-code focus:ring-transparent" %}
+                        {% render_field field class="border-none -my-[1.2ch] ml-[1.5ch] focus:ring-transparent" %}
                     </c-form-field-content>
                 {% endif %}
                 <c-form-field-bottom text={{ field.error }} />

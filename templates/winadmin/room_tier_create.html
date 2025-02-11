@@ -8,10 +8,10 @@
                        subheader="{% trans 'Create Room Tier' %}"/>
 {% endblock %}
 {% block content %}
-  {% block form %}
-    <c-form hx-target="#content-wrapper" dj-block="content">
+    <c-form>
       {{ form }}
-      <c-button>{% trans "Submit" %}</c-button>
+      <c-crud-button-container>
+        <c-button>{% trans "Submit" %}</c-button>
+      </c-crud-button-container>
     </c-form>
-  {% endblock %}
 {% endblock %}

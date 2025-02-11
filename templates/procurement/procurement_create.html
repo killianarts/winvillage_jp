@@ -11,20 +11,9 @@
 {% endblock %}
 {% block content %}
     <c-form id="procurement-create-form" class="p-2">
-        <div hx-get="."
-             hx-target="#procurement-create-form"
-             hx-swap="morph:outerHTML"
-             hx-trigger="change delay:100ms"
-             hx-include="this"
-             hx-vals='{"use_block": "form"}'>
-            {{ form }}
-        </div>
-        <div hx-post="."
-             hx-target="#content-wrapper"
-             hx-swap="outerHTML"
-             hx-vals='{"use_block": "content"}'
-             hx-include="#procurement-create-form">
-            <c-button id="submit-button" name="create-procurement" value="create-procurement">{% trans "Submit" %}</c-button>
-        </div>
+        {{ form }}
+        <c-crud-button-container>
+            <c-button>{% trans "Submit" %}</c-button>
+        </c-crud-button-container>
     </c-form>
 {% endblock %}

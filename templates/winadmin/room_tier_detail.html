@@ -10,9 +10,9 @@
 {% block content %}
   <c-form hx-target="this" dj-block="content">
     {{ form }}
-    <div class="mb-2 space-x-5">
+    <c-crud-button-container>
       <c-button>{% trans "Edit" %}</c-button>
       <c-button name="delete" data-action="delete">{% trans "Delete" %}</c-button>
-    </div class="space-x-5">
+    </c-crud-button-container class="space-x-5">
   </c-form>
 {% endblock %}

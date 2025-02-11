@@ -352,9 +352,7 @@ if DEBUG:
     STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # Tailwind CLI
-# This is needed until django-tailwind-cli is updated with the latest version.
-TAILWIND_CLI_VERSION = "3.4.1"
-TAILWIND_CLI_SRC_CSS = BASE_DIR / "static/recurrence/css/recurrence.css"
+# TAILWIND_CLI_SRC_CSS = BASE_DIR / "static/recurrence/css/recurrence.css"
 
 # MEDIA
 # ------------------------------------------------------------------------------

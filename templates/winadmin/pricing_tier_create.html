@@ -1,16 +1,17 @@
 {% extends 'winadmin/index.html' %}
 {% load i18n %}
+{% block subtitle %}
+  {% trans 'Pricing Tier Create' %}
+{% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Room Management' %}"
+                       subheader="{% trans 'Pricing Tier Create' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Create Pricing Tier' %}</h1>
-    <c-form class="grid gap-5" method="dialog" novalidate
-            hx-target="#content-wrapper"
-            hx-swap="morph:outerHTML"
-            dj-block="content">
-      {{ form }}
-      <c-button type="dialog">
-        {% trans "Submit" %}
-      </c-button>
-    </c-form>
-  </div>
+  <c-form class="grid gap-5" method="dialog">
+    {{ form }}
+    <c-button type="dialog">
+      {% trans "Submit" %}
+    </c-button>
+  </c-form>
 {% endblock %}

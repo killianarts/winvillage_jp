@@ -1,0 +1,44 @@
+#+title: 2024 11 20
+
+* Trouble with time_select and room_select
+I have a problem with the current version of the time_select and room_select portions of the customer reservation process.
+
+** time_select
+*** The last time block
+Currently, when customers select a time for a short-term reservation, we have the following process:
+
+- Select one time block. When selected, the reservation period changes to start=selected_time, end=selected_time + 30 minutes.
+- (optional) Select another time block, which only changes the end (end=new_selected_time + 30 minutes).
+
+The interface currently generates DateTimes for a 24-hour period in 30 minute intervals. It starts from 2024-11-20 00:00, then goes to 00:30, then 01:00, 01:30...until 00:00 of the next day.
+
+Those intervals are used not only for the buttons that users click to select times, but also the times displayed. Unfortunately, only the "start" time (which is the actual interval that is produced) is shown, not the end time. This is confusing because you are selecting a time block with an end time 30 minutes into the next day.
+
+Maybe I can just not show the last block?
+
+**** SOLUTION
+This feels hacky, but I simply am not rendering the last time block.
+
+*** Buffer "unavailable" time necessary for short term reservations?
+Currently, if there is some "unavailable" slots on the time table, there are no "buffer" unavailable times added to the start and end of the unavailable time, meaning that there isn't time to prepare any rooms for use. Additionally, if a user selects the block of time with end == the start of the unavailable block, it can be selected but the user can't continue. The block with start == end of an unavailable block can be selected and the user can continue. It's both confusing and could lead to room management issues.
+
+I suspect that adding a buffer time to the "available room" check will be necessary. I further suspect that I'll need to split ~compile_dates_information~ into ~compile_times_information~ to avoid problems with overnight and short-term stay differences.
+
+** room_select
+*** Overcharging on 30 minute blocks
+When selecting only a 30 minute block (example: start == 00:00 && end == 00:30), because two DateTimes are produced by the interval in ~compile_dates_information~, the reservation will be charged double the expected amount.
+
+Maybe check if the start and end are only 30 minutes apart?
+
+No, the problem is that an extra 30 minutes is charged for any reservation, not just 30 minute reservations. Decided to just exclude the first key/value pair from the summation.
+
+** date_select
+I noticed additional bugs on date_select.
+*** check-in time
+The DateTimes for overnight reservations need to reflect check-in and check-out times.
+*** Available room detection
+When the date_selection calendar is displayed, even if a date has short-term reservations for a room after the check-in time for that room, the room id is not added to the list of rooms that can't be reserved. As a result, the calendar fails to show that no reservations are available for a certain date. That means that users can choose the date.
+
+However, if they try to select a different end date, then the start date will be reset. If they try to select a start date and end date that has the inelegible date between start and end, the start and end dates will be reset as well.
+
+More and more, it appears that I will need to split ~compile_dates_information~ into two separate functions for dates and times.

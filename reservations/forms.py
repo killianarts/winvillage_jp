@@ -34,18 +34,15 @@ class ContactInfoForm(ShisoFormMixin, forms.Form):
         label=_("Phone #"),
     )
 
-    do_htmx_validation = True
-
 
 class DateForm(forms.Form):
     date = forms.DateTimeField(widget=forms.HiddenInput)
 
 
 class StayTypeSelectForm(ShisoFormMixin, forms.Form):
-    CHOICES = [("", "---"),
-               ("ST", _("Short-term")),
-               ("ON", _("Overnight"))]
+    CHOICES = [("", "---"), ("ST", _("Short-term")), ("ON", _("Overnight"))]
     type = forms.ChoiceField(choices=CHOICES)
+
 
 class TimeSelectForm(forms.Form):
     DEFAULT_CHOICE = [("", "---")]
@@ -77,6 +74,23 @@ class DateTimeForm(forms.Form):
 
         if datetime_widget_id:
             self.fields["datetime"].widget.attrs["id"] = datetime_widget_id
+
+
+class StartEndDateTimesForm(forms.Form):
+    start = forms.DateTimeField(widget=forms.HiddenInput)
+    end = forms.DateTimeField(widget=forms.HiddenInput)
+
+    def __init__(self, *args, **kwargs):
+        start_widget_id = kwargs.pop("start_widget_id", None)
+        end_widget_id = kwargs.pop("end_widget_id", None)
+
+        super().__init__(*args, **kwargs)
+
+        if start_widget_id:
+            self.fields["start"].widget.attrs["id"] = start_widget_id
+
+        if end_widget_id:
+            self.fields["end"].widget.attrs["id"] = end_widget_id
 
 
 class TravelerForm(ShisoFormMixin, forms.ModelForm):

@@ -1,46 +1,46 @@
 from itertools import product
 from zoneinfo import ZoneInfo
+
 import pendulum
+from core.utils import (
+    HtmxHttpRequest,
+    for_htmx,
+    get_or_set_reservation_session,
+    htmx_form_validate,
+)
+from customer.models import Customer
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
 import reservations.forms as forms
-from core.utils import (
-    HtmxHttpRequest,
-    get_or_set_reservation_session,
-    for_htmx,
-    htmx_form_validate,
-)
-from customer.models import Customer
+from reservations.forms import DateForm, TimeSelectForm, TravelerForm
+from reservations.models import Item, Reservation, Room, RoomTier
+from reservations.tasks import send_confirmation_email
 from reservations.utils import (
-    generate_weekday_names,
-    get_previous_month,
-    get_next_month,
-    generate_calendars,
     generate_calendar,
+    generate_calendars,
+    generate_times_calendar,
     generate_times_for_date,
+    generate_weekday_names,
+    get_next_month,
+    get_previous_month,
     make_pen,
 )
-from reservations.forms import DateForm, TimeSelectForm, TravelerForm
-from reservations.models import (
-    Item,
-    Reservation,
-    Room,
-)
-from reservations.tasks import send_confirmation_email
+
 from . import utils
 from .time_utils import generate_datetimes, generate_interval_range
 
 RESERVATION_TEMPLATE = "reservations/index.html"
 TIME_ZONE = "Asia/Tokyo"
 
+
 @htmx_form_validate(form_class=TravelerForm)
 @for_htmx(use_block_from_params=True)
 def index(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
     initial = {
-        "number_of_adults": reservation.stay.number_of_adults,
-        "number_of_children": reservation.stay.number_of_children,
+        "number_of_adults": reservation.stay.number_of_adults or 1,
+        "number_of_children": reservation.stay.number_of_children or 0,
     }
     form = TravelerForm(initial=initial)
     if request.method == "POST":
@@ -54,6 +54,7 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def date_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
+    stay_type = request.session["stay-type"] = "overnight"
     today_date = pendulum.today()
     form = forms.DateTimeForm(initial={"datetime": today_date})
     calendars = generate_calendars(reservation, today_date, number_of_calendars=2)
@@ -67,14 +68,18 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
                 datetime = make_pen(form.cleaned_data["datetime"])
                 datetime = get_previous_month(datetime)
                 form = forms.DateTimeForm(initial={"datetime": datetime})
-                calendars = generate_calendars(reservation, datetime, number_of_calendars=2)
+                calendars = generate_calendars(
+                    reservation, datetime, number_of_calendars=2
+                )
         elif "get_next_month" in request.GET:
             form = forms.DateTimeForm(request.GET)
             if form.is_valid():
                 datetime = make_pen(form.cleaned_data["datetime"])
                 datetime = get_next_month(datetime)
                 form = forms.DateTimeForm(initial={"datetime": datetime})
-                calendars = generate_calendars(reservation, datetime, number_of_calendars=2)
+                calendars = generate_calendars(
+                    reservation, datetime, number_of_calendars=2
+                )
     if request.method == "POST":
         if "select_date" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)
@@ -85,6 +90,7 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
                 start, end = reservation.set_dates(selected_datetime)
     context = {
         "calendars": calendars,
+        "stay_type": stay_type,
         "weekdays": weekdays,
         "pendulum": pendulum,
         "today_date": today_date,
@@ -98,13 +104,11 @@ def date_select(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def room_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
+    stay_type = request.session.get("stay-type")
     roomtier_queryset = reservation.get_possible_roomtier_queryset()
-    roomtier_data = utils.get_roomtier_data(reservation)
-    form = forms.RoomTierChoiceForm(
-        queryset=roomtier_queryset, initial=utils.get_form_initial_data(reservation)
-    )
+    roomtier_data = utils.get_roomtier_data(reservation, stay_type)
     if request.method == "POST":
-        form = utils.get_form_with_POST_data(reservation, request)
+        form = forms.RoomTierChoiceForm(request.POST, queryset=roomtier_queryset)
         if form.is_valid():
             reservation.set_room(
                 form,
@@ -112,19 +116,30 @@ def room_select(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.get_start_date(),
                 reservation.get_end_date(),
             )
-    context = {"form": form, "roomtier_data": roomtier_data, "reservation": reservation}
+    else:
+        form = forms.RoomTierChoiceForm(
+            queryset=roomtier_queryset, initial=utils.get_form_initial_data(reservation)
+        )
+    context = {
+        "form": form,
+        "roomtier_data": roomtier_data,
+        "reservation": reservation,
+        "stay_type": stay_type,
+    }
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
+
 
 @for_htmx(use_block_from_params=True)
 def time_select(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
-    today_dt = pendulum.today()
+    stay_type = request.session["stay-type"] = "short-term"
+    today_dt = pendulum.now()
     time_form = TimeSelectForm()
-    start_pen = reservation.stay.start if reservation.stay.start else today_dt
-    end_pen = reservation.stay.end if reservation.stay.end else today_dt
+    start_pen = reservation.stay.start if reservation.stay.start else None
+    end_pen = reservation.stay.end if reservation.stay.end else None
     form = forms.DateTimeForm(initial={"datetime": start_pen or today_dt})
-    calendar = generate_calendar(reservation, start_pen or today_dt)
-    selected_datetime = start_pen.start_of("day")
+    calendar = generate_times_calendar(reservation, start_pen or today_dt)
+    selected_datetime = today_dt.start_of("day")
     times = generate_times_for_date(reservation, start_pen)
     weekdays = generate_weekday_names()
     if request.method == "GET":
@@ -133,13 +148,13 @@ def time_select(request: HtmxHttpRequest) -> HttpResponse:
             if form.is_valid():
                 dt = get_previous_month(make_pen(form.cleaned_data["datetime"]))
                 form = forms.DateTimeForm(initial={"datetime": dt})
-                calendar = generate_calendar(reservation, dt)
+                calendar = generate_times_calendar(reservation, dt)
         elif "get_next_month" in request.GET:
             form = forms.DateTimeForm(request.GET)
             if form.is_valid():
                 dt = get_next_month(make_pen(form.cleaned_data["datetime"]))
                 form = forms.DateTimeForm(initial={"datetime": dt})
-                calendar = generate_calendar(reservation, dt)
+                calendar = generate_times_calendar(reservation, dt)
     if request.method == "POST":
         if "select_date" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)
@@ -147,7 +162,7 @@ def time_select(request: HtmxHttpRequest) -> HttpResponse:
                 selected_datetime = pendulum.instance(
                     calendar_cell_form.cleaned_data["datetime"]
                 )
-                calendar = generate_calendar(reservation, selected_datetime)
+                calendar = generate_times_calendar(reservation, selected_datetime)
                 times = generate_times_for_date(reservation, selected_datetime)
         if "select-time" in request.POST:
             calendar_cell_form = forms.DateTimeForm(request.POST)
@@ -155,27 +170,29 @@ def time_select(request: HtmxHttpRequest) -> HttpResponse:
                 selected_datetime = pendulum.instance(
                     calendar_cell_form.cleaned_data["datetime"]
                 )
-                calendar = generate_calendar(reservation, selected_datetime)
+                calendar = generate_times_calendar(reservation, selected_datetime)
                 start_pen, end_pen = reservation.set_shortterm_time(selected_datetime)
                 times = generate_times_for_date(reservation, selected_datetime)
 
-    context = {"form": form,
-               "time_form": time_form,
-               "reservation": reservation,
-               "today_dt": today_dt,
-               "weekdays": weekdays,
-               "calendar": calendar,
-               "times": times,
-               "selected_datetime": selected_datetime,
-               "start_pen": start_pen,
-               "end_pen": end_pen}
+    context = {
+        "form": form,
+        "stay_type" "time_form": time_form,
+        "reservation": reservation,
+        "today_dt": today_dt,
+        "weekdays": weekdays,
+        "calendar": calendar,
+        "times": times,
+        "selected_datetime": selected_datetime,
+        "start_pen": start_pen,
+        "end_pen": end_pen,
+    }
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
+
 
 @for_htmx(use_block_from_params=True)
 def stay_type_select(request: HtmxHttpRequest) -> HttpResponse:
     context = {}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
-
 
 
 @for_htmx(use_block_from_params=True)
@@ -196,7 +213,6 @@ def option_select(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)
 
 
-@htmx_form_validate(form_class=forms.ContactInfoForm)
 @for_htmx(use_block_from_params=True)
 def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
@@ -211,8 +227,6 @@ def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
     contact_info = request.session.get("is_valid", False)
     if request.method == "POST":
         form = forms.ContactInfoForm(request.POST)
-        if "input_form_name" in request.POST:
-            print("input_form_name in POST")
         if form.is_valid():
             request.session["first_name"] = form.cleaned_data["first_name"]
             request.session["last_name"] = form.cleaned_data["last_name"]
@@ -225,10 +239,10 @@ def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
             reservation.save()
             contact_info = request.session["is_valid"] = True
         else:
-            request.session["first_name"] = request.POST.get("first_name", None)
-            request.session["last_name"] = request.POST.get("last_name", None)
-            request.session["email"] = request.POST.get("email", None)
-            request.session["phone"] = request.POST.get("phone", None)
+            request.session["first_name"] = request.POST.get("first_name", "")
+            request.session["last_name"] = request.POST.get("last_name", "")
+            request.session["email"] = request.POST.get("email", "")
+            request.session["phone"] = request.POST.get("phone", "")
             contact_info = request.session["is_valid"] = False
     context = {"form": form, "contact_info": contact_info}
     return TemplateResponse(request, RESERVATION_TEMPLATE, context)

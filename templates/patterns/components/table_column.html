@@ -1,7 +1,6 @@
-<c-vars col-num decoration />
+<c-vars col-num decoration url />
 <div-td class="contents whitespace-nowrap
-               sm:table-cell sm:border sm:border-blue-950 sm:align-top {{ class }}"
-        {{ attrs }}>
+               sm:table-cell sm:border sm:border-blue-950 sm:align-top {{ class }}" {{ attrs }}>
     {% if col_num == 1 %}
         <span class="sm:hidden text-white px-3 py-1 bg-blue-700 text-right" _="on load get <input[name='{{ col_num }}']/> then append its value to my innerHTML">▚▚ </span>
     {% else %}

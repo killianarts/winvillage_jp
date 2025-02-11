@@ -8,7 +8,7 @@
     <h1 class="text-3xl">{% translate 'Pricing Tier Chart' %}</h1>
     <div class="max-w-fit pl-2 space-y-2 divide-y">
       <p>{% translate 'Filter' %}</p>
-      <div class="flex justify-center pt-5 font-code slashed-zero tabular-nums space-x-5">
+      <div class="flex justify-center pt-5  slashed-zero tabular-nums space-x-5">
         <label for="id_first_name">
           <input hx-get="{% url 'winadmin:pricing_tier_list' %}"
                  hx-swap="outerHTML"
@@ -44,13 +44,13 @@
                 {{ pricing_tier.name }}
               </a>
             </td>
-            <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
+            <td class="whitespace-nowrap px-3 py-4  text-sm font-medium slashed-zero tabular-nums text-stone-900">
               {{ pricing_tier.number_of_adults }}
             </td>
-            <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
+            <td class="whitespace-nowrap px-3 py-4  text-sm font-medium slashed-zero tabular-nums text-stone-900">
               {{ pricing_tier.get_price_per_night }}
             </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">{{ pricing_tier.get_price_per_hour }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium  slashed-zero tabular-nums text-stone-900">{{ pricing_tier.get_price_per_hour }}</td>
           </tr>
         {% endfor %}
         </tbody>

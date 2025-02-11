@@ -72,7 +72,10 @@ def get_or_set_reservation_session(request) -> Reservation:
         reservation = make_new_reservation(request)
         return reservation
     elif not request.user.is_authenticated and reservation_id:
-        reservation = Reservation.objects.get(id=reservation_id)
+        try:
+            reservation = Reservation.objects.get(id=reservation_id)
+        except Reservation.DoesNotExist:
+            reservation = make_new_reservation(request)
         return reservation
 
     if request.user.is_authenticated:

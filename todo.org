@@ -1,0 +1,10 @@
+* Inbox
+** TODO test 3
+
+[[file:~/Work/Software_Development/winvillage/todo.org::*Inbox][Inbox]]
+** TODO test 1
+
+[[file:~/Work/Software_Development/winvillage/content/devlog/devlog_template.org::*]]
+** TODO test
+
+[[file:~/Work/Software_Development/winvillage/content/devlog/devlog_template.org::*]]

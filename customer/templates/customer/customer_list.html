@@ -11,7 +11,7 @@
 {% block content %}
   <div class="max-w-fit mb-5 space-y-2 divide-y">
     <p>{% translate 'Filter' %}</p>
-    <div class="flex justify-center pt-5 font-code slashed-zero tabular-nums space-x-5">
+    <div class="flex justify-center pt-5 slashed-zero tabular-nums space-x-5">
       <label for="id_first_name">
         <input hx-get="{% url 'winadmin:customer_list' %}"
                hx-swap="outerHTML"

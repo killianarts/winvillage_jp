@@ -1,0 +1,50 @@
+#+title: 2024 11 21
+
+* ~compile_times_information~
+I decided to make separate ~compile~ functions for short-term reservations and overnight reservations.
+
+Before doing that, I want to explore using Pendulum Intervals. It is possible to check if a DateTime is in an Interval.
+
+#+begin_src python :session
+import pendulum
+now = pendulum.now()
+later = now.add(days=2)
+interval = pendulum.interval(now, later)
+tomorrow = now.add(days=2)
+tomorrow in interval
+yesterday = now.subtract(days=1)
+much_later = later.add(days=2)
+# yesterday and much_later are customer's chosen start and end dates for reservations.
+long_interval = pendulum.interval(yesterday, much_later)
+days_in_interval = []
+for d in long_interval.range("days"):
+    if d in interval:
+        days_in_interval.append(d)
+days_in_interval
+#+end_src
+
+#+RESULTS:
+| DateTime | (2024 11 20 19 27 28 195051 tzinfo=Timezone (Asia/Tokyo)) | DateTime | (2024 11 21 19 27 28 195051 tzinfo=Timezone (Asia/Tokyo)) | DateTime | (2024 11 22 19 27 28 195051 tzinfo=Timezone (Asia/Tokyo)) |
+
+So, could I check to see if the start or end of a not_available_reservation is in an Interval spanning a minimum of one business day?
+
+#+begin_src python :session
+    for not_possible_stay in not_possible_stays_query:
+        # Add buffers to allow time to manage rooms before and after reservations.
+        start_with_buffer = not_possible_stay.start.subtract(minutes=30)
+        end_with_buffer = not_possible_stay.end.add(minutes=30)
+        for room in rooms_reserved:
+            if start_with_buffer <= room["datetime"] < end_with_buffer:
+                room["room_ids"].append(not_possible_stay.room.id)
+#+end_src
+
+Right now, if the datetime is between the start and end of the currently not_possible_stay, then the room id of the not_possible_stay's room is added to the room.
+
+This works for overnight stays because the start and end times will always be the same. Thus, the check will find either the start of the not_available stay is more than or equal to the datetime of the calendar date.
+
+The trouble here is that for overnight stays, we need to know if there are any stays between the start and end of AT LEAST one overnight stay, starting with the current datetime being checked.
+
+I made a second function, ~compile_times_information~. The dates version does the
+
+* More reservation bugs
+When selecting a time for a reservation, the price is set correctly. When choosing an overnight date, the room price is 0.

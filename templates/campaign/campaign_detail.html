@@ -28,15 +28,13 @@
 {% endblock %}
 {% block content %}
   {{ form.media }}
-  <c-form class="grid max-w-xl"
-          hx-target="#content-wrapper"
-          dj-block="content">
+  <c-form class="grid max-w-xl">
     <div id="container" class="space-y-5">
       {{ form }}
-      <div class="space-x-5">
-        <c-button id="submit-button" name="edit" data-action="edit">{% trans "Edit" %}</c-button>
+      <c-crud-button-container>
+        <c-button id="edit-button" name="edit" data-action="edit">{% trans "Edit" %}</c-button>
         <c-button id="delete-button" name="delete" data-action="delete">{% trans "Delete" %}</c-button>
-      </div>
+      </c-crud-button-container>
     </div>
   </c-form>
 

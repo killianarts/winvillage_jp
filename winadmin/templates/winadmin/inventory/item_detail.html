@@ -8,18 +8,12 @@
                        subheader="{% trans 'Edit Inventory Item' %}"/>
 {% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <c-form action="." method="post" enctype="multipart/form-data"
-          hx-post="."
-          hx-target="#content-wrapper"
-          hx-swap="morph:outerHTML"
-          hx-vals='{"use_block": "content"}'
+  <c-form enctype="multipart/form-data"
           class="grid max-w-xl">
-      {{ form }}
-      <div class="space-x-5">
-        <c-button name="edit">{% trans "Submit" %}</c-button>
-        <c-button name="delete" type="button" data-action="delete">{% trans "Delete" %}</c-button>
-      </div>
-    </c-form>
-  </div>
+    {{ form }}
+    <c-crud-button-container>
+      <c-button name="edit">{% trans "Submit" %}</c-button>
+      <c-button name="delete" type="button" data-action="delete">{% trans "Delete" %}</c-button>
+    </c-crud-button-container>
+  </c-form>
 {% endblock %}

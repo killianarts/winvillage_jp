@@ -3,7 +3,6 @@ from core.models import Item
 from core.utils import HtmxHttpRequest, for_htmx, htmx_form_validate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.forms import formset_factory, modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse

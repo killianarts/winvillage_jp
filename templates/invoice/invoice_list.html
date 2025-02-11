@@ -3,30 +3,33 @@
 {% block subtitle %}
   {% translate 'Invoice List View' %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Vendor Management' %}"
+                       subheader="{% trans 'Invoice List' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper" class="space-y-5">
-    <h1 class="text-3xl">{% translate 'Invoice List' %}</h1>
-    <div class="max-w-fit pl-2 space-y-2 divide-y">
-      <p>{% translate 'Filter' %}</p>
-      <div class="flex justify-center pt-5 font-code slashed-zero tabular-nums space-x-5">
-        <label for="id_invoice_name">
-          <input hx-get="{% url 'winadmin:invoice_list' %}"
-                 hx-swap="outerHTML"
-                 hx-target="#invoice-list-table"
-                 hx-push-url="true"
-                 hx-vals='{"use_block": "invoice_list_table"}'
-                 hx-trigger="change delay:250ms"
-                 type="text"
-                 name="invoice_name"
-                 value="{{ GET_invoice_name }}"
-                 required=""
-                 id="id_invoice_name">
-        </label>
-      </div>
+  <h1 class="text-3xl">{% translate 'Invoice List' %}</h1>
+  <div class="max-w-fit pl-2 space-y-2 divide-y">
+    <p>{% translate 'Filter' %}</p>
+    <div class="flex justify-center pt-5 font-code slashed-zero tabular-nums space-x-5">
+      <label for="id_invoice_name">
+        <input hx-get="{% url 'winadmin:invoice_list' %}"
+               hx-swap="outerHTML"
+               hx-target="#invoice-list-table"
+               hx-push-url="true"
+               hx-vals='{"use_block": "invoice_list_table"}'
+               hx-trigger="change delay:250ms"
+               type="text"
+               name="invoice_name"
+               value="{{ GET_invoice_name }}"
+               required=""
+               id="id_invoice_name">
+      </label>
     </div>
-    {% block invoice_list_table %}
-      <table id="invoice-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
-        <thead>
+  </div>
+  {% block invoice_list_table %}
+    <table id="invoice-list-table" class="w-full max-w-7xl table-auto divide-y divide-stone-300">
+      <thead>
         <tr class="text-left">
           <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
             <span class="pl-6">{% translate 'Invoice Name' %}</span>
@@ -34,8 +37,8 @@
           <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Invoice Date' %}</th>
           <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Due Date' %}</th>
         </tr>
-        </thead>
-        <tbody class="divide-y divide-stone-200">
+      </thead>
+      <tbody class="divide-y divide-stone-200">
         {% for invoice in invoices %}
           <tr class="hover:bg-stone-50">
             <td class="whitespace-nowrap py-4 pr-3 pl-4text-sm font-medium tabular-nums text-stone-900 sm:pl-0">
@@ -44,15 +47,14 @@
               </a>
             </td>
             <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">
-                {{ invoice.invoiced_on|date:"Y-m-d" }}
+              {{ invoice.invoiced_on|date:"Y-m-d" }}
             </td>
             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">
-                {{ invoice.due_on|date:"Y-m-d" }}
+              {{ invoice.due_on|date:"Y-m-d" }}
             </td>
           </tr>
         {% endfor %}
-        </tbody>
-      </table>
-    {% endblock %}
-  </div>
+      </tbody>
+    </table>
+  {% endblock %}
 {% endblock %}

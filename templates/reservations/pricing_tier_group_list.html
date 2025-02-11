@@ -8,48 +8,12 @@
                        subheader="{% trans 'Pricing Tier List' %}"/>
 {% endblock %}
 {% block content %}
-  <c-table :columns="['{% trans 'Tier Name' %}', '{% trans 'Number of Adults' %}', '{% trans 'Price Per Night' %}', '{% trans 'Price Per Hour' %}']">
+  <c-table :columns="['{% trans 'Tier Group Name' %}', '{% trans 'Number of Adults' %}']">
     {% for group in pricing_tier_groups %}
       <c-table-row  vertical-stripes="{% cycle 'bg-white' 'bg-blue-100' %}">
-        <c-table-column :col-num="1" url="{% url 'winadmin:group_detail' group.pk %}">{{ group.created_at|date:"Y-m-d" }}</c-table-column>
-        <c-table-column :col-num="2">{{ group.item }}</c-table-column>
-        <c-table-column :col-num="3">{{ group.quantity }}</c-table-column>
-        <c-table-column :col-num="4">{{ group.price_per_unity }}</c-table-column>
-        <c-table-column :col-num="5">{{ group.total }}</c-table-column>
-        <c-table-column :col-num="6">{% for leg in group.summary.legs.all %}{% if leg.account == account %}{{ leg.account_balance_after }}{% endif %}{% endfor %}</c-table-column>
-        <a href="{% url 'winadmin:pricing_tier_group_detail' group.pk %}" hx-boost="true">
-          <c-button class="sm:hidden col-span-2 drop-shadow-none">{% trans 'Edit Group' %}</c-button>
-        </a>
+        <c-table-column :col-num="1" url="{% url 'winadmin:pricing_tier_group_detail' group.pk %}">{{ group.name }}</c-table-column>
+        <c-table-column :col-num="2">{{ group.minimum_number_of_adults }} - {{ group.maximum_number_of_adults }}</c-table-column>
       </c-table-row>
     {% endfor %}
   </c-table>
-  <table id="pricing-tier-group-list-table" class="hidden w-full max-w-7xl table-auto divide-y divide-stone-300">
-    <thead>
-      <tr class="text-left">
-        <th class="pr-3 pl-4 text-left text-sm font-semibold text-stone-900 py-3.5 sm:pl-0">
-          <span class="pl-6">{% translate 'Tier Name' %}</span>
-        </th>
-        {#          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Number of Adults' %}</th>#}
-        {#          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Night' %}</th>#}
-        {#          <th class="px-3 text-left text-sm font-semibold text-stone-900 py-3.5">{% translate 'Price Per Hour' %}</th>#}
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-stone-200">
-      {% for group in pricing_tier_groups %}
-        <tr class="hover:bg-stone-50">
-          <td class="whitespace-nowrap py-4 pr-3 pl-4text-sm font-medium tabular-nums text-stone-900 sm:pl-0">
-            <a hx-boost="true" class="pl-6" href="{% url 'winadmin:pricing_tier_group_detail' group.id %}">
-              {{ group.name }}
-            </a>
-          </td>
-          {#            <td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">#}
-          {#              {{ get.number_of_adults }}#}
-          {#            </td><td class="whitespace-nowrap px-3 py-4 font-code text-sm font-medium slashed-zero tabular-nums text-stone-900">#}
-          {#              {{ get.get_price_per_night }}#}
-          {#            </td>#}
-          {#            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium font-code slashed-zero tabular-nums text-stone-900">{{ get.get_price_per_hour }}</td>#}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 {% endblock %}

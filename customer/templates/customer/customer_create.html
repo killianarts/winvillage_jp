@@ -1,27 +1,17 @@
 {% extends 'winadmin/index.html' %}
 {% load i18n %}
-{% block title %}
-  {% blocktrans %}Create a customer{% endblocktrans %}
+{% block subtitle %}
+    {% blocktrans %}Create a customer{% endblocktrans %}
 {% endblock %}
-
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Customer Management' %}"
+                         subheader="{% trans 'Customer Create' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="dashboard-content" class="py-10 lg:ml-72">
-    <div class="px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl">{% translate 'Create Customer' %}</h1>
-      <form action="." method="post" novalidate
-            hx-post="." hx-swap="outerHTML" hx-target="#dashboard-content"
-            hx-vals='{"use_block": "created"}'>
+    <c-form>
         {{ form }}
-        <button name="submit" type="submit">{% trans "Create Customer" %}</button>
-      </form>
-    </div>
-  </div>
-{% endblock %}
-
-{% block created %}
-  <div hx-get="{% url 'winadmin:customer_list' %}"
-       hx-replace-url="{% url 'winadmin:customer_list' %}"
-       hx-target="this"
-       hx-trigger="load"
-       hx-swap="outerHTML"></div>
+        <c-crud-button-container>
+            <c-button>{% trans "Create Customer" %}</c-button>
+        </c-crud-button-container>
+    </c-form>
 {% endblock %}

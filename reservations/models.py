@@ -386,34 +386,47 @@ class Reservation(BaseModel):
         return roomtier_queryset
 
     def set_dates(self, selected_datetime: pendulum.DateTime):
+        check_in_datetime = pendulum.datetime(
+            year=selected_datetime.year,
+            month=selected_datetime.month,
+            day=selected_datetime.day,
+            hour=12,
+            tz=TIME_ZONE,
+        )
+        check_out_datetime = pendulum.datetime(
+            year=selected_datetime.year,
+            month=selected_datetime.month,
+            day=selected_datetime.day,
+            hour=10,
+            tz=TIME_ZONE,
+        )
         if not self.stay.start or not self.stay.end:
-            self.stay.start = selected_datetime
-            self.stay.end = selected_datetime
+            self.stay.start = check_in_datetime
+            self.stay.end = check_in_datetime
 
         START_AND_END_ARE_THE_SAME = self.stay.start == self.stay.end
-        NEW_DATE_AFTER_END = selected_datetime > self.stay.end
+        NEW_DATE_AFTER_END = check_out_datetime > self.stay.end
 
         if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
-            self.stay.end = selected_datetime
+            self.stay.end = check_out_datetime
         else:
-            self.stay.start = selected_datetime
-            self.stay.end = selected_datetime
+            self.stay.start = check_in_datetime
+            self.stay.end = check_in_datetime
         if not self.check_availability(
             start_date=self.stay.start, end_date=self.stay.end
         ).exists():
-            self.stay.start = selected_datetime
-            self.stay.end = selected_datetime
+            self.stay.start = check_in_datetime
+            self.stay.end = check_in_datetime
         self.stay.save()
         return self.stay.start, self.stay.end
-
 
     def set_shortterm_time(self, selected_datetime: pendulum.DateTime):
         if not self.stay.start or not self.stay.end:
             self.stay.start = selected_datetime
-            self.stay.end = selected_datetime.add(minutes="30")
+            self.stay.end = selected_datetime.add(minutes=30)
 
         START_AND_END_ARE_THE_SAME = self.stay.start.add(minutes=30) == self.stay.end
-        NEW_DATE_AFTER_END = selected_datetime > self.stay.end
+        NEW_DATE_AFTER_END = selected_datetime.add(minutes=30) > self.stay.end
 
         if NEW_DATE_AFTER_END and START_AND_END_ARE_THE_SAME:
             self.stay.end = selected_datetime.add(minutes=30)
@@ -427,7 +440,6 @@ class Reservation(BaseModel):
             self.stay.end = selected_datetime.add(minutes=30)
         self.stay.save()
         return self.stay.start, self.stay.end
-
 
     def reset_dates(self):
         self.stay.start = None
@@ -487,7 +499,7 @@ class Reservation(BaseModel):
 
     def get_pricing_period(self):
         start = self.get_start_date()
-        end = self.get_end_date().subtract(days=1)
+        end = self.get_end_date()
         difference = None
         if start.date() == end.date():
             difference = start.diff(end)

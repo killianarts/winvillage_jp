@@ -1,37 +1,17 @@
 {% extends 'winadmin/index.html' %}
 {% load i18n %}
-{% block title %}
-  {% blocktrans %}Customer Details{% endblocktrans %}
+{% block subtitle %}
+    {% blocktrans %}Customer Detail{% endblocktrans %}
 {% endblock %}
-
+{% block page_header %}
+    <c-admin-page-header header="{% translate 'Customer Management' %}"
+                         subheader="{% trans 'Customer Detail' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Customer Details' %}</h1>
-    <form action="." method="post" novalidate
-          hx-post="."
-          hx-target="#content-wrapper"
-          hx-vals='{"use_block": "content"}'
-          hx-swap="morph:outerHTML"
-          class="max-w-sm">
-      {{ form }}
-      <div class="space-y-5 grid">
-        <button type="submit" name="submit"
-                class="bg-orange-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-orange-600">
-          {% trans "Submit Modifications" %}
-        </button>
-        <button type="submit" name="delete" hx-confirm="You sure?"
-                class="bg-red-700 px-5 py-3 text-xl text-white transition-all duration-250 hover:bg-red-600">
-          {% trans "Delete" %}
-        </button>
-      </div>
-    </form>
-  </div>
-{% endblock %}
-
-{% block deleted %}
-  <div hx-get="{% url 'winadmin:customer_list' %}"
-       hx-replace-url="{% url 'winadmin:customer_list' %}"
-       hx-target="this"
-       hx-trigger="load"
-       hx-swap="outerHTML"></div>
+    <c-form>
+        {{ form }}
+        <c-crud-button-container>
+            <c-button name="submit" type="submit">{% trans "Edit Customer" %}</c-button>
+        </c-crud-button-container>
+    </c-form>
 {% endblock %}

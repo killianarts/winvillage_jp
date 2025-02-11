@@ -40,18 +40,20 @@ def campaign_occurrences(reservation, campaign):
 
 
 def get_roomtier_price(
-    reservation: Reservation, roomtier: RoomTier, number_of_adults: int
+    reservation: Reservation, roomtier: RoomTier
 ):
     def get_overnight_price(group):
         return (
-            group.pricingtier_set.filter(number_of_adults=number_of_adults)
+            group.pricingtier_set
+            .filter(number_of_adults=reservation.get_number_of_adults())
             .first()
             .price_overnight
         )
 
     def get_short_term_price(group):
         return (
-            group.pricingtier_set.filter(number_of_adults=number_of_adults)
+            group.pricingtier_set
+            .filter(number_of_adults=reservation.get_number_of_adults())
             .first()
             .price_short_term
         )
@@ -76,35 +78,92 @@ def get_roomtier_price(
             if group.campaign:
                 for campaign_date in campaign_occurrences(reservation, group.campaign):
                     if period_datetime.date() == campaign_date.date():
-                        if number_of_nights >= 1:
-                            dates_with_prices[period_datetime.date()] = {
-                                "price_adult": get_overnight_price(group),
-                                "price_child": get_child_overnight_price(group),
-                            }
-                        else:
-                            dates_with_prices[period_datetime.date()] = {
-                                "price_adult": get_short_term_price(group),
-                                "price_child": get_child_short_term_price(group),
-                            }
+                        dates_with_prices[period_datetime.date()] = {
+                            "price_adult": get_overnight_price(group),
+                            "price_child": get_child_overnight_price(group),
+                        }
+            elif not group.campaign:
+                dates_with_prices[period_datetime.date()] = {
+                    "price_adult": get_overnight_price(group),
+                    "price_child": get_child_overnight_price(group),
+                }
+
+    price = Money("0.00", "JPY")
+    price = sum(
+        prices_["price_adult"]
+        for date_, prices_ in dates_with_prices.items()
+    )
+    price += sum(
+        prices_["price_child"] * reservation.get_number_of_children()
+        for date_, prices_ in dates_with_prices.items()
+    )
+    return price
+
+def get_shortterm_roomtier_price(
+    reservation: Reservation, roomtier: RoomTier
+):
+    def get_overnight_price(group):
+        return (
+            group.pricingtier_set
+            .filter(number_of_adults=reservation.get_number_of_adults())
+            .first()
+            .price_overnight
+        )
+
+    def get_short_term_price(group):
+        return (
+            group.pricingtier_set
+            .filter(number_of_adults=reservation.get_number_of_adults())
+            .first()
+            .price_short_term
+        )
+
+    def get_child_overnight_price(group):
+        return group.price_overnight_child
+
+    def get_child_short_term_price(group):
+        return group.price_short_term_child
+
+    # There may be multiple pricingtiergroup's that contain a compaign that is applicable to a room on a given date.
+    # To resolve the conflict, I'm choosing to get the most recently defined group.
+    # This feels like a very important choice being done with one line of code.
+    # TODO: Consider ways of formalizing this choice more thoughtfully and visibly.
+    pricingtiergroups = roomtier.pricingtiergroup_set.all().order_by("updated_at")
+    dates_with_prices = {}
+    period = reservation.get_stay_period()
+    number_of_nights = period.in_days()
+    pricing_period = reservation.get_pricing_period()
+    for group in pricingtiergroups:
+        for period_datetime in pricing_period:
+            if group.campaign:
+                for campaign_date in campaign_occurrences(reservation, group.campaign):
+                    if period_datetime.date() == campaign_date.date():
+                        dates_with_prices[period_datetime.date()] = {
+                            "price_adult": get_short_term_price(group),
+                            "price_child": get_child_short_term_price(group),
+                        }
 
             elif not group.campaign:
-                if number_of_nights >= 1:
-                    dates_with_prices[period_datetime.date()] = {
-                        "price_adult": get_overnight_price(group),
-                        "price_child": get_child_overnight_price(group),
-                    }
-                else:
-                    dates_with_prices[period_datetime.date()] = {
+                for block in pricing_period.range("minutes", 30):
+                    dates_with_prices[f"{block.date()}_{block.time()}"] = {
                         "price_adult": get_short_term_price(group),
                         "price_child": get_child_short_term_price(group),
                     }
 
     price = Money("0.00", "JPY")
-    for date_, prices_ in dates_with_prices.items():
-        price += prices_["price_adult"]
-    for date_, prices_ in dates_with_prices.items():
-        price += prices_["price_child"] * reservation.get_number_of_children()
+    first_date = next(iter(dates_with_prices))
+    price = sum(
+        prices_["price_adult"]
+        for date_, prices_ in dates_with_prices.items()
+        if date_ != first_date
+    )
+    price += sum(
+        prices_["price_child"] * reservation.get_number_of_children()
+        for date_, prices_ in dates_with_prices.items()
+        if date_ != first_date
+    )
     return price
+
 
 
 # This is at least suitable for the room_select view, because the start_date and end_date are known
@@ -125,11 +184,9 @@ def get_available_rooms(number_of_adults, start_date, end_date):
     return only_available_rooms
 
 
-def get_roomtier_data(reservation):
+def get_roomtier_data(reservation, stay_type):
     start = reservation.get_start_date()
     end = reservation.get_end_date()
-    number_of_adults = reservation.get_number_of_adults()
-
     available_rooms = reservation.check_availability(start_date=start, end_date=end)
     available_roomtiers = reservation.check_roomtier_availability(available_rooms)
     roomtier_data = []
@@ -138,11 +195,16 @@ def get_roomtier_data(reservation):
             # Check if the period between the start and end dates falls into an active campaign.
             # First we need to know which PricingTierGroups this room is in.
             # We get that information through its RoomTier
-            price = get_roomtier_price(
-                reservation=reservation,
-                roomtier=tier,
-                number_of_adults=number_of_adults,
-            )
+            if stay_type == "overnight":
+                price = get_roomtier_price(
+                    reservation=reservation,
+                    roomtier=tier,
+                )
+            else:
+                price = get_shortterm_roomtier_price(
+                    reservation=reservation,
+                    roomtier=tier,
+                )
             roomtier_data.append(
                 {
                     "tier": tier,
@@ -241,8 +303,59 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
     ).exclude(end__lt=pendulum.today())
 
     for not_possible_stay in not_possible_stays_query:
+        # Add buffers to allow time to manage rooms before and after reservations.
+        start_with_buffer = not_possible_stay.start.subtract(minutes=30)
+        end_with_buffer = not_possible_stay.end.add(minutes=30)
         for room in rooms_reserved:
-            if not_possible_stay.start <= room["datetime"] < not_possible_stay.end:
+            one_overnight_stay_starting_with_this_room = pendulum.interval(room["datetime"], room["datetime"].add(hours=22))
+            if start_with_buffer in one_overnight_stay_starting_with_this_room or end_with_buffer in one_overnight_stay_starting_with_this_room:
+                room["room_ids"].append(not_possible_stay.room.id)
+
+    dates_and_forms = []
+    start_date = reservation.get_start_date() if reservation.get_start_date() else None
+    end_date = reservation.get_end_date() if reservation.get_end_date() else None
+    for room in rooms_reserved:
+        room_is_available = not possible_rooms_ids.issubset(room["room_ids"])
+        if start_date or end_date:
+            if start_date < pendulum.today() > end_date:
+                reservation.reset_dates()
+            elif not room_is_available:
+                reservation.reset_dates()
+        # return a form if available, otherwise return "X" to be rendered in the template
+        available_date = (
+            DateTimeForm(
+                initial={"datetime": room["datetime"]},
+                datetime_widget_id=f"id-date-{room["datetime"].time()}",
+            )
+            if room_is_available
+            else None
+        )
+        dates_and_forms.append(
+            {"datetime": room["datetime"], "available_date": available_date}
+        )
+    return dates_and_forms
+
+def compile_times_information(reservation: Reservation, datetimes_iter):
+    rooms_reserved = []
+    for dt in datetimes_iter:
+        rooms_reserved.append({"datetime": dt, "room_ids": list()})
+    possible_rooms = reservation.get_possible_roomtier_queryset()
+    possible_rooms_ids = {
+        room_id for room_id in possible_rooms.values_list("room__id", flat=True)
+    }
+    not_possible_stays_query = Stay.objects.filter(
+        room_id__in=possible_rooms_ids,
+        status__in=["reserved", "checked_in"],
+        start__lte=max(datetimes_iter),
+        end__gte=min(datetimes_iter),
+    ).exclude(end__lt=pendulum.today())
+
+    for not_possible_stay in not_possible_stays_query:
+        # Add buffers to allow time to manage rooms before and after reservations.
+        start_with_buffer = not_possible_stay.start.subtract(minutes=30)
+        end_with_buffer = not_possible_stay.end.add(minutes=30)
+        for room in rooms_reserved:
+            if start_with_buffer <= room["datetime"] < end_with_buffer:
                 room["room_ids"].append(not_possible_stay.room.id)
 
     dates_and_forms = []
@@ -262,6 +375,8 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
                 datetime_widget_id=f"id-date-{room["datetime"].time()}",
             )
             if room_is_available
+            and room["datetime"]
+            > pendulum.today().start_of("day").add(hours=11, minutes=30)
             else None
         )
         dates_and_forms.append(
@@ -274,7 +389,7 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
 class PendulumCalendar(calendar.Calendar):
     tz = TIME_ZONE
 
-    def itermonthpens(self, year, month, default_hour=0):
+    def itermonthpens(self, year, month, default_hour=12):
         pens = []
         for y, m, d in self.itermonthdays3(year, month):
             pens.append(
@@ -288,11 +403,13 @@ class PendulumCalendar(calendar.Calendar):
             pens.append(pendulum.naive(year=y, month=m, day=d, hour=default_hour))
         return pens
 
+
 def generate_weekday_names():
     cal = PendulumCalendar(firstweekday=calendar.MONDAY)
     current_locale = get_language()
     weekday_names = get_localized_day_names(cal.firstweekday)
     return weekday_names
+
 
 def generate_calendar(reservation: Reservation, date_: pendulum.Date = None):
     if not date_:
@@ -303,12 +420,26 @@ def generate_calendar(reservation: Reservation, date_: pendulum.Date = None):
     month_data = {"date": date_, "days": calendar_dates_and_forms}
     return month_data
 
+def generate_times_calendar(reservation: Reservation, date_: pendulum.Date = None):
+    if not date_:
+        date_ = pendulum.now()
+    cal = PendulumCalendar(firstweekday=calendar.MONDAY)
+    calendar_dates = cal.itermonthpens(date_.year, date_.month)
+    calendar_dates_and_forms = compile_times_information(reservation, calendar_dates)
+    month_data = {"date": date_, "days": calendar_dates_and_forms}
+    return month_data
+
+
 def generate_times_for_date(reservation: Reservation, date_: pendulum.Date = None):
     if not date_:
         date_ = pendulum.now()
-    hour = 0 # 12AM in 24 hour clock
-    day_start_pen = pendulum.datetime(date_.year, date_.month, date_.day, hour, tz=TIME_ZONE)
-    day_end_pen = pendulum.datetime(date_.year, date_.month, date_.add(days=1).day, hour, tz=TIME_ZONE)
+    hour = 0  # 12AM in 24 hour clock
+    day_start_pen = pendulum.datetime(
+        date_.year, date_.month, date_.day, hour, tz=TIME_ZONE
+    )
+    day_end_pen = pendulum.datetime(
+        date_.year, date_.month, date_.add(days=1).day, hour, tz=TIME_ZONE
+    )
     interval = day_end_pen - day_start_pen
     day_times = []
     for time_block in interval.range("minutes", 30):
@@ -316,7 +447,10 @@ def generate_times_for_date(reservation: Reservation, date_: pendulum.Date = Non
     calendar_dates_and_forms = compile_dates_information(reservation, day_times)
     return calendar_dates_and_forms
 
-def generate_calendars(reservation: Reservation, date_: pendulum.Date, number_of_calendars = 1):
+
+def generate_calendars(
+    reservation: Reservation, date_: pendulum.Date, number_of_calendars=1
+):
     if not date_:
         date_ = pendulum.now()
     calendars = []
@@ -325,6 +459,7 @@ def generate_calendars(reservation: Reservation, date_: pendulum.Date, number_of
         if c != number_of_calendars:
             date_ = date_.add(months=1)
     return calendars
+
 
 # def generate_calendars(reservation: Reservation, date_: pendulum.Date = None):
 #     if not date_:

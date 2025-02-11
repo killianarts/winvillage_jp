@@ -1,6 +1,6 @@
-<c-vars method="post" dj-block hx-swap="outerHTML" url="." />
+<c-vars method="post" dj-block="content" hx-target="#dashboard-content" hx-swap="outerHTML" url="." />
 <div class="form-dj-block-designator" hx-vals='{"use_block": "{{ dj_block }}"}'>
-  <form action="{{ url }}" method="{{ method }}" hx-{{ method }}="{{ url }}" hx-swap="{{ hx_swap }}" {{ attrs }}>
+  <form action="{{ url }}" method="{{ method }}" hx-{{ method }}="{{ url }}" hx-swap="{{ hx_swap }}" hx-target="{{ hx_target }}" {{ attrs }}>
     {% csrf_token %}
     {% if dj_block %}
       {{ slot }}

@@ -1,7 +1,5 @@
 {% extends 'winadmin/index.html' %}
-{% load static i18n %}
-{% block extra_styles %}
-{% endblock %}
+{% load i18n %}
 {% block subtitle %}
   {% blocktrans %}Create Room{% endblocktrans %}
 {% endblock %}
@@ -10,14 +8,12 @@
                        subheader="{% trans 'Create Room' %}"/>
 {% endblock %}
 {% block content %}
-    <c-form id="room-create-form" class="max-w-xl grid"
-            hx-target="#content-wrapper"
-            dj-block="content">
-      <div _="on htmx:afterSettle from #content-wrapper set input to the last <input/> in me then add @checked to the input">
+    <c-form id="room-create-form" class="max-w-xl grid">
+      <div _="on htmx:afterSettle from #dashboard-content set input to the last <input/> in me then add @checked to the input">
         {{ room_create_form }}
       </div>
-      <div>
-        <c-button id="submit-button" name="create-room" value="create-room">{% trans "Submit" %}</c-button>
-      </div>
+      <c-crud-button-container>
+        <c-button>{% trans "Submit" %}</c-button>
+      </c-crud-button-container>
     </c-form>
 {% endblock %}

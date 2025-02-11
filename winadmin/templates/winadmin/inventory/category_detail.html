@@ -8,10 +8,12 @@
                        subheader="{% trans 'Category Edit View' %}"/>
 {% endblock %}
 {% block content %}
-    <c-form id="category-form" hx-target="this" method="post">
-      {{ form }}
+  <c-form id="category-form">
+    {{ form }}
+    <c-crud-button-container>
       <c-button>
         {% trans "Submit" %}
       </c-button>
-    </c-form>
+    </c-crud-button-container>
+  </c-form>
 {% endblock %}

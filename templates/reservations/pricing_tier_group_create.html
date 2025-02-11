@@ -9,9 +9,7 @@
 {% endblock %}
 
 {% block content %}
-  <c-form action="." method="POST"
-          hx-post="." hx-swap="outerHTML" hx-target="this" hx-vals='{"use_block": "content"}'
-          class="grid space-y-5">
+  <c-form class="grid space-y-5">
     {% csrf_token %}
     {% if errors %}
       {% for error in errors %}
@@ -160,8 +158,8 @@
       <div>{{ form.campaigns.label_tag }}</div>
       <div>{{ form.campaigns }}</div>
     </div>
-    <div class="flex">
+    <c-crud-button-container>
       <c-button>{% translate 'Add Pricing Tier' %}</c-button>
-    </div>
+    </c-crud-button-container>
   </c-form>
 {% endblock %}

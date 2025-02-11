@@ -1,19 +1,26 @@
+{% load static i18n %}
 <c-vars time_data status="available" hx-target="#reservation-form-wrapper" hx-swap="outerHTML" dj-block="time-select" />
 <c-form class="w-full h-full" url="{{ url }}" hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}" dj-block="{{ dj_block }}" {{ attrs }} >
-    {{ slot }}
+  {{ slot }}
+  {% if time_data.available_date %}
     {{ time_data.available_date }}
-    {% if status != "unavailable" %}
-        <button name="{{ name }}" type="submit"
-                class="w-full h-full hover:bg-blue-700
-                       data-[status=today]:bg-lime-600 data-[status=today]:text-lime-50
-                       data-[status=past]:text-stone-300 data-[status=past]:pointer-events-none
-                       data-[status=start]:bg-blue-700 data-[status=start]:text-blue-50
-                       data-[status=end]:bg-blue-700 data-[status=end]:text-blue-50
-                       data-[status=middle]:bg-blue-700 data-[status=middle]:text-blue-50
-                       {{ class }}"
-                data-status={{ status }}>
-        </button>
-    {% else %}
-        <span class="text-rose-500 cursor-not-allowed">X</span>
-    {% endif %}
+  {% endif %}
+  {% if status == "unavailable" %}
+    <div class="w-full h-full grid place-items-center text-rose-950 text-3xl bg-rose-300 fill-rose-500 cursor-not-allowed"
+         style="background-image: url('{% static 'core/img/diagonal-stripes2.svg' %}')">{% trans 'Unavailable' %}</div>
+  {% elif status == "past" %}
+    <div class="w-full h-full grid place-items-center text-gray-950 text-3xl bg-gray-300 fill-gray-500 cursor-not-allowed"
+         style="background-image: url('{% static 'core/img/texture.svg' %}')"></div>
+  {% else %}
+    <button name="{{ name }}" type="submit"
+            class="w-full h-full hover:bg-blue-700
+                  data-[status=today]:bg-lime-600 data-[status=today]:text-lime-50
+                  data-[status=past]:bg-gray-300 data-[status=past]:text-stone-300 data-[status=past]:pointer-events-none
+                  data-[status=start]:bg-blue-700 data-[status=start]:text-blue-50
+                  data-[status=end]:bg-blue-700 data-[status=end]:text-blue-50
+                  data-[status=middle]:bg-blue-700 data-[status=middle]:text-blue-50
+                  {{ class }}"
+            data-status={{ status }}>
+    </button>
+  {% endif %}
 </c-form>

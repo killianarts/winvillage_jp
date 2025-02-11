@@ -1,7 +1,9 @@
 <c-vars day status="available" hx-target="#reservation-form-wrapper" hx-swap="outerHTML" dj-block="date-select" />
 <c-form class="mx-auto" url="{{ url }}" hx-target="{{ hx_target }}" hx-swap="{{ hx_swap }}" dj-block="{{ dj_block }}">
     {{ slot }}
-    {{ day.available_date }}
+    {% if day.available_date %}
+        {{ day.available_date }}
+    {% endif %}
     {% if status != "unavailable" %}
         <button class="h-8 w-8
                        data-[status=today]:bg-lime-600 data-[status=today]:text-lime-50

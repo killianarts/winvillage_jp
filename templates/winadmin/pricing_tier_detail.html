@@ -3,22 +3,20 @@
 {% block subtitle %}
   {% blocktrans %}Edit Pricing Tier{% endblocktrans %}
 {% endblock %}
+{% block page_header %}
+  <c-admin-page-header header="{% translate 'Sales Management' %}"
+                       subheader="{% trans 'Edit Pricing Tier' %}"/>
+{% endblock %}
 {% block content %}
-  <div id="content-wrapper">
-    <h1 class="text-3xl">{% translate 'Edit Pricing Tier' %}</h1>
-    <c-form class="grid max-w-xl"
-            hx-target="#content-wrapper"
-            hx-swap="morph:outerHTML"
-            dj-block="content">
-      {{ form }}
-      <div class="space-x-5">
-        <c-button>
-          {% trans "Edit" %}
-        </c-button>
-        <c-button>
-          {% trans "Delete" %}
-        </c-button>
-      </div>
+  <c-form class="grid max-w-xl">
+    {{ form }}
+    <c-crud-button-container>
+      <c-button>
+        {% trans "Edit" %}
+      </c-button>
+      <c-button name="delete" data-action="delete">
+        {% trans "Delete" %}
+      </c-button>
+    </c-crud-button-container>
     </form>
-  </div>
 {% endblock %}

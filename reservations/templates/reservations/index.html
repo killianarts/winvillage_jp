@@ -16,7 +16,7 @@
 
 {% endblock %}
 {% block content_main %}
-  <div>
+  <div class="font-mono">
     <nav class="bg-blue-700">
       <div class="flex justify-between items-center p-5 sm:block sm:px-0">
         <div>
@@ -73,9 +73,20 @@
       <c-admin-page-header header="{% trans 'Reservations' %}" subheader="{% trans 'How long will you stay?' %}"></c-admin-page-header>
     </div>
     <div class="flex gap-5">
-      <c-button hx-get="{% url 'reservations:index' %}" hx-swap="outerHTML" hx-target="#reservation-form-wrapper" hx-vals='{"use_block": "reservation-form"}'>{% trans 'Back' %}</c-button>
-      <c-button hx-get="{% url 'reservations:date_select' %}" hx-swap="outerHTML" hx-target="#reservation-form-wrapper" hx-vals='{"use_block": "date-select"}'>{% trans 'Overnight or longer' %}</c-button>
-      <c-button hx-get="{% url 'reservations:time_select' %}" hx-swap="outerHTML" hx-target="#reservation-form-wrapper" hx-vals='{"use_block": "time-select"}'>{% trans 'Hourly' %}</c-button>
+      <c-button hx-get="{% url 'reservations:index' %}"
+                hx-swap="outerHTML"
+                hx-target="#reservation-form-wrapper"
+                hx-vals='{"use_block": "reservation-form"}'>{% trans 'Back' %}</c-button>
+
+      <c-button hx-get="{% url 'reservations:date_select' %}"
+                hx-swap="outerHTML"
+                hx-target="#reservation-form-wrapper"
+                hx-vals='{"use_block": "date-select", "stay-type": "overnight"}'>{% trans 'Overnight or longer' %}</c-button>
+
+      <c-button hx-get="{% url 'reservations:time_select' %}"
+                hx-swap="outerHTML"
+                hx-target="#reservation-form-wrapper"
+                hx-vals='{"use_block": "time-select", "stay-type": "short-term"}'>{% trans 'Hourly' %}</c-button>
     </div>
   </div>
 {% endblock %}
@@ -122,25 +133,40 @@
         {% endfor %}
       </div>
     </div>
-    <div class="flex justify-center gap-7">
-      <c-button hx-get="{% url 'reservations:stay_type_select' %}"
-                hx-target="#reservation-form-wrapper"
-                hx-swap="outerHTML"
-                dj-block="stay-type-select">
-        {% blocktrans %}Go Back{% endblocktrans %}
-      </c-button>
-      {% if start.date and end.date and start.date != end.date %}
-        <c-button hx-get="{% url 'reservations:room_select' %}"
+    <div class="flex flex-col items-center justify-center gap-7">
+      <div class="mt-5 space-y-2">
+        <p>{% trans 'Selected Stay Period' %}:</p>
+        <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright'] max-w-[400px]">
+          {% with start|date:"Y-m-d G:iA" as pen %}
+            <c-admin-page-header header="{% trans 'From' %}" :subheader=pen />
+          {% endwith %}
+        </div>
+        <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright'] max-w-[400px]">
+          {% with end|date:"Y-m-d G:iA" as pen %}
+            <c-admin-page-header header="{% trans 'To' %}" :subheader=pen />
+          {% endwith %}
+        </div>
+      </div>
+      <div class="flex justify-center gap-7">
+        <c-button hx-get="{% url 'reservations:stay_type_select' %}"
                   hx-target="#reservation-form-wrapper"
                   hx-swap="outerHTML"
-                  dj-block="room-select">
-          {% blocktrans %}Continue, Choose Room{% endblocktrans %}
+                  dj-block="stay-type-select">
+          {% blocktrans %}Go Back{% endblocktrans %}
         </c-button>
-      {% else %}
-        <c-button hx-get="{% url 'reservations:stay_type_select' %}" hx-swap="outerHTML" hx-target="#reservation-form-wrapper" hx-vals='{"use_block": "stay-type-select"}'>
-          {% blocktrans %}Continue{% endblocktrans %}
-        </c-button>
-      {% endif %}
+        {% if start.date and end.date and start.date != end.date %}
+          <c-button hx-get="{% url 'reservations:room_select' %}"
+                    hx-target="#reservation-form-wrapper"
+                    hx-swap="outerHTML"
+                    dj-block="room-select">
+            {% blocktrans %}Continue, Choose Room{% endblocktrans %}
+          </c-button>
+        {% else %}
+          <c-button data-action="disabled">
+            {% blocktrans %}Continue{% endblocktrans %}
+          </c-button>
+        {% endif %}
+      </div>
     </div>
     {% if debug %}
       <fieldset class="mx-auto w-fit p-5 bg-red-100 border-2 border-red-200 border-dotted rounded-lg"
@@ -170,15 +196,18 @@
           url="{% url 'reservations:room_select' %}"
           hx-target="#reservation-form-wrapper"
           {# delay added to give the browser time to select the input before sending the request #}
-          hx-trigger="change from:input[type='radio'], mousedown from:label:has(input[type='radio']) delay:10ms"
+          hx-trigger="change from:input[type='radio'], mousedown from:label:has(input[type='radio']) delay:100ms"
           dj-block="room-select"
           class="space-y-5">
           <div class="grid grid-cols-2 gap-7">
             {% for item in roomtier_data %}
               {% for radio in form.roomtiers %}
                 {% if item.tier.name == radio.choice_label %}
-                  <label for="{{ radio.id_for_label }}" tabindex="0" class="block p-5 border-3 border-stone-900 bg-stone-100 text-stone-900 hover:bg-orange-500 hover:text-orange-100 focus-visible:border-orange-700 hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none
-                              hover:border-transparent drop-shadow-hard-45-md rounded-lg has-[:checked]:bg-orange-500 has-[:checked]:active:bg-orange-600 active:bg-orange-600 has-[:checked]:border-transparent has-[:checked]:text-stone-100 transition-all duration-300 cursor-pointer">
+                  <label for="{{ radio.id_for_label }}" tabindex="0"
+                         class="block p-5 bg-blue-700 text-blue-50 drop-shadow-hard-45-md cursor-pointer
+                              hover:bg-orange-500 hover:text-orange-100 focus-visible:border-orange-700
+                              has-[:checked]:bg-orange-500 has-[:checked]:active:bg-orange-600 active:bg-orange-600 has-[:checked]:text-orange-50
+                              has-[:checked]:hover:bg-orange-600">
                     <h3>{{ item.tier.name }}</h3>
                     <p>{% translate 'Total Price' %}:{{ item.price }}</p>
                     <div class="hidden">{{ radio.tag }}</div>
@@ -187,12 +216,22 @@
               {% endfor %}
             {% endfor %}
             <div class="col-span-2 flex justify-center gap-7">
-              <c-button hx-get="{% url 'reservations:date_select' %}"
-                        hx-target="#reservation-form-wrapper"
-                        hx-swap="outerHTML"
-                        dj-block="date-select">
-                {% blocktrans %}Go Back{% endblocktrans %}
-              </c-button>
+              {% if stay_type == "overnight" %}
+                <c-button hx-get="{% url 'reservations:date_select' %}"
+                          hx-target="#reservation-form-wrapper"
+                          hx-swap="outerHTML"
+                          dj-block="date-select">
+                  {% blocktrans %}Go Back{% endblocktrans %}
+                </c-button>
+              {% else %}
+                <c-button hx-get="{% url 'reservations:time_select' %}"
+                          hx-target="#reservation-form-wrapper"
+                          hx-swap="outerHTML"
+                          dj-block="time-select">
+                  {% blocktrans %}Go Back{% endblocktrans %}
+                </c-button>
+              {% endif %}
+
               {% if reservation.stay.room %}
                 <c-button hx-get="{% url 'reservations:contact_information_input' %}"
                           hx-target="#reservation-form-wrapper"
@@ -218,8 +257,8 @@
     </div>
     <div class="flex h-full flex-col">
       <div class="isolate flex flex-auto bg-white">
-        <c-time-select-table :is_time_selected=is_time_selected :pendulums=pendulums ></c-time-select-table>
-        <div id="calendars" class="p-5 mx-auto shadow-sm border border-stone-100">
+        <c-time-select-table :times=times :start_pen=start_pen :end_pen=end_pen ></c-time-select-table>
+        <div id="calendars" class="p-5 mx-auto  ">
           <div id="month-switcher">
             <c-form url="{% url 'reservations:time_select' %}" method="get"
                     hx-target="#reservation-form-wrapper" hx-swap="outerHTML"
@@ -262,7 +301,8 @@
               :selected_datetime=selected_datetime
             />
           </div>
-          <div class="mt-5 space-y-2">
+
+          <div class="my-5 space-y-2">
             <p>{% trans 'Selected Stay Period' %}:</p>
             <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright'] max-w-[400px]">
               {% with start_pen|date:"Y-m-d G:iA" as pen %}
@@ -274,6 +314,24 @@
                 <c-admin-page-header header="{% trans 'To' %}" :subheader=pen />
               {% endwith %}
             </div>
+          </div>
+          <div class="col-span-2 flex justify-center gap-7">
+            <c-button hx-get="{% url 'reservations:stay_type_select' %}"
+                      hx-target="#reservation-form-wrapper"
+                      hx-swap="outerHTML"
+                      dj-block="stay-type-select">
+              {% blocktrans %}Go Back{% endblocktrans %}
+            </c-button>
+            {% if reservation.stay.start %}
+              <c-button hx-get="{% url 'reservations:room_select' %}"
+                        hx-target="#reservation-form-wrapper"
+                        hx-swap="outerHTML"
+                        dj-block="room-select">
+                {% translate 'Continue' %}
+              </c-button>
+            {% else %}
+              <c-button data-action="disabled">{% translate 'Select a Time' %}</c-button>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -338,8 +396,10 @@
       <div class="grid gap-x-3 [grid-template-columns:1ch_auto_1fr] sm:[grid-template-columns:4ch_auto_1fr] [grid-template-areas:'mainleft_mainheader_mainright''subleft_subheader_subright']">
         <c-admin-page-header header="{% trans 'Reservations' %}" subheader="{% trans 'Contact Information' %}"></c-admin-page-header>
       </div>
+      {% comment %}novalidate is important. hyperscript won't trigger validation if the fields aren't valid according to the browser.{% endcomment %}
       <c-form id="contact-information-form"
               class="space-y-5"
+              novalidate
               url="{% url 'reservations:contact_information_input' %}"
               hx-target="#reservation-form-wrapper"
               hx-trigger="validateInput"
@@ -347,14 +407,12 @@
         <fieldset>
           <legend class="sr-only">{% translate 'Contact Information' %}</legend>
           <div id="validateInput-sender" class="grid grid-cols-1"
-               _="on keyup from <input/> in me debounced at 750ms
+               _="on keydown from <input/> in me debounced at 750ms
                    set :inputs to value of <input/> in me then
-                   if :inputs does not include '' and :inputs does not include null
-                   trigger validateInput end end
+                   trigger validateInput end
                    on focusout from <input/> in me debounced at 750ms
                    set :inputs to value of <input/> in me then
-                   if :inputs does not include '' and :inputs does not include null
-                   trigger validateInput end end">
+                   trigger validateInput end">
             {{ form }}
           </div>
         </fieldset>
@@ -411,13 +469,13 @@
             {% endif %}
           </div>
           <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-            <span>{% blocktrans %}Start Date{% endblocktrans %}:</span>
-            <span>{{ reservation.stay.start|date:"Y-m-d" }}</span>
+            <span>{% blocktrans %}Start{% endblocktrans %}:</span>
+            <span>{{ reservation.stay.start|date:"Y-m-d G:iA" }}</span>
           </div>
           {% if reservation.stay.end %}
             <div class="mb-2 grid grid-cols-2 items-center gap-x-2 text-xl">
-              <span>{% blocktrans %}End Date{% endblocktrans %}:</span>
-              <span>{{ reservation.stay.end|date:"Y-m-d" }}</span>
+              <span>{% blocktrans %}End{% endblocktrans %}:</span>
+              <span>{{ reservation.stay.end|date:"Y-m-d G:iA" }}</span>
             </div>
           {% endif %}
           {% if reservation.stay.start.time and reservation.stay.end.time and not reservation.stay.end.date %}

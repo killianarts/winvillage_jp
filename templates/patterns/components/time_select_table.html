@@ -1,10 +1,10 @@
 <c-vars times />
 <div class="flex flex-auto flex-col">
     <div class="flex w-full flex-auto">
-        <div class="w-32 flex-none bg-white ring-1 ring-gray-100"></div>
+        <div class="w-32 flex-none bg-white"></div>
         <div class="grid flex-auto grid-cols-1" style="grid-template-rows: repeat(49, minmax(3.5rem, 1fr))">
-            <!-- Horizontal lines -->
-            <div class="col-start-1 col-end-2 row-start-1 row-end-[50] grid grid-rows-subgrid divide-y ">
+            {% comment %} This is the displayed grid {% endcomment %}
+            <div class="col-start-1 col-end-2 row-start-1 row-end-[50] grid grid-rows-subgrid border border-x-0 border-t-gray-300 border-b-0 divide-y">
                 {% for time in times %}
                     {% if forloop.last %}
                         <div>
@@ -12,19 +12,25 @@
                         </div>
                     {% else %}
                         <div>
-                            <div class="-ml-14 -mt-2.5 w-14 pr-2 text-right text-xs/5 text-gray-400">{{ time.datetime|date:"G:i" }}</div>
+                            <div class="-ml-40 -mt-2.5 w-40 pr-2 space-x-[2ch] text-right text-xs/5 text-gray-400"><span>{{ time.datetime|date:"Y-m-d" }}</span><span>{{ time.datetime|date:"G:i" }}</span></div>
                         </div>
                     {% endif %}
                 {% endfor %}
             </div>
 
-            <!-- Events -->
-            <div class="col-start-1 col-end-2 row-start-1 row-end-[49] grid grid-rows-subgrid border border-t-gray-300 overflow-hidden">
+            {% comment %} These are the buttons that show provide the ability to choose times and also view available/unavailable times. {% endcomment %}
+            <div class="col-start-1 col-end-2 row-start-1 row-end-[50] grid grid-rows-subgrid overflow-hidden">
                 {% for time in times %}
                     {% if start_pen and time.datetime == start_pen %}
                         <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="start" />
                     {% elif start_pen and time.datetime > start_pen and end_pen and time.datetime < end_pen %}
                         <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="middle" />
+                    {% elif time.datetime < today_dt  %}
+                        <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="past" />
+                    {% elif not time.available_date %}
+                        <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="unavailable" />
+                    {% elif forloop.last %}
+                        {% comment %} Don't show the last block. This block overlaps with the first block in the next day. {% endcomment %}
                     {% else %}
                         <c-time-select-button :time_data=time url="{% url 'reservations:time_select' %}" name="select-time" status="available" />
                     {% endif %}

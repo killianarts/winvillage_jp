@@ -31,17 +31,6 @@ def create_datetime_form(datetime_):
     return form
 
 
-def compile_times_information(
-    datetimes_: List[datetime],
-) -> List[Tuple[datetime, Form, bool]]:
-    datetimes = []
-    for datetime_ in datetimes_:
-        form = create_datetime_form(datetime_)
-        available_options = check_available_options(datetime_)
-        datetimes.append((datetime_, form, available_options))
-    return datetimes
-
-
 def generate_datetimes(
     date_: date = None,
     from_time: time = time(hour=9, tzinfo=TZ),
