@@ -233,7 +233,7 @@ def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
             request.session["email"] = form.cleaned_data["email"]
             request.session["phone"] = form.cleaned_data["phone"].as_national
             reservation.first_name = form.cleaned_data["first_name"]
-            reservation.last_name = form.cleaned_data["last_name"]
+            reservation.last_n
             reservation.email = form.cleaned_data["email"]
             reservation.phone = form.cleaned_data["phone"]
             reservation.save()

@@ -187,6 +187,8 @@ def get_available_rooms(number_of_adults, start_date, end_date):
 def get_roomtier_data(reservation, stay_type):
     start = reservation.get_start_date()
     end = reservation.get_end_date()
+    if not start or not end:
+        return None
     available_rooms = reservation.check_availability(start_date=start, end_date=end)
     available_roomtiers = reservation.check_roomtier_availability(available_rooms)
     roomtier_data = []
@@ -306,20 +308,20 @@ def compile_dates_information(reservation: Reservation, datetimes_iter):
         # Add buffers to allow time to manage rooms before and after reservations.
         start_with_buffer = not_possible_stay.start.subtract(minutes=30)
         end_with_buffer = not_possible_stay.end.add(minutes=30)
+        not_possible_stay_interval = end_with_buffer - start_with_buffer
         for room in rooms_reserved:
-            one_overnight_stay_starting_with_this_room = pendulum.interval(room["datetime"], room["datetime"].add(hours=22))
-            if start_with_buffer in one_overnight_stay_starting_with_this_room or end_with_buffer in one_overnight_stay_starting_with_this_room:
+            if room["datetime"] in not_possible_stay_interval:
                 room["room_ids"].append(not_possible_stay.room.id)
 
     dates_and_forms = []
-    start_date = reservation.get_start_date() if reservation.get_start_date() else None
-    end_date = reservation.get_end_date() if reservation.get_end_date() else None
+    start_date = reservation.get_start_date()
+    end_date = reservation.get_end_date()
     for room in rooms_reserved:
         room_is_available = not possible_rooms_ids.issubset(room["room_ids"])
         if start_date or end_date:
             if start_date < pendulum.today() > end_date:
                 reservation.reset_dates()
-            elif not room_is_available:
+            elif not room_is_available and start_date <= room["datetime"] <= end_date:
                 reservation.reset_dates()
         # return a form if available, otherwise return "X" to be rendered in the template
         available_date = (
@@ -482,6 +484,12 @@ def generate_calendars(
 #         },
 #     }
 #     return weekdays, cal
+
+def get_weekdays():
+    cal = PendulumCalendar(firstweekday=calendar.MONDAY)
+    weekdays = get_localized_day_names(cal.firstweekday)
+    return weekdays
+
 
 
 def generate_campaign_calendars(

@@ -418,6 +418,7 @@ class Reservation(BaseModel):
             self.stay.start = check_in_datetime
             self.stay.end = check_in_datetime
         self.stay.save()
+        self.save()
         return self.stay.start, self.stay.end
 
     def set_shortterm_time(self, selected_datetime: pendulum.DateTime):

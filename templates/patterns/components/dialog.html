@@ -1,0 +1,53 @@
+<c-vars id image />
+<div id="{{ id }}" class="relative z-40 hidden opacity-0 open:flex open:opacity-100" role="dialog" aria-modal="true">
+    <!--
+         Background backdrop, show/hide based on dialog state.
+
+         Entering: "ease-out duration-300"
+         From: "opacity-0"
+         To: "opacity-100"
+         Leaving: "ease-in duration-200"
+         From: "opacity-100"
+         To: "opacity-0"
+    -->
+    <div class="fixed inset-0 bg-stone-500/75 backdrop-blur-sm transition-opacity" aria-hidden="true"
+         _="on click set dialog to the closest <[role=dialog]/> remove @open from dialog end"></div>
+
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto pointer-events-none">
+        <div class="flex min-h-full justify-center items-center p-4 text-center sm:p-0">
+            <!--
+                 Dialog panel, show/hide based on dialog state.
+
+                 Entering: "ease-out duration-300"
+                 From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 To: "opacity-100 translate-y-0 sm:scale-100"
+                 Leaving: "ease-in duration-200"
+                 From: "opacity-100 translate-y-0 sm:scale-100"
+                 To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            -->
+            <div class="relative">
+                <div class="absolute top-2 right-0 flex w-16 justify-center">
+                    <button class="z-50 cursor-pointer" _="on click set dialog to the closest <[role=dialog]/>
+                                   if the dialog matches @open=true
+                                   remove @open from dialog
+                                   end">
+                        <span class="sr-only">Close sidebar</span>
+                        <svg class="h-12 w-12 text-white"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke-width="1.5"
+                             stroke="currentColor"
+                             aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div>
+                    <img src="{{ image }}"
+                         alt="" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

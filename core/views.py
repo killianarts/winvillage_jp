@@ -28,9 +28,16 @@ def flush_session(request):
     return HttpResponse("Flushed")
 
 
+# def flush_session(request):
+#     try:
+#         del request.session["reservation_id"]
+#     except KeyError:
+#         pass
+#     return HttpResponse("Reservation ID Deleted")
+
+
 def test(request):
-    response = run_task.delay()
-    return HttpResponse(response)
+    return TemplateResponse(request, "core/dialog_test.html")
 
 
 def components(request):

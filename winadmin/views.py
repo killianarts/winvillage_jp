@@ -11,20 +11,14 @@ from core.accounting_utils import (
     get_inventory_account_from_configuration,
     get_sales_account_from_configuration,
 )
-from core.models import (
-    Category,
-    Customer,
-    Invoice,
-    Item,
-    TransactionDetail,
-    Vendor,
-)
+from core.models import Category, Customer, Invoice, Item, TransactionDetail, Vendor
 from core.utils import (
     HtmxHttpRequest,
     for_htmx,
     get_or_set_reservation_session,
     htmx_form_validate,
 )
+from core.tests import make_procurements
 from django.contrib import messages
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponse
@@ -55,8 +49,12 @@ from reservations.tasks import send_confirmation_email
 from reservations.utils import (
     generate_calendars,
     generate_campaign_calendars,
+    get_roomtier_data,
+    get_form_initial_data,
+    get_localized_day_names,
     get_next_month,
     get_previous_month,
+    get_weekdays,
     make_pen,
 )
 from square.client import Client
@@ -95,6 +93,8 @@ from winadmin.forms import (
     VendorDetailForm,
 )
 
+from phonenumber_field.phonenumber import PhoneNumber
+
 SQUARE_APPLICATION_ID = settings.SQUARE_SETTINGS["SQUARE_APPLICATION_ID"]
 SQUARE_LOCATION_ID = settings.SQUARE_SETTINGS["SQUARE_LOCATION_ID"]
 SQUARE_CURRENCY = settings.SQUARE_SETTINGS["SQUARE_CURRENCY"]
@@ -105,6 +105,12 @@ TIMEZONE = "Asia/Tokyo"
 
 
 # Index and Login
+
+
+def delete_reservation(request):
+    reservation = get_or_set_reservation_session(request)
+    reservation.delete()
+    return HttpResponse("Reservation Deleted")
 
 
 def index(request: HtmxHttpRequest) -> HttpResponse:
@@ -120,7 +126,7 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
                 customer = reservations.get(
                     stay__room=room, stay__status="checked_in"
                 ).customer
-        rooms_with_occupants[room] = customer
+                rooms_with_occupants[room] = customer
 
     context = {
         "form": form,
@@ -155,13 +161,14 @@ def item_list(request: HtmxHttpRequest) -> HttpResponse:
 
 @for_htmx(use_block_from_params=True)
 def item_create(request: HtmxHttpRequest) -> HttpResponse:
+    form = ItemCreateForm()
     if request.method == "POST":
         if "submit" in request.POST:
             form = ItemCreateForm(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
                 messages.success(request, _("Item Successfully Added"))
-    form = ItemCreateForm()
+                form = ItemCreateForm()
     return trigger_client_event(
         TemplateResponse(
             request, "winadmin/inventory/item_create.html", {"form": form}
@@ -190,8 +197,13 @@ def item_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
                 return HttpResponseClientRedirect(reverse("winadmin:item_list"))
             else:
                 messages.error(request, _("Error"))
+                response = TemplateResponse(
+                    request,
+                    "winadmin/inventory/item_detail.html",
+                    {"form": form, "item": item},
+                )
     response = TemplateResponse(
-        request, "winadmin/inventory/item_detail.html", {"form": form, "item": item}
+        request, "winadmin/inventory/item_detail.html", {"form": form}
     )
     return trigger_client_event(
         response=response,
@@ -211,8 +223,8 @@ def category_create(request: HtmxHttpRequest) -> HttpResponse:
             return HttpResponseClientRedirect(reverse("winadmin:category_list"))
         else:
             messages.error(request, _("Input category name"))
-    form = CategoryCreateForm()
-    context = {"form": form}
+            form = CategoryCreateForm()
+            context = {"form": form}
     return trigger_client_event(
         TemplateResponse(request, "winadmin/inventory/category_create.html", context),
         "getMessages",
@@ -231,9 +243,9 @@ def category_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
             messages.success(request, _("Category Successfully Edited"))
         else:
             messages.error(request, _("Input category name"))
-    category = get_object_or_404(Category, pk=pk)
-    form = CategoryDetailForm(initial={"name": category.name})
-    context = {"form": form, "category": category}
+            category = get_object_or_404(Category, pk=pk)
+            form = CategoryDetailForm(initial={"name": category.name})
+            context = {"form": form, "category": category}
     return trigger_client_event(
         TemplateResponse(request, "winadmin/inventory/category_detail.html", context),
         "getMessage",
@@ -268,7 +280,7 @@ def get_balance_and_ledger(transactions):
             balance += transaction.total_price
         elif transaction.name == "return" or transaction.name == "purchase":
             balance -= transaction.total_price
-        ledger.append([transaction, balance])
+            ledger.append([transaction, balance])
     return balance, ledger
 
 
@@ -278,17 +290,15 @@ def sales_ledger(request: HtmxHttpRequest) -> HttpResponse:
     sales_legs = Leg.objects.filter(account=account)
     details = TransactionDetail.objects.filter(summary__legs__in=sales_legs)
     year, month = get_current_year_and_month(request)
+    form = SetLedgerPeriodForm(initial={"year": year, "month": month})
     if request.GET.get("action") == "filter":
         form = SetLedgerPeriodForm(request.GET)
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-        details = details.filter(summary__date__year=year, summary__date__month=month)
-    else:
-        form = SetLedgerPeriodForm(initial={"year": year, "month": month})
-        if form.is_valid():
-            year = form.cleaned_data["year"]
-            month = form.cleaned_data["month"]
+            details = details.filter(
+                summary__date__year=year, summary__date__month=month
+            )
     context = {
         "account": account,
         "details": details,
@@ -310,19 +320,21 @@ def accounts_receivable_ledger(request):
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-        details = details.filter(summary__date__year=year, summary__date__month=month)
+            details = details.filter(
+                summary__date__year=year, summary__date__month=month
+            )
     else:
         form = SetLedgerPeriodForm(initial={"year": year, "month": month})
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    context = {
-        "account": account,
-        "details": details,
-        "year": year,
-        "month": month,
-        "form": form,
-    }
+            context = {
+                "account": account,
+                "details": details,
+                "year": year,
+                "month": month,
+                "form": form,
+            }
     return TemplateResponse(
         request, "winadmin/sales/accounts_receivable_ledger.html", context
     )
@@ -337,8 +349,8 @@ def transaction_create(request: HtmxHttpRequest) -> HttpResponse:
         total_price = item_price * quantity
     else:
         total_price = 0
-    initial = {"item": item_id, "quantity": quantity, "total_price": total_price}
-    form = TransactionCreateForm(initial=initial)
+        initial = {"item": item_id, "quantity": quantity, "total_price": total_price}
+        form = TransactionCreateForm(initial=initial)
     if request.method == "POST":
         form = TransactionCreateForm(request.POST)
         if form.is_valid():
@@ -346,7 +358,7 @@ def transaction_create(request: HtmxHttpRequest) -> HttpResponse:
             messages.success(request, _("Transaction Created Successfully"))
         elif not form.is_valid():
             messages.error(request, _("Transaction Couldn't Be Created"))
-    context = {"form": form}
+            context = {"form": form}
     return trigger_client_event(
         TemplateResponse(
             request, "winadmin/transactions/transaction_create.html", context
@@ -371,13 +383,13 @@ def transaction_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    context = {
-        "account": account,
-        "details": details,
-        "year": year,
-        "month": month,
-        "form": form,
-    }
+            context = {
+                "account": account,
+                "details": details,
+                "year": year,
+                "month": month,
+                "form": form,
+            }
     return TemplateResponse(
         request, "winadmin/sales/sales_list_by_period.html", context
     )
@@ -452,10 +464,10 @@ def transaction_detail(request: HtmxHttpRequest, id: int) -> HttpResponse:
             return HttpResponseClientRedirect(
                 reverse("winadmin:transaction_list_by_period")
             )
-    context = {"form": form}
-    response = TemplateResponse(
-        request, "winadmin/transactions/transaction_detail.html", context
-    )
+        context = {"form": form}
+        response = TemplateResponse(
+            request, "winadmin/transactions/transaction_detail.html", context
+        )
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -474,7 +486,7 @@ def reservation_create_no_calendar(request: HtmxHttpRequest) -> HttpResponse:
     if reservation.stay is not None:
         initial["start_date"] = reservation.stay.start_date
         initial["end_date"] = reservation.stay.end_date
-    grills = reservation.get_grills()
+        grills = reservation.get_grills()
     if request.method == "POST":
         form = ReservationCreateForm(request.POST)
         if form.is_valid():
@@ -495,12 +507,12 @@ def reservation_create_no_calendar(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.stay.end_date = end_date
                 reservation.stay.save()
                 reservation.save()
-    form = ReservationCreateForm(initial=initial)
-    context = {
-        "form": form,
-        "reservation": reservation,
-        "grill": grills,
-    }
+                form = ReservationCreateForm(initial=initial)
+                context = {
+                    "form": form,
+                    "reservation": reservation,
+                    "grill": grills,
+                }
     return TemplateResponse(
         request, "winadmin/reservations/reservation_create.html", context
     )
@@ -515,19 +527,19 @@ def time_select(request: HtmxHttpRequest) -> HttpResponse:
     tz = ZoneInfo(TIME_ZONE)
     today_date = pendulum.now(tz=tz).date()
     form = DateForm(initial={"date": today_date})
-    if reservation.start and reservation.end:
+    if reservation.stay.start and reservation.stay.end:
         initial = {
-            "start_time": reservation.start,
-            "end_time": reservation.end,
+            "start_time": reservation.stay.start,
+            "end_time": reservation.stay.end,
         }
     else:
         initial = None
-    time_form = forms.TimeSelectForm(initial=initial)
-    weekdays, calendars = generate_calendars(reservation, today_date)
-    start_date = reservation.stay.start_date if reservation.stay.start else None
-    end_date = reservation.stay.end_date if reservation.stay.end else None
-    start_time = reservation.stay.start.time if reservation.stay.start else None
-    end_time = reservation.stay.end.time if reservation.stay.end else None
+        time_form = forms.TimeSelectForm(initial=initial)
+        weekdays, calendars = generate_calendars(reservation, today_date)
+        start_date = reservation.stay.start_date if reservation.stay.start else None
+        end_date = reservation.stay.end_date if reservation.stay.end else None
+        start_time = reservation.stay.start.time if reservation.stay.start else None
+        end_time = reservation.stay.end.time if reservation.stay.end else None
     if request.method == "GET":
         if "get_previous_month" in request.GET:
             form = DateForm(request.GET)
@@ -557,19 +569,19 @@ def time_select(request: HtmxHttpRequest) -> HttpResponse:
                 start_time = time_form.cleaned_data["start_time"]
                 end_time = time_form.cleaned_data["end_time"]
                 reservation.set_times(start_time, end_time)
-    context = {
-        "calendars": calendars,
-        "weekdays": weekdays,
-        "today_date": today_date,
-        "calendar_form": form,
-        "time_form": time_form,
-        "start_date": start_date,
-        "end_date": end_date,
-        "start_time": start_time,
-        "end_time": end_time,
-        "reservation": reservation,
-    }
-    response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
+                context = {
+                    "calendars": calendars,
+                    "weekdays": weekdays,
+                    "today_date": today_date,
+                    "calendar_form": form,
+                    "time_form": time_form,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "start_time": start_time,
+                    "end_time": end_time,
+                    "reservation": reservation,
+                }
+                response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
     return trigger_client_event(response, "updateReservationDetails", after="settle")
 
 
@@ -607,8 +619,8 @@ def contact_information_input(request: HtmxHttpRequest) -> HttpResponse:
             request.session["email"] = request.POST.get("email", None)
             request.session["phone"] = request.POST.get("phone", None)
             contact_info = request.session["is_valid"] = False
-    context = {"contact_information_form": form, "contact_info": contact_info}
-    response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
+            context = {"contact_information_form": form, "contact_info": contact_info}
+            response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
     return trigger_client_event(response, "updateReservationDetails")
 
 
@@ -623,11 +635,11 @@ def option_select(request: HtmxHttpRequest) -> HttpResponse:
                 reservation.add_order_item(grill_id)
             if "remove_grill" in request.POST:
                 reservation.remove_order_item(grill_id)
-    grills = reservation.get_grills()
-    context = {
-        "grills": grills,
-    }
-    response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
+                grills = reservation.get_grills()
+                context = {
+                    "grills": grills,
+                }
+                response = TemplateResponse(request, RESERVATION_TEMPLATE, context)
     return trigger_client_event(response, "updateReservationDetails", after="settle")
 
 
@@ -635,6 +647,36 @@ def option_select(request: HtmxHttpRequest) -> HttpResponse:
 @for_htmx(use_block_from_params=True)
 def reservation_create(request: HtmxHttpRequest) -> HttpResponse:
     reservation = get_or_set_reservation_session(request)
+
+    initial_travelers = {
+        "number_of_adults": reservation.stay.number_of_adults or 1,
+        "number_of_children": reservation.stay.number_of_children or 0,
+    }
+    traveler_form = forms.TravelerForm(initial=initial_travelers)
+
+    initial_contact_info = {
+        "first_name": request.session.get("first_name", None),
+        "last_name": request.session.get("last_name", None),
+        "phone": request.session.get("phone", None),
+    }
+    contact_info_form = forms.ShortContactInfoForm(initial=initial_contact_info)
+
+    today_date = pendulum.today()
+    selected_datetime = reservation.get_start_date()
+    datetime_form = forms.DateTimeForm(
+        initial={"datetime": selected_datetime or today_date}
+    )
+    calendars = generate_calendars(reservation, selected_datetime or today_date, 2)
+    weekdays = get_weekdays()
+    start_date = reservation.get_start_date()
+    end_date = reservation.get_end_date()
+
+    stay_type = request.session.get("stay-type")
+    roomtier_queryset = reservation.get_possible_roomtier_queryset()
+    roomtier_data = get_roomtier_data(reservation, stay_type)
+    room_tier_choice_form = forms.RoomTierChoiceForm(
+        queryset=roomtier_queryset, initial=get_form_initial_data(reservation)
+    )
     if request.method == "POST":
         if "confirm-reservation" in request.POST:
             customer, created = Customer.objects.get_or_create(
@@ -649,8 +691,184 @@ def reservation_create(request: HtmxHttpRequest) -> HttpResponse:
     return TemplateResponse(
         request,
         "winadmin/reservations/reservation_create.html",
-        {"reservation": reservation},
+        {
+            "reservation": reservation,
+            "traveler_form": traveler_form,
+            "contact_info_form": contact_info_form,
+            "datetime_form": datetime_form,
+            "calendars": calendars,
+            "pendulum": pendulum,
+            "weekdays": weekdays,
+            "start": start_date,
+            "end": end_date,
+            "today_date": today_date,
+            "selected_datetime": selected_datetime,
+            "room_tier_choice_form": room_tier_choice_form,
+            "roomtier_data": roomtier_data,
+            "stay_type": stay_type,
+            "room_tier_choice_form": room_tier_choice_form,
+        },
     )
+
+
+@for_htmx(use_block_from_params=True)
+def reservation_create_traveler_form(request):
+    reservation = get_or_set_reservation_session(request)
+    initial_travelers = {
+        "number_of_adults": reservation.get_number_of_adults() or 1,
+        "number_of_children": reservation.get_number_of_children() or 0,
+    }
+    traveler_form = forms.TravelerForm(initial=initial_travelers)
+    if request.method == "POST":
+        if "set-travelers" in request.POST:
+            traveler_form = forms.TravelerForm(request.POST)
+            if traveler_form.is_valid():
+                reservation.set_number_of_visitors(traveler_form)
+                response = TemplateResponse(
+                    request,
+                    "winadmin/reservations/reservation_create.html",
+                    {"traveler_form": traveler_form},
+                )
+
+    return trigger_client_event(response, "updateReservationForm")
+
+
+@for_htmx(use_block_from_params=True)
+def reservation_create_contact_form(request):
+    reservation = get_or_set_reservation_session(request)
+    contact_info_form = forms.ShortContactInfoForm()
+    if request.method == "POST":
+        if "set-contact-info" in request.POST:
+            contact_info_form = forms.ShortContactInfoForm(request.POST)
+            if contact_info_form.is_valid():
+                request.session["first_name"] = contact_info_form.cleaned_data[
+                    "first_name"
+                ]
+                request.session["last_name"] = contact_info_form.cleaned_data[
+                    "last_name"
+                ]
+                request.session["phone"] = contact_info_form.cleaned_data[
+                    "phone"
+                ].as_national
+
+    return TemplateResponse(
+        request,
+        "winadmin/reservations/reservation_create.html",
+        {"contact_info_form": contact_info_form},
+    )
+
+
+@for_htmx(use_block_from_params=True)
+def reservation_create_date_select(request):
+    reservation = get_or_set_reservation_session(request)
+    today_date = pendulum.today()
+    selected_datetime = reservation.get_start_date()
+    datetime_form = forms.DateTimeForm(
+        initial={"datetime": reservation.get_start_date() or today_date}
+    )
+    calendars = generate_calendars(reservation, selected_datetime or today_date, 2)
+    weekdays = get_weekdays()
+    start_date = reservation.get_start_date()
+    end_date = reservation.get_end_date()
+    if request.method == "GET":
+        if "get_previous_month" in request.GET:
+            datetime_form = forms.DateTimeForm(request.GET)
+            if datetime_form.is_valid():
+                datetime = make_pen(datetime_form.cleaned_data["datetime"])
+                datetime = get_previous_month(datetime)
+                datetime_form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendars = generate_calendars(
+                    reservation, datetime, number_of_calendars=2
+                )
+                selected_datetime = datetime
+        elif "get_next_month" in request.GET:
+            datetime_form = forms.DateTimeForm(request.GET)
+            if datetime_form.is_valid():
+                datetime = make_pen(datetime_form.cleaned_data["datetime"])
+                datetime = get_next_month(datetime)
+                datetime_form = forms.DateTimeForm(initial={"datetime": datetime})
+                calendars = generate_calendars(
+                    reservation, datetime, number_of_calendars=2
+                )
+                selected_datetime = datetime
+    if request.method == "POST":
+        if "select_date" in request.POST:
+            form = forms.DateTimeForm(request.POST)
+            if form.is_valid():
+                selected_datetime = pendulum.instance(form.cleaned_data["datetime"])
+                start_date, end_date = reservation.set_dates(selected_datetime)
+                datetime_form = forms.DateTimeForm(
+                    initial={"datetime": selected_datetime}
+                )
+                calendars = generate_calendars(
+                    reservation, start_date, number_of_calendars=2
+                )
+                response = TemplateResponse(
+                    request,
+                    "winadmin/reservations/reservation_create.html",
+                    {
+                        "reservation": reservation,
+                        "datetime_form": datetime_form,
+                        "calendars": calendars,
+                        "pendulum": pendulum,
+                        "weekdays": weekdays,
+                        "start": start_date,
+                        "end": end_date,
+                        "today_date": today_date,
+                        "selected_datetime": selected_datetime,
+                    },
+                )
+    return trigger_client_event(response, "updateReservationForm")
+
+
+@for_htmx(use_block_from_params=True)
+def reservation_create_room_select(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    stay_type = request.session.get("stay-type", "overnight")
+    roomtier_queryset = reservation.get_possible_roomtier_queryset()
+    roomtier_data = get_roomtier_data(reservation, stay_type)
+    if request.method == "POST":
+        room_tier_choice_form = forms.RoomTierChoiceForm(
+            request.POST, queryset=roomtier_queryset
+        )
+        if room_tier_choice_form.is_valid():
+            reservation.set_room(
+                room_tier_choice_form,
+                roomtier_data,
+                reservation.get_start_date(),
+                reservation.get_end_date(),
+            )
+    else:
+        room_tier_choice_form = forms.RoomTierChoiceForm(
+            queryset=roomtier_queryset, initial=get_form_initial_data(reservation)
+        )
+        context = {
+            "room_tier_choice_form": room_tier_choice_form,
+            "roomtier_data": roomtier_data,
+            "reservation": reservation,
+            "stay_type": stay_type,
+        }
+        response = TemplateResponse(
+            request, "winadmin/reservations/reservation_create.html", context
+        )
+
+    return trigger_client_event(response, "updateReservationForm")
+
+
+@for_htmx(use_block_from_params=True)
+def reservation_create_confirm(request: HtmxHttpRequest) -> HttpResponse:
+    reservation = get_or_set_reservation_session(request)
+    first_name = request.session["first_name"]
+    last_name = request.session["last_name"]
+    phone = request.session["phone"]
+    customer, created = Customer.objects.get_or_create(
+        first_name=first_name,
+        last_name=last_name,
+        phone=phone,
+    )
+    reservation.confirm(customer=customer)
+    response = TemplateResponse(request, RESERVATION_TEMPLATE, {})
+    return trigger_client_event(response, "getMessages")
 
 
 @for_htmx(use_block_from_params=True)
@@ -675,13 +893,15 @@ def reservation_list_by_period(request: HtmxHttpRequest) -> HttpResponse:
         if form.is_valid():
             year = form.cleaned_data["year"]
             month = form.cleaned_data["month"]
-    reservations = reservations.filter(stay__start__year=year, stay__start__month=month)
-    context = {
-        "reservations": reservations,
-        "year": year,
-        "month": month,
-        "form": form,
-    }
+            reservations = reservations.filter(
+                stay__start__year=year, stay__start__month=month
+            )
+            context = {
+                "reservations": reservations,
+                "year": year,
+                "month": month,
+                "form": form,
+            }
     return TemplateResponse(
         request, "winadmin/reservations/reservation_list_by_period.html", context
     )
@@ -722,18 +942,18 @@ def reservation_detail(request: HtmxHttpRequest, pk: int) -> HttpResponse:
             reservation.customer.phone = phone
             reservation.save()
             messages.success(request, _("Reservation successfully edited."))
-    initial = {
-        "status": reservation.stay.status,
-        "price": reservation.get_price(),
-        "start": reservation.stay.start,
-        "end": reservation.stay.end,
-        "first_name": reservation.customer.first_name,
-        "last_name": reservation.customer.last_name,
-        "email": reservation.customer.email,
-        "phone": reservation.customer.phone,
-        "options": reservation.order_items,
-    }
-    form = ReservationDetailForm(initial=initial)
+            initial = {
+                "status": reservation.stay.status,
+                "price": reservation.get_price(),
+                "start": reservation.stay.start,
+                "end": reservation.stay.end,
+                "first_name": reservation.customer.first_name,
+                "last_name": reservation.customer.last_name,
+                "email": reservation.customer.email,
+                "phone": reservation.customer.phone,
+                "options": reservation.order_items,
+            }
+            form = ReservationDetailForm(initial=initial)
     return trigger_client_event(
         TemplateResponse(
             request,
@@ -820,14 +1040,14 @@ def customer_check_in_check_out_detail(request: HtmxHttpRequest, reservation_id)
                 messages.error(
                     request, _(f"{reservation.customer} is already checked-out.")
                 )
-    context = {
-        "reservation": reservation,
-    }
-    response = TemplateResponse(
-        request,
-        "winadmin/reservations/customer_check_in_check_out_detail.html",
-        context,
-    )
+                context = {
+                    "reservation": reservation,
+                }
+                response = TemplateResponse(
+                    request,
+                    "winadmin/reservations/customer_check_in_check_out_detail.html",
+                    context,
+                )
     return trigger_client_event(response, "getMessages")
 
 
@@ -855,21 +1075,21 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
         token = None
         if form.is_valid():
             token = form.cleaned_data["token"]
-        session = {"purchase_amount": 1000}
-        body = {
-            "source_id": token,
-            "idempotency_key": str(uuid.uuid4()),
-            "amount_money": {
-                "amount": session["purchase_amount"],
-                "currency": SQUARE_CURRENCY,
-            },
-            "autocomplete": True,
-            "location_id": SQUARE_LOCATION_ID,
-            "note": "Brief description",
-        }
-        client = get_client()
-        payments_api = client.payments
-        payment = payments_api.create_payment(body=body)
+            session = {"purchase_amount": 1000}
+            body = {
+                "source_id": token,
+                "idempotency_key": str(uuid.uuid4()),
+                "amount_money": {
+                    "amount": session["purchase_amount"],
+                    "currency": SQUARE_CURRENCY,
+                },
+                "autocomplete": True,
+                "location_id": SQUARE_LOCATION_ID,
+                "note": "Brief description",
+            }
+            client = get_client()
+            payments_api = client.payments
+            payment = payments_api.create_payment(body=body)
         if payment.is_success():
             get_or_create_customer(reservation)
             send_confirmation_email(reservation)
@@ -878,14 +1098,14 @@ def make_payment(request: HtmxHttpRequest) -> HttpResponse:
             return TemplateResponse(
                 request, "winadmin/reservations/reservation_create.html", context
             )
-    form = SquarePaymentTokenForm()
-    context = {
-        "form": form,
-        "reservation": reservation,
-        "SQUARE_APPLICATION_ID": SQUARE_APPLICATION_ID,
-        "SQUARE_LOCATION_ID": SQUARE_LOCATION_ID,
-        "SQUARE_CURRENCY": SQUARE_CURRENCY,
-    }
+        form = SquarePaymentTokenForm()
+        context = {
+            "form": form,
+            "reservation": reservation,
+            "SQUARE_APPLICATION_ID": SQUARE_APPLICATION_ID,
+            "SQUARE_LOCATION_ID": SQUARE_LOCATION_ID,
+            "SQUARE_CURRENCY": SQUARE_CURRENCY,
+        }
     return TemplateResponse(
         request, "winadmin/reservations/reservation_create.html", context
     )
@@ -906,8 +1126,10 @@ def room_create(request: HtmxHttpRequest) -> HttpResponse:
                 room_create_form = RoomCreateForm()
             else:
                 messages.error(request, "Error!")
-    context = {"room_create_form": room_create_form}
-    response = TemplateResponse(request, "winadmin/room_create.html", context)
+                context = {"room_create_form": room_create_form}
+                response = TemplateResponse(
+                    request, "winadmin/room_create.html", context
+                )
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -939,8 +1161,8 @@ def room_detail(request: HtmxHttpRequest, room_id: int) -> HttpResponse:
             room.delete()
             messages.success(request, _("Room deleted successfully"))
             return HttpResponseClientRedirect(reverse("winadmin:room_list"))
-    context = {"form": form}
-    response = TemplateResponse(request, "winadmin/room_detail.html", context)
+        context = {"form": form}
+        response = TemplateResponse(request, "winadmin/room_detail.html", context)
     return trigger_client_event(response, "getMessages")
 
 
@@ -954,8 +1176,10 @@ def room_tier_create(request: HtmxHttpRequest) -> HttpResponse:
             messages.success(request, "Success!")
         else:
             messages.error(request, "Error!")
-    context = {"form": form}
-    response = TemplateResponse(request, "winadmin/room_tier_create.html", context)
+            context = {"form": form}
+            response = TemplateResponse(
+                request, "winadmin/room_tier_create.html", context
+            )
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -987,8 +1211,8 @@ def room_tier_detail(request: HtmxHttpRequest, room_tier_id: int) -> HttpRespons
             room_tier.delete()
             messages.success(request, "Success!")
             return HttpResponseClientRedirect(reverse("winadmin:room_tier_list"))
-    context = {"form": form}
-    response = TemplateResponse(request, "winadmin/room_tier_detail.html", context)
+        context = {"form": form}
+        response = TemplateResponse(request, "winadmin/room_tier_detail.html", context)
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -1009,8 +1233,10 @@ def pricing_tier_create(request: HtmxHttpRequest) -> HttpResponse:
             )
         else:
             messages.error(request, "Error!")
-    context = {"form": form}
-    response = TemplateResponse(request, "winadmin/pricing_tier_create.html", context)
+            context = {"form": form}
+            response = TemplateResponse(
+                request, "winadmin/pricing_tier_create.html", context
+            )
     return trigger_client_event(response, "getMessages")
 
 
@@ -1043,8 +1269,10 @@ def pricing_tier_detail(request: HtmxHttpRequest, pricing_tier_id: int) -> HttpR
                 pricing_tier.delete()
                 messages.success(request, "Success!")
                 return HttpResponseClientRedirect(reverse("winadmin:pricing_tier_list"))
-    context = {"form": form}
-    response = TemplateResponse(request, "winadmin/pricing_tier_detail.html", context)
+            context = {"form": form}
+            response = TemplateResponse(
+                request, "winadmin/pricing_tier_detail.html", context
+            )
     return trigger_client_event(response, "getMessages")
 
 
@@ -1102,10 +1330,10 @@ def pricing_tier_group_create(request: HtmxHttpRequest) -> HttpResponse:
                     )
             else:
                 messages.error(request, "Error!")
-    context = {"form": form, "formset": formset}
-    response = TemplateResponse(
-        request, "reservations/pricing_tier_group_create.html", context
-    )
+                context = {"form": form, "formset": formset}
+                response = TemplateResponse(
+                    request, "reservations/pricing_tier_group_create.html", context
+                )
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -1145,6 +1373,9 @@ def pricing_tier_group_detail(
     form = PricingTierGroupDetailForm(initial=initial)
     queryset = PricingTier.objects.filter(tier_group=pricing_tier_group)
     formset = PricingTierFormSet(queryset=queryset)
+    calendars = generate_campaign_calendars(
+        campaign=pricing_tier_group.campaign, date_=today_date
+    )
     if request.method == "GET":
         if "get_previous_month" in request.GET:
             form = forms.DateTimeForm(request.GET)
@@ -1164,10 +1395,7 @@ def pricing_tier_group_detail(
                 calendars = generate_campaign_calendars(
                     campaign=pricing_tier_group.campaign, date_=datetime
                 )
-        else:
-            calendars = generate_campaign_calendars(
-                campaign=pricing_tier_group.campaign, date_=today_date
-            )
+
     if request.method == "POST":
         form = PricingTierGroupDetailForm(request.POST, instance=pricing_tier_group)
         formset = PricingTierFormSet(request.POST, request.FILES, queryset=queryset)
@@ -1222,8 +1450,8 @@ def campaign_create(request: HtmxHttpRequest) -> HttpResponse:
         else:
             # calendars = generate_campaign_calendars()
             messages.error(request, "Error!")
-    # elif request.method == "GET":
-    #     calendars = generate_campaign_calendars()
+            # elif request.method == "GET":
+            #     calendars = generate_campaign_calendars()
     context = {
         "form": form,
         # "date_filter_form": date_filter_form,
@@ -1287,13 +1515,13 @@ def campaign_detail(request: HtmxHttpRequest, campaign_id: int) -> HttpResponse:
             campaign.delete()
             messages.success(request, "Success!")
             return HttpResponseClientRedirect(reverse("winadmin:campaign_list"))
-    context = {
-        "form": form,
-        "date_filter_form": date_filter_form,
-        "weekdays": weekdays,
-        "calendars": calendars,
-    }
-    response = TemplateResponse(request, "campaign/campaign_detail.html", context)
+        context = {
+            "form": form,
+            "date_filter_form": date_filter_form,
+            "weekdays": weekdays,
+            "calendars": calendars,
+        }
+        response = TemplateResponse(request, "campaign/campaign_detail.html", context)
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -1349,7 +1577,9 @@ def vendor_detail(request, vendor_id):
             messages.error(request, _("Vendor couldn't be updated"))
     else:
         form = VendorCreateForm(instance=vendor)
-    response = TemplateResponse(request, "vendor/vendor_detail.html", {"form": form})
+        response = TemplateResponse(
+            request, "vendor/vendor_detail.html", {"form": form}
+        )
     return trigger_client_event(response, "getMessages")
 
 
@@ -1387,15 +1617,15 @@ def invoice_create(request):
         }
         form = InvoiceCreateForm(initial=initial)
         invoice = None
-    response = TemplateResponse(
-        request,
-        "invoice/invoice_create.html",
-        {
-            "form": form,
-            "invoice": invoice,
-            "this_month_cutoff_datetime": this_month_cutoff_datetime,
-        },
-    )
+        response = TemplateResponse(
+            request,
+            "invoice/invoice_create.html",
+            {
+                "form": form,
+                "invoice": invoice,
+                "this_month_cutoff_datetime": this_month_cutoff_datetime,
+            },
+        )
     return trigger_client_event(response, "getMessages")
 
 
@@ -1422,10 +1652,15 @@ def invoice_detail(request, invoice_id):
                 )
         else:
             messages.error(request, _("Form isn't valid"))
+            response = TemplateResponse(
+                request,
+                "invoice/invoice_detail.html",
+                {"invoice": invoice, "procurements": procurements},
+            )
     response = TemplateResponse(
         request,
         "invoice/invoice_detail.html",
-        {"invoice": invoice, "procurements": procurements},
+        {"invoice": invoice, "procurements": procurements, "form": form},
     )
     return trigger_client_event(response, "getMessages")
 
@@ -1461,33 +1696,33 @@ def procurement_create(request):
         account = q.get("account", None)
         if account:
             account = Account.objects.get(id=account)
-        item = q.get("item", None)
+            item = q.get("item", None)
         if item:
             item = Item.objects.get(id=item)
-        price_per_unit = q.get("price_per_unit", None)
+            price_per_unit = q.get("price_per_unit", None)
         if item:
             price_per_unit = item.price
-        quantity = q.get("quantity", None)
+            quantity = q.get("quantity", None)
         if item and not quantity:
             quantity = 1
-        total = None
+            total = None
         if price_per_unit and quantity:
             total = price_per_unit * quantity
-        procured_on = q.get("procured_on", None)
-        initial = {
-            "account": account,
-            "item": item,
-            "price_per_unit": price_per_unit,
-            "quantity": quantity,
-            "total": total,
-            "procured_on": procured_on,
-        }
-        form = ProcurementCreateForm(initial=initial)
+            procured_on = q.get("procured_on", None)
+            initial = {
+                "account": account,
+                "item": item,
+                "price_per_unit": price_per_unit,
+                "quantity": quantity,
+                "total": total,
+                "procured_on": procured_on,
+            }
+            form = ProcurementCreateForm(initial=initial)
     elif request.method == "GET":
         form = ProcurementCreateForm()
-    response = TemplateResponse(
-        request, "procurement/procurement_create.html", {"form": form}
-    )
+        response = TemplateResponse(
+            request, "procurement/procurement_create.html", {"form": form}
+        )
     return trigger_client_event(response, "getMessages")
 
 
@@ -1513,11 +1748,11 @@ def procurement_detail(request, procurement_id):
                 messages.error(request, _("Procurement couldn't be deleted"))
     else:
         form = ProcurementDetailForm(instance=procurement)
-    response = TemplateResponse(
-        request,
-        "procurement/procurement_detail.html",
-        {"form": form, "procurement": procurement},
-    )
+        response = TemplateResponse(
+            request,
+            "procurement/procurement_detail.html",
+            {"form": form, "procurement": procurement},
+        )
     return trigger_client_event(response, "getMessages")
 
 
@@ -1525,6 +1760,7 @@ def procurement_detail(request, procurement_id):
 def company_wise_procurement_ledger(request: HtmxHttpRequest):
     dt = pendulum.today(tz=get_default_timezone())
     vendor = Vendor.objects.first()
+    form = CompanyWiseProcurementLedgerFilter()
     if request.htmx and not request.htmx.boosted:
         form = CompanyWiseProcurementLedgerFilter(request.GET)
         if form.is_valid():
@@ -1641,9 +1877,9 @@ def business_account_create(request):
         if form.is_valid():
             account = form.save()
             messages.success(request, f"{account} created successfully")
-    response = TemplateResponse(
-        request, "accounting/account_create.html", {"form": form}
-    )
+            response = TemplateResponse(
+                request, "accounting/account_create.html", {"form": form}
+            )
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -1671,9 +1907,9 @@ def business_account_detail(request, business_account_id):
             messages.success(request, f"Account updated successfully")
         else:
             messages.error(request, f"Account couldn't be edited")
-    response = TemplateResponse(
-        request, "accounting/account_detail.html", {"form": form}
-    )
+            response = TemplateResponse(
+                request, "accounting/account_detail.html", {"form": form}
+            )
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -1687,9 +1923,9 @@ def business_transaction_create(request):
             messages.success(request, f"Transaction successful")
         else:
             messages.error(request, f"Transaction couldn't be completed")
-    response = TemplateResponse(
-        request, "accounting/business_transaction_create.html", {"form": form}
-    )
+            response = TemplateResponse(
+                request, "accounting/business_transaction_create.html", {"form": form}
+            )
     return trigger_client_event(response=response, name="getMessages")
 
 
@@ -1716,7 +1952,7 @@ def business_transaction_detail(request, business_transaction_id):
             messages.success(request, f"Transaction updated successfully")
         else:
             messages.error(request, f"Transaction couldn't be edited")
-    response = TemplateResponse(
-        request, "accounting/business_transaction_detail.html", {"form": form}
-    )
+            response = TemplateResponse(
+                request, "accounting/business_transaction_detail.html", {"form": form}
+            )
     return trigger_client_event(response=response, name="getMessages")

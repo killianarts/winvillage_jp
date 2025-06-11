@@ -88,25 +88,19 @@
      });
     </script>
 {% endblock %}
-    {% block content_main %}
+{% block content_main %}
     <main _="install SetCount">
         <c-hero class="relative"
-                opacity="opacity-40"
+                opacity="opacity-100"
                 :images="['core/img/inside2@0.25x.jpg', 'core/img/outside1@0.25x.jpg', 'core/img/front1@0.25x.jpg', 'core/img/outdoor_bath@0.25x.jpg']">
             <div class="text-white text-center font-serif">
                 <div class="flex justify-center">
                     <img class="w-24 h-24 sm:w-[200px] sm:h-[200px]" src="{% static 'core/img/dark_logo.svg' %}" alt="" />
                 </div>
-                <p class="text-sm mb-2 sm:mb-12 xl:mb-32">長崎でグランピング</p>
-                <div class="flex flex-col items-center">
-                    <h1 class="font-antique uppercase text-balance text-xl sm:text-3xl sm:text-7xl">your weekend is waiting in nagasaki</h1>
-                    <c-divider />
-                    <p class="text-xl sm:text-3xl">火をつけてリラックしよう</p>
-                </div>
-                <canvas class="mx-auto" id="reservation-button-light" width="75" height="75"></canvas>
+                <p class="text-sm mb-2 sm:mb-12 xl:mb-32">佐世保でのグランピング</p>
             </div>
         </c-hero>
-        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="0" id="introduction"
+        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="0" id="introduction"
                  _="on scroll from window set offset to window.innerHeight / 2 then set my_measure to the result then measure the next <footer/> then set footer_measure to the result
                         if my_measure.bottom < offset and footer_measure.top > offset
                         set #reservation-button-dark-large-container's @data-popup to true
@@ -120,42 +114,42 @@
                     <p class="text-xs lg:text-lg tracking-[0.5ch]">週末の秘密基地</p>
                     <h2 class="px-[50px] text-3xl lg:text-7xl uppercase font-antique text-center">your weekend getaway</h2>
                 </div>
-                <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
-                <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
+                <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
+                <p class="font-serif font-bold text-md md:text-xl">家族のみんなで楽なキャンプをして心と体を充電しよう。</p>
             </div>
             <div class="grid gap-10 sm:grid-cols-3 mb-10">
                 <a href="#room" class="flex justify-center group hover:scale-110 transition-all duration-300 hover:text-orange-700">
-                    <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+                    <div class="flex flex-col items-center space-y-2 md:space-y-3 max-w-7xl mx-auto">
                         <div class="w-1/2 max-h-[30px]  flex justify-center">
                             <img src="{% static 'core/img/fried-food.svg' %}" alt="" />
                         </div>
                         <p class="text-xs lg:text-sm">贅沢の部屋</p>
                         <h3 class="uppercase font-antique md:text-xl lg:text-2xl">rooms</h3>
-                        <c-divider color="bg-orange-950" size="w-full h-[1px]" />
+                        <c-divider color="bg-black" size="w-full h-[1px]" />
                         <p class="max-w-[20ch] sm:max-w-full">このキッチンはなんでもある！</p>
                         <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
                 </a>
                 <a href="#camping" class="flex justify-center group hover:scale-110 transition-all duration-300 hover:text-orange-700">
-                    <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+                    <div class="flex flex-col items-center space-y-2 md:space-y-3 max-w-7xl mx-auto">
                         <div class="w-1/2 max-h-[30px]  flex justify-center">
                             <img src="{% static 'core/img/grill.svg' %}" alt="" />
                         </div>
                         <p class="text-xs lg:text-sm">楽々のキャンプ</p>
                         <h3 class="uppercase font-antique md:text-xl lg:text-2xl">camping</h3>
-                        <c-divider color="bg-orange-950" size="w-full h-[1px]" />
+                        <c-divider color="bg-black" size="w-full h-[1px]" />
                         <p class="max-w-[20ch] sm:max-w-full">自分のキャンプ用グッズを持ってきても、こっちでレンタルしてもいい</p>
                         <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
                 </a>
                 <a href="#play&sauna" class="flex justify-center group hover:scale-110 transition-all duration-300 hover:text-orange-700">
-                    <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto">
+                    <div class="flex flex-col items-center space-y-2 md:space-y-3 max-w-7xl mx-auto">
                         <div class="w-1/2 max-h-[30px]  flex justify-center">
                             <img src="{% static 'core/img/wagon.svg' %}" alt="" />
                         </div>
                         <p class="text-xs lg:text-sm">色々な遊び</p>
                         <h3 class="uppercase font-antique md:text-xl lg:text-2xl">fun</h3>
-                        <c-divider color="bg-orange-950" size="w-full h-[1px]" />
+                        <c-divider color="bg-black" size="w-full h-[1px]" />
                         <p class="max-w-[20ch] sm:max-w-full">「最高だったよ、パパ！また行きたい！」</p>
                         <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
@@ -168,7 +162,7 @@
                 </div>
             </div>
             <figure class="relative w-fit md:max-w-2xl xl:max-w-5xl mx-auto">
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[640px] right-[70px]
                            md:w-[41px] md:h-[32px] md:top-[202px] md:right-[82px]
@@ -191,7 +185,7 @@
 
 
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}', '{{eight}}', '{{nine}}', '{{ten}}', '{{eleven}}']"/>
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[641px] right-[135px]
                            md:w-[41px] md:h-[32px] md:top-[203px] md:right-[151.5px]
@@ -213,7 +207,7 @@
 
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}', '{{eight}}', '{{nine}}', '{{ten}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[709px] right-[150px]
                            md:w-[41px] md:h-[32px] md:top-[275px] md:right-[167.5px]
@@ -230,7 +224,7 @@
                 {% static 'core/img/rooms/two/seven.jpg' as seven %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[771px] right-[149px]
                            md:w-[41px] md:h-[32px] md:top-[340.5px] md:right-[165px]
@@ -249,7 +243,7 @@
                 {% static 'core/img/rooms/three/nine.jpg' as nine %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}', '{{eight}}', '{{nine}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[206px] right-[240px]
                            md:w-[41px] md:h-[32px] md:top-[218px] md:right-[579px]
@@ -264,7 +258,7 @@
                 {% static 'core/img/rooms/five/05.jpg' as five %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[268px] right-[240px]
                            md:w-[41px] md:h-[32px] md:top-[283px] md:right-[579px]
@@ -282,7 +276,7 @@
                 {% static 'core/img/rooms/six/eight.jpg' as eight %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[294px] right-[185px]
                            md:w-[41px] md:h-[32px] md:top-[311px] md:right-[521px]
@@ -296,7 +290,7 @@
                 {% static 'core/img/rooms/seven/four.jpg' as four %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[366px] right-[210px]
                            md:w-[41px] md:h-[32px] md:top-[387px] md:right-[547px]
@@ -312,7 +306,7 @@
                 {% static 'core/img/rooms/eight/six.jpg' as six %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[366px] right-[153px]
                            md:w-[41px] md:h-[32px] md:top-[387px] md:right-[487px]
@@ -327,7 +321,7 @@
                 {% static 'core/img/rooms/ten/five.jpg' as five %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[364.5px] right-[90px]
                            md:w-[41px] md:h-[32px] md:top-[386px] md:right-[420px]
@@ -343,7 +337,7 @@
                 {% static 'core/img/rooms/eleven/six.jpg' as six %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[40px] h-[30px] top-[284.5px] right-[98px]
                            md:w-[41px] md:h-[32px] md:top-[301px] md:right-[428px]
@@ -360,7 +354,7 @@
                 {% static 'core/img/rooms/twelve/seven.jpg' as seven %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}', '{{seven}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-sm sm:text-xl bg-white
                            w-[41px] h-[32px] top-[213px] right-[97px]
                            md:w-[44px] md:h-[34px] md:top-[225px] md:right-[427px]
@@ -376,7 +370,7 @@
                 {% static 'core/img/rooms/thirteen/six.jpg' as six %}
                 <c-modal-slider :images="['{{ zero }}', '{{one}}', '{{two}}', '{{three}}', '{{four}}', '{{five}}', '{{six}}']"/>
 
-                <button _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end"
+                <button _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end"
                         class="absolute text-xs xl:text-lg flex
                            w-[65px] h-[55px] top-[660px] right-[202px]
                            md:w-[70px] md:h-[55px] md:top-[224px] md:right-[220px]
@@ -394,7 +388,7 @@
                 <img src="{% static 'core/img/map-right.jpg' %}" class="max-w-[320px] mx-auto md:hidden" alt="" />
             </figure>
         </section>
-        <section class="my-10 sm:my-48 mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room">
+        <section class="my-10 sm:my-48 mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto
                         px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
@@ -403,8 +397,8 @@
                     <p class="tracking-[0.5ch]">家族みんな快適</p>
                     <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">our rooms</h2>
                 </div>
-                <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
-                <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
+                <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
+                <p class="font-serif font-bold text-md md:text-xl">あなたの家族の別荘が待っている。</p>
             </div>
             <div class="map my-5 sm:my-10">
                 {% static 'core/img/inside1@0.25x.jpg' as image1 %}
@@ -414,7 +408,7 @@
                 {% static 'core/img/front2@0.25x.jpg' as image5 %}
                 {% static 'core/img/front3@0.25x.jpg' as image6 %}
 
-                <c-slider :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}']">
+                <c-slider id="room-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}']">
                     <div class="-translate-y-5 font-serif font-bold mx-auto grid grid-cols-3 md:grid-cols-5 gap-5 max-w-2xl px-2 sm:px-10">
                         <div class="col-span-3 md:col-span-2">
                             <p>キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ゆっくりしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれて、最高の朝を向かう。</p>
@@ -458,7 +452,7 @@
                 </c-slider>
             </div>
         </section>
-        <section class="my-10 sm:my-48 mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="2" id="camping">
+        <section class="my-10 sm:my-48 mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="2" id="camping">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
                     <div class="absolute top-1/2 -translate-y-1/2 -z-10">
@@ -469,8 +463,8 @@
                     <p class="tracking-[0.5ch]">美味しい空気と肉</p>
                     <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">easy, relaxing camping!</h2>
                 </div>
-                <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
-                <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
+                <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
+                <p class="font-serif font-bold text-md md:text-xl">自分のキャンプ用品がなくても、食べ物を持ってこなくてもいい。全部こちらで用意している。</p>
             </div>
             <div class="my-5 sm:my-10">
                 {% static 'core/img/campfire.jpg' as image1 %}
@@ -480,7 +474,7 @@
                 {% static 'core/img/outside2@0.25x.jpg' as image5 %}
                 {% static 'core/img/people@0.25x.jpg' as image6 %}
                 {% static 'core/img/bathroom_storage@0.25x.jpg' as image7 %}
-                <c-slider :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{image7}}']">
+                <c-slider id="camp-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{image7}}']">
                     <div class="-translate-y-5 font-serif font-bold mx-auto grid grid-cols-3 md:grid-cols-5  gap-5 max-w-2xl px-2 sm:px-10">
                         <div class="col-span-3 md:col-span-2">
                             <p>温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。</p>
@@ -510,7 +504,7 @@
                 </c-slider>
             </div>
         </section>
-        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="3" id="play&sauna">
+        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="3" id="play&sauna">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
                     <img class="absolute top-1/2 -translate-y-1/2 left-0 w-[50px] sm:w-[100px]" src="{% static 'core/img/coffee-and-table.svg' %}" alt="" loading="lazy" />
@@ -521,10 +515,10 @@
                     <p class="tracking-[0.5ch]">それぞれで遊ぼう<br class="xl:hidden">一緒に遊ぼう</p>
                     <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">fun for<br>all ages!</h2>
                 </div>
-                <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]"/>
-                <p class="font-serif font-bold text-md md:text-xl">概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・概念やビジョンの話・</p>
+                <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
+                <p class="font-serif font-bold text-md md:text-xl">ちび子からばあちゃんじいちゃんまでのんびりに楽しめる。</p>
             </div>
-            <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] p-5 overflow-hidden">
+            <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-black before:-inset-[4px] p-5 overflow-hidden">
                 <h2 class="uppercase text-3xl text-center">toys</h2>
             </div>
 
@@ -534,174 +528,51 @@
             <div class="flex gap-5">
                 <div class="">
                     {% static 'core/img/kart@0.25x.jpg' as image %}
-                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
                         <img src="{{ image }}" alt="" />
                     </div>
-                    <dialog class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
-                            _="on click
-                                   measure me
-                                   set is_in_me to result.top    <= event.clientY              and
-                                   event.clientY <= result.top + result.height and
-                                   result.left   <= event.clientX              and
-                                   event.clientX <= result.left + result.width
-                                   if is_in_me == false call me.close()">
-                        <div class="relative">
-                            <div class="absolute top-2 right-0 flex w-16 justify-center">
-                                <button type="button"
-                                        _="on click set dialog to the closest <dialog/>
-                                              if the dialog matches @open
-                                              call dialog.close()
-                                              end">
-                                    <span class="sr-only">Close sidebar</span>
-                                    <svg class="h-12 w-12 text-white"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke-width="1.5"
-                                         stroke="currentColor"
-                                         aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <img src="{{ image }}" alt="" />
-                        </div>
-                    </dialog>
+                    <c-dialog id="modal-toy-1" :image=image />
                 </div>
-                <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] overflow-hidden">
+                <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-black before:-inset-[4px] overflow-hidden">
                 </div>
                 <div>
                     {% static 'core/img/outside3@0.25x.jpg' as image %}
-                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
                         <img src="{{ image }}" alt="" />
                     </div>
-                    <dialog
-                        class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
-                        _="on click
-                               measure me
-                               set is_in_me to result.top    <= event.clientY              and
-                               event.clientY <= result.top + result.height and
-                               result.left   <= event.clientX              and
-                               event.clientX <= result.left + result.width
-                               if is_in_me == false call me.close()">
-                        <div class="relative">
-                            <div class="absolute top-2 right-0 flex w-16 justify-center">
-                                <button type="button"
-                                        _="on click set dialog to the closest <dialog/>
-                                              if the dialog matches @open
-                                              call dialog.close()
-                                              end">
-                                    <span class="sr-only">Close sidebar</span>
-                                    <svg class="h-12 w-12 text-white"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke-width="1.5"
-                                         stroke="currentColor"
-                                         aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <img src="{{ image }}" alt="" />
-                        </div>
-                    </dialog>
+                    <c-dialog id="modal-toy-2" :image=image />
                 </div>
             </div>
-            <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] p-5 overflow-hidden">
+            <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-black before:-inset-[4px] p-5 overflow-hidden">
                 <h2 class="uppercase text-3xl text-center">bath & sauna</h2>
             </div>
             <div class="flex gap-5">
                 {% static 'core/img/sauna@0.25x.jpg' as image %}
-                <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
                     <img src="{{ image }}" alt="" />
                 </div>
-                <dialog
-                    class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
-                    _="on click
-                           measure me
-                           set is_in_me to result.top    <= event.clientY              and
-                           event.clientY <= result.top + result.height and
-                           result.left   <= event.clientX              and
-                           event.clientX <= result.left + result.width
-                           if is_in_me == false call me.close()">
-                    <div class="relative">
-                        <div class="absolute top-2 right-0 flex w-16 justify-center">
-                            <button type="button"
-                                    _="on click set dialog to the closest <dialog/>
-                                          if the dialog matches @open
-                                          call dialog.close()
-                                          end">
-                                <span class="sr-only">Close sidebar</span>
-                                <svg class="h-12 w-12 text-white"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke-width="1.5"
-                                     stroke="currentColor"
-                                     aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <img src="{{ image }}" alt="" />
-                    </div>
-                </dialog>
-                <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-orange-950 before:-inset-[4px] overflow-hidden">
+                <c-dialog id="modal-sauna-1" :image=image />
+                <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-black before:-inset-[4px] overflow-hidden">
                 </div>
                 <div>
                     {% static 'core/img/outdoor_bath@0.25x.jpg' as image %}
-                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
                         <img src="{{ image }}" alt="" />
                     </div>
-                    <dialog
-                        class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
-                        _="on click
-                               measure me
-                               set is_in_me to result.top    <= event.clientY              and
-                               event.clientY <= result.top + result.height and
-                               result.left   <= event.clientX              and
-                               event.clientX <= result.left + result.width
-                               if is_in_me == false call me.close()">
-                        <div class="relative">
-                            <div class="absolute top-2 right-0 flex w-16 justify-center">
-                                <button type="button"
-                                        _="on click set dialog to the closest <dialog/>
-                                              if the dialog matches @open
-                                              call dialog.close()
-                                              end">
-                                    <span class="sr-only">Close sidebar</span>
-                                    <svg class="h-12 w-12 text-white"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke-width="1.5"
-                                         stroke="currentColor"
-                                         aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <img src="{{ image }}" alt="" />
-                        </div>
-
-                    </dialog>
-
+                    <c-dialog id="modal-sauna-2" :image=image />
                 </div>
             </div>
         </section>
-        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-orange-950 scroll-mt-20 sm:scroll-mt-48" data-counter="4" id="access">
-            <div class="flex gap-5 items-center justify-between mb-10">
+        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="4" id="access">
+            <div class="flex gap-5 items-center justify-center mb-10">
                 <div>
                     <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">access</h2>
-                    <div class="flex justify-center pt-5">
-                        <img src="{% static 'core/img/arrows.svg' %}" alt="" />
-                    </div>
-                </div>
-                <div class="max-w-xl">
-                    <img src="{% static 'core/img/cows.svg' %}" alt="" />
                 </div>
             </div>
             <div class="grid grid-cols-3 grid-rows-2 gap-5 text-xl">
                 <div class="text-center col-span-1 row-span-1 flex justify-center flex-col">
                     <h4 class="font-antique font-bold tracking-[0.2rem] uppercase">address</h4>
-                    <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]" margin="my-1"/>
+                    <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]" margin="my-1"/>
                     <p>859-3166<br>長崎佐世保木原町82番地 </p>
                 </div>
                 <div class="col-span-2 row-span-2 min-h-[400px]">
@@ -711,7 +582,7 @@
                 </div>
                 <div class="text-center col-span-1 row-span-1 flex justify-center flex-col">
                     <h4 class="font-antique font-bold tracking-[0.2rem] uppercase">phone</h4>
-                    <c-divider color="bg-orange-950" size="w-1/3 md:w-1/2 h-[1px]" margin="my-1"/>
+                    <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]" margin="my-1"/>
                     <p>0956-30-8411</p>
                 </div>
             </div>
@@ -721,5 +592,4 @@
         </div>
     </main>
 
-    {% endblock %}
-
+{% endblock %}

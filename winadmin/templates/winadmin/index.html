@@ -73,9 +73,9 @@
             {% for r in rooms %}
                 {% if room in occupied_rooms %}
                     <c-table-row class="bg-lime-600">
-                        <c-table-column :col-num="1" url="{% url 'winadmin:checked_in_customer_purchase' room_id=room.id customer_id=customer.id %}">{{ customer }}</c-table-column>
-                        <c-table-column :col-num="2">{{ room }}</c-table-column>
-                        <c-table-card-button url="{% url 'winadmin:checked_in_customer_purchase' room_id=room.id customer_id=customer.id %}">{% trans 'Purchase' %}</c-table-card-button>
+                        <c-table-column :col-num="1" url="{% url 'winadmin:checked_in_customer_purchase' room_id=r.id customer_id=customer.id %}">{{ customer }}</c-table-column>
+                        <c-table-column :col-num="2">{{ r }}</c-table-column>
+                        <c-table-card-button url="{% url 'winadmin:checked_in_customer_purchase' room_id=r.id customer_id=customer.id %}">{% trans 'Purchase' %}</c-table-card-button>
                     </c-table-row>
                 {% else %}
                     <c-table-row class="bg-white">

@@ -35,6 +35,16 @@ class ContactInfoForm(ShisoFormMixin, forms.Form):
     )
 
 
+class ShortContactInfoForm(ShisoFormMixin, forms.Form):
+    first_name = forms.CharField(label=_("First Name"))
+    last_name = forms.CharField(
+        label=_("Last Name"),
+    )
+    phone = PhoneNumberField(
+        label=_("Phone #"),
+    )
+
+
 class DateForm(forms.Form):
     date = forms.DateTimeField(widget=forms.HiddenInput)
 
@@ -97,8 +107,6 @@ class TravelerForm(ShisoFormMixin, forms.ModelForm):
     class Meta:
         model = Stay
         fields = ("number_of_adults", "number_of_children")
-
-    do_htmx_validation = True
 
     def clean_number_of_adults(self):
         number_of_adults = self.cleaned_data.get("number_of_adults")

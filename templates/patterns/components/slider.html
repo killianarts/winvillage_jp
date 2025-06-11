@@ -1,3 +1,4 @@
+<c-vars id />
 {% load static %}
 <div class="image-slider-container"
      {% comment %}
@@ -12,11 +13,11 @@
 >
     <div class="mx-auto overflow-x-hidden relative flex justify-center items-center h-[333px] sm:h-[555px] xl:h-[666px]">
         <div style="--s: 175px;
-                     mask:
-                     conic-gradient(#000 0 0) content-box,
-                     conic-gradient(at var(--s) var(--s),#0000 75%,#000 0)
-                     0 0/calc(100% - var(--s)) calc(100% - var(--s));
-                     "
+                    mask:
+                    conic-gradient(#000 0 0) content-box,
+                    conic-gradient(at var(--s) var(--s),#0000 75%,#000 0)
+                    0 0/calc(100% - var(--s)) calc(100% - var(--s));
+                    "
              class="xl:border border-orange-950 absolute w-[600px] sm:w-[1100px] h-[333px] sm:h-[555px] xl:h-[666px]">
 
         </div>
@@ -79,47 +80,22 @@
                               "
                  class="image-slider flex w-max h-[200px] sm:h-[333px] items-center gap-10">
                 {% for image in images %}
-                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <dialog/> if dialog does not match @open call dialog.showModal() end">
+                    <div class="image-wrapper cursor-pointer"
+                         _="on click set dialog to the next <[role=dialog]/>
+                                if dialog does not match @open add @open=true to dialog end">
                         <img src="{{ image }}" data-image-counter="{{ forloop.counter0 }}"
                              class="data-[selected=true]:w-[300px] data-[selected=false]:w-[100px] transition-all duration-500 ease-in-out
                                   sm:data-[selected=true]:w-[500px] sm:data-[selected=false]:w-[200px]
                                   lg:data-[selected=true]:w-[700px] lg:data-[selected=false]:w-[300px]" data-selected="false" alt="" />
                     </div>
-                    <dialog id="modal-{{ forloop.counter0 }}"
-                            class="backdrop:bg-stone-800/80 backdrop:backdrop-blur-sm"
-                            _="on click
-                                measure me
-                                set is_in_me to result.top    <= event.clientY              and
-                                event.clientY <= result.top + result.height and
-                                result.left   <= event.clientX              and
-                                event.clientX <= result.left + result.width
-                                if is_in_me == false call me.close()">
-                        <div class="relative">
-                            <div class="absolute top-2 right-0 flex w-16 justify-center">
-                                <button type="button"
-                                        _="on click set dialog to the closest <dialog/>
-                                              if the dialog matches @open
-                                              call dialog.close()
-                                              end">
-                                    <span class="sr-only">Close sidebar</span>
-                                    <svg class="h-12 w-12 text-white"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke-width="1.5"
-                                         stroke="currentColor"
-                                         aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <img src="{{ image }}"
-                                 alt="" />
-                        </div>
 
-                    </dialog>
                 {% endfor %}
             </div>
         </div>
     </div>
     {{ slot }}
 </div>
+
+{% for image in images %}
+    <c-dialog id="modal-{{ id }}-{{ forloop.counter0 }}" :image=image />
+{% endfor %}

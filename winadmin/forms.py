@@ -433,11 +433,11 @@ class ProcurementDetailForm(ShisoFormMixin, forms.ModelForm):
 
 class CompanyWiseProcurementLedgerFilter(ShisoFormMixin, forms.Form):
     # This causes errors on clean DB. Need to make default vendor.
-    # vendor = forms.ModelChoiceField(
-    #     queryset=Vendor.objects.all(),
-    #     initial=Vendor.objects.first(),
-    #     label=_("Vendor"),
-    # )
+    vendor = forms.ModelChoiceField(
+        queryset=Vendor.objects.all(),
+        initial=Vendor.objects.first(),
+        label=_("Vendor"),
+    )
     current_year = datetime.today().year
     current_month = datetime.today().month
     year = forms.IntegerField(

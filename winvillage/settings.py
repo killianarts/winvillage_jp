@@ -448,9 +448,9 @@ CELERY_RESULT_BACKEND = "django-db"
 CELERY_CACHE_BACKEND = "django-cache"
 CELERY_RESULT_EXTENDED = True
 
-CELERY_BEAT_SCHEDULE = {
-    "make_invoices_every_day": {
-        "task": "tasks.create_invoices_task",
-        "schedule": crontab(minute=0, hour=0),
-    }
-}
+# CELERY_BEAT_SCHEDULE = {
+#     "make_invoices_every_day": {
+#         "task": "tasks.create_invoices_task",
+#         "schedule": crontab(minute=0, hour=0),
+#     }
+# }

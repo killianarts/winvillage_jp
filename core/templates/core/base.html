@@ -6,7 +6,7 @@
     {% include 'core/meta.html' %}
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
     <title>
-      {% block title %}{% blocktrans %}Glamping in Imari{% endblocktrans %}{% endblock %}
+      {% block title %}{% blocktrans %}Glamping in Sasebo{% endblocktrans %}{% endblock %}
       {% block title_divider %} - {% endblock %}
       {% block subtitle %}{% trans "Winvillage" %}{% endblock %}
     </title>
@@ -74,20 +74,18 @@
           <p class="text-balance">
             {% translate '最高のグランピングが佐世保で待っています。' %}
           </p>
-
-          <div class="text-lg text-stone-900">
+          <div>
             <a href="tel:0956-30-8411"><h3 class="font-antique uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
                                                   after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
-              <div class="flex justify-center gap-2">
+              <div class="flex justify-center gap-2 text-lg font-code">
                 <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
                   <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
-                        class="stroke-stone-900 stroke-[3]"/>
+                        class="stroke-slate-900 stroke-3"/>
                 </svg>
                 0956-30-8411
               </div>
             </a>
           </div>
-
         </div>
       </footer>
     {% endblock %}

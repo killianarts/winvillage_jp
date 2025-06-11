@@ -1,8 +1,7 @@
 <div-tr class="grid [grid-template-columns:max-content_1fr] text-blue-950 border border-blue-950 sm:border-none drop-shadow-hard-45-xs sm:drop-shadow-none
                hover:border-orange-500 active:bg-blue-500
                sm:table-row {{ vertical_stripes }} {{ class }}"
-        _="on mousedown
-               toggle .{{ vertical_stripes }} .bg-blue-300 on me" {{ attrs }}>
+        {{ attrs }}>
     {% if not slot %}
         {% for col in columns %}
             {% if forloop.first %}

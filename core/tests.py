@@ -123,15 +123,17 @@ def make_procurements(vendor, item_name, price_per_unit, quantity, date):
 
 
 tz = get_default_timezone()
-april = pendulum.date(2024, 4, 1)
+now = pendulum.now()
+this_year = now.year
+april = pendulum.date(this_year, 4, 1)
 end_of_april = april.end_of("month").start_of("day")
 april_fifth = april.add(days=4)
 april_fifteenth = april.add(days=14)
-may = pendulum.date(2024, 5, 1)
+may = pendulum.date(this_year, 5, 1)
 end_of_may = may.end_of("month").start_of("day")
 may_fifth = may.add(days=4)
 may_fifteenth = may.add(days=14)
-june = pendulum.date(2024, 6, 1)
+june = pendulum.date(this_year, 6, 1)
 end_of_june = june.end_of("month").start_of("day")
 june_fifth = june.add(days=4)
 june_fifteenth = june.add(days=14)

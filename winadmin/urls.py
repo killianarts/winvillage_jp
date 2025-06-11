@@ -57,6 +57,32 @@ urlpatterns = [
         name="reservation_list_by_period",
     ),
     path("reservations/create/", views.reservation_create, name="reservation_create"),
+    path("reservations/delete/", views.delete_reservation, name="delete_reservation"),
+    path(
+        "reservations/create/traveler-form",
+        views.reservation_create_traveler_form,
+        name="reservation_create_traveler_form",
+    ),
+    path(
+        "reservations/create/contact-form",
+        views.reservation_create_contact_form,
+        name="reservation_create_contact_form",
+    ),
+    path(
+        "reservations/create/date-select",
+        views.reservation_create_date_select,
+        name="reservation_create_date_select",
+    ),
+    path(
+        "reservations/create/room-select",
+        views.reservation_create_room_select,
+        name="reservation_create_room_select",
+    ),
+    path(
+        "reservations/create/confirm",
+        views.reservation_create_confirm,
+        name="reservation_create_confirm",
+    ),
     path(
         "reservations/create/contact-information-input/",
         views.contact_information_input,

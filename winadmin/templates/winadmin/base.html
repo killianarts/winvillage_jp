@@ -36,7 +36,6 @@
             {% block title %}Title{% endblock %}
         </title>
         {% tailwind_css %}
-        <link rel="stylesheet" href="url" type="text/css" media="screen" />
         <!-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
 
         <!-- _hyperscript library -->
@@ -105,7 +104,7 @@
 
     </head>
 
-    <body hx-ext="morph preload" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="font-berkeley-uc">
+    <body hx-ext="morph preload" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="font-code">
         {% block body %}
             <div id="admin-layout-wrapper"
                  class="grid relative

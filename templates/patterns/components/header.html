@@ -1,5 +1,4 @@
-<header class="w-full fixed left-1/2 -translate-x-1/2 z-40
-               "
+<header class="w-full fixed left-1/2 -translate-x-1/2 z-40"
         _="install SetActiveLink
                on load set offset to 0 measure #slider-hero if result.bottom < offset trigger scaleDownMenu end
                on scroll from window
@@ -12,16 +11,18 @@
                else if result.bottom > offset
                remove .bg-white from me
                trigger scaleUpMenu">
-    <nav id="screen-menu" class="menu hidden md:flex flex-1 justify-between items-center gap-5 max-w-7xl px-10 mx-auto text-white stroke-white origin-bottom"
+    <nav id="screen-menu" class="menu text-white hidden md:flex justify-between items-center gap-5 px-10 mx-auto stroke-white origin-bottom"
          _="on scaleDownMenu from the closest <header/>
-             remove .text-white from me add .text-orange-950 to me
-             remove .stroke-white from <line/> in me add .stroke-orange-950 to <line/> in me
+             remove .text-white from me add .text-black to me
+             remove .stroke-white from <line/> in me add .stroke-black to <line/> in me
+             remove .stroke-white from <path/> in me add .stroke-black to <path/> in me
              end
              on scaleUpMenu from the closest <header/>
-             remove .text-orange-950 from me add .text-white to me
-             remove .stroke-orange-950 from <line/> in me add .stroke-white to <line/> in me
+             remove .text-black from me add .text-white to me
+             remove .stroke-black from <line/> in me add .stroke-white to <line/> in me
+             remove .stroke-black from <path/> in me add .stroke-white to <path/> in me
              end"
-    >
+        >
         <div _="on scaleDownMenu from the closest <header/>
                 set the @src of <img/> in me to '{{ scroll_logo }}'
                 on scaleUpMenu from the closest <header/>
@@ -29,20 +30,32 @@
              class="w-24">
             <img src="{{ initial_logo }}" alt="" />
         </div>
-        <div class="flex gap-5">
+        <div class="flex gap-5 xl:gap-10">
             <c-nav-link counter="1" subtext="room" text="部屋" url="#room" />
             <c-nav-link counter="2" subtext="camping" text="キャンプ" url="#camping" />
             <c-nav-link counter="3" subtext="play&sauna" text="遊びとサウナ" url="#play&sauna" />
             <c-nav-link counter="4" subtext="access" text="アクセス" url="#access" />
+            <div class="grid place-items-center text-sm">
+                <a href="tel:0956-30-8411"><h3 class="font-antique uppercase text-sm tracking-widest w-fit mx-auto
+                                                      px-[1.5ch]"><span class="hidden xl:inline">+ Make a Reservation +</span></h3>
+                    <div class="xl:flex justify-center gap-2 font-code">
+                        <svg class="mx-auto xl:mx-0 h-6 xl:h-7" fill="none" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+                            <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
+                                  class="stroke-3"/>
+                        </svg>
+                        0956-30-8411
+                    </div>
+                </a>
+            </div>
         </div>
     </nav>
     <nav id="mobile-menu"
-         class="flex md:hidden flex-1 justify-between items-center gap-5 max-w-7xl px-2 md:px-10 mx-auto text-white stroke-white"
-        _="on scaleDownMenu from closest <header/>
+         class="flex md:hidden  justify-between items-center gap-5  px-2 md:px-10 mx-auto text-white stroke-white"
+         _="on scaleDownMenu from closest <header/>
              remove .text-white .stroke-white from me
-             add .text-orange-950 .stroke-orange-950 to me end
+             add .text-black .stroke-black to me end
              on scaleUpMenu from closest <header/>
-             remove .text-orange-950 .stroke-orange-950 from me
+             remove .text-black .stroke-black from me
              add .text-white .stroke-white to me end">
         <div _="on scaleDownMenu from the closest <header/>
                 set the @src of <img/> in me to '{{ scroll_logo }}'
@@ -51,23 +64,20 @@
              class="w-12">
             <img src="{{ initial_logo }}" alt="" />
         </div>
-        <div class="py-2 scale-90">
-            <c-nav-link subtext="reservation" text="予約を作る" url="#" />
-        </div>
         <div id="burger" class="flex md:hidden">
             <button type="button"
                     class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                     _="on mousedown remove .hidden from #mobile-popup wait a tick remove .opacity-0 from #mobile-popup">
                 <span class="sr-only">Open main menu</span>
                 <svg class="h-12 w-12 text-white"
-                    _="on scaleDownMenu from the closest <header/>
-                    remove .text-white from me add .text-black to me
-                    end
-                    on scaleUpMenu from the closest <header/>
-                    remove .text-black from me add .text-white to me
-                    end"
-                    fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                     _="on scaleDownMenu from the closest <header/>
+                            remove .text-white from me add .text-black to me
+                            end
+                            on scaleUpMenu from the closest <header/>
+                            remove .text-black from me add .text-white to me
+                            end"
+                     fill="none" viewBox="0 0 24 24"
+                     stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
