@@ -81,7 +81,7 @@
                  class="image-slider flex w-max h-[200px] sm:h-[333px] items-center gap-10">
                 {% for image in images %}
                     <div class="image-wrapper cursor-pointer"
-                         _="on click set dialog to the next <[role=dialog]/>
+                         _="on click set dialog to #modal-{{ id }}-{{ forloop.counter0 }}
                                 if dialog does not match @open add @open=true to dialog end">
                         <img src="{{ image }}" data-image-counter="{{ forloop.counter0 }}"
                              class="data-[selected=true]:w-[300px] data-[selected=false]:w-[100px] transition-all duration-500 ease-in-out
