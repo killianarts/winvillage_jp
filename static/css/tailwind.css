@@ -960,6 +960,9 @@
   .h-1 {
     height: calc(var(--spacing) * 1);
   }
+  .h-2 {
+    height: calc(var(--spacing) * 2);
+  }
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
@@ -1577,6 +1580,9 @@
   .border-\(--svg-stroke-color\) {
     border-color: var(--svg-stroke-color);
   }
+  .border-black {
+    border-color: var(--color-black);
+  }
   .border-blue-200 {
     border-color: var(--color-blue-200);
   }
@@ -1912,6 +1918,9 @@
   }
   .py-\[1ch\] {
     padding-block: 1ch;
+  }
+  .pt-1 {
+    padding-top: calc(var(--spacing) * 1);
   }
   .pt-2 {
     padding-top: calc(var(--spacing) * 2);
@@ -3000,6 +3009,13 @@
     &:hover {
       @media (hover: hover) {
         stroke: var(--svg-stroke-color-hover);
+      }
+    }
+  }
+  .hover\:text-black {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-black);
       }
     }
   }

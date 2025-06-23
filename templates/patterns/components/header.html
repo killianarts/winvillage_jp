@@ -1,3 +1,4 @@
+{% load i18n %}
 <header class="w-full fixed left-1/2 -translate-x-1/2 z-40"
         _="install SetActiveLink
                on load set offset to 0 measure #slider-hero if result.bottom < offset trigger scaleDownMenu end
@@ -22,7 +23,7 @@
              remove .stroke-black from <line/> in me add .stroke-white to <line/> in me
              remove .stroke-black from <path/> in me add .stroke-white to <path/> in me
              end"
-        >
+    >
         <div _="on scaleDownMenu from the closest <header/>
                 set the @src of <img/> in me to '{{ scroll_logo }}'
                 on scaleUpMenu from the closest <header/>
@@ -35,16 +36,11 @@
             <c-nav-link counter="2" subtext="camping" text="キャンプ" url="#camping" />
             <c-nav-link counter="3" subtext="play&sauna" text="遊びとサウナ" url="#play&sauna" />
             <c-nav-link counter="4" subtext="access" text="アクセス" url="#access" />
-            <div class="grid place-items-center text-sm">
-                <a href="tel:0956-30-8411"><h3 class="font-antique uppercase text-sm tracking-widest w-fit mx-auto
-                                                      px-[1.5ch]"><span class="hidden xl:inline">+ Make a Reservation +</span></h3>
-                    <div class="xl:flex justify-center gap-2 font-code">
-                        <svg class="mx-auto xl:mx-0 h-6 xl:h-7" fill="none" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-                            <path d="m4 6.66667c0-.70725.28095-1.38552.78105-1.88562s1.17837-.78105 1.88562-.78105h4.37333c.2797.00021.5523.0884.7791.25207.2269.16367.3965.39454.4849.65993l1.9973 5.9907c.1012.3044.0893.6352-.0337.9315-.1229.2963-.3486.5384-.6356.6818l-3.0093 1.5067c1.4751 3.2647 4.0899 5.8795 7.3546 7.3546l1.5067-3.0093c.1434-.287.3855-.5127.6818-.6356.2963-.123.6271-.1349.9315-.0337l5.9907 1.9973c.2656.0885.4966.2583.6603.4854s.2518.5.2517.7799v4.372c0 .7073-.281 1.3856-.781 1.8857-.5001.5-1.1784.781-1.8857.781h-1.3333c-11.0453 0-20-8.9547-20-20z"
-                                  class="stroke-3"/>
-                        </svg>
-                        0956-30-8411
-                    </div>
+            <div class="grid place-items-center">
+                <a href="#footer">
+                    <button class="px-3 py-1 bg-black text-white hover:bg-orange-500 font-antique uppercase text-xl w-fit mx-auto px-[1.5ch] transition-all duration-300">
+                        <span class="text-center">{% trans "予約をする" %}</span>
+                    </button>
                 </a>
             </div>
         </div>

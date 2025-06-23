@@ -65,7 +65,7 @@
     {% endblock %}
     {% block post_content %}{% endblock %}
     {% block footer %}
-      <footer class="mx-auto max-w-fit min-h-screen grid place-items-center">
+      <footer id="footer" class="mx-auto max-w-fit min-h-screen grid place-items-center">
         <div class="mx-5 md:mx-20 my-7 space-y-5 text-center">
           <div class="mx-auto w-fit"><img src="{% static 'core/img/light_logo.svg' %}" alt="logo"/></div>
           <h2 class="font-antique text-2xl lg:text-3xl xl:text-5xl uppercase">
@@ -74,7 +74,7 @@
           <p class="text-balance">
             {% translate '最高のグランピングが佐世保で待っています。' %}
           </p>
-          <div>
+          <div class="grid gap-5">
             <a href="tel:0956-30-8411"><h3 class="font-antique uppercase text-sm tracking-widest w-fit mx-auto relative before:content-['+'] before:absolute before:left-0 before:-top-[0.2ch]
                                                   after:content-['+'] after:absolute after:right-0 after:-top-[0.2ch] px-[1.5ch]">Make a Reservation</h3>
               <div class="flex justify-center gap-2 text-lg font-code">
@@ -84,6 +84,22 @@
                 </svg>
                 0956-30-8411
               </div>
+            </a>
+            <a href="https://hotel.travel.rakuten.co.jp/hotelinfo/plan/192270?f_nen1=2025&f_tuki1=06&f_hi1=25&f_nen2=2025&f_tuki2=06&f_hi2=26&f_heya_su=1&f_otona_su=2&bookingSource=c1&adType=0&scid=we_hpa_xxxx#sort_kin_min&tracking="
+               class="pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
+              {% trans "楽天トラベルで予約する" %}
+            </a>
+            <a href="https://www.booking.com/hotel/jp/win-village.html?aid=1288246&label=metagha-link-MRJP-hotel-12221601_dev-desktop_los-1_bw-2_dow-Wednesday_defdate-1_room-0_gstadt-2_rateid-public_aud-0_gacid-21404712669_mcid-50_bc-ALp8oQ_ppa-0_clrid-0_ad-1_gstkid-0_checkin-20250625_ppt-B_lp-2392_r-15227340468895421345&sid=a86a182585d777044b2c3205263c43f2&all_sr_blocks=1222160106_402896437_2_0_0&checkin=2025-06-25&checkout=2025-06-26&dest_id=12221601&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=1222160106_402896437_2_0_0&hpos=1&matching_block_id=1222160106_402896437_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1222160106_402896437_2_0_0__843750&srepoch=1750652203&srpvid=63651e09ec27068a&type=total&ucfs=1&#tab-main"
+               class="pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
+              {% trans "Booking.comで予約する" %}
+            </a>
+            <a href="https://www.jalan.net/yad321306/plan/?screenId=UWW3001&yadNo=321306&roomTypeCd=0566866&stayYearBkup=2025&stayMonthBkup=06&stayDayBkup=25&stayCountBkup=1&roomCountBkup=1&adultNumBkup=2&roomCrack=200000&roomCrackBkup=200000&stayYear=2025&stayMonth=6&stayDay=25&stayCount=1&roomCount=1&adultNum=2&smlCd=420602&distCd=01&ccnt=yads5"
+               class="pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
+              {% trans "じゃらんで予約する" %}
+            </a>
+            <a href="https://www.expedia.co.jp/en/Sasebo-Hotels-WIN-VILLAGE.h113944183.Hotel-Information?chkin=2025-06-25&chkout=2025-06-26&x_pwa=1&rfrr=HSR&pwa_ts=1750653729282&referrerUrl=aHR0cHM6Ly93d3cuZXhwZWRpYS5jby5qcC9Ib3RlbC1TZWFyY2g%3D&useRewards=false&rm1=a2&regionId=9346&destination=Sasebo%2C%20Nagasaki%20Prefecture%2C%20Japan&destType=MARKET&selected=113944183&latLong=33.2482%2C130.298&sort=RECOMMENDED&top_dp=8182&top_cur=JPY&mctc=10&userIntent=&selectedRoomType=326704146&selectedRatePlan=402355450&searchId=d78cb187-f7ed-4a7a-beb0-3bb3a59e9541"
+               class="pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
+              {% trans "Expedia.comで予約する" %}
             </a>
           </div>
         </div>
