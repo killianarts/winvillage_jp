@@ -37,7 +37,7 @@ def flush_session(request):
 
 
 def test(request):
-    return TemplateResponse(request, "core/dialog_test.html")
+    return TemplateResponse(request, "core/svg_test.html")
 
 
 def components(request):

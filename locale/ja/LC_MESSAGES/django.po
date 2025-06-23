@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-11 09:56+0900\n"
+"POT-Creation-Date: 2025-06-23 11:02+0900\n"
 "PO-Revision-Date: 2024-07-01 11:46+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -284,7 +284,9 @@ msgid "Accounts"
 msgstr "アカウント"
 
 #: core/templates/core/base.html:9
-msgid "Glamping in Imari"
+#, fuzzy
+#| msgid "Glamping in Imari"
+msgid "Glamping in Sasebo"
 msgstr "伊万里でのグランピング"
 
 #: core/templates/core/base.html:11
@@ -331,6 +333,14 @@ msgstr ""
 #: winadmin/templates/winadmin/forms/item_create/field_row.html:42
 msgid "No errors"
 msgstr "エラーなし"
+
+#: core/templates/core/index.html:446 core/templates/core/svg_test.html:285
+msgid "新館"
+msgstr ""
+
+#: core/templates/core/index.html:509 core/templates/core/svg_test.html:343
+msgid "旧館"
+msgstr ""
 
 #: core/templates/core/index_old.html:52
 msgid "静かな空間、最高の風呂、美味しいバーベキュー。"

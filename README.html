@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>README.html</title>
+<meta http-equiv="Content-Type" content="application/xhtml+xml;charset=utf-8"/>
+<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css"  />
+<link rel="stylesheet" type="text/css" media="all" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/github.min.css"  /><meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'><style> body { box-sizing: border-box; max-width: 740px; width: 100%; margin: 40px auto; padding: 0 10px; } </style><script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script><script src='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js'></script><script>document.addEventListener('DOMContentLoaded', () => { document.body.classList.add('markdown-body'); document.querySelectorAll('pre[lang] > code').forEach((code) => { code.classList.add(code.parentElement.lang); }); document.querySelectorAll('pre > code').forEach((code) => { hljs.highlightBlock(code); }); });</script>
+</head>
+
+<body>
+
+<h1 id="win_village">win_village</h1>
+<p>Win Village glamping business homepage and business
+administration</p>
+<p><a href="https://github.com/cookiecutter/cookiecutter-django/"><img
+src="https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter"
+alt="Built with Cookiecutter Django" /></a> <a
+href="https://github.com/ambv/black"><img
+src="https://img.shields.io/badge/code%20style-black-000000.svg"
+alt="Black code style" /></a></p>
+<h2 id="settings">Settings</h2>
+<p>Moved to <a
+href="http://cookiecutter-django.readthedocs.io/en/latest/settings.html">settings</a>.</p>
+<h2 id="basic-commands">Basic Commands</h2>
+<h3 id="setting-up-your-users">Setting Up Your Users</h3>
+<ul>
+<li><p>To create a <strong>normal user account</strong>, just go to Sign
+Up and fill out the form. Once you submit it, you’ll see a “Verify Your
+E-mail Address” page. Go to your console to see a simulated email
+verification message. Copy the link into your browser. Now the user’s
+email should be verified and ready to go.</p></li>
+<li><p>To create a <strong>superuser account</strong>, use this
+command:</p>
+<pre><code>$ python manage.py createsuperuser</code></pre></li>
+</ul>
+<p>For convenience, you can keep your normal user logged in on Chrome
+and your superuser logged in on Firefox (or similar), so that you can
+see how the site behaves for both kinds of users.</p>
+<h3 id="type-checks">Type checks</h3>
+<p>Running type checks with mypy:</p>
+<pre><code>$ mypy win_village</code></pre>
+<h3 id="test-coverage">Test coverage</h3>
+<p>To run the tests, check your test coverage, and generate an HTML
+coverage report:</p>
+<pre><code>$ coverage run -m pytest
+$ coverage html
+$ open htmlcov/index.html</code></pre>
+<h4 id="running-tests-with-pytest">Running tests with pytest</h4>
+<pre><code>$ pytest</code></pre>
+<h3 id="live-reloading-and-sass-css-compilation">Live reloading and Sass
+CSS compilation</h3>
+<p>Moved to <a
+href="https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#sass-compilation-live-reloading">Live
+reloading and SASS compilation</a>.</p>
+<h2 id="deployment">Deployment</h2>
+<p>The following details how to deploy this application.</p>
+<h3 id="heroku">Heroku</h3>
+<p>See detailed <a
+href="http://cookiecutter-django.readthedocs.io/en/latest/deployment-on-heroku.html">cookiecutter-django
+Heroku documentation</a>.</p>
+
+</body>
+</html>

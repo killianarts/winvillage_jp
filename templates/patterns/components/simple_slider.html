@@ -11,16 +11,8 @@
      end"
      {% endcomment %}
 >
-    <div class="mx-auto overflow-x-hidden relative flex justify-center items-center h-[333px] sm:h-[555px] xl:h-[666px]">
-        <div style="--s: 175px;
-                    mask:
-                    conic-gradient(#000 0 0) content-box,
-                    conic-gradient(at var(--s) var(--s),#0000 75%,#000 0)
-                    0 0/calc(100% - var(--s)) calc(100% - var(--s));
-                    "
-             class="xl:border border-orange-950 absolute w-[600px] sm:w-[1100px] h-[333px] sm:h-[555px] xl:h-[666px]">
+    <div class="mx-auto z-40 overflow-x-hidden relative flex justify-center items-center h-[333px] sm:h-[555px] xl:h-[666px] px-10">
 
-        </div>
         {% comment %}This is for allowing the images to overflow without clipping or scrolling, and to allow the corner borders to be visible{% endcomment %}
         <div class="relative max-w-[300px] sm:max-w-[500px] lg:max-w-[700px] h-[200px] sm:h-[333px] mx-auto">
             <button class="arrow-right absolute top-1/2 -translate-y-1/2 -right-5 z-30"
@@ -80,24 +72,16 @@
                               "
                  class="image-slider flex w-max h-[200px] sm:h-[333px] items-center gap-10">
                 {% for image in images %}
-                    <div class="image-wrapper cursor-pointer"
-                         _="on click set dialog to #modal-{{ id }}-{{ forloop.counter0 }}
-                                if dialog does not match @open add @open=true to dialog end">
+                    <div class="image-wrapper cursor-pointer">
                         <img src="{{ image }}" data-image-counter="{{ forloop.counter0 }}"
                              class="data-[selected=true]:w-[300px] data-[selected=false]:w-[100px] transition-all duration-500 ease-in-out
                                   sm:data-[selected=true]:w-[500px] sm:data-[selected=false]:w-[200px]
                                   lg:data-[selected=true]:w-[700px] lg:data-[selected=false]:w-[300px]" data-selected="false" alt="" />
                     </div>
-
                 {% endfor %}
             </div>
         </div>
+
     </div>
     {{ slot }}
 </div>
-
-{% for image in images %}
-    <c-dialog id="modal-{{ id }}-{{ forloop.counter0 }}">
-        <img src={{ image  }} />
-    </c-dialog>
-{% endfor %}
