@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-23 11:02+0900\n"
+"POT-Creation-Date: 2025-07-01 10:55+0900\n"
 "PO-Revision-Date: 2024-07-01 11:46+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -304,6 +304,22 @@ msgstr "Relaxation Awaits"
 msgid "最高のグランピングが佐世保で待っています。"
 msgstr ""
 
+#: core/templates/core/base.html:90
+msgid "楽天トラベルで予約する"
+msgstr ""
+
+#: core/templates/core/base.html:94
+msgid "Booking.comで予約する"
+msgstr ""
+
+#: core/templates/core/base.html:98
+msgid "じゃらんで予約する"
+msgstr ""
+
+#: core/templates/core/base.html:102
+msgid "Expedia.comで予約する"
+msgstr ""
+
 #: core/templates/core/forms/default/field_row.html:31
 #: core/templates/core/forms/formsets/formset_field_row.html:44
 #: core/templates/core/forms/reservations/field_row.html:49
@@ -334,11 +350,11 @@ msgstr ""
 msgid "No errors"
 msgstr "エラーなし"
 
-#: core/templates/core/index.html:446 core/templates/core/svg_test.html:285
+#: core/templates/core/index.html:469 core/templates/core/svg_test.html:285
 msgid "新館"
 msgstr ""
 
-#: core/templates/core/index.html:509 core/templates/core/svg_test.html:343
+#: core/templates/core/index.html:541 core/templates/core/svg_test.html:343
 msgid "旧館"
 msgstr ""
 
@@ -1792,6 +1808,10 @@ msgstr "請求書の日付"
 #: templates/procurement/accounts_payable_ledger.html:12
 msgid "Due Date"
 msgstr "支払日"
+
+#: templates/patterns/components/header.html:42
+msgid "予約をする"
+msgstr ""
 
 #: templates/patterns/components/time_select_button.html:10
 msgid "Unavailable"
