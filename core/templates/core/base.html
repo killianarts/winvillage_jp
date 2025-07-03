@@ -1,4 +1,6 @@
 {% load static tailwind_cli i18n django_htmx %}
+{% get_available_languages as AVAILABLE_LANGUAGES %}
+{% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" class="scroll-smooth">
@@ -6,9 +8,9 @@
     {% include 'core/meta.html' %}
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
     <title>
-      {% block title %}{% blocktrans %}Glamping in Sasebo{% endblocktrans %}{% endblock %}
+      {% block title %}{% blocktrans %}佐世保でのグランピング{% endblocktrans %}{% endblock %}
       {% block title_divider %} - {% endblock %}
-      {% block subtitle %}{% trans "Winvillage" %}{% endblock %}
+      {% block subtitle %}Winvillage{% endblock %}
     </title>
     {% tailwind_css %}
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'core/img/favicon/apple-touch-icon.png' %}">
@@ -53,7 +55,24 @@
     {% block header %}
       <c-header initial-logo="{% static 'core/img/dark_logo.svg' %}" scroll-logo="{% static 'core/img/light_logo.svg' %}"/>
     {% endblock %}
-    {% block pre_content %}{% endblock %}
+    {% block pre_content %}
+      {% get_current_language as CURRENT_LANGUAGE_CODE %}
+      {% get_available_languages as AVAILABLE_LANGUAGES %}
+      {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+      {% for lang in languages %}
+        {% if lang.code != CURRENT_LANGUAGE_CODE %}
+          <form id="language-switcher"
+                action="{% url 'core:set_language' %}"
+                method="post"
+                hx-boost="true"
+                hx-swap="morph:innerHTML transition:true show:none"
+                hx-ext="morph">
+            <input name="language" type="hidden" value="{{ lang.code }}">
+            <c-button class="fixed z-40 bottom-10 right-10 transition ease-in-out duration-300">{{ lang.name_local }}</c-button>
+          </form>
+        {% endif %}
+      {% endfor %}
+    {% endblock %}
     {% block content %}
 
       {% block content_top %}
@@ -69,7 +88,7 @@
         <div class="mx-5 md:mx-20 my-7 space-y-5 text-center">
           <div class="mx-auto w-fit"><img src="{% static 'core/img/light_logo.svg' %}" alt="logo"/></div>
           <h2 class="font-antique text-2xl lg:text-3xl xl:text-5xl uppercase">
-            {% translate 'Relaxation Awaits' %}
+            {% translate '楽な時間はこちらで' %}
           </h2>
           <p class="text-balance">
             {% translate '最高のグランピングが佐世保で待っています。' %}
@@ -84,6 +103,10 @@
                 </svg>
                 0956-30-8411
               </div>
+            </a>
+            <a href="https://win-village.rwiths.net/r-withs/tfi0010a.do"
+               class="pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
+              {% trans "直接に予約する" %}
             </a>
             <a href="https://hotel.travel.rakuten.co.jp/hotelinfo/plan/192270?f_nen1=2025&f_tuki1=06&f_hi1=25&f_nen2=2025&f_tuki2=06&f_hi2=26&f_heya_su=1&f_otona_su=2&bookingSource=c1&adType=0&scid=we_hpa_xxxx#sort_kin_min&tracking="
                class="pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">

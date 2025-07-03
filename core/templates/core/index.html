@@ -1,6 +1,7 @@
 {% extends "core/base.html" %}
 {% load static i18n %}
 {% block extra_styles %}
+    <!-- This is for the photo sliders -->
     <style type="text/css" media="screen">
      .corner-only {
          --s: 50px; /* size of the corners */
@@ -8,7 +9,6 @@
          background: # content-box;
      }
     </style>
-
 {% endblock %}
 {% block extra_scripts %}
     <script type="text/hyperscript">
@@ -60,34 +60,6 @@
     </script>
 
 {% endblock %}
-{% block extra_scripts_bottom %}
-    <script src="https://unpkg.com/@rive-app/canvas@2.21.3"></script>
-    <script>
-     const r = new rive.Rive({
-         src: "{% static 'core/img/reservation-button.riv' %}",
-         // OR the path to a discoverable and public Rive asset
-         canvas: document.getElementById("reservation-button-light"),
-         autoplay: true,
-         artboard: "make-a-reservation", // Optional. If not supplied the default is selected
-         stateMachines: "reservation-button",
-         // onLoad: () => {
-         //     r.resizeDrawingSurfaceToCanvas();
-         // },
-     });
-
-     const darkLargeR = new rive.Rive({
-         src: "{% static 'core/img/reservation-button.riv' %}",
-         // OR the path to a discoverable and public Rive asset
-         canvas: document.getElementById("reservation-button-dark-large"),
-         autoplay: true,
-         artboard: "make-a-reservation-dark", // Optional. If not supplied the default is selected
-         stateMachines: "reservation-button-dark",
-         onLoad: () => {
-             r.resizeDrawingSurfaceToCanvas();
-         },
-     });
-    </script>
-{% endblock %}
 {% block content_main %}
     <main _="install SetCount">
         <c-hero class="relative"
@@ -97,7 +69,7 @@
                 <div class="flex justify-center">
                     <img class="w-24 h-24 sm:w-[200px] sm:h-[200px]" src="{% static 'core/img/dark_logo.svg' %}" alt="" />
                 </div>
-                <p class="text-sm mb-2 sm:mb-12 xl:mb-32">佐世保でのグランピング</p>
+                <p class="text-sm mb-2 sm:mb-12 xl:mb-32">{% trans "佐世保でのグランピング" %}</p>
             </div>
         </c-hero>
         <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="0" id="introduction"
@@ -115,7 +87,7 @@
                     <h2 class="px-[50px] text-3xl lg:text-7xl uppercase font-antique text-center">your weekend getaway</h2>
                 </div>
                 <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
-                <p class="font-serif font-bold text-md md:text-xl">家族のみんなで楽なキャンプをして心と体を充電しよう。</p>
+                <p class="font-serif text-md md:text-xl">{% trans "家族のみんなで楽なキャンプをして心と体を充電しよう。" %}</p>
             </div>
             <div class="grid gap-10 sm:grid-cols-3 mb-10">
                 <a href="#room" class="flex justify-center group hover:scale-110 transition-all duration-300 hover:text-orange-700">
@@ -124,9 +96,9 @@
                             <img src="{% static 'core/img/fried-food.svg' %}" alt="" />
                         </div>
                         <p class="text-xs lg:text-sm">贅沢の部屋</p>
-                        <h3 class="uppercase font-antique md:text-xl lg:text-2xl">rooms</h3>
+                        <h3 class="uppercase font-bold font-antique md:text-xl lg:text-2xl">rooms</h3>
                         <c-divider color="bg-black" size="w-full h-[1px]" />
-                        <p class="text-center text-pretty max-w-[20ch] sm:max-w-full">このキッチンはなんでもある！</p>
+                        <p class="text-center text-pretty font-serif max-w-[20ch] sm:max-w-full">{% trans "このキッチンはなんでもある！" %}</p>
                         <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
                 </a>
@@ -136,9 +108,9 @@
                             <img src="{% static 'core/img/grill.svg' %}" alt="" />
                         </div>
                         <p class="text-xs lg:text-sm">楽々のキャンプ</p>
-                        <h3 class="uppercase font-antique md:text-xl lg:text-2xl">camping</h3>
+                        <h3 class="uppercase font-bold font-antique md:text-xl lg:text-2xl">camping</h3>
                         <c-divider color="bg-black" size="w-full h-[1px]" />
-                        <p class="text-center text-pretty max-w-[20ch] sm:max-w-full">自分のキャンプ用グッズを持ってきても、こっちでレンタルしてもいい</p>
+                        <p class="text-center text-pretty font-serif max-w-[20ch] sm:max-w-full">{% trans "自分のキャンプ用グッズを持ってきても、こっちでレンタルしてもいい" %}</p>
                         <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
                 </a>
@@ -148,9 +120,9 @@
                             <img src="{% static 'core/img/wagon.svg' %}" alt="" />
                         </div>
                         <p class="text-xs lg:text-sm">色々な遊び</p>
-                        <h3 class="uppercase font-antique md:text-xl lg:text-2xl">fun</h3>
+                        <h3 class="uppercase font-bold font-antique md:text-xl lg:text-2xl">fun</h3>
                         <c-divider color="bg-black" size="w-full h-[1px]" />
-                        <p class="text-center text-pretty max-w-[20ch] sm:max-w-full">「最高だったよ、パパ！また行きたい！」</p>
+                        <p class="text-center text-pretty font-serif max-w-[20ch] sm:max-w-full">{% trans "「最高だったよ、パパ！また行きたい！」" %}</p>
                         <img class="group-hover:drop-shadow-md group-hover:rotate-6 transition-all duration-300" src="{% static 'core/img/arrow.svg' %}" alt="" />
                     </div>
                 </a>
@@ -784,7 +756,7 @@
                     <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">our rooms</h2>
                 </div>
                 <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
-                <p class="font-serif font-bold text-md md:text-xl">あなたの家族の別荘が待っている。</p>
+                <p class="font-serif text-md md:text-xl">{% trans "あなたの家族の別荘が待っている。" %}</p>
             </div>
             <div class="my-5 sm:my-10">
                 {% static 'core/img/inside1@0.25x.jpg' as image1 %}
@@ -795,44 +767,44 @@
                 {% static 'core/img/front3@0.25x.jpg' as image6 %}
 
                 <c-slider id="room-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}']">
-                    <div class="-translate-y-5 font-serif font-bold mx-auto grid grid-cols-3 md:grid-cols-5 gap-5 max-w-2xl px-2 sm:px-10">
+                    <div class="-translate-y-5 font-serif mx-auto grid grid-cols-3 md:grid-cols-5 gap-5 max-w-2xl px-2 sm:px-10">
                         <div class="col-span-3 md:col-span-2">
-                            <p>キチンでグリルの準備や少し料理できる温泉水で一日の疲れを取る。ゆっくりしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれて、最高の朝を向かう。</p>
+                            <p>{% trans "キチンでグリルの準備や少し料理できる。お風呂の温泉水で一日の疲れを取る。ゆっくりしながらパソコンや携帯でインターネットに繋げる。キッチンでコーヒーや紅茶をいれ、最高の朝を向かう。" %}</p>
                         </div>
                         <ul class="md:col-span-1">
-                            <h4 class="font-antique uppercase">kitchen</h4>
-                            <li>冷蔵庫</li>
-                            <li>シンク</li>
-                            <li>IHコンロ</li>
-                            <li>電子レンジ</li>
-                            <li>トースター</li>
-                            <li>ケトル</li>
-                            <li>食器</li>
-                            <li>調理器具</li>
-                            <li>・・・などなど</li>
+                            <h4 class="font-antique font-bold uppercase">kitchen</h4>
+                            <li>{% trans "冷蔵庫" %}</li>
+                            <li>{% trans "シンク" %}</li>
+                            <li>{% trans "IHコンロ" %}</li>
+                            <li>{% trans "電子レンジ" %}</li>
+                            <li>{% trans "トースター" %}</li>
+                            <li>{% trans "ケトル" %}</li>
+                            <li>{% trans "食器" %}</li>
+                            <li>{% trans "調理器具" %}</li>
+                            <li>{% trans "・・・などなど" %}</li>
                         </ul>
                         <ul class="md:col-span-1">
-                            <h4 class="font-antique uppercase">bath</h4>
-                            <li>温泉水</li>
-                            <li>バスタオル</li>
-                            <li>フェイスタオル</li>
-                            <li>シャンプー</li>
-                            <li>コンディショナー</li>
-                            <li>ボディソープ</li>
-                            <li>ボディタオル</li>
-                            <li>コットン・綿棒</li>
-                            <li>・・・などなど</li>
+                            <h4 class="font-antique font-bold uppercase">bath</h4>
+                            <li>{% trans "温泉水" %}</li>
+                            <li>{% trans "バスタオル" %}</li>
+                            <li>{% trans "フェイスタオル" %}</li>
+                            <li>{% trans "シャンプー" %}</li>
+                            <li>{% trans "コンディショナー" %}</li>
+                            <li>{% trans "ボディソープ" %}</li>
+                            <li>{% trans "ボディタオル" %}</li>
+                            <li>{% trans "コットン・綿棒" %}</li>
+                            <li>{% trans "・・・などなど" %}</li>
 
                         </ul>
                         <ul class="md:col-span-1">
-                            <h4 class="font-antique uppercase">other</h4>
-                            <li>トイレ</li>
-                            <li>冷暖房</li>
-                            <li>５０型テレビ</li>
-                            <li>VOD</li>
-                            <li>WIFI</li>
-                            <li>軽食の注文</li>
-                            <li>朝食</li>
+                            <h4 class="font-antique font-bold uppercase">other</h4>
+                            <li>{% trans "トイレ" %}</li>
+                            <li>{% trans "冷暖房" %}</li>
+                            <li>{% trans "５０型テレビ" %}</li>
+                            <li>{% trans "VOD" %}</li>
+                            <li>{% trans "WIFI" %}</li>
+                            <li>{% trans "軽食の注文" %}</li>
+                            <li>{% trans "朝食" %}</li>
                         </ul>
                     </div>
                 </c-slider>
@@ -850,7 +822,7 @@
                     <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">easy, relaxing camping!</h2>
                 </div>
                 <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
-                <p class="font-serif font-bold text-md md:text-xl">自分のキャンプ用品がなくても、食べ物を持ってこなくてもいい。全部こちらで用意している。</p>
+                <p class="font-serif text-md md:text-xl">{% trans "自分のキャンプ用品がなくても、食べ物を持ってこなくてもいい。全部こちらで用意している。" %}</p>
             </div>
             <div class="my-5 sm:my-10">
                 {% static 'core/img/campfire.jpg' as image1 %}
@@ -861,30 +833,30 @@
                 {% static 'core/img/people@0.25x.jpg' as image6 %}
                 {% static 'core/img/bathroom_storage@0.25x.jpg' as image7 %}
                 <c-slider id="camp-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{image7}}']">
-                    <div class="-translate-y-5 font-serif font-bold mx-auto grid grid-cols-3 md:grid-cols-5  gap-5 max-w-2xl px-2 sm:px-10">
+                    <div class="-translate-y-5 font-serif mx-auto grid grid-cols-3 md:grid-cols-5  gap-5 max-w-2xl px-2 sm:px-10">
                         <div class="col-span-3 md:col-span-2">
-                            <p>温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。</p>
+                            <p>{% trans "温泉水と蒸気の温かさは体と心の奥まで染み込む閉鎖空間。よく頑張ったあなたと、これからも頑張るあなたにピッタリ。鍵がかかっている、安全にリラックできる場所。個人でも、家族みんなと一緒にでも入れます。" %}</p>
                         </div>
                         <ul class="md:col-span-1">
-                            <h4 class="font-antique uppercase">rental</h4>
-                            <li>グリル</li>
-                            <li>テント</li>
-                            <li>椅子</li>
-                            <li>テーブル</li>
+                            <h4 class="font-antique font-bold uppercase">rental</h4>
+                            <li>{% trans "グリル" %}</li>
+                            <li>{% trans "テント" %}</li>
+                            <li>{% trans "椅子" %}</li>
+                            <li>{% trans "テーブル" %}</li>
                         </ul>
                         <ul class="md:col-span-1">
-                            <h4 class="font-antique uppercase">camping</h4>
-                            <li>ライター</li>
-                            <li>炭</li>
-                            <li>ガス</li>
+                            <h4 class="font-antique font-bold uppercase">camping</h4>
+                            <li>{% trans "ライター" %}</li>
+                            <li>{% trans "炭" %}</li>
+                            <li>{% trans "ガス" %}</li>
                         </ul>
                         <ul class="md:col-span-1">
-                            <h4 class="font-antique uppercase">food</h4>
-                            <li>肉</li>
-                            <li>魚</li>
-                            <li>野菜</li>
-                            <li>飲み物</li>
-                            <li>ラーメンや軽食</li>
+                            <h4 class="font-antique font-bold uppercase">food</h4>
+                            <li>{% trans "肉" %}</li>
+                            <li>{% trans "魚" %}</li>
+                            <li>{% trans "野菜" %}</li>
+                            <li>{% trans "飲み物" %}</li>
+                            <li>{% trans "ラーメンや軽食" %}</li>
                         </ul>
                     </div>
                 </c-slider>
@@ -902,14 +874,14 @@
                     <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">fun for<br>all ages!</h2>
                 </div>
                 <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
-                <p class="font-serif font-bold text-md md:text-xl">ちび子からばあちゃんじいちゃんまでのんびりに楽しめる。</p>
+                <p class="font-serif text-md md:text-xl">{% trans "ちび子からばあちゃんじいちゃんまでのんびりに楽しめる。" %}</p>
             </div>
             <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-black before:-inset-[4px] p-5 overflow-hidden">
                 <h2 class="uppercase text-3xl text-center">toys</h2>
             </div>
 
             <div class="my-10 mx-auto flex justify-center">
-                <p class="text-balance max-w-xs">シャボン玉、ポップアップテント、色々なリモコン・カーやレゴをレンタルできます。</p>
+                <p class="text-balance">{% trans "シャボン玉、ポップアップテント、色々なリモコン・カーやレゴをレンタルできます。" %}</p>
             </div>
             <div class="flex gap-5">
                 <div class="">
@@ -967,7 +939,7 @@
                 <div class="text-center col-span-1 row-span-1 flex justify-center flex-col">
                     <h4 class="font-antique font-bold tracking-[0.2rem] uppercase">address</h4>
                     <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]" margin="my-1"/>
-                    <p>859-3166<br>長崎佐世保木原町82番地 </p>
+                    <p>859-3166<br>{% trans "長崎佐世保木原町82番地" %} </p>
                 </div>
                 <div class="col-span-2 row-span-2 min-h-[400px]">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6679.176341284686!2d129.84207630882733!3d33.172437075996086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356a9b308ae1c447%3A0x6dcfddfc856475e1!2sWin%20village!5e0!3m2!1sen!2sjp!4v1727320724205!5m2!1sen!2sjp"
