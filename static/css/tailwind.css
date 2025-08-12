@@ -1821,6 +1821,9 @@
   .object-cover {
     object-fit: cover;
   }
+  .p-0 {
+    padding: calc(var(--spacing) * 0);
+  }
   .p-1 {
     padding: calc(var(--spacing) * 1);
   }
@@ -2451,6 +2454,9 @@
   .\[a-zA-Z\:\\-\\\.\] {
     a-zA-Z: \-\.;
   }
+  .\[b\:�\3 o\1f �\14 Q��J�؎�B����ǡR�\1f ��\~i�t�B��l���\] {
+    b: �o�Q��J�؎�B����ǡR���~i�t�B��l���;
+  }
   .\[grid-area\:content\] {
     grid-area: content;
   }
@@ -2495,6 +2501,9 @@
   }
   .\[n\:����Jų�H��\1d �T�\19 a�M�\@��K���\\�y��Q\15 ��\17 ��\5 �kG\] {
     n: � ��Jų�H���T�a�M�@��K���\�y��Q�����kG;
+  }
+  .\[o\:�t�g���λ�\/77\14 �\;��wpvw�\7 ���ltm�y��8��r�f��w�r����r����\] {
+    o: �t�g���λ�/77�;��wpvw����ltm�y��8��r�f��w�r����r����;
   }
   .group-hover\:rotate-6 {
     &:is(:where(.group):hover *) {
