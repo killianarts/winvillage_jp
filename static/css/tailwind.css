@@ -765,6 +765,9 @@
   .-m-2\.5 {
     margin: calc(var(--spacing) * -2.5);
   }
+  .m-0 {
+    margin: calc(var(--spacing) * 0);
+  }
   .m-1 {
     margin: calc(var(--spacing) * 1);
   }
@@ -960,6 +963,9 @@
   }
   .h-8 {
     height: calc(var(--spacing) * 8);
+  }
+  .h-9 {
+    height: calc(var(--spacing) * 9);
   }
   .h-12 {
     height: calc(var(--spacing) * 12);
