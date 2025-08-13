@@ -113,7 +113,7 @@
               {% trans "楽天トラベルで予約する" %}
             </a>
             <a href="https://www.booking.com/hotel/jp/win-village.html?aid=1288246&label=metagha-link-MRJP-hotel-12221601_dev-desktop_los-1_bw-2_dow-Wednesday_defdate-1_room-0_gstadt-2_rateid-public_aud-0_gacid-21404712669_mcid-50_bc-ALp8oQ_ppa-0_clrid-0_ad-1_gstkid-0_checkin-20250625_ppt-B_lp-2392_r-15227340468895421345&sid=a86a182585d777044b2c3205263c43f2&all_sr_blocks=1222160106_402896437_2_0_0&checkin=2025-06-25&checkout=2025-06-26&dest_id=12221601&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=1222160106_402896437_2_0_0&hpos=1&matching_block_id=1222160106_402896437_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1222160106_402896437_2_0_0__843750&srepoch=1750652203&srpvid=63651e09ec27068a&type=total&ucfs=1&#tab-main"
-               class="hidden pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
+               class="{% if LANGUAGE_CODE != "en" %}hidden{% endif %} pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
               {% trans "Booking.comで予約する" %}
             </a>
             <a href="https://www.jalan.net/yad321306/plan/?screenId=UWW3001&yadNo=321306&roomTypeCd=0566866&stayYearBkup=2025&stayMonthBkup=06&stayDayBkup=25&stayCountBkup=1&roomCountBkup=1&adultNumBkup=2&roomCrack=200000&roomCrackBkup=200000&stayYear=2025&stayMonth=6&stayDay=25&stayCount=1&roomCount=1&adultNum=2&smlCd=420602&distCd=01&ccnt=yads5"
@@ -121,7 +121,7 @@
               {% trans "じゃらんで予約する" %}
             </a>
             <a href="https://www.expedia.co.jp/en/Sasebo-Hotels-WIN-VILLAGE.h113944183.Hotel-Information?chkin=2025-06-25&chkout=2025-06-26&x_pwa=1&rfrr=HSR&pwa_ts=1750653729282&referrerUrl=aHR0cHM6Ly93d3cuZXhwZWRpYS5jby5qcC9Ib3RlbC1TZWFyY2g%3D&useRewards=false&rm1=a2&regionId=9346&destination=Sasebo%2C%20Nagasaki%20Prefecture%2C%20Japan&destType=MARKET&selected=113944183&latLong=33.2482%2C130.298&sort=RECOMMENDED&top_dp=8182&top_cur=JPY&mctc=10&userIntent=&selectedRoomType=326704146&selectedRatePlan=402355450&searchId=d78cb187-f7ed-4a7a-beb0-3bb3a59e9541"
-               class="hidden pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
+               class="{% if LANGUAGE_CODE != "en" %}hidden{% endif %} pointer-cursor px-3 py-1 border-2 border-black hover:border-orange-500 hover:text-orange-500 transition-all duration-300">
               {% trans "Expedia.comで予約する" %}
             </a>
           </div>

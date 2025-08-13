@@ -127,7 +127,7 @@
                     </div>
                 </a>
             </div>
-            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto mt-10">
+            <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto mt-30">
                 <div class="relative text-center w-full">
                     <p class="text-xs lg:text-lg tracking-[0.5ch]">地図</p>
                     <h2 class="px-[50px] text-3xl lg:text-7xl uppercase font-antique text-center mb-5">map</h2>
@@ -753,67 +753,114 @@
         <section class="my-10 sm:my-48 mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="1" id="room">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto
                         px-2 sm:px-10 lg:px-20">
-                <div class="relative text-center w-full">
+                <div class="relative flex flex-wrap flex-col text-center w-full">
+                    <h2 class="order-2 text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">our rooms</h2>
+                    <p class="order-1 tracking-[0.5ch]">家族みんなで快適に過ごせるお部屋</p>
                     <img class="absolute top-1/2 -translate-y-1/2 left-0 w-[50px] sm:w-[100px] lg:w-[150px] -z-10" src="{% static 'core/img/wow.svg' %}" alt="" loading="lazy" />
                     <img class="absolute top-0 sm:-top-1/2 right-0 w-[50px] sm:w-[100px] lg:w-max -z-10" src="{% static 'core/img/paella.svg' %}" alt="" loading="lazy" />
-                    <p class="tracking-[0.5ch]">家族みんなで快適に過ごせるお部屋</p>
-                    <h2 class="text-xl md:text-3xl lg:text-7xl uppercase font-antique text-center">our rooms</h2>
                 </div>
                 <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
                 <p class="font-serif text-md md:text-xl">{% trans "まるで家族の別荘のようにくつろげる空間。" %}</p>
             </div>
             <div class="my-5 sm:my-10">
-                {% static 'core/img/inside1@0.25x.jpg' as image1 %}
-                {% static 'core/img/inside2@0.25x.jpg' as image2 %}
-                {% static 'core/img/inside3@0.25x.jpg' as image3 %}
-                {% static 'core/img/front1@0.25x.jpg' as image4 %}
-                {% static 'core/img/front2@0.25x.jpg' as image5 %}
-                {% static 'core/img/front3@0.25x.jpg' as image6 %}
+                <h3 class="text-center font-antique text-md md:text-2xl lg:text-3xl translate-y-10 lg:translate-y-5">{% trans 'コンドミニアム' %}</h3>
+                {% static 'core/img/rooms/00/one.JPG' as image1 %}
+                {% static 'core/img/rooms/00/two.JPG' as image2 %}
+                {% static 'core/img/rooms/00/three.JPG' as image3 %}
+                {% static 'core/img/rooms/02/three.JPG' as image4 %}
+                {% static 'core/img/rooms/02/four.JPG' as image5 %}
+                {% static 'core/img/rooms/amenities/condominium-amenities.JPG' as image6 %}
+                {% static 'core/img/rooms/02/five.JPG' as image7 %}
 
-                <c-slider id="room-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}']">
-                    <div class="-translate-y-5 font-serif mx-auto grid grid-cols-3 md:grid-cols-5 gap-5 max-w-2xl px-2 sm:px-10">
-                        <div class="col-span-3 md:col-span-2">
-                            <p>{% trans "キッチンでは、グリルの準備や簡単な料理をお楽しみいただけます。温泉水のお風呂で、一日の疲れをゆっくりと癒してください。お部屋では、Wi-Fiに接続してインターネットをご利用いただけます。朝は、キッチンで淹れた温かいコーヒーや紅茶を飲みながら、最高のひとときをお迎えください。" %}</p>
-                        </div>
-                        <ul class="md:col-span-1">
-                            <h4 class="font-antique font-bold uppercase">kitchen</h4>
-                            <li>{% trans "冷蔵庫" %}</li>
-                            <li>{% trans "シンク" %}</li>
-                            <li>{% trans "IHコンロ" %}</li>
-                            <li>{% trans "電子レンジ" %}</li>
-                            <li>{% trans "トースター" %}</li>
-                            <li>{% trans "ケトル" %}</li>
-                            <li>{% trans "食器" %}</li>
-                            <li>{% trans "調理器具" %}</li>
-                            <li>{% trans "・・・などなど" %}</li>
-                        </ul>
-                        <ul class="md:col-span-1">
-                            <h4 class="font-antique font-bold uppercase">bath</h4>
-                            <li>{% trans "温泉水" %}</li>
-                            <li>{% trans "バスタオル" %}</li>
-                            <li>{% trans "フェイスタオル" %}</li>
-                            <li>{% trans "シャンプー" %}</li>
-                            <li>{% trans "コンディショナー" %}</li>
-                            <li>{% trans "ボディソープ" %}</li>
-                            <li>{% trans "ボディタオル" %}</li>
-                            <li>{% trans "コットン・綿棒" %}</li>
-                            <li>{% trans "・・・などなど" %}</li>
-
-                        </ul>
-                        <ul class="md:col-span-1">
-                            <h4 class="font-antique font-bold uppercase">other</h4>
-                            <li>{% trans "トイレ" %}</li>
-                            <li>{% trans "冷暖房" %}</li>
-                            <li>{% trans "５０型テレビ" %}</li>
-                            <li>{% trans "VOD" %}</li>
-                            <li>{% trans "WIFI" %}</li>
-                            <li>{% trans "軽食の注文" %}</li>
-                            <li>{% trans "朝食" %}</li>
-                        </ul>
-                    </div>
+                <c-slider id="room-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{ image7 }}']">
                 </c-slider>
+                <div class="-translate-y-10 lg:-translate-y-5 font-serif mx-auto grid grid-cols-3 md:grid-cols-5 gap-5 max-w-2xl px-2 sm:px-10">
+                    <div class="col-span-3 md:col-span-2">
+                        <p>{% trans "キッチンでは、グリルの準備や簡単な料理をお楽しみいただけます。温泉水のお風呂で、一日の疲れをゆっくりと癒してください。お部屋では、Wi-Fiに接続してインターネットをご利用いただけます。朝は、キッチンで淹れた温かいコーヒーや紅茶を飲みながら、最高のひとときをお迎えください。" %}</p>
+                    </div>
+                    <ul class="md:col-span-1">
+                        <h4 class="font-antique font-bold uppercase">kitchen</h4>
+                        <li>{% trans "冷蔵庫" %}</li>
+                        <li>{% trans "シンク" %}</li>
+                        <li>{% trans "IHコンロ" %}</li>
+                        <li>{% trans "電子レンジ" %}</li>
+                        <li>{% trans "トースター" %}</li>
+                        <li>{% trans "ケトル" %}</li>
+                        <li>{% trans "食器" %}</li>
+                        <li>{% trans "調理器具" %}</li>
+                        <li>{% trans "・・・などなど" %}</li>
+                    </ul>
+                    <ul class="md:col-span-1">
+                        <h4 class="font-antique font-bold uppercase">bath</h4>
+                        <li>{% trans "温泉水" %}</li>
+                        <li>{% trans "バスタオル" %}</li>
+                        <li>{% trans "フェイスタオル" %}</li>
+                        <li>{% trans "シャンプー" %}</li>
+                        <li>{% trans "コンディショナー" %}</li>
+                        <li>{% trans "ボディソープ" %}</li>
+                        <li>{% trans "ボディタオル" %}</li>
+                        <li>{% trans "コットン・綿棒" %}</li>
+                        <li>{% trans "・・・などなど" %}</li>
+
+                    </ul>
+                    <ul class="md:col-span-1">
+                        <h4 class="font-antique font-bold uppercase">other</h4>
+                        <li>{% trans "トイレ" %}</li>
+                        <li>{% trans "冷暖房" %}</li>
+                        <li>{% trans "５０型テレビ" %}</li>
+                        <li>{% trans "VOD" %}</li>
+                        <li>{% trans "WIFI" %}</li>
+                        <li>{% trans "軽食の注文" %}</li>
+                        <li>{% trans "朝食" %}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="my-5 sm:my-10">
+                <h3 class="text-center font-antique text-md md:text-2xl lg:text-3xl translate-y-10 lg:translate-y-5">{% trans '旧館' %}</h3>
+                {% static 'core/img/rooms/07/three.JPG' as image1 %}
+                {% static 'core/img/rooms/08/four.JPG' as image2 %}
+                {% static 'core/img/rooms/05/four.JPG' as image3 %}
+                {% static 'core/img/rooms/10/four.JPG' as image4 %}
+                {% static 'core/img/rooms/12/four.JPG' as image5 %}
+                {% static 'core/img/rooms/amenities/shacks-amenities.JPG' as image6 %}
+                {% static 'core/img/rooms/13/six.JPG' as image7 %}
+
+                <c-slider id="room-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{ image7 }}']">
+                </c-slider>
+                <div class="hidden -translate-y-10 lg:-translate-y-5 font-serif mx-auto grid grid-cols-3 md:grid-cols-5 gap-5 max-w-2xl px-2 sm:px-10">
+                    <div class="col-span-3 md:col-span-2">
+                        <p>{% trans "キッチンでは、グリルの準備や簡単な料理をお楽しみいただけます。温泉水のお風呂で、一日の疲れをゆっくりと癒してください。お部屋では、Wi-Fiに接続してインターネットをご利用いただけます。朝は、キッチンで淹れた温かいコーヒーや紅茶を飲みながら、最高のひとときをお迎えください。" %}</p>
+                    </div>
+
+                    <ul class="md:col-span-1">
+                        <h4 class="font-antique font-bold uppercase">room</h4>
+                        <li>{% trans "トイレ" %}</li>
+                        <li>{% trans "冷暖房" %}</li>
+                        <li>{% trans "５０型テレビ" %}</li>
+                        <li>{% trans "VOD" %}</li>
+                        <li>{% trans "WIFI" %}</li>
+                        <li>{% trans "軽食の注文" %}</li>
+                        <li>{% trans "朝食" %}</li>
+                    </ul>
+                    <ul class="md:col-span-2">
+                        <h4 class="font-antique font-bold uppercase">bath</h4>
+                        <li>{% trans "温泉水" %}</li>
+                        <li>{% trans "バスタオル" %}</li>
+                        <li>{% trans "フェイスタオル" %}</li>
+                        <li>{% trans "シャンプー" %}</li>
+                        <li>{% trans "コンディショナー" %}</li>
+                        <li>{% trans "ボディソープ" %}</li>
+                        <li>{% trans "ボディタオル" %}</li>
+                        <li>{% trans "コットン・綿棒" %}</li>
+                        <li>{% trans "・・・などなど" %}</li>
+                    </ul>
+                </div>
             </div>
         </section>
+
+
+
         <section class="my-10 sm:my-48 mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="2" id="camping">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
@@ -831,9 +878,9 @@
             <div class="my-5 sm:my-10">
                 {% static 'core/img/campfire.jpg' as image1 %}
                 {% static 'core/img/grill@0.25x.jpg' as image2 %}
-                {% static 'core/img/outdoors_night@0.25x.jpg' as image3 %}
-                {% static 'core/img/outside1@0.25x.jpg' as image4 %}
-                {% static 'core/img/outside2@0.25x.jpg' as image5 %}
+                {% static 'core/img/rooms/bbq/zero.JPG' as image3 %}
+                {% static 'core/img/rooms/bbq/one.JPG' as image4 %}
+                {% static 'core/img/rooms/bbq/two.JPG' as image5 %}
                 {% static 'core/img/people@0.25x.jpg' as image6 %}
                 {% static 'core/img/bathroom_storage@0.25x.jpg' as image7 %}
                 <c-slider id="camp-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{image7}}']">
@@ -880,6 +927,20 @@
                 <c-divider color="bg-black" size="w-1/3 md:w-1/2 h-[1px]"/>
                 <p class="font-serif text-md md:text-xl">{% trans "小さなお子様からおじいちゃん、おばあちゃんまで、どなたでもゆっくりと楽しめます。" %}</p>
             </div>
+
+            <div class="my-5 sm:my-10">
+                {% static 'core/img/rooms/front/one.JPG' as image1 %}
+                {% static 'core/img/rooms/front/two.JPG' as image2 %}
+                {% static 'core/img/rooms/front/three.JPG' as image3 %}
+                {% static 'core/img/rooms/front/four.JPG' as image4 %}
+                {% static 'core/img/rooms/front/five.JPG' as image5 %}
+                {% static 'core/img/rooms/front/six.JPG' as image6 %}
+                {% static 'core/img/rooms/front/seven.JPG' as image7 %}
+                <c-slider id="camp-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{image7}}']">
+
+                </c-slider>
+            </div>
+
             <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-black before:-inset-[4px] p-5 overflow-hidden">
                 <h2 class="uppercase text-3xl text-center">toys</h2>
             </div>
@@ -889,7 +950,7 @@
             </div>
             <div class="flex gap-5">
                 <div class="">
-                    {% static 'core/img/kart@0.25x.jpg' as image %}
+                    {% static 'core/img/toys/big-cars.JPG' as image %}
                     <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
                         <img src="{{ image }}" alt="" />
                     </div>
@@ -900,7 +961,7 @@
                 <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-black before:-inset-[4px] overflow-hidden">
                 </div>
                 <div>
-                    {% static 'core/img/outside3@0.25x.jpg' as image %}
+                    {% static 'core/img/toys/games-and-others.JPG' as image %}
                     <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
                         <img src="{{ image }}" alt="" />
                     </div>
