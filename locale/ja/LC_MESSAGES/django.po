@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-13 11:03+0900\n"
+"POT-Creation-Date: 2025-08-13 14:40+0900\n"
 "PO-Revision-Date: 2025-08-08 13:25+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -367,7 +367,7 @@ msgid "コンドミニアムエリア"
 msgstr ""
 
 #: core/templates/core/index.html:175 core/templates/core/index.html:538
-#: core/templates/core/svg_test.html:343
+#: core/templates/core/index.html:820 core/templates/core/svg_test.html:343
 msgid "旧館"
 msgstr ""
 
@@ -375,7 +375,11 @@ msgstr ""
 msgid "まるで家族の別荘のようにくつろげる空間。"
 msgstr ""
 
-#: core/templates/core/index.html:776
+#: core/templates/core/index.html:766
+msgid "コンドミニアム"
+msgstr ""
+
+#: core/templates/core/index.html:779 core/templates/core/index.html:833
 msgid ""
 "キッチンでは、グリルの準備や簡単な料理をお楽しみいただけます。温泉水のお風呂"
 "で、一日の疲れをゆっくりと癒してください。お部屋では、Wi-Fiに接続してインター"
@@ -383,61 +387,61 @@ msgid ""
 "ながら、最高のひとときをお迎えください。"
 msgstr ""
 
-#: core/templates/core/index.html:780 core/templates/core/index_old.html:303
+#: core/templates/core/index.html:783 core/templates/core/index_old.html:303
 #: core/templates/core/index_old.html:586
 #: core/templates/core/room_details.html:75
 #: core/templates/core/room_details.html:279
 msgid "冷蔵庫"
 msgstr ""
 
-#: core/templates/core/index.html:781
+#: core/templates/core/index.html:784
 msgid "シンク"
 msgstr ""
 
-#: core/templates/core/index.html:782 core/templates/core/index_old.html:270
+#: core/templates/core/index.html:785 core/templates/core/index_old.html:270
 #: core/templates/core/index_old.html:553
 #: core/templates/core/room_details.html:51
 #: core/templates/core/room_details.html:255
 msgid "IHコンロ"
 msgstr ""
 
-#: core/templates/core/index.html:783 core/templates/core/index_old.html:281
+#: core/templates/core/index.html:786 core/templates/core/index_old.html:281
 #: core/templates/core/index_old.html:564
 #: core/templates/core/room_details.html:59
 #: core/templates/core/room_details.html:263
 msgid "電子レンジ"
 msgstr ""
 
-#: core/templates/core/index.html:784 core/templates/core/index_old.html:292
+#: core/templates/core/index.html:787 core/templates/core/index_old.html:292
 #: core/templates/core/index_old.html:575
 #: core/templates/core/room_details.html:67
 #: core/templates/core/room_details.html:271
 msgid "トースター"
 msgstr ""
 
-#: core/templates/core/index.html:785 core/templates/core/index_old.html:314
+#: core/templates/core/index.html:788 core/templates/core/index_old.html:314
 #: core/templates/core/index_old.html:597
 #: core/templates/core/room_details.html:83
 #: core/templates/core/room_details.html:287
 msgid "ケトル"
 msgstr ""
 
-#: core/templates/core/index.html:786 core/templates/core/index_old.html:336
+#: core/templates/core/index.html:789 core/templates/core/index_old.html:336
 #: core/templates/core/index_old.html:619
 #: core/templates/core/room_details.html:99
 #: core/templates/core/room_details.html:303
 msgid "食器"
 msgstr ""
 
-#: core/templates/core/index.html:787 core/templates/core/index_old.html:325
+#: core/templates/core/index.html:790 core/templates/core/index_old.html:325
 #: core/templates/core/index_old.html:608
 #: core/templates/core/room_details.html:91
 #: core/templates/core/room_details.html:295
 msgid "調理器具"
 msgstr ""
 
-#: core/templates/core/index.html:788 core/templates/core/index.html:800
-#: core/templates/core/index_old.html:338
+#: core/templates/core/index.html:791 core/templates/core/index.html:803
+#: core/templates/core/index.html:856 core/templates/core/index_old.html:338
 #: core/templates/core/index_old.html:428
 #: core/templates/core/index_old.html:621
 #: core/templates/core/index_old.html:711
@@ -448,92 +452,104 @@ msgstr ""
 msgid "・・・などなど"
 msgstr ""
 
-#: core/templates/core/index.html:792 core/templates/core/index_old.html:88
-#: core/templates/core/index_old.html:349
+#: core/templates/core/index.html:795 core/templates/core/index.html:848
+#: core/templates/core/index_old.html:88 core/templates/core/index_old.html:349
 #: core/templates/core/index_old.html:632
 #: core/templates/core/room_details.html:109
 #: core/templates/core/room_details.html:313
 msgid "温泉水"
 msgstr ""
 
-#: core/templates/core/index.html:793 core/templates/core/index_old.html:360
+#: core/templates/core/index.html:796 core/templates/core/index.html:849
+#: core/templates/core/index_old.html:360
 #: core/templates/core/index_old.html:643
 #: core/templates/core/room_details.html:117
 #: core/templates/core/room_details.html:321
 msgid "バスタオル"
 msgstr ""
 
-#: core/templates/core/index.html:794 core/templates/core/index_old.html:371
+#: core/templates/core/index.html:797 core/templates/core/index.html:850
+#: core/templates/core/index_old.html:371
 #: core/templates/core/index_old.html:654
 #: core/templates/core/room_details.html:125
 #: core/templates/core/room_details.html:329
 msgid "フェイスタオル"
 msgstr ""
 
-#: core/templates/core/index.html:795 core/templates/core/index_old.html:382
+#: core/templates/core/index.html:798 core/templates/core/index.html:851
+#: core/templates/core/index_old.html:382
 #: core/templates/core/index_old.html:665
 #: core/templates/core/room_details.html:133
 #: core/templates/core/room_details.html:337
 msgid "シャンプー"
 msgstr ""
 
-#: core/templates/core/index.html:796 core/templates/core/index_old.html:393
+#: core/templates/core/index.html:799 core/templates/core/index.html:852
+#: core/templates/core/index_old.html:393
 #: core/templates/core/index_old.html:676
 #: core/templates/core/room_details.html:141
 #: core/templates/core/room_details.html:345
 msgid "コンディショナー"
 msgstr ""
 
-#: core/templates/core/index.html:797 core/templates/core/index_old.html:404
+#: core/templates/core/index.html:800 core/templates/core/index.html:853
+#: core/templates/core/index_old.html:404
 #: core/templates/core/index_old.html:687
 #: core/templates/core/room_details.html:149
 #: core/templates/core/room_details.html:353
 msgid "ボディソープ"
 msgstr ""
 
-#: core/templates/core/index.html:798 core/templates/core/index_old.html:415
+#: core/templates/core/index.html:801 core/templates/core/index.html:854
+#: core/templates/core/index_old.html:415
 #: core/templates/core/index_old.html:698
 #: core/templates/core/room_details.html:157
 #: core/templates/core/room_details.html:361
 msgid "ボディタオル"
 msgstr ""
 
-#: core/templates/core/index.html:799 core/templates/core/index_old.html:426
+#: core/templates/core/index.html:802 core/templates/core/index.html:855
+#: core/templates/core/index_old.html:426
 #: core/templates/core/index_old.html:709
 #: core/templates/core/room_details.html:165
 #: core/templates/core/room_details.html:369
 msgid "コットン・綿棒"
 msgstr ""
 
-#: core/templates/core/index.html:805 core/templates/core/index_old.html:439
+#: core/templates/core/index.html:808 core/templates/core/index.html:838
+#: core/templates/core/index_old.html:439
 #: core/templates/core/index_old.html:722
 #: core/templates/core/room_details.html:175
 #: core/templates/core/room_details.html:379
 msgid "トイレ"
 msgstr ""
 
-#: core/templates/core/index.html:806 core/templates/core/index_old.html:450
+#: core/templates/core/index.html:809 core/templates/core/index.html:839
+#: core/templates/core/index_old.html:450
 #: core/templates/core/index_old.html:733
 #: core/templates/core/room_details.html:183
 #: core/templates/core/room_details.html:387
 msgid "冷暖房"
 msgstr ""
 
-#: core/templates/core/index.html:807 core/templates/core/index_old.html:461
+#: core/templates/core/index.html:810 core/templates/core/index.html:840
+#: core/templates/core/index_old.html:461
 #: core/templates/core/index_old.html:744
 #: core/templates/core/room_details.html:191
 #: core/templates/core/room_details.html:395
 msgid "５０型テレビ"
 msgstr ""
 
-#: core/templates/core/index.html:808 core/templates/core/index_old.html:472
+#: core/templates/core/index.html:811 core/templates/core/index.html:841
+#: core/templates/core/index_old.html:472
 #: core/templates/core/index_old.html:755
 #: core/templates/core/room_details.html:199
 #: core/templates/core/room_details.html:403
 msgid "VOD"
 msgstr ""
 
-#: core/templates/core/index.html:809 core/templates/core/index_old.html:106
+#: core/templates/core/index.html:812 core/templates/core/index.html:842
+#: core/templates/core/index_old.html:106
 #: core/templates/core/index_old.html:483
 #: core/templates/core/index_old.html:766
 #: core/templates/core/room_details.html:207
@@ -541,21 +557,21 @@ msgstr ""
 msgid "WIFI"
 msgstr ""
 
-#: core/templates/core/index.html:810
+#: core/templates/core/index.html:813 core/templates/core/index.html:843
 msgid "軽食の注文"
 msgstr ""
 
-#: core/templates/core/index.html:811
+#: core/templates/core/index.html:814 core/templates/core/index.html:844
 msgid "朝食"
 msgstr ""
 
-#: core/templates/core/index.html:829
+#: core/templates/core/index.html:876
 msgid ""
 "澄み切った空気の中、手ぶらで楽しむBBQ。炭火で焼く新鮮な食材は格別です。家族や"
 "友人と、最高の思い出をお作りください。"
 msgstr ""
 
-#: core/templates/core/index.html:842
+#: core/templates/core/index.html:889
 msgid ""
 "日が沈み、空が茜色に染まる頃、特別なBBQタイムの始まりです。満点の空が輝く夜空"
 "の下、ぱちぱちと音を立てる焚き火を囲んで、大切な人と語り合う贅沢な時間をお過"
@@ -565,74 +581,74 @@ msgid ""
 "す。"
 msgstr ""
 
-#: core/templates/core/index.html:846
+#: core/templates/core/index.html:893
 msgid "グリル"
 msgstr ""
 
-#: core/templates/core/index.html:847
+#: core/templates/core/index.html:894
 msgid "テント"
 msgstr ""
 
-#: core/templates/core/index.html:848
+#: core/templates/core/index.html:895
 msgid "椅子"
 msgstr ""
 
-#: core/templates/core/index.html:849
+#: core/templates/core/index.html:896
 msgid "テーブル"
 msgstr ""
 
-#: core/templates/core/index.html:853
+#: core/templates/core/index.html:900
 msgid "ライター"
 msgstr ""
 
-#: core/templates/core/index.html:854
+#: core/templates/core/index.html:901
 msgid "炭"
 msgstr ""
 
-#: core/templates/core/index.html:855
+#: core/templates/core/index.html:902
 msgid "ガス"
 msgstr ""
 
-#: core/templates/core/index.html:859
+#: core/templates/core/index.html:906
 msgid "肉"
 msgstr ""
 
-#: core/templates/core/index.html:860
+#: core/templates/core/index.html:907
 msgid "魚"
 msgstr ""
 
-#: core/templates/core/index.html:861
+#: core/templates/core/index.html:908
 msgid "野菜"
 msgstr ""
 
-#: core/templates/core/index.html:862
+#: core/templates/core/index.html:909
 msgid "飲み物"
 msgstr ""
 
-#: core/templates/core/index.html:863
+#: core/templates/core/index.html:910
 msgid "ラーメンや軽食"
 msgstr ""
 
-#: core/templates/core/index.html:881
+#: core/templates/core/index.html:928
 msgid ""
 "小さなお子様からおじいちゃん、おばあちゃんまで、どなたでもゆっくりと楽しめま"
 "す。"
 msgstr ""
 
-#: core/templates/core/index.html:888
+#: core/templates/core/index.html:949
 msgid ""
 "シャボン玉、ポップアップテント、色々なリモコン・カーやレゴをレンタルできま"
 "す。"
 msgstr ""
 
-#: core/templates/core/index.html:917
+#: core/templates/core/index.html:978
 msgid ""
 "温泉水と蒸気が、体の芯まで包み込みます。日頃の疲れを癒やしたい方や、明日への"
 "活力を得たい方にぴったりの空間です。鍵付きのプライベート空間なので、お一人様"
 "でもご家族と一緒でも、安心してゆったりとお過ごしいただけます。"
 msgstr ""
 
-#: core/templates/core/index.html:954
+#: core/templates/core/index.html:1015
 msgid "長崎佐世保木原町82番地"
 msgstr "82 Kiharacho, Sasebo, Nagasaki"
 
