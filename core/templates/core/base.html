@@ -53,7 +53,7 @@
 
   <body class="bg-white" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block header %}
-      <!-- <c-header initial-logo="{% static 'core/img/dark_logo.svg' %}" scroll-logo="{% static 'core/img/light_logo.svg' %}"/> -->
+      <c-header initial-logo="{% static 'core/img/dark_logo.svg' %}" scroll-logo="{% static 'core/img/light_logo.svg' %}"/>
     {% endblock %}
     {% block pre_content %}
       {% get_current_language as CURRENT_LANGUAGE_CODE %}
@@ -79,8 +79,8 @@
       {% endblock %}
 
 
-      {#% block content_main %#}
-      {#% endblock %#}
+      {% block content_main %}
+      {% endblock %}
 
       {% block content_bottom %}
       {% endblock %}

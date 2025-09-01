@@ -913,7 +913,7 @@
                 </c-slider>
             </div>
         </section>
-        <section class="px-2 sm:px-10 lg:px-20 my-10 sm:my-48 max-w-7xl mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="3" id="play&sauna">
+        <section class="my-10 sm:my-48 mx-auto text-black scroll-mt-20 sm:scroll-mt-48" data-counter="3" id="play&sauna">
             <div class="flex flex-col items-center space-y-2 md:space-y-3 lg:space-y-5 max-w-7xl mx-auto px-2 sm:px-10 lg:px-20">
                 <div class="relative text-center w-full">
                     <img class="absolute top-1/2 -translate-y-1/2 left-0 w-[50px] sm:w-[100px]" src="{% static 'core/img/coffee-and-table.svg' %}" alt="" loading="lazy" />
@@ -936,69 +936,70 @@
                 {% static 'core/img/rooms/front/five.JPG' as image5 %}
                 {% static 'core/img/rooms/front/six.JPG' as image6 %}
                 {% static 'core/img/rooms/front/seven.JPG' as image7 %}
-                <c-slider id="camp-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{image7}}']">
-
+                <c-slider id="fun-slider" :images="['{{ image1 }}', '{{ image2 }}', '{{ image3 }}', '{{ image4 }}', '{{ image5 }}', '{{ image6 }}', '{{image7}}']">
                 </c-slider>
             </div>
 
-            <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-black before:-inset-[4px] p-5 overflow-hidden">
-                <h2 class="uppercase text-3xl text-center">toys</h2>
-            </div>
-
-            <div class="my-10 mx-auto flex justify-center">
-                <p class="text-balance">{% trans "シャボン玉、ポップアップテント、色々なリモコン・カーやレゴをレンタルできます。" %}</p>
-            </div>
-            <div class="flex gap-5">
-                <div class="">
-                    {% static 'core/img/toys/big-cars.JPG' as image %}
-                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
-                        <img src="{{ image }}" alt="" />
-                    </div>
-                    <c-dialog id="modal-toy-1">
-                        <img src={{ image }} />
-                    </c-dialog>
-                </div>
-                <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-black before:-inset-[4px] overflow-hidden">
-                </div>
-                <div>
-                    {% static 'core/img/toys/games-and-others.JPG' as image %}
-                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
-                        <img src="{{ image }}" alt="" />
-                    </div>
-                    <c-dialog id="modal-toy-2">
-                        <img src={{ image }} />
-                    </c-dialog>
-                </div>
-            </div>
-            <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-black before:-inset-[4px] p-5 overflow-hidden">
-                <h2 class="uppercase text-3xl text-center">bath & sauna</h2>
-            </div>
-            <div class="my-10 mx-auto flex justify-center">
-                <p class="text-center">
-                    {% trans '温泉水と蒸気が、体の芯まで包み込みます。日頃の疲れを癒やしたい方や、明日への活力を得たい方にぴったりの空間です。鍵付きのプライベート空間なので、お一人様でもご家族と一緒でも、安心してゆったりとお過ごしいただけます。' %}
-                </p>
-            </div>
-            <div class="flex gap-5">
-                {% static 'core/img/sauna@0.25x.jpg' as image %}
-                <div>
-                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
-                        <img src="{{ image }}" alt="" />
-                    </div>
-                    <c-dialog id="modal-sauna-1">
-                        <img src={{ image }} />
-                    </c-dialog>
+            <div class="max-w-7xl mx-auto px-2 sm:px-10 lg:px-20">
+                <div class="my-10 relative box-border before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-black before:-inset-[4px] p-5 overflow-hidden">
+                    <h2 class="uppercase text-3xl text-center">toys</h2>
                 </div>
 
-                <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-black before:-inset-[4px] overflow-hidden">
+                <div class="my-10 mx-auto flex justify-center">
+                    <p class="text-balance">{% trans "シャボン玉、ポップアップテント、色々なリモコン・カーやレゴをレンタルできます。" %}</p>
                 </div>
-                {% static 'core/img/outdoor_bath@0.25x.jpg' as image %}
-                <div>
-                    <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
-                        <img src="{{ image }}" alt="" />
+                <div class="flex gap-5">
+                    <div class="">
+                        {% static 'core/img/toys/big-cars.JPG' as image %}
+                        <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
+                            <img src="{{ image }}" alt="" />
+                        </div>
+                        <c-dialog id="modal-toy-1">
+                            <img src={{ image }} />
+                        </c-dialog>
                     </div>
-                    <c-dialog id="modal-sauna-2">
-                        <img src={{ image }} />
-                    </c-dialog>
+                    <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-black before:-inset-[4px] overflow-hidden">
+                    </div>
+                    <div>
+                        {% static 'core/img/toys/games-and-others.JPG' as image %}
+                        <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
+                            <img src="{{ image }}" alt="" />
+                        </div>
+                        <c-dialog id="modal-toy-2">
+                            <img src={{ image }} />
+                        </c-dialog>
+                    </div>
+                </div>
+                <div class="my-10 relative before:absolute before:content-[''] before:border-[5px] before:border-dashed before:border-black before:-inset-[4px] p-5 overflow-hidden">
+                    <h2 class="uppercase text-3xl text-center">bath & sauna</h2>
+                </div>
+                <div class="my-10 mx-auto flex justify-center">
+                    <p class="text-center">
+                        {% trans '温泉水と蒸気が、体の芯まで包み込みます。日頃の疲れを癒やしたい方や、明日への活力を得たい方にぴったりの空間です。鍵付きのプライベート空間なので、お一人様でもご家族と一緒でも、安心してゆったりとお過ごしいただけます。' %}
+                    </p>
+                </div>
+                <div class="flex gap-5">
+                    {% static 'core/img/sauna@0.25x.jpg' as image %}
+                    <div>
+                        <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
+                            <img src="{{ image }}" alt="" />
+                        </div>
+                        <c-dialog id="modal-sauna-1">
+                            <img src={{ image }} />
+                        </c-dialog>
+                    </div>
+
+                    <div class="flex w-[2px] relative before:absolute before:content-[''] before:border-r-[5px] before:border-dashed before:border-black before:-inset-[4px] overflow-hidden">
+                    </div>
+                    {% static 'core/img/outdoor_bath@0.25x.jpg' as image %}
+                    <div>
+                        <div class="image-wrapper cursor-pointer" _="on click set dialog to the next <[role=dialog]/> if dialog does not match @open add @open=true to dialog end">
+                            <img src="{{ image }}" alt="" />
+                        </div>
+                        <c-dialog id="modal-sauna-2">
+                            <img src={{ image }} />
+                        </c-dialog>
+                    </div>
                 </div>
             </div>
         </section>

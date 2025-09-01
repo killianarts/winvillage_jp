@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-13 14:40+0900\n"
+"POT-Creation-Date: 2025-09-01 10:29+0900\n"
 "PO-Revision-Date: 2025-08-08 13:25+0900\n"
 "Last-Translator: None None <micah@killianarts.online>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -287,31 +287,31 @@ msgstr "アカウント"
 msgid "佐世保で過ごす贅沢な時間　ー　グランピング施設"
 msgstr ""
 
-#: core/templates/core/base.html:91
+#: core/templates/core/base.html:94
 msgid "癒しの時間を、Winvillageで"
 msgstr ""
 
-#: core/templates/core/base.html:94
+#: core/templates/core/base.html:97
 msgid "最高のグランピング体験が、佐世保で皆様をお待ちしています。"
 msgstr ""
 
-#: core/templates/core/base.html:109
+#: core/templates/core/base.html:112
 msgid "ご宿泊・日帰りのご予約はこちら"
 msgstr ""
 
-#: core/templates/core/base.html:113
+#: core/templates/core/base.html:116
 msgid "楽天トラベルで予約する"
 msgstr ""
 
-#: core/templates/core/base.html:117
+#: core/templates/core/base.html:120
 msgid "Booking.comで予約する"
 msgstr ""
 
-#: core/templates/core/base.html:121
+#: core/templates/core/base.html:124
 msgid "じゃらんで予約する"
 msgstr ""
 
-#: core/templates/core/base.html:125
+#: core/templates/core/base.html:128
 msgid "Expedia.comで予約する"
 msgstr ""
 
